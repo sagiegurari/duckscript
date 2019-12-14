@@ -1,0 +1,10 @@
+
+[env]
+CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = "true"
+
+[config]
+additional_profiles = [
+    "ci-coverage-tasks",
+    "ci-all-build-tasks",
+    "publish-pre-cleanup"
+]
