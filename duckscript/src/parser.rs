@@ -14,6 +14,7 @@ use crate::types::DuckScriptError;
 
 static COMMENT_PREFIX_STR: &str = "#";
 static PRE_PROCESS_PREFIX: char = '!';
+static LABEL_PREFIX: char = ':';
 
 pub fn parse_line(
     line_text: &str,
@@ -32,7 +33,7 @@ pub fn parse_line(
         if chars[0] == PRE_PROCESS_PREFIX {
             parse_pre_process_line(&chars, meta_info, 1)
         } else {
-            parse_line_at(&chars, meta_info, 0)
+            parse_command_line(&chars, meta_info, 0)
         }
     }
 }
@@ -81,16 +82,34 @@ fn parse_pre_process_line(
     }
 }
 
-fn parse_line_at(
+fn parse_command_line(
     line_text: &Vec<char>,
     meta_info: InstructionMetaInfo,
     start_index: usize,
 ) -> Result<Instruction, DuckScriptError> {
-    //TODO IMPL
-    Ok(Instruction {
-        meta_info,
-        instruction_type: InstructionType::Empty,
-    })
+        let end_index = line_text.len();
+
+    if line_text.is_empty() || start_index >= end_index {
+        Ok(Instruction {
+            meta_info,
+            instruction_type: InstructionType::Empty,
+        })
+    } else {
+        // search for label
+        let mut index = start_index;
+        if line_text[index] == LABEL_PREFIX {
+            index=index+1;
+            for i in index..end_index {
+                let character = line_text[index];
+            }
+        }
+
+        //TODO IMPL
+        Ok(Instruction {
+            meta_info,
+            instruction_type: InstructionType::Empty,
+        })
+    }
 }
 
 fn parse_arguments(
@@ -116,7 +135,7 @@ fn parse_arguments(
         }
     }
 
-    if arguments.len() == 0 {
+    if arguments.is_empty() {
         Ok(None)
     } else {
         Ok(Some(arguments))
@@ -144,8 +163,7 @@ fn parse_next_argument(
 
             if in_argument {
                 if in_control {
-                    if character == '\\' || character == '"' || character == '%' || character == '$'
-                    {
+                    if character == '\\' || character == '"' {
                         argument.push(character);
                         in_control = false;
                     } else {

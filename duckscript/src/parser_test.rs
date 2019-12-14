@@ -49,13 +49,16 @@ fn parse_pre_process_line_just_command_with_spaces() {
 
 #[test]
 fn parse_pre_process_line_just_command_with_arguments() {
-    let chars = r#"   test_command   arg1 arg2 "arg3""#.chars().collect();
+    let chars = r#"   test_command   arg1 arg2 "arg3.1 arg3.2""#.chars().collect();
     let output = parse_pre_process_line(&chars, InstructionMetaInfo::new(), 0);
 
     assert!(output.is_ok());
     let instruction = test::get_pre_process_instruction(output.unwrap());
     assert_eq!(instruction.command.unwrap(), "test_command");
-    assert_eq!(instruction.arguments.unwrap(), vec!["arg1", "arg2", "arg3"]);
+    assert_eq!(
+        instruction.arguments.unwrap(),
+        vec!["arg1", "arg2", "arg3.1 arg3.2"]
+    );
 }
 
 #[test]
@@ -164,15 +167,15 @@ fn parse_next_argument_empty_with_quots() {
 
 #[test]
 fn parse_next_argument_value_with_control() {
-    let chars = r#"  \"test\"\%\$\\  "#.chars().collect();
+    let chars = r#"  \"test\"\\  "#.chars().collect();
     let result = parse_next_argument(&chars, 0);
 
     assert!(result.is_ok());
 
     let (index, value) = result.unwrap();
 
-    assert_eq!(index, 16);
-    assert_eq!(value.unwrap(), "\"test\"%$\\");
+    assert_eq!(index, 12);
+    assert_eq!(value.unwrap(), "\"test\"\\");
 }
 
 #[test]
