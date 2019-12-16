@@ -336,3 +336,16 @@ fn find_label_only_spaces() {
     assert_eq!(index, chars.len());
     assert!(value.is_none());
 }
+
+#[test]
+fn find_label_label_between_spaces() {
+    let chars = "   :label     ".chars().collect();
+    let result = find_label(&chars, 0);
+
+    assert!(result.is_ok());
+
+    let (index, value) = result.unwrap();
+
+    assert_eq!(index, 9);
+    assert_eq!(value.unwrap(), ":label");
+}
