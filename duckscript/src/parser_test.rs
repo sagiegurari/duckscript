@@ -338,6 +338,19 @@ fn find_label_only_spaces() {
 }
 
 #[test]
+fn find_label_none_label_between_spaces() {
+    let chars = "   label     ".chars().collect();
+    let result = find_label(&chars, 0);
+
+    assert!(result.is_ok());
+
+    let (index, value) = result.unwrap();
+
+    assert_eq!(index, 3);
+    assert!(value.is_none());
+}
+
+#[test]
 fn find_label_label_between_spaces() {
     let chars = "   :label     ".chars().collect();
     let result = find_label(&chars, 0);
@@ -348,4 +361,33 @@ fn find_label_label_between_spaces() {
 
     assert_eq!(index, 9);
     assert_eq!(value.unwrap(), ":label");
+}
+
+#[test]
+fn find_label_label_with_comment_afterwards() {
+    let chars = "   :label#comment".chars().collect();
+    let result = find_label(&chars, 0);
+
+    assert!(result.is_ok());
+
+    let (index, value) = result.unwrap();
+
+    assert_eq!(index, chars.len());
+    assert_eq!(value.unwrap(), ":label");
+}
+
+#[test]
+fn find_label_label_with_quote_error() {
+    let chars = r#"   :"label"     "#.chars().collect();
+    let result = find_label(&chars, 0);
+
+    assert!(result.is_err());
+}
+
+#[test]
+fn find_label_label_with_control_error() {
+    let chars = r#"   :\\label     "#.chars().collect();
+    let result = find_label(&chars, 0);
+
+    assert!(result.is_err());
 }

@@ -267,33 +267,44 @@ fn find_label(
     if start_index >= end_index {
         Ok((start_index, None))
     } else {
-        let mut label = String::new();
+        let mut label = None;
         let mut index = start_index;
-        let mut in_label = false;
         for _i in index..end_index {
             let character = line_text[index];
             index = index + 1;
 
-            if in_label {
-                if character == ' ' {
-                    index = index - 1;
-                    break;
-                } else {
-                    label.push(character);
-                }
-            } else if character == LABEL_PREFIX {
-                in_label = true;
-                label.push(character);
+            if character == LABEL_PREFIX {
+                match parse_next_value(&line_text, index, false, false) {
+                    Ok(output) => {
+                        let (next_index, value) = output;
+                        index = next_index;
+
+                        match value {
+                            Some(label_value) => {
+                                if label_value.is_empty() {
+                                    return Err(ScriptError::EmptyLabel);
+                                }
+
+                                let mut text = String::new();
+                                text.push(LABEL_PREFIX);
+                                text.push_str(&label_value);
+
+                                label = Some(text);
+                            }
+                            None => (),
+                        };
+
+                        break;
+                    }
+                    Err(error) => return Err(error),
+                };
             } else if character != ' ' {
+                index = index - 1;
                 break;
             }
         }
 
-        if label.is_empty() {
-            Ok((index, None))
-        } else {
-            Ok((index, Some(label)))
-        }
+        Ok((index, label))
     }
 }
 

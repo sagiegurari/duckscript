@@ -7,4 +7,5 @@ pub enum ScriptError {
     MissingOutputVariableName,
     InvalidEqualsLocation,
     InvalidQuotesLocation,
+    EmptyLabel,
 }
