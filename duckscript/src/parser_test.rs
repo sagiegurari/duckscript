@@ -7,10 +7,7 @@ fn parse_pre_process_line_empty() {
     let output = parse_pre_process_line(&chars, InstructionMetaInfo::new(), 0);
 
     assert!(output.is_err());
-    assert_eq!(
-        output.err(),
-        Some(DuckScriptError::PreProcessNoCommandFound)
-    );
+    assert_eq!(output.err(), Some(ScriptError::PreProcessNoCommandFound));
 }
 
 #[test]
@@ -19,10 +16,7 @@ fn parse_pre_process_line_all_spaces() {
     let output = parse_pre_process_line(&chars, InstructionMetaInfo::new(), 0);
 
     assert!(output.is_err());
-    assert_eq!(
-        output.err(),
-        Some(DuckScriptError::PreProcessNoCommandFound)
-    );
+    assert_eq!(output.err(), Some(ScriptError::PreProcessNoCommandFound));
 }
 
 #[test]
@@ -192,6 +186,45 @@ fn parse_next_argument_value_with_space_in_middle() {
 }
 
 #[test]
+fn parse_next_argument_value_with_comment_in_middle() {
+    let chars = r#"  "test \"test\" #test test"  "#.chars().collect();
+    let result = parse_next_argument(&chars, 0);
+
+    assert!(result.is_ok());
+
+    let (index, value) = result.unwrap();
+
+    assert_eq!(index, 28);
+    assert_eq!(value.unwrap(), "test \"test\" #test test");
+}
+
+#[test]
+fn parse_next_argument_value_with_comment_afterwards() {
+    let chars = r#"  test#comment"#.chars().collect();
+    let result = parse_next_argument(&chars, 0);
+
+    assert!(result.is_ok());
+
+    let (index, value) = result.unwrap();
+
+    assert_eq!(index, 14);
+    assert_eq!(value.unwrap(), "test");
+}
+
+#[test]
+fn parse_next_argument_value_with_comment_afterwards_wrapped_with_quotes() {
+    let chars = r#"  "test#comment""#.chars().collect();
+    let result = parse_next_argument(&chars, 0);
+
+    assert!(result.is_ok());
+
+    let (index, value) = result.unwrap();
+
+    assert_eq!(index, 16);
+    assert_eq!(value.unwrap(), "test#comment");
+}
+
+#[test]
 fn parse_next_argument_value_with_control_error() {
     let chars = r#"  \a  "#.chars().collect();
     let result = parse_next_argument(&chars, 0);
@@ -276,4 +309,30 @@ fn parse_arguments_multiple_values() {
         arguments.unwrap(),
         vec!["test", "test \"test\"", "${value}", "%{value}"]
     );
+}
+
+#[test]
+fn find_label_empty() {
+    let chars = "".chars().collect();
+    let result = find_label(&chars, 0);
+
+    assert!(result.is_ok());
+
+    let (index, value) = result.unwrap();
+
+    assert_eq!(index, chars.len());
+    assert!(value.is_none());
+}
+
+#[test]
+fn find_label_only_spaces() {
+    let chars = "        ".chars().collect();
+    let result = find_label(&chars, 0);
+
+    assert!(result.is_ok());
+
+    let (index, value) = result.unwrap();
+
+    assert_eq!(index, chars.len());
+    assert!(value.is_none());
 }

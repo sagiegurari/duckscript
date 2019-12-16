@@ -1,6 +1,10 @@
 #[derive(Debug, PartialEq)]
-pub enum DuckScriptError {
+pub enum ScriptError {
     PreProcessNoCommandFound,
     ControlWithoutValidValue,
+    InvalidControlLocation,
     MissingEndQuotes,
+    MissingOutputVariableName,
+    InvalidEqualsLocation,
+    InvalidQuotesLocation,
 }
