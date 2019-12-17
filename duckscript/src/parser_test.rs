@@ -587,3 +587,18 @@ fn find_output_and_command_post_value_index_with_equals() {
     assert!(instruction.output.is_none());
     assert!(instruction.command.is_none());
 }
+
+#[test]
+fn find_output_and_command_output_command_only() {
+    let chars = r#"variable=command"#.chars().collect();
+    let mut instruction = ScriptInstruction::new();
+    let result = find_output_and_command(&chars, chars.len() - 2, &mut instruction);
+
+    assert!(result.is_ok());
+
+    let index = result.unwrap();
+
+    assert_eq!(index, chars.len());
+    assert_eq!(instruction.output.unwrap(), "variable");
+    assert_eq!(instruction.command.unwrap(), "coommand");
+}
