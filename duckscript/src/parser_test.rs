@@ -463,6 +463,21 @@ fn find_output_and_command_single_value_between_spaces() {
 }
 
 #[test]
+fn find_output_and_command_single_value_only() {
+    let chars = "command".chars().collect();
+    let mut instruction = ScriptInstruction::new();
+    let result = find_output_and_command(&chars, 0, &mut instruction);
+
+    assert!(result.is_ok());
+
+    let index = result.unwrap();
+
+    assert_eq!(index, chars.len());
+    assert!(instruction.output.is_none());
+    assert_eq!(instruction.command.unwrap(), "command");
+}
+
+#[test]
 fn find_output_and_command_single_value_with_comment_afterwards() {
     let chars = "   command#comment".chars().collect();
     let mut instruction = ScriptInstruction::new();
@@ -521,6 +536,21 @@ fn find_output_and_command_single_value_with_equals_between_spaces() {
     let index = result.unwrap();
 
     assert_eq!(index, 14);
+    assert_eq!(instruction.output.unwrap(), "variable");
+    assert!(instruction.command.is_none());
+}
+
+#[test]
+fn find_output_and_command_single_value_with_equals_only() {
+    let chars = "variable=".chars().collect();
+    let mut instruction = ScriptInstruction::new();
+    let result = find_output_and_command(&chars, 0, &mut instruction);
+
+    assert!(result.is_ok());
+
+    let index = result.unwrap();
+
+    assert_eq!(index, chars.len());
     assert_eq!(instruction.output.unwrap(), "variable");
     assert!(instruction.command.is_none());
 }
@@ -592,7 +622,7 @@ fn find_output_and_command_post_value_index_with_equals() {
 fn find_output_and_command_output_command_only() {
     let chars = r#"variable=command"#.chars().collect();
     let mut instruction = ScriptInstruction::new();
-    let result = find_output_and_command(&chars, chars.len() - 2, &mut instruction);
+    let result = find_output_and_command(&chars, 0, &mut instruction);
 
     assert!(result.is_ok());
 
@@ -600,5 +630,162 @@ fn find_output_and_command_output_command_only() {
 
     assert_eq!(index, chars.len());
     assert_eq!(instruction.output.unwrap(), "variable");
-    assert_eq!(instruction.command.unwrap(), "coommand");
+    assert_eq!(instruction.command.unwrap(), "command");
+}
+
+#[test]
+fn find_output_and_command_output_command_with_spaces() {
+    let chars = r#"    variable   =   command   "#.chars().collect();
+    let mut instruction = ScriptInstruction::new();
+    let result = find_output_and_command(&chars, 0, &mut instruction);
+
+    assert!(result.is_ok());
+
+    let index = result.unwrap();
+
+    assert_eq!(index, 26);
+    assert_eq!(instruction.output.unwrap(), "variable");
+    assert_eq!(instruction.command.unwrap(), "command");
+}
+
+#[test]
+fn parse_command_line_empty() {
+    let chars = r#""#.chars().collect();
+    let result = parse_command_line(&chars, InstructionMetaInfo::new(), 0);
+
+    assert!(result.is_ok());
+
+    let instruction = result.unwrap();
+    test::assert_empty_instruction(instruction);
+}
+
+#[test]
+fn parse_command_line_all_spaces() {
+    let chars = r#"     "#.chars().collect();
+    let result = parse_command_line(&chars, InstructionMetaInfo::new(), 0);
+
+    assert!(result.is_ok());
+
+    let instruction = result.unwrap();
+    test::assert_empty_instruction(instruction);
+}
+
+#[test]
+fn parse_command_line_comment() {
+    let chars = r#"  #test   "#.chars().collect();
+    let result = parse_command_line(&chars, InstructionMetaInfo::new(), 0);
+
+    assert!(result.is_ok());
+
+    let instruction = result.unwrap();
+    test::assert_empty_instruction(instruction);
+}
+
+#[test]
+fn parse_command_line_only_label() {
+    let chars = r#":label"#.chars().collect();
+    let result = parse_command_line(&chars, InstructionMetaInfo::new(), 0);
+
+    assert!(result.is_ok());
+
+    let instruction = result.unwrap();
+    let instruction_type = test::get_script_instruction(instruction);
+
+    assert_eq!(instruction_type.label.unwrap(), ":label");
+    assert!(instruction_type.output.is_none());
+    assert!(instruction_type.command.is_none());
+    assert!(instruction_type.arguments.is_none());
+}
+
+#[test]
+fn parse_command_line_only_output_variable() {
+    let chars = r#"variable="#.chars().collect();
+    let result = parse_command_line(&chars, InstructionMetaInfo::new(), 0);
+
+    assert!(result.is_ok());
+
+    let instruction = result.unwrap();
+    let instruction_type = test::get_script_instruction(instruction);
+
+    assert!(instruction_type.label.is_none());
+    assert_eq!(instruction_type.output.unwrap(), "variable");
+    assert!(instruction_type.command.is_none());
+    assert!(instruction_type.arguments.is_none());
+}
+
+#[test]
+fn parse_command_line_only_command() {
+    let chars = r#"command"#.chars().collect();
+    let result = parse_command_line(&chars, InstructionMetaInfo::new(), 0);
+
+    assert!(result.is_ok());
+
+    let instruction = result.unwrap();
+    let instruction_type = test::get_script_instruction(instruction);
+
+    assert!(instruction_type.label.is_none());
+    assert!(instruction_type.output.is_none());
+    assert_eq!(instruction_type.command.unwrap(), "command");
+    assert!(instruction_type.arguments.is_none());
+}
+
+#[test]
+fn parse_command_line_all_no_spaces() {
+    let chars = r#":label variable=command arg1 arg2 arg3"#.chars().collect();
+    let result = parse_command_line(&chars, InstructionMetaInfo::new(), 0);
+
+    assert!(result.is_ok());
+
+    let instruction = result.unwrap();
+    let instruction_type = test::get_script_instruction(instruction);
+
+    assert_eq!(instruction_type.label.unwrap(), ":label");
+    assert_eq!(instruction_type.output.unwrap(), "variable");
+    assert_eq!(instruction_type.command.unwrap(), "command");
+    assert_eq!(
+        instruction_type.arguments.unwrap(),
+        vec!["arg1", "arg2", "arg3"]
+    );
+}
+
+#[test]
+fn parse_command_line_all_with_spaces() {
+    let chars = r#"   :label   variable   =  command    arg1   arg2 arg3   "#
+        .chars()
+        .collect();
+    let result = parse_command_line(&chars, InstructionMetaInfo::new(), 0);
+
+    assert!(result.is_ok());
+
+    let instruction = result.unwrap();
+    let instruction_type = test::get_script_instruction(instruction);
+
+    assert_eq!(instruction_type.label.unwrap(), ":label");
+    assert_eq!(instruction_type.output.unwrap(), "variable");
+    assert_eq!(instruction_type.command.unwrap(), "command");
+    assert_eq!(
+        instruction_type.arguments.unwrap(),
+        vec!["arg1", "arg2", "arg3"]
+    );
+}
+
+#[test]
+fn parse_command_line_all_complex() {
+    let chars = r#":label_test variable_test = command_test arg1 arg2 "  arg3 arg3 arg3  " #some comment"#
+        .chars()
+        .collect();
+    let result = parse_command_line(&chars, InstructionMetaInfo::new(), 0);
+
+    assert!(result.is_ok());
+
+    let instruction = result.unwrap();
+    let instruction_type = test::get_script_instruction(instruction);
+
+    assert_eq!(instruction_type.label.unwrap(), ":label_test");
+    assert_eq!(instruction_type.output.unwrap(), "variable_test");
+    assert_eq!(instruction_type.command.unwrap(), "command_test");
+    assert_eq!(
+        instruction_type.arguments.unwrap(),
+        vec!["arg1", "arg2", "  arg3 arg3 arg3  "]
+    );
 }

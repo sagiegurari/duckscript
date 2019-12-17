@@ -120,9 +120,18 @@ fn parse_command_line(
             Ok(arguments) => {
                 instruction.arguments = arguments;
 
+                let instruction_type = if instruction.label.is_none()
+                    && instruction.output.is_none()
+                    && instruction.command.is_none()
+                {
+                    InstructionType::Empty
+                } else {
+                    InstructionType::Script(instruction)
+                };
+
                 Ok(Instruction {
                     meta_info,
-                    instruction_type: InstructionType::Script(instruction),
+                    instruction_type,
                 })
             }
             Err(error) => Err(error),
@@ -318,8 +327,6 @@ fn find_output_and_command(
     start_index: usize,
     instruction: &mut ScriptInstruction,
 ) -> Result<usize, ScriptError> {
-    let end_index = line_text.len();
-
     match parse_next_value(&line_text, start_index, false, false, true) {
         Ok(output) => {
             let (next_index, value) = output;
@@ -328,6 +335,7 @@ fn find_output_and_command(
                 Ok(next_index)
             } else {
                 let mut index = next_index;
+                let end_index = line_text.len();
                 for _i in index..end_index {
                     let character = line_text[index];
                     index = index + 1;
