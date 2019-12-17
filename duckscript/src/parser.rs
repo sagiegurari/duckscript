@@ -164,7 +164,7 @@ fn parse_next_argument(
     line_text: &Vec<char>,
     start_index: usize,
 ) -> Result<(usize, Option<String>), ScriptError> {
-    parse_next_value(&line_text, start_index, true, true)
+    parse_next_value(&line_text, start_index, true, true, false)
 }
 
 fn parse_next_value(
@@ -172,6 +172,7 @@ fn parse_next_value(
     start_index: usize,
     allow_quotes: bool,
     allow_control: bool,
+    stop_on_equals: bool,
 ) -> Result<(usize, Option<String>), ScriptError> {
     let end_index = line_text.len();
 
@@ -205,8 +206,12 @@ fn parse_next_value(
                 } else if using_quotes && character == '"' {
                     found_end = true;
                     break;
-                } else if !using_quotes && (character == ' ' || character == '#') {
-                    if character == ' ' {
+                } else if !using_quotes
+                    && (character == ' '
+                        || character == '#'
+                        || (stop_on_equals && character == '='))
+                {
+                    if character == ' ' || character == '=' {
                         index = index - 1;
                     } else if character == '#' {
                         index = end_index;
@@ -274,7 +279,7 @@ fn find_label(
             index = index + 1;
 
             if character == LABEL_PREFIX {
-                match parse_next_value(&line_text, index, false, false) {
+                match parse_next_value(&line_text, index, false, false, false) {
                     Ok(output) => {
                         let (next_index, value) = output;
                         index = next_index;
@@ -315,11 +320,11 @@ fn find_output_and_command(
 ) -> Result<usize, ScriptError> {
     let end_index = line_text.len();
 
-    match parse_next_value(&line_text, start_index, false, false) {
+    match parse_next_value(&line_text, start_index, false, false, true) {
         Ok(output) => {
             let (next_index, value) = output;
 
-            if value.is_none() || next_index >= end_index {
+            if value.is_none() {
                 Ok(next_index)
             } else {
                 let mut index = next_index;
@@ -330,9 +335,6 @@ fn find_output_and_command(
                     if character != ' ' {
                         if character == '=' {
                             instruction.output = value.clone();
-                        } else {
-                            instruction.command = value.clone();
-                            index = index - 1;
                         }
 
                         break;
@@ -340,17 +342,23 @@ fn find_output_and_command(
                 }
 
                 if instruction.output.is_some() {
-                    match parse_next_value(&line_text, index, false, false) {
+                    match parse_next_value(&line_text, index, false, false, false) {
                         Ok(output) => {
                             let (next_index, value) = output;
-                            instruction.command = value.clone();
 
-                            Ok(next_index)
+                            if value.is_none() {
+                                Ok(index)
+                            } else {
+                                instruction.command = value.clone();
+                                Ok(next_index)
+                            }
                         }
                         Err(error) => Err(error),
                     }
                 } else {
-                    Ok(index)
+                    instruction.command = value.clone();
+
+                    Ok(next_index)
                 }
             }
         }

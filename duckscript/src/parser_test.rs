@@ -297,6 +297,18 @@ fn parse_arguments_value_in_middle_of_spaces() {
 }
 
 #[test]
+fn parse_arguments_value_with_equals() {
+    let chars = "  a=b  ".chars().collect();
+    let result = parse_arguments(&chars, 0);
+
+    assert!(result.is_ok());
+
+    let arguments = result.unwrap();
+
+    assert_eq!(arguments.unwrap(), vec!["a=b"]);
+}
+
+#[test]
 fn parse_arguments_multiple_values() {
     let chars = r#"  test  "test \"test\"" ${value} %{value}"#.chars().collect();
     let result = parse_arguments(&chars, 0);
@@ -390,4 +402,188 @@ fn find_label_label_with_control_error() {
     let result = find_label(&chars, 0);
 
     assert!(result.is_err());
+}
+
+#[test]
+fn find_label_post_value_index() {
+    let chars = r#"   :label     "#.chars().collect();
+    let result = find_label(&chars, chars.len() - 2);
+
+    assert!(result.is_ok());
+
+    let (index, value) = result.unwrap();
+
+    assert_eq!(index, chars.len());
+    assert!(value.is_none());
+}
+
+#[test]
+fn find_output_and_command_empty() {
+    let chars = "".chars().collect();
+    let mut instruction = ScriptInstruction::new();
+    let result = find_output_and_command(&chars, 0, &mut instruction);
+
+    assert!(result.is_ok());
+
+    let index = result.unwrap();
+
+    assert_eq!(index, chars.len());
+    assert!(instruction.output.is_none());
+    assert!(instruction.command.is_none());
+}
+
+#[test]
+fn find_output_and_command_only_spaces() {
+    let chars = "        ".chars().collect();
+    let mut instruction = ScriptInstruction::new();
+    let result = find_output_and_command(&chars, 0, &mut instruction);
+
+    assert!(result.is_ok());
+
+    let index = result.unwrap();
+
+    assert_eq!(index, chars.len());
+    assert!(instruction.output.is_none());
+    assert!(instruction.command.is_none());
+}
+
+#[test]
+fn find_output_and_command_single_value_between_spaces() {
+    let chars = "   command     ".chars().collect();
+    let mut instruction = ScriptInstruction::new();
+    let result = find_output_and_command(&chars, 0, &mut instruction);
+
+    assert!(result.is_ok());
+
+    let index = result.unwrap();
+
+    assert_eq!(index, 10);
+    assert!(instruction.output.is_none());
+    assert_eq!(instruction.command.unwrap(), "command");
+}
+
+#[test]
+fn find_output_and_command_single_value_with_comment_afterwards() {
+    let chars = "   command#comment".chars().collect();
+    let mut instruction = ScriptInstruction::new();
+    let result = find_output_and_command(&chars, 0, &mut instruction);
+
+    assert!(result.is_ok());
+
+    let index = result.unwrap();
+
+    assert_eq!(index, chars.len());
+    assert!(instruction.output.is_none());
+    assert_eq!(instruction.command.unwrap(), "command");
+}
+
+#[test]
+fn find_output_and_command_single_value_with_quote_error() {
+    let chars = r#"   "command"     "#.chars().collect();
+    let mut instruction = ScriptInstruction::new();
+    let result = find_output_and_command(&chars, 0, &mut instruction);
+
+    assert!(result.is_err());
+}
+
+#[test]
+fn find_output_and_command_single_value_with_control_error() {
+    let chars = r#"   c\\ommand     "#.chars().collect();
+    let mut instruction = ScriptInstruction::new();
+    let result = find_output_and_command(&chars, 0, &mut instruction);
+
+    assert!(result.is_err());
+}
+
+#[test]
+fn find_output_and_command_post_value_index() {
+    let chars = r#"   command     "#.chars().collect();
+    let mut instruction = ScriptInstruction::new();
+    let result = find_output_and_command(&chars, chars.len() - 2, &mut instruction);
+
+    assert!(result.is_ok());
+
+    let index = result.unwrap();
+
+    assert_eq!(index, chars.len());
+    assert!(instruction.output.is_none());
+    assert!(instruction.command.is_none());
+}
+
+#[test]
+fn find_output_and_command_single_value_with_equals_between_spaces() {
+    let chars = "   variable  =   ".chars().collect();
+    let mut instruction = ScriptInstruction::new();
+    let result = find_output_and_command(&chars, 0, &mut instruction);
+
+    assert!(result.is_ok());
+
+    let index = result.unwrap();
+
+    assert_eq!(index, 14);
+    assert_eq!(instruction.output.unwrap(), "variable");
+    assert!(instruction.command.is_none());
+}
+
+#[test]
+fn find_output_and_command_single_value_with_equals2_between_spaces() {
+    let chars = "   variable=   ".chars().collect();
+    let mut instruction = ScriptInstruction::new();
+    let result = find_output_and_command(&chars, 0, &mut instruction);
+
+    assert!(result.is_ok());
+
+    let index = result.unwrap();
+
+    assert_eq!(index, 12);
+    assert_eq!(instruction.output.unwrap(), "variable");
+    assert!(instruction.command.is_none());
+}
+
+#[test]
+fn find_output_and_command_single_value_with_equals_with_comment_afterwards() {
+    let chars = "   variable=#comment".chars().collect();
+    let mut instruction = ScriptInstruction::new();
+    let result = find_output_and_command(&chars, 0, &mut instruction);
+
+    assert!(result.is_ok());
+
+    let index = result.unwrap();
+
+    assert_eq!(index, 12);
+    assert_eq!(instruction.output.unwrap(), "variable");
+    assert!(instruction.command.is_none());
+}
+
+#[test]
+fn find_output_and_command_single_value_with_equals_with_quote_error() {
+    let chars = r#"   "variable"  =   "#.chars().collect();
+    let mut instruction = ScriptInstruction::new();
+    let result = find_output_and_command(&chars, 0, &mut instruction);
+
+    assert!(result.is_err());
+}
+
+#[test]
+fn find_output_and_command_single_value_with_equals_with_control_error() {
+    let chars = r#"   v\\ariable  =   "#.chars().collect();
+    let mut instruction = ScriptInstruction::new();
+    let result = find_output_and_command(&chars, 0, &mut instruction);
+
+    assert!(result.is_err());
+}
+
+#[test]
+fn find_output_and_command_post_value_index_with_equals() {
+    let chars = r#"   variable =    "#.chars().collect();
+    let mut instruction = ScriptInstruction::new();
+    let result = find_output_and_command(&chars, chars.len() - 2, &mut instruction);
+
+    assert!(result.is_ok());
+
+    let index = result.unwrap();
+
+    assert_eq!(index, chars.len());
+    assert!(instruction.output.is_none());
+    assert!(instruction.command.is_none());
 }
