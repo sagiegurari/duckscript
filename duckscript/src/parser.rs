@@ -7,19 +7,63 @@
 #[path = "./parser_test.rs"]
 mod parser_test;
 
+use crate::error::{ErrorInfo, ScriptError};
 use crate::instruction::{
     Instruction, InstructionMetaInfo, InstructionType, PreProcessInstruction, ScriptInstruction,
 };
-use crate::types::ScriptError;
+use crate::io;
+use crate::preprocessor;
 
 static COMMENT_PREFIX_STR: &str = "#";
 static PRE_PROCESS_PREFIX: char = '!';
 static LABEL_PREFIX: char = ':';
 
-pub fn parse_line(
-    line_text: &str,
+pub fn parse_file(file: &str) -> Result<Vec<Instruction>, ScriptError> {
+    let mut meta_info = InstructionMetaInfo::new();
+    meta_info.source = Some(file.to_string());
+
+    match io::read_text_file(file) {
+        Ok(text) => parse_lines(&text, meta_info),
+        Err(error) => Err(error),
+    }
+}
+
+pub fn parse_text(text: &str) -> Result<Vec<Instruction>, ScriptError> {
+    parse_lines(&text, InstructionMetaInfo::new())
+}
+
+fn parse_lines(
+    lines: &str,
     meta_info: InstructionMetaInfo,
-) -> Result<Instruction, ScriptError> {
+) -> Result<Vec<Instruction>, ScriptError> {
+    let mut instructions = vec![];
+
+    let mut line_number = 1;
+    for line in lines.lines() {
+        let mut line_meta_info = meta_info.clone();
+        line_meta_info.line = Some(line_number);
+        line_number = line_number + 1;
+
+        match parse_line(&line, line_meta_info) {
+            Ok(instruction) => {
+                instructions.push(instruction.clone());
+
+                match instruction.instruction_type {
+                    InstructionType::PreProcess(_) => match preprocessor::run(&instruction) {
+                        Ok(mut added_instructions) => instructions.append(&mut added_instructions),
+                        Err(error) => return Err(error),
+                    },
+                    _ => (),
+                }
+            }
+            Err(error) => return Err(error),
+        };
+    }
+
+    Ok(instructions)
+}
+
+fn parse_line(line_text: &str, meta_info: InstructionMetaInfo) -> Result<Instruction, ScriptError> {
     let trimmed_text = line_text.trim();
 
     if trimmed_text.is_empty() || trimmed_text.starts_with(&COMMENT_PREFIX_STR) {
@@ -44,7 +88,9 @@ fn parse_pre_process_line(
     start_index: usize,
 ) -> Result<Instruction, ScriptError> {
     if line_text.is_empty() {
-        Err(ScriptError::PreProcessNoCommandFound)
+        Err(ScriptError {
+            info: ErrorInfo::PreProcessNoCommandFound(meta_info),
+        })
     } else {
         let mut command = String::new();
         let mut index = start_index;
@@ -63,9 +109,11 @@ fn parse_pre_process_line(
         }
 
         if command.is_empty() {
-            Err(ScriptError::PreProcessNoCommandFound)
+            Err(ScriptError {
+                info: ErrorInfo::PreProcessNoCommandFound(meta_info),
+            })
         } else {
-            match parse_arguments(&line_text, index) {
+            match parse_arguments(&meta_info, &line_text, index) {
                 Ok(arguments) => {
                     let mut instruction = PreProcessInstruction::new();
                     instruction.command = Some(command);
@@ -98,7 +146,7 @@ fn parse_command_line(
         // search for label
         let mut index = start_index;
         let mut instruction = ScriptInstruction::new();
-        match find_label(&line_text, index) {
+        match find_label(&meta_info, &line_text, index) {
             Ok(output) => {
                 let (next_index, value) = output;
                 index = next_index;
@@ -111,12 +159,12 @@ fn parse_command_line(
         };
 
         // find output variable and command
-        index = match find_output_and_command(&line_text, index, &mut instruction) {
+        index = match find_output_and_command(&meta_info, &line_text, index, &mut instruction) {
             Ok(next_index) => next_index,
             Err(error) => return Err(error),
         };
 
-        match parse_arguments(&line_text, index) {
+        match parse_arguments(&meta_info, &line_text, index) {
             Ok(arguments) => {
                 instruction.arguments = arguments;
 
@@ -140,6 +188,7 @@ fn parse_command_line(
 }
 
 fn parse_arguments(
+    meta_info: &InstructionMetaInfo,
     line_text: &Vec<char>,
     start_index: usize,
 ) -> Result<Option<Vec<String>>, ScriptError> {
@@ -147,7 +196,7 @@ fn parse_arguments(
 
     let mut index = start_index;
     loop {
-        match parse_next_argument(&line_text, index) {
+        match parse_next_argument(&meta_info, &line_text, index) {
             Ok(output) => {
                 let (next_index, argument) = output;
 
@@ -170,13 +219,15 @@ fn parse_arguments(
 }
 
 fn parse_next_argument(
+    meta_info: &InstructionMetaInfo,
     line_text: &Vec<char>,
     start_index: usize,
 ) -> Result<(usize, Option<String>), ScriptError> {
-    parse_next_value(&line_text, start_index, true, true, false)
+    parse_next_value(&meta_info, &line_text, start_index, true, true, false)
 }
 
 fn parse_next_value(
+    meta_info: &InstructionMetaInfo,
     line_text: &Vec<char>,
     start_index: usize,
     allow_quotes: bool,
@@ -204,13 +255,17 @@ fn parse_next_value(
                         argument.push(character);
                         in_control = false;
                     } else {
-                        return Err(ScriptError::ControlWithoutValidValue);
+                        return Err(ScriptError {
+                            info: ErrorInfo::ControlWithoutValidValue(meta_info.clone()),
+                        });
                     }
                 } else if character == '\\' {
                     if allow_control {
                         in_control = true;
                     } else {
-                        return Err(ScriptError::InvalidControlLocation);
+                        return Err(ScriptError {
+                            info: ErrorInfo::InvalidControlLocation(meta_info.clone()),
+                        });
                     }
                 } else if using_quotes && character == '"' {
                     found_end = true;
@@ -240,13 +295,17 @@ fn parse_next_value(
                     if allow_quotes {
                         using_quotes = true;
                     } else {
-                        return Err(ScriptError::InvalidQuotesLocation);
+                        return Err(ScriptError {
+                            info: ErrorInfo::InvalidQuotesLocation(meta_info.clone()),
+                        });
                     }
                 } else if character == '\\' {
                     if allow_control {
                         in_control = true;
                     } else {
-                        return Err(ScriptError::InvalidControlLocation);
+                        return Err(ScriptError {
+                            info: ErrorInfo::InvalidControlLocation(meta_info.clone()),
+                        });
                     }
                 } else {
                     argument.push(character);
@@ -256,9 +315,13 @@ fn parse_next_value(
 
         if in_argument && !found_end && (in_control || using_quotes) {
             if in_control {
-                Err(ScriptError::ControlWithoutValidValue)
+                Err(ScriptError {
+                    info: ErrorInfo::ControlWithoutValidValue(meta_info.clone()),
+                })
             } else {
-                Err(ScriptError::MissingEndQuotes)
+                Err(ScriptError {
+                    info: ErrorInfo::MissingEndQuotes(meta_info.clone()),
+                })
             }
         } else if argument.is_empty() {
             if using_quotes {
@@ -273,6 +336,7 @@ fn parse_next_value(
 }
 
 fn find_label(
+    meta_info: &InstructionMetaInfo,
     line_text: &Vec<char>,
     start_index: usize,
 ) -> Result<(usize, Option<String>), ScriptError> {
@@ -288,7 +352,7 @@ fn find_label(
             index = index + 1;
 
             if character == LABEL_PREFIX {
-                match parse_next_value(&line_text, index, false, false, false) {
+                match parse_next_value(&meta_info, &line_text, index, false, false, false) {
                     Ok(output) => {
                         let (next_index, value) = output;
                         index = next_index;
@@ -296,7 +360,9 @@ fn find_label(
                         match value {
                             Some(label_value) => {
                                 if label_value.is_empty() {
-                                    return Err(ScriptError::EmptyLabel);
+                                    return Err(ScriptError {
+                                        info: ErrorInfo::EmptyLabel(meta_info.clone()),
+                                    });
                                 }
 
                                 let mut text = String::new();
@@ -323,11 +389,12 @@ fn find_label(
 }
 
 fn find_output_and_command(
+    meta_info: &InstructionMetaInfo,
     line_text: &Vec<char>,
     start_index: usize,
     instruction: &mut ScriptInstruction,
 ) -> Result<usize, ScriptError> {
-    match parse_next_value(&line_text, start_index, false, false, true) {
+    match parse_next_value(&meta_info, &line_text, start_index, false, false, true) {
         Ok(output) => {
             let (next_index, value) = output;
 
@@ -350,7 +417,7 @@ fn find_output_and_command(
                 }
 
                 if instruction.output.is_some() {
-                    match parse_next_value(&line_text, index, false, false, false) {
+                    match parse_next_value(&meta_info, &line_text, index, false, false, false) {
                         Ok(output) => {
                             let (next_index, value) = output;
 

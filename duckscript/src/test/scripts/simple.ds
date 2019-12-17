@@ -1,0 +1,7 @@
+
+!print test pre process line
+
+:label_test variable_test = command_test arg1 arg2 "  arg3 arg3 arg3  " #some comment
+
+#comment
+!print test
