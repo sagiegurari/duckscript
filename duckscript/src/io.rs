@@ -23,7 +23,7 @@ pub(crate) fn read_text_file(file: &str) -> Result<String, ScriptError> {
             Ok(content)
         }
         Err(error) => Err(ScriptError {
-            info: ErrorInfo::ErrorReadingFile(file.to_string(), error),
+            info: ErrorInfo::ErrorReadingFile(file.to_string(), Some(error)),
         }),
     }
 }

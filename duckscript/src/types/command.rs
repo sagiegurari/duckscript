@@ -8,7 +8,7 @@
 mod command_test;
 
 use crate::types::error::{ErrorInfo, ScriptError};
-use crate::types::instruction::{InstructionMetaInfo, ScriptInstruction};
+use crate::types::instruction::InstructionMetaInfo;
 use crate::types::runtime::Context;
 use std::cell::RefCell;
 use std::collections::HashMap;

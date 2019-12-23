@@ -7,37 +7,64 @@
 #[path = "./runner_test.rs"]
 mod runner_test;
 
+use crate::expansion;
 use crate::parser;
 use crate::types::command::CommandResult;
 use crate::types::error::{ErrorInfo, ScriptError};
-use crate::types::instruction::{Instruction, InstructionType, ScriptInstruction};
+use crate::types::instruction::{
+    Instruction, InstructionMetaInfo, InstructionType, ScriptInstruction,
+};
 use crate::types::runtime::{Context, Runtime};
 use std::cell::RefCell;
-use std::collections::HashMap;
 use std::rc::Rc;
 
-pub fn run_script(text: &str, context: Context) -> Result<(), ScriptError> {
+pub fn run_script(text: &str, context: Context) -> Result<Context, ScriptError> {
     match parser::parse_text(text) {
         Ok(instructions) => run(instructions, context),
         Err(error) => Err(error),
     }
 }
 
-pub fn run_script_file(file: &str, context: Context) -> Result<(), ScriptError> {
+pub fn run_script_file(file: &str, context: Context) -> Result<Context, ScriptError> {
     match parser::parse_file(file) {
         Ok(instructions) => run(instructions, context),
         Err(error) => Err(error),
     }
 }
 
-fn run(instructions: Vec<Instruction>, context: Context) -> Result<(), ScriptError> {
-    let mut runtime = Runtime::new(context);
-    runtime.instructions = Some(instructions);
+fn run(instructions: Vec<Instruction>, context: Context) -> Result<Context, ScriptError> {
+    let runtime = create_runtime(instructions, context);
 
     run_instructions(runtime, 0)
 }
 
-fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<(), ScriptError> {
+fn create_runtime(instructions: Vec<Instruction>, context: Context) -> Runtime {
+    let mut runtime = Runtime::new(context);
+
+    let mut line = 0;
+    for instruction in &instructions {
+        match &instruction.instruction_type {
+            InstructionType::Script(ref value) => {
+                match value.label {
+                    Some(ref label) => {
+                        runtime.label_to_line.insert(label.to_string(), line);
+                        ()
+                    }
+                    None => (),
+                };
+            }
+            _ => (),
+        };
+
+        line = line + 1;
+    }
+
+    runtime.instructions = Some(instructions);
+
+    runtime
+}
+
+fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, ScriptError> {
     let mut line = start_at;
 
     loop {
@@ -79,13 +106,25 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<(), ScriptE
             CommandResult::GoTo(output, label) => {
                 update_output(&mut runtime, output_variable, output);
 
-                line = line + 1; //TODO USE LABEL
-                ()
+                match runtime.label_to_line.get(&label) {
+                    Some(value) => line = *value,
+                    None => {
+                        let mut meta_info = InstructionMetaInfo::new();
+                        meta_info.line = Some(line);
+
+                        return Err(ScriptError {
+                            info: ErrorInfo::Runtime(
+                                format!("Label: {} not found.", label),
+                                meta_info,
+                            ),
+                        });
+                    }
+                };
             }
         };
     }
 
-    Ok(())
+    Ok(runtime.context)
 }
 
 fn update_output(runtime: &mut Runtime, output_variable: Option<String>, output: Option<String>) {
@@ -118,7 +157,6 @@ fn run_instruction(
                     Some(ref command) => {
                         let mut command_instance_box = None;
                         {
-                            println!("command: {}", &command); //todo rmove
                             let context = rc_context.clone();
                             match context.borrow().commands.get(command) {
                                 Some(command_box) => {
@@ -151,7 +189,6 @@ fn run_instruction(
         },
         None => CommandResult::Continue(None),
     };
-    println!("command_result... {:?}", &command_result); //todo rmove
 
     Ok((command_result, output_variable))
 }
@@ -167,7 +204,7 @@ fn bind_command_arguments(
     match instruction.arguments {
         Some(ref arguments_ref) => {
             for argument in arguments_ref {
-                let value = expand_by_wrapper(&argument, "${", '}', variables);
+                let value = expansion::expand_by_wrapper(&argument, "${", '}', variables);
                 arguments.push(value);
             }
         }
@@ -175,67 +212,4 @@ fn bind_command_arguments(
     };
 
     arguments
-}
-
-fn should_break_key(value: char) -> bool {
-    value == ' ' || value == '\n' || value == '\t' || value == '\r' || value == '='
-}
-
-fn expand_by_wrapper(
-    value: &str,
-    prefix: &str,
-    suffix: char,
-    variables: &HashMap<String, String>,
-) -> String {
-    let mut value_string = String::new();
-
-    let prefix_length = prefix.len();
-    let mut prefix_index = 0;
-    let prefix_chars: Vec<char> = prefix.chars().collect();
-
-    let mut found_prefix = false;
-    let mut key = String::new();
-    for next_char in value.chars() {
-        if !found_prefix {
-            if next_char == prefix_chars[prefix_index] {
-                prefix_index = prefix_index + 1;
-
-                if prefix_index == prefix_length {
-                    found_prefix = true;
-                    prefix_index = 0;
-                    key.clear();
-                }
-            } else {
-                if prefix_index > 0 {
-                    value_string.push_str(&prefix[..prefix_index]);
-                    prefix_index = 0;
-                }
-                value_string.push(next_char);
-            }
-        } else if next_char == suffix {
-            match variables.get(&key) {
-                Some(variable_value) => value_string.push_str(&variable_value),
-                _ => (),
-            };
-
-            key.clear();
-            found_prefix = false;
-        } else if should_break_key(next_char) {
-            value_string.push_str(&prefix);
-            value_string.push_str(&key);
-            value_string.push(next_char);
-
-            key.clear();
-            found_prefix = false;
-        } else {
-            key.push(next_char);
-        }
-    }
-
-    if key.len() > 0 {
-        value_string.push_str(&prefix);
-        value_string.push_str(&key);
-    }
-
-    value_string
 }

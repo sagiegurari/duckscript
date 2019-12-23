@@ -36,6 +36,8 @@ impl Context {
 pub struct Runtime {
     /// The script instructions
     pub instructions: Option<Vec<Instruction>>,
+    /// Label to line number mapping
+    pub label_to_line: HashMap<String, usize>,
     /// The runtime context
     pub context: Context,
 }
@@ -45,6 +47,7 @@ impl Runtime {
     pub fn new(context: Context) -> Runtime {
         Runtime {
             instructions: None,
+            label_to_line: HashMap::new(),
             context,
         }
     }

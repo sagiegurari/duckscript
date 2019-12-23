@@ -1,7 +1,16 @@
+//! # error
+//!
+//! The error structure and types.
+//!
+
 use crate::types::instruction::InstructionMetaInfo;
 use std::fmt;
 use std::fmt::Display;
 use std::io;
+
+#[cfg(test)]
+#[path = "./error_test.rs"]
+mod error_test;
 
 fn format_error_message(
     formatter: &mut fmt::Formatter,
@@ -23,7 +32,7 @@ fn format_error_message(
 #[derive(Debug)]
 /// Holds the error information
 pub enum ErrorInfo {
-    ErrorReadingFile(String, io::Error),
+    ErrorReadingFile(String, Option<io::Error>),
     Initialization(String),
     Runtime(String, InstructionMetaInfo),
     PreProcessNoCommandFound(InstructionMetaInfo),
@@ -50,7 +59,10 @@ impl Display for ScriptError {
         match self.info {
             ErrorInfo::ErrorReadingFile(ref file, ref cause) => {
                 writeln!(formatter, "Error reading file: {}", file)?;
-                cause.fmt(formatter)
+                match cause {
+                    Some(cause_err) => cause_err.fmt(formatter),
+                    None => Ok(()),
+                }
             }
             ErrorInfo::Initialization(ref message) => write!(formatter, "{}", message),
             ErrorInfo::Runtime(ref message, ref meta_info) => {

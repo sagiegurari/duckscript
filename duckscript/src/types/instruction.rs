@@ -85,7 +85,7 @@ pub enum InstructionType {
 #[derive(Debug, Clone)]
 pub struct InstructionMetaInfo {
     /// The line number
-    pub line: Option<u32>,
+    pub line: Option<usize>,
     /// The source file/url/...
     pub source: Option<String>,
 }
