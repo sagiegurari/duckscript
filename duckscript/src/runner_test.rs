@@ -1,6 +1,6 @@
 use super::*;
 
-use crate::test::{ErrorCommand, ExitCommand, SetCommand};
+use crate::test::{ErrorCommand, ExitCommand, SetCommand,GoToCommand};
 use crate::types::instruction::{InstructionMetaInfo, PreProcessInstruction};
 
 #[test]
@@ -334,5 +334,97 @@ fn run_instructions_continue_result_with_output() {
 
     context = context_result.unwrap();
     assert_eq!(context.variables.get("out1"), Some(&"value1".to_string()));
+    assert_eq!(context.variables.get("out2"), Some(&"value2".to_string()));
+}
+
+#[test]
+fn run_instructions_goto_result_no_output() {
+    let mut instructions = vec![];
+
+    let mut script_instruction = ScriptInstruction::new();
+    script_instruction.command = Some("goto".to_string());
+    script_instruction.arguments = Some(vec!["my_label".to_string()]);
+    instructions.push(Instruction {
+        meta_info: InstructionMetaInfo::new(),
+        instruction_type: InstructionType::Script(script_instruction),
+    });
+    script_instruction = ScriptInstruction::new();
+    script_instruction.command = Some("exit".to_string());
+    instructions.push(Instruction {
+        meta_info: InstructionMetaInfo::new(),
+        instruction_type: InstructionType::Script(script_instruction),
+    });
+    script_instruction = ScriptInstruction::new();
+    script_instruction.command = Some("set".to_string());
+    script_instruction.label = Some("my_label".to_string());
+    script_instruction.output = Some("out2".to_string());
+    script_instruction.arguments = Some(vec!["value2".to_string()]);
+    instructions.push(Instruction {
+        meta_info: InstructionMetaInfo::new(),
+        instruction_type: InstructionType::Script(script_instruction),
+    });
+
+    let mut context = Context::new();
+    let mut result = context.commands.set(Box::new(SetCommand {}));
+    assert!(result.is_ok());
+     result = context.commands.set(Box::new(ExitCommand {}));
+    assert!(result.is_ok());
+     result = context.commands.set(Box::new(GoToCommand {}));
+    assert!(result.is_ok());
+
+    let runtime = create_runtime(instructions, context);
+
+    let context_result = run_instructions(runtime, 0);
+
+    assert!(context_result.is_ok());
+
+    context = context_result.unwrap();
+    assert_eq!(context.variables.get("out2"), Some(&"value2".to_string()));
+}
+
+#[test]
+fn run_instructions_goto_result_with_output() {
+    let mut instructions = vec![];
+
+    let mut script_instruction = ScriptInstruction::new();
+    script_instruction.command = Some("goto".to_string());
+    script_instruction.output = Some("out1".to_string());
+    script_instruction.arguments = Some(vec!["my_label".to_string()]);
+    instructions.push(Instruction {
+        meta_info: InstructionMetaInfo::new(),
+        instruction_type: InstructionType::Script(script_instruction),
+    });
+    script_instruction = ScriptInstruction::new();
+    script_instruction.command = Some("exit".to_string());
+    instructions.push(Instruction {
+        meta_info: InstructionMetaInfo::new(),
+        instruction_type: InstructionType::Script(script_instruction),
+    });
+    script_instruction = ScriptInstruction::new();
+    script_instruction.command = Some("set".to_string());
+    script_instruction.label = Some("my_label".to_string());
+    script_instruction.output = Some("out2".to_string());
+    script_instruction.arguments = Some(vec!["value2".to_string()]);
+    instructions.push(Instruction {
+        meta_info: InstructionMetaInfo::new(),
+        instruction_type: InstructionType::Script(script_instruction),
+    });
+
+    let mut context = Context::new();
+    let mut result = context.commands.set(Box::new(SetCommand {}));
+    assert!(result.is_ok());
+     result = context.commands.set(Box::new(ExitCommand {}));
+    assert!(result.is_ok());
+     result = context.commands.set(Box::new(GoToCommand {}));
+    assert!(result.is_ok());
+
+    let runtime = create_runtime(instructions, context);
+
+    let context_result = run_instructions(runtime, 0);
+
+    assert!(context_result.is_ok());
+
+    context = context_result.unwrap();
+    assert_eq!(context.variables.get("out1"), Some(&"my_label".to_string()));
     assert_eq!(context.variables.get("out2"), Some(&"value2".to_string()));
 }

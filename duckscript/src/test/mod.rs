@@ -82,6 +82,33 @@ impl Command for ErrorCommand {
     }
 }
 
+pub struct GoToCommand {}
+
+impl Command for GoToCommand {
+    fn name(&self) -> String {
+        "goto".to_string()
+    }
+
+    fn aliases(&self) -> Vec<String> {
+        vec![]
+    }
+
+    fn run(
+        &self,
+        _context: Rc<RefCell<&Context>>,
+        arguments: Vec<String>,
+        _meta_info: &InstructionMetaInfo,
+    ) -> CommandResult {
+        let output = if arguments.is_empty() {
+            None
+        } else {
+            Some(arguments[0].clone())
+        };
+
+        CommandResult::GoTo(output.clone(), output.clone())
+    }
+}
+
 pub struct TestCommand1 {}
 
 impl Command for TestCommand1 {
