@@ -11,8 +11,8 @@ mod mod_test;
 mod include_files_preprocessor;
 mod print_preprocessor;
 
-use crate::error::{ErrorInfo, ScriptError};
-use crate::instruction::{Instruction, InstructionType};
+use crate::types::error::{ErrorInfo, ScriptError};
+use crate::types::instruction::{Instruction, InstructionType};
 
 pub(crate) fn run(instruction: &Instruction) -> Result<Vec<Instruction>, ScriptError> {
     match instruction.instruction_type {

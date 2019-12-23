@@ -22,6 +22,14 @@ include = [
     "/README.md"
 ]
 
+[[bin]]
+name = "duckscript"
+path = "src/main.rs"
+
+[dependencies]
+duckscript = { path = "../duckscript" }
+duckscriptsdk = { path = "../duckscript_sdk" }
+
 [badges.travis-ci]
 branch = "master"
 repository = "sagiegurari/duckscript"

@@ -1,5 +1,5 @@
 use super::*;
-use crate::instruction::{InstructionMetaInfo, PreProcessInstruction};
+use crate::types::instruction::{InstructionMetaInfo, PreProcessInstruction};
 
 #[test]
 fn run_not_preprocessor_instruction() {

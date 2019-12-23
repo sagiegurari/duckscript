@@ -1,5 +1,5 @@
 [package]
-name = "duckscript_sdk"
+name = "duckscriptsdk"
 version = "0.1.0"
 authors = ["Sagie Gur-Ari <sagiegurari@gmail.com>"]
 description = "The duckscript SDK."
@@ -21,6 +21,9 @@ include = [
     "/LICENSE",
     "/README.md"
 ]
+
+[dependencies]
+duckscript = { path = "../duckscript" }
 
 [badges.travis-ci]
 branch = "master"

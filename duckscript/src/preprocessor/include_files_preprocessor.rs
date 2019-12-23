@@ -3,9 +3,9 @@
 //! Enables to load and include additional source files.
 //!
 
-use crate::error::ScriptError;
-use crate::instruction::{Instruction, InstructionMetaInfo};
 use crate::parser;
+use crate::types::error::ScriptError;
+use crate::types::instruction::{Instruction, InstructionMetaInfo};
 use std::path::PathBuf;
 
 pub(crate) fn run(

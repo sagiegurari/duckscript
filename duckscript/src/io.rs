@@ -7,7 +7,7 @@
 #[path = "./io_test.rs"]
 mod io_test;
 
-use crate::error::{ErrorInfo, ScriptError};
+use crate::types::error::{ErrorInfo, ScriptError};
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
@@ -23,7 +23,7 @@ pub(crate) fn read_text_file(file: &str) -> Result<String, ScriptError> {
             Ok(content)
         }
         Err(error) => Err(ScriptError {
-            info: ErrorInfo::ErrorReadingFile(error),
+            info: ErrorInfo::ErrorReadingFile(file.to_string(), error),
         }),
     }
 }

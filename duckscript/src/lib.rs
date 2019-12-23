@@ -1,11 +1,8 @@
-pub mod command;
-pub mod context;
-pub mod error;
-pub mod instruction;
 mod io;
-mod parser;
+pub mod parser;
 mod preprocessor;
 pub mod runner;
+pub mod types;
 
 #[cfg(test)]
 mod test;

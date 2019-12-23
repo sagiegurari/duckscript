@@ -7,12 +7,12 @@
 #[path = "./parser_test.rs"]
 mod parser_test;
 
-use crate::error::{ErrorInfo, ScriptError};
-use crate::instruction::{
-    Instruction, InstructionMetaInfo, InstructionType, PreProcessInstruction, ScriptInstruction,
-};
 use crate::io;
 use crate::preprocessor;
+use crate::types::error::{ErrorInfo, ScriptError};
+use crate::types::instruction::{
+    Instruction, InstructionMetaInfo, InstructionType, PreProcessInstruction, ScriptInstruction,
+};
 
 static COMMENT_PREFIX_STR: &str = "#";
 static PRE_PROCESS_PREFIX: char = '!';

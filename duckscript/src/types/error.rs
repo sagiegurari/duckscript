@@ -1,4 +1,4 @@
-use crate::instruction::InstructionMetaInfo;
+use crate::types::instruction::InstructionMetaInfo;
 use std::fmt;
 use std::fmt::Display;
 use std::io;
@@ -23,6 +23,9 @@ fn format_error_message(
 #[derive(Debug)]
 /// Holds the error information
 pub enum ErrorInfo {
+    ErrorReadingFile(String, io::Error),
+    Initialization(String),
+    Runtime(String, InstructionMetaInfo),
     PreProcessNoCommandFound(InstructionMetaInfo),
     ControlWithoutValidValue(InstructionMetaInfo),
     InvalidControlLocation(InstructionMetaInfo),
@@ -32,7 +35,6 @@ pub enum ErrorInfo {
     InvalidQuotesLocation(InstructionMetaInfo),
     EmptyLabel(InstructionMetaInfo),
     UnknownPreProcessorCommand(InstructionMetaInfo),
-    ErrorReadingFile(io::Error),
 }
 
 #[derive(Debug)]
@@ -46,7 +48,14 @@ impl Display for ScriptError {
     /// Formats the script error using the given formatter.
     fn fmt(&self, formatter: &mut fmt::Formatter) -> Result<(), fmt::Error> {
         match self.info {
-            ErrorInfo::ErrorReadingFile(ref cause) => cause.fmt(formatter),
+            ErrorInfo::ErrorReadingFile(ref file, ref cause) => {
+                writeln!(formatter, "Error reading file: {}", file)?;
+                cause.fmt(formatter)
+            }
+            ErrorInfo::Initialization(ref message) => write!(formatter, "{}", message),
+            ErrorInfo::Runtime(ref message, ref meta_info) => {
+                format_error_message(formatter, &meta_info, message)
+            }
             ErrorInfo::PreProcessNoCommandFound(ref meta_info) => {
                 format_error_message(formatter, &meta_info, "preprocessor is missing a command")
             }
