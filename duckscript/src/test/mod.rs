@@ -7,6 +7,33 @@ use crate::types::runtime::Context;
 use std::cell::RefCell;
 use std::rc::Rc;
 
+pub struct SetCommand {}
+
+impl Command for SetCommand {
+    fn name(&self) -> String {
+        "set".to_string()
+    }
+
+    fn aliases(&self) -> Vec<String> {
+        vec![]
+    }
+
+    fn run(
+        &self,
+        _context: Rc<RefCell<&Context>>,
+        arguments: Vec<String>,
+        _meta_info: &InstructionMetaInfo,
+    ) -> CommandResult {
+        let output = if arguments.is_empty() {
+            None
+        } else {
+            Some(arguments[0].clone())
+        };
+
+        CommandResult::Continue(output)
+    }
+}
+
 pub struct ExitCommand {}
 
 impl Command for ExitCommand {
