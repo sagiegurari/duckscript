@@ -8,14 +8,17 @@ fn common_functions() {
 
 #[test]
 fn run_no_file_provided() {
-    let command = create("");
+    let command = create("internal");
     test::run_command_and_fail_with_default_context(command, "internal::sdkdocs");
 }
 
 #[test]
 fn run_valid() {
-    let command = create("");
-    let context = test::run_command_valid_with_default_context(command, "out = internal2::sdkdocs ./target/temp.md");
+    let command = create("internal");
+    let context = test::run_command_valid_with_default_context(
+        command,
+        "out = internal::sdkdocs ./target/temp.md",
+    );
 
     assert_eq!(context.variables.get("out").unwrap(), "./target/temp.md");
 }

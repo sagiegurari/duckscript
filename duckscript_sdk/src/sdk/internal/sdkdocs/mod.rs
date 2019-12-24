@@ -5,6 +5,10 @@ use duckscript::types::runtime::Context;
 use std::cell::RefCell;
 use std::rc::Rc;
 
+#[cfg(test)]
+#[path = "./mod_test.rs"]
+mod mod_test;
+
 struct CommandImpl {
     package: String,
 }
