@@ -33,7 +33,9 @@ pub trait Command {
     fn name(&self) -> String;
 
     /// A list of aliases that can also be used to invoke this command
-    fn aliases(&self) -> Vec<String>;
+    fn aliases(&self) -> Vec<String> {
+        vec![]
+    }
 
     /// Command documentation
     fn help(&self) -> String {

@@ -10,11 +10,11 @@ struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        format!("{}::Echo", &self.package).to_string()
+        format!("{}::sdkdocs", &self.package).to_string()
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["echo".to_string()]
+        vec![]
     }
 
     fn help(&self) -> String {
@@ -23,17 +23,20 @@ impl Command for CommandImpl {
 
     fn run(
         &self,
-        _context: Rc<RefCell<&Context>>,
+        context: Rc<RefCell<&Context>>,
         arguments: Vec<String>,
-        _meta_info: &InstructionMetaInfo,
+        meta_info: &InstructionMetaInfo,
     ) -> CommandResult {
-        for argument in &arguments {
-            print!("{} ", argument);
+        if arguments.is_empty() {
+            CommandResult::Error(
+                "Documentation output directory not provided.".to_string(),
+                meta_info.clone(),
+            )
+        } else {
+            let directory = arguments[0].clone();
+
+            CommandResult::Continue(Some(directory))
         }
-
-        println!("");
-
-        CommandResult::Continue(None)
     }
 }
 

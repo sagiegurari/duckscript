@@ -2,8 +2,50 @@ use super::*;
 use crate::test::{TestCommand1, TestCommand2, TestCommand3, TestCommand4};
 
 #[test]
+fn command_default_aliases() {
+    struct InnerCommand {}
+
+    impl Command for InnerCommand {
+        fn name(&self) -> String {
+            "".to_string()
+        }
+
+        fn run(
+            &self,
+            _context: Rc<RefCell<&Context>>,
+            _arguments: Vec<String>,
+            _meta_info: &InstructionMetaInfo,
+        ) -> CommandResult {
+            CommandResult::Continue(None)
+        }
+    }
+
+    let command = InnerCommand {};
+    let help = command.help();
+
+    assert!(!help.is_empty());
+}
+
+#[test]
 fn command_default_help() {
-    let command = TestCommand1 {};
+    struct InnerCommand {}
+
+    impl Command for InnerCommand {
+        fn name(&self) -> String {
+            "".to_string()
+        }
+
+        fn run(
+            &self,
+            _context: Rc<RefCell<&Context>>,
+            _arguments: Vec<String>,
+            _meta_info: &InstructionMetaInfo,
+        ) -> CommandResult {
+            CommandResult::Continue(None)
+        }
+    }
+
+    let command = InnerCommand {};
     let help = command.help();
 
     assert!(!help.is_empty());

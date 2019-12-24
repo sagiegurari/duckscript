@@ -4,11 +4,13 @@ use duckscript::types::runtime::Context;
 use std::cell::RefCell;
 use std::rc::Rc;
 
-struct CommandImpl {}
+struct CommandImpl {
+    package: String,
+}
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        "std::Set".to_string()
+        format!("{}::Set", &self.package).to_string()
     }
 
     fn aliases(&self) -> Vec<String> {
@@ -16,7 +18,7 @@ impl Command for CommandImpl {
     }
 
     fn help(&self) -> String {
-        format!("No documentation found for command: {}", self.name())
+        include_str!("help.md").to_string()
     }
 
     fn run(
@@ -35,6 +37,8 @@ impl Command for CommandImpl {
     }
 }
 
-pub(crate) fn create() -> Box<dyn Command> {
-    Box::new(CommandImpl {})
+pub(crate) fn create(package: &str) -> Box<dyn Command> {
+    Box::new(CommandImpl {
+        package: package.to_string(),
+    })
 }
