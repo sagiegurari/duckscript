@@ -112,4 +112,17 @@ impl Commands {
             None => None,
         }
     }
+
+    /// Returns all the command names currently registered
+    pub fn get_all_command_names(&self) -> Vec<String> {
+        let mut names = vec![];
+
+        for key in self.commands.keys() {
+            names.push(key.to_string());
+        }
+
+        names.sort();
+
+        names
+    }
 }

@@ -1,0 +1,1 @@
+doc_file = internal::sdkdocs ./docs/sdk.md

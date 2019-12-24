@@ -113,3 +113,24 @@ fn commands_set_get_not_found() {
 
     assert!(commands.get("test3").is_none());
 }
+
+#[test]
+fn commands_set_get_all_command_names_empty() {
+    let commands = Commands::new();
+
+    let names = commands.get_all_command_names();
+
+    assert!(names.is_empty());
+}
+
+#[test]
+fn commands_set_get_all_command_names_exists() {
+    let mut commands = Commands::new();
+
+    commands.set(Box::new(TestCommand1 {})).unwrap();
+    commands.set(Box::new(TestCommand2 {})).unwrap();
+
+    let names = commands.get_all_command_names();
+
+    assert_eq!(names, vec!["test1", "test2"]);
+}
