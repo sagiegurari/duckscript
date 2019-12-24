@@ -3,6 +3,7 @@
 * [sdk::Echo](#sdk__Echo)
 * [sdk::Set](#sdk__Set)
 * [sdk::fs::Cat](#sdk__fs__Cat)
+* [sdk::fs::Read](#sdk__fs__Read)
 
 
 <a name="internal__sdkdocs"></a>
@@ -127,6 +128,33 @@ cat ./docs/sdk.md
 
 #### Aliases:
 cat
+
+<a name="sdk__fs__Read"></a>
+## sdk::fs::Read
+```sh
+var = readfile file
+```
+
+The readfile command will read the requested file and return the value to the output variable.
+
+#### Parameters
+
+A single parameter holding the file path.
+
+
+#### Return Value
+
+The file content.
+
+#### Examples
+
+```sh
+text = readfile ./Cargo.toml
+```
+
+
+#### Aliases:
+readfile
 
 ### License
 Developed by Sagie Gur-Ari and licensed under the
