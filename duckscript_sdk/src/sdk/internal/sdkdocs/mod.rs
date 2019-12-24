@@ -38,10 +38,10 @@ impl Command for CommandImpl {
             let names = cntxt.commands.get_all_command_names();
             let mut buffer = String::new();
 
-            // create toc
+            // create ToC
             buffer.push_str("# Table of Contents\n");
             for name in &names {
-                buffer.push_str(&format!("* [{}](#{})\n", name, name));
+                buffer.push_str(&format!("* [{}](#{})\n", name, name.replace(":", "_")));
             }
 
             // create doc per command
@@ -80,7 +80,7 @@ impl Command for CommandImpl {
                 let help = command.help();
                 buffer.push_str(&format!(
                     "\n<a name=\"{}\"></a>\n## {}\n{}{}\n",
-                    name, name, help, aliases_docs
+                    name.replace(":", "_"), name, help, aliases_docs
                 ));
             }
 
