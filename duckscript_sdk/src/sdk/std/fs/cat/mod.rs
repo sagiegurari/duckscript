@@ -1,3 +1,4 @@
+use crate::utils::io;
 use duckscript::types::command::{Command, CommandResult};
 use duckscript::types::instruction::InstructionMetaInfo;
 use duckscript::types::runtime::Context;
@@ -14,11 +15,11 @@ struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        format!("{}::Echo", &self.package).to_string()
+        format!("{}::Cat", &self.package).to_string()
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["echo".to_string()]
+        vec!["cat".to_string()]
     }
 
     fn help(&self) -> String {
@@ -29,15 +30,22 @@ impl Command for CommandImpl {
         &self,
         _context: Rc<RefCell<&Context>>,
         arguments: Vec<String>,
-        _meta_info: &InstructionMetaInfo,
+        meta_info: &InstructionMetaInfo,
     ) -> CommandResult {
-        for argument in &arguments {
-            print!("{} ", argument);
+        if arguments.is_empty() {
+            CommandResult::Error("File name not provided.".to_string(), meta_info.clone())
+        } else {
+            let result = io::read_text_file(&arguments[0]);
+
+            match result {
+                Ok(text) => {
+                    println!("{}", &text);
+
+                    CommandResult::Continue(Some(text))
+                }
+                Err(error) => CommandResult::Error(error.to_string(), meta_info.clone()),
+            }
         }
-
-        println!("");
-
-        CommandResult::Continue(Some(arguments.len().to_string()))
     }
 }
 

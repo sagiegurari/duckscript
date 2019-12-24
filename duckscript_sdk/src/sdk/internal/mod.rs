@@ -1,4 +1,4 @@
-pub mod sdkdocs;
+mod sdkdocs;
 
 use duckscript::types::command::Commands;
 use duckscript::types::error::ScriptError;

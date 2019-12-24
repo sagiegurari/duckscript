@@ -1,8 +1,24 @@
 use duckscript::types::error::{ErrorInfo, ScriptError};
 use duckscript::types::instruction::InstructionMetaInfo;
 use std::fs::{create_dir_all, File};
-use std::io::Write;
+use std::io::{Read, Write};
 use std::path::Path;
+
+pub(crate) fn read_text_file(file: &str) -> Result<String, ScriptError> {
+    let file_path = Path::new(file);
+
+    match File::open(&file_path) {
+        Ok(mut fd) => {
+            let mut content = String::new();
+            fd.read_to_string(&mut content).unwrap();
+
+            Ok(content)
+        }
+        Err(error) => Err(ScriptError {
+            info: ErrorInfo::ErrorReadingFile(file.to_string(), Some(error)),
+        }),
+    }
+}
 
 pub(crate) fn write_text_file(
     file: &str,

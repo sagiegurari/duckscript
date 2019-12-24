@@ -2,6 +2,7 @@
 * [internal::sdkdocs](#internal__sdkdocs)
 * [sdk::Echo](#sdk__Echo)
 * [sdk::Set](#sdk__Set)
+* [sdk::fs::Cat](#sdk__fs__Cat)
 
 
 <a name="internal__sdkdocs"></a>
@@ -44,7 +45,7 @@ Any number of arguments may be provided and will be printed.
 
 #### Return Value
 
-None
+The amount of arguments printed.
 
 #### Examples
 
@@ -98,3 +99,35 @@ var = set "home: ${HOME}"
 
 #### Aliases:
 set
+
+<a name="sdk__fs__Cat"></a>
+## sdk::fs::Cat
+```sh
+var = cat file
+```
+
+The cat command will print out the requested file.<br>
+In addition it will also return the value to the output variable.
+
+#### Parameters
+
+A single parameter holding the file path.
+
+
+#### Return Value
+
+The file content.
+
+#### Examples
+
+```sh
+cat ./docs/sdk.md
+```
+
+
+#### Aliases:
+cat
+
+### License
+Developed by Sagie Gur-Ari and licensed under the
+[Apache 2](https://github.com/sagiegurari/duckscript/blob/master/LICENSE) open source license.

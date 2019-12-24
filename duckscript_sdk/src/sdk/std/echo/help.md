@@ -12,7 +12,7 @@ Any number of arguments may be provided and will be printed.
 
 #### Return Value
 
-None
+The amount of arguments printed.
 
 #### Examples
 

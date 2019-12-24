@@ -87,6 +87,9 @@ impl Command for CommandImpl {
                 ));
             }
 
+            // footer
+            buffer.push_str(include_str!("footer.md"));
+
             let file = arguments[0].clone();
 
             match io::write_text_file(&file, &buffer, &meta_info) {
