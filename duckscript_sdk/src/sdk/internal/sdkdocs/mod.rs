@@ -59,7 +59,7 @@ impl Command for CommandImpl {
 
                 let aliases = command.aliases();
                 let aliases_docs = if !aliases.is_empty() {
-                    let mut aliases_docs_buffer = String::from("\n\n### Aliases:\n");
+                    let mut aliases_docs_buffer = String::from("\n\n#### Aliases:\n");
 
                     let mut first = true;
                     for alias in aliases {
