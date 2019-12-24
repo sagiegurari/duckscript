@@ -80,7 +80,10 @@ impl Command for CommandImpl {
                 let help = command.help();
                 buffer.push_str(&format!(
                     "\n<a name=\"{}\"></a>\n## {}\n{}{}\n",
-                    name.replace(":", "_"), name, help, aliases_docs
+                    name.replace(":", "_"),
+                    name,
+                    help,
+                    aliases_docs
                 ));
             }
 

@@ -1,10 +1,10 @@
 # Table of Contents
-* [internal::sdkdocs](#internal::sdkdocs)
-* [sdk::Echo](#sdk::Echo)
-* [sdk::Set](#sdk::Set)
+* [internal::sdkdocs](#internal__sdkdocs)
+* [sdk::Echo](#sdk__Echo)
+* [sdk::Set](#sdk__Set)
 
 
-<a name="internal::sdkdocs"></a>
+<a name="internal__sdkdocs"></a>
 ## internal::sdkdocs
 ```sh
 doc_file = internal::sdkdocs output_file
@@ -28,7 +28,7 @@ doc_file = internal::sdkdocs ./docs/sdk.md
 ```
 
 
-<a name="sdk::Echo"></a>
+<a name="sdk__Echo"></a>
 ## sdk::Echo
 ```sh
 echo [arg]*
@@ -64,7 +64,7 @@ echo "hello    world"
 #### Aliases:
 echo
 
-<a name="sdk::Set"></a>
+<a name="sdk__Set"></a>
 ## sdk::Set
 ```sh
 var = set arg
