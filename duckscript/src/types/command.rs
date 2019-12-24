@@ -35,6 +35,11 @@ pub trait Command {
     /// A list of aliases that can also be used to invoke this command
     fn aliases(&self) -> Vec<String>;
 
+    /// Command documentation
+    fn help(&self) -> String {
+        format!("No documentation found for command: {}", self.name())
+    }
+
     /// Runs the given instruction
     fn run(
         &self,

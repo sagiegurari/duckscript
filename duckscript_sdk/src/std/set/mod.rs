@@ -15,6 +15,10 @@ impl Command for CommandImpl {
         vec!["set".to_string()]
     }
 
+    fn help(&self) -> String {
+        format!("No documentation found for command: {}", self.name())
+    }
+
     fn run(
         &self,
         _context: Rc<RefCell<&Context>>,

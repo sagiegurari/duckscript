@@ -2,6 +2,14 @@ use super::*;
 use crate::test::{TestCommand1, TestCommand2, TestCommand3, TestCommand4};
 
 #[test]
+fn command_default_help() {
+    let command = TestCommand1 {};
+    let help = command.help();
+
+    assert!(!help.is_empty());
+}
+
+#[test]
 fn commands_new() {
     let commands = Commands::new();
 
