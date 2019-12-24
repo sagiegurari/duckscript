@@ -7,7 +7,7 @@ use crate::types::runtime::Context;
 use std::cell::RefCell;
 use std::rc::Rc;
 
-pub struct SetCommand {}
+pub(crate) struct SetCommand {}
 
 impl Command for SetCommand {
     fn name(&self) -> String {
@@ -34,7 +34,7 @@ impl Command for SetCommand {
     }
 }
 
-pub struct ExitCommand {}
+pub(crate) struct ExitCommand {}
 
 impl Command for ExitCommand {
     fn name(&self) -> String {
@@ -61,7 +61,7 @@ impl Command for ExitCommand {
     }
 }
 
-pub struct ErrorCommand {}
+pub(crate) struct ErrorCommand {}
 
 impl Command for ErrorCommand {
     fn name(&self) -> String {
@@ -82,7 +82,7 @@ impl Command for ErrorCommand {
     }
 }
 
-pub struct GoToCommand {}
+pub(crate) struct GoToCommand {}
 
 impl Command for GoToCommand {
     fn name(&self) -> String {
@@ -99,17 +99,17 @@ impl Command for GoToCommand {
         arguments: Vec<String>,
         _meta_info: &InstructionMetaInfo,
     ) -> CommandResult {
-        let output = if arguments.is_empty() {
-            None
+        let (output, label) = if arguments.is_empty() {
+            (None, "target".to_string())
         } else {
-            Some(arguments[0].clone())
+            (Some(arguments[0].clone()), arguments[0].clone())
         };
 
-        CommandResult::GoTo(output.clone(), output.clone())
+        CommandResult::GoTo(output, label)
     }
 }
 
-pub struct TestCommand1 {}
+pub(crate) struct TestCommand1 {}
 
 impl Command for TestCommand1 {
     fn name(&self) -> String {
@@ -130,7 +130,7 @@ impl Command for TestCommand1 {
     }
 }
 
-pub struct TestCommand2 {}
+pub(crate) struct TestCommand2 {}
 
 impl Command for TestCommand2 {
     fn name(&self) -> String {
@@ -151,7 +151,7 @@ impl Command for TestCommand2 {
     }
 }
 
-pub struct TestCommand3 {}
+pub(crate) struct TestCommand3 {}
 
 impl Command for TestCommand3 {
     fn name(&self) -> String {
@@ -172,7 +172,7 @@ impl Command for TestCommand3 {
     }
 }
 
-pub struct TestCommand4 {}
+pub(crate) struct TestCommand4 {}
 
 impl Command for TestCommand4 {
     fn name(&self) -> String {
@@ -212,4 +212,46 @@ pub(crate) fn assert_empty_instruction(instruction: &Instruction) {
         InstructionType::Empty => (),
         _ => panic!("Wrong instruction type."),
     };
+}
+
+pub(crate) fn validate_continue_result(result: &CommandResult, value: Option<String>) -> bool {
+    match result {
+        CommandResult::Continue(output) => {
+            assert_eq!(output, &value);
+            true
+        }
+        _ => false,
+    }
+}
+
+pub(crate) fn validate_exit_result(result: &CommandResult, value: Option<String>) -> bool {
+    match result {
+        CommandResult::Exit(output) => {
+            assert_eq!(output, &value);
+            true
+        }
+        _ => false,
+    }
+}
+
+pub(crate) fn validate_goto_result(result: &CommandResult, value: Option<String>) -> bool {
+    match result {
+        CommandResult::GoTo(output, label) => {
+            assert_eq!(output, &value);
+            if value.is_some() {
+                assert_eq!(output, &Some(label.to_string()));
+            } else {
+                assert_eq!(label, "target");
+            }
+            true
+        }
+        _ => false,
+    }
+}
+
+pub(crate) fn validate_error_result(result: &CommandResult) -> bool {
+    match result {
+        CommandResult::Error(_, _) => true,
+        _ => false,
+    }
 }

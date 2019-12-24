@@ -18,6 +18,7 @@ static COMMENT_PREFIX_STR: &str = "#";
 static PRE_PROCESS_PREFIX: char = '!';
 static LABEL_PREFIX: char = ':';
 
+/// parses the file and returns a vector of instructions
 pub fn parse_file(file: &str) -> Result<Vec<Instruction>, ScriptError> {
     let mut meta_info = InstructionMetaInfo::new();
     meta_info.source = Some(file.to_string());
@@ -28,6 +29,7 @@ pub fn parse_file(file: &str) -> Result<Vec<Instruction>, ScriptError> {
     }
 }
 
+/// parses the provided script text and returns a vector of instructions
 pub fn parse_text(text: &str) -> Result<Vec<Instruction>, ScriptError> {
     parse_lines(&text, InstructionMetaInfo::new())
 }

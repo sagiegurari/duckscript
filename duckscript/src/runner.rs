@@ -18,6 +18,7 @@ use crate::types::runtime::{Context, Runtime};
 use std::cell::RefCell;
 use std::rc::Rc;
 
+/// Executes the provided script with the given context
 pub fn run_script(text: &str, context: Context) -> Result<Context, ScriptError> {
     match parser::parse_text(text) {
         Ok(instructions) => run(instructions, context),
@@ -25,6 +26,7 @@ pub fn run_script(text: &str, context: Context) -> Result<Context, ScriptError> 
     }
 }
 
+/// Executes the provided script file with the given context
 pub fn run_script_file(file: &str, context: Context) -> Result<Context, ScriptError> {
     match parser::parse_file(file) {
         Ok(instructions) => run(instructions, context),
@@ -79,11 +81,7 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
             None => break,
         };
 
-        let (command_result, output_variable) =
-            match run_instruction(&mut runtime, instruction_option) {
-                Ok(results) => results,
-                Err(error) => return Err(error),
-            };
+        let (command_result, output_variable) = run_instruction(&mut runtime, instruction_option);
 
         match command_result {
             CommandResult::Exit(output) => {
@@ -142,7 +140,7 @@ fn update_output(runtime: &mut Runtime, output_variable: Option<String>, output:
 fn run_instruction(
     runtime: &mut Runtime,
     instruction_option: Option<Instruction>,
-) -> Result<(CommandResult, Option<String>), ScriptError> {
+) -> (CommandResult, Option<String>) {
     let rc_context = Rc::new(RefCell::new(&runtime.context));
 
     let mut output_variable = None;
@@ -156,15 +154,11 @@ fn run_instruction(
                 match script_instruction.command {
                     Some(ref command) => {
                         let mut command_instance_box = None;
-                        {
-                            let context = rc_context.clone();
-                            match context.borrow().commands.get(command) {
-                                Some(command_box) => {
-                                    command_instance_box = Some(command_box.clone())
-                                }
-                                _ => (),
-                            };
-                        }
+                        let context = rc_context.clone();
+                        match context.borrow().commands.get(command) {
+                            Some(command_box) => command_instance_box = Some(command_box.clone()),
+                            _ => (),
+                        };
 
                         match command_instance_box {
                             Some(ref command_instance_box) => {
@@ -190,7 +184,7 @@ fn run_instruction(
         None => CommandResult::Continue(None),
     };
 
-    Ok((command_result, output_variable))
+    (command_result, output_variable)
 }
 
 fn bind_command_arguments(
@@ -205,7 +199,10 @@ fn bind_command_arguments(
         Some(ref arguments_ref) => {
             for argument in arguments_ref {
                 let value = expansion::expand_by_wrapper(&argument, "${", '}', variables);
-                arguments.push(value);
+
+                if !value.is_empty() {
+                    arguments.push(value);
+                }
             }
         }
         None => (),

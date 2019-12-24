@@ -32,17 +32,29 @@ fn format_error_message(
 #[derive(Debug)]
 /// Holds the error information
 pub enum ErrorInfo {
+    /// Error Info Type
     ErrorReadingFile(String, Option<io::Error>),
+    /// Error Info Type
     Initialization(String),
+    /// Error Info Type
     Runtime(String, InstructionMetaInfo),
+    /// Error Info Type
     PreProcessNoCommandFound(InstructionMetaInfo),
+    /// Error Info Type
     ControlWithoutValidValue(InstructionMetaInfo),
+    /// Error Info Type
     InvalidControlLocation(InstructionMetaInfo),
+    /// Error Info Type
     MissingEndQuotes(InstructionMetaInfo),
+    /// Error Info Type
     MissingOutputVariableName(InstructionMetaInfo),
+    /// Error Info Type
     InvalidEqualsLocation(InstructionMetaInfo),
+    /// Error Info Type
     InvalidQuotesLocation(InstructionMetaInfo),
+    /// Error Info Type
     EmptyLabel(InstructionMetaInfo),
+    /// Error Info Type
     UnknownPreProcessorCommand(InstructionMetaInfo),
 }
 

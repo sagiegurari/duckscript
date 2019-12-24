@@ -17,16 +17,22 @@ use std::rc::Rc;
 /// Command execution result
 #[derive(Debug, Clone)]
 pub enum CommandResult {
+    /// Holds the command output and tells the runner to continue to next instruction
     Continue(Option<String>),
+    /// Holds the command output and tells the runner to jump to the provided label
     GoTo(Option<String>, String),
+    /// Holds the error message and the meta info of the instruction that caused it
     Error(String, InstructionMetaInfo),
+    /// Holds the command output and tells the runner to stop the script execution
     Exit(Option<String>),
 }
 
 /// Defines the command capabilities
 pub trait Command {
+    /// The full command name which can be used to invoke this command
     fn name(&self) -> String;
 
+    /// A list of aliases that can also be used to invoke this command
     fn aliases(&self) -> Vec<String>;
 
     /// Runs the given instruction
@@ -55,6 +61,8 @@ impl Commands {
         }
     }
 
+    /// Adds a new command definition.
+    /// It will fail in case another command already defined the same name/aliases
     pub fn set(&mut self, command: Box<dyn Command>) -> Result<(), ScriptError> {
         let name = command.name();
         let aliases = command.aliases();

@@ -1,0 +1,8 @@
+USAGE:
+    duckscript [FLAGS] [FILE]
+
+FLAGS:
+    -h, --help      Prints help information
+
+ARGS:
+    <FILE>          The script file to execute
