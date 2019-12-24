@@ -13,3 +13,18 @@ fn read_text_file_not_found() {
 
     assert!(text.is_err());
 }
+
+#[test]
+fn write_text_file_valid() {
+    let result = write_text_file(
+        "./target/temp/test/test.txt",
+        "test file",
+        &InstructionMetaInfo::new(),
+    );
+
+    assert!(result.is_ok());
+
+    let text = read_text_file("./target/temp/test/test.txt").unwrap();
+
+    assert_eq!(text, "test file");
+}

@@ -4,6 +4,10 @@ use std::fs::{create_dir_all, File};
 use std::io::{Read, Write};
 use std::path::Path;
 
+#[cfg(test)]
+#[path = "./io_test.rs"]
+mod io_test;
+
 pub(crate) fn read_text_file(file: &str) -> Result<String, ScriptError> {
     let file_path = Path::new(file);
 

@@ -129,6 +129,10 @@ mod test;
 use duckscript::types::command::Commands;
 use duckscript::types::error::ScriptError;
 
+#[cfg(test)]
+#[path = "./lib_test.rs"]
+mod lib_test;
+
 /// Loads all core commands
 pub fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     sdk::load(commands)
