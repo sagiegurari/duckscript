@@ -1,6 +1,6 @@
 use duckscript::types::error::{ErrorInfo, ScriptError};
 use duckscript::types::instruction::InstructionMetaInfo;
-use std::fs::File;
+use std::fs::{create_dir_all,File};
 use std::io::Write;
 use std::path::Path;
 
@@ -10,6 +10,12 @@ pub(crate) fn write_text_file(
     meta_info: &InstructionMetaInfo,
 ) -> Result<(), ScriptError> {
     let file_path = Path::new(file);
+
+    // create parent directory
+    let directory = file_path.parent();
+    match create_dir_all(&directory) {
+        _ => ()
+    };
 
     match File::create(&file_path) {
         Ok(mut fd) => match fd.write_all(text.as_bytes()) {
