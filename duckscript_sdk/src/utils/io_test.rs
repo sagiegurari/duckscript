@@ -16,11 +16,7 @@ fn read_text_file_not_found() {
 
 #[test]
 fn write_text_file_valid() {
-    let result = write_text_file(
-        "./target/temp/test/test.txt",
-        "test file",
-        &InstructionMetaInfo::new(),
-    );
+    let result = write_text_file("./target/temp/test/test.txt", "test file");
 
     assert!(result.is_ok());
 

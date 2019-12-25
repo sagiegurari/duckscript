@@ -1,5 +1,4 @@
 use duckscript::types::error::{ErrorInfo, ScriptError};
-use duckscript::types::instruction::InstructionMetaInfo;
 use std::fs::{create_dir_all, File};
 use std::io::{Read, Write};
 use std::path::Path;
@@ -24,11 +23,7 @@ pub(crate) fn read_text_file(file: &str) -> Result<String, ScriptError> {
     }
 }
 
-pub(crate) fn write_text_file(
-    file: &str,
-    text: &str,
-    meta_info: &InstructionMetaInfo,
-) -> Result<(), ScriptError> {
+pub(crate) fn write_text_file(file: &str, text: &str) -> Result<(), ScriptError> {
     let file_path = Path::new(file);
 
     // create parent directory
@@ -45,7 +40,7 @@ pub(crate) fn write_text_file(
             Err(_) => Err(ScriptError {
                 info: ErrorInfo::Runtime(
                     format!("Error writing to file: {}", file).to_string(),
-                    meta_info.clone(),
+                    None,
                 ),
             }),
             Ok(_) => match fd.sync_all() {
@@ -55,7 +50,7 @@ pub(crate) fn write_text_file(
         Err(_) => Err(ScriptError {
             info: ErrorInfo::Runtime(
                 format!("Error opening file: {} for writing.", file).to_string(),
-                meta_info.clone(),
+                None,
             ),
         }),
     }

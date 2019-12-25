@@ -37,7 +37,7 @@ pub enum ErrorInfo {
     /// Error Info Type
     Initialization(String),
     /// Error Info Type
-    Runtime(String, InstructionMetaInfo),
+    Runtime(String, Option<InstructionMetaInfo>),
     /// Error Info Type
     PreProcessNoCommandFound(InstructionMetaInfo),
     /// Error Info Type
@@ -78,7 +78,9 @@ impl Display for ScriptError {
             }
             ErrorInfo::Initialization(ref message) => write!(formatter, "{}", message),
             ErrorInfo::Runtime(ref message, ref meta_info) => {
-                format_error_message(formatter, &meta_info, message)
+                let empty_meta_data = InstructionMetaInfo::new();
+                let meta_info_value = meta_info.as_ref().unwrap_or(&empty_meta_data);
+                format_error_message(formatter, &meta_info_value, message)
             }
             ErrorInfo::PreProcessNoCommandFound(ref meta_info) => {
                 format_error_message(formatter, &meta_info, "preprocessor is missing a command")

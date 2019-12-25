@@ -17,9 +17,17 @@ fn display_initialization() {
 }
 
 #[test]
-fn display_runtime() {
+fn display_runtime_with_meta_info() {
     let error = ScriptError {
-        info: ErrorInfo::Runtime("test".to_string(), InstructionMetaInfo::new()),
+        info: ErrorInfo::Runtime("test".to_string(), Some(InstructionMetaInfo::new())),
+    };
+    println!("{}", error);
+}
+
+#[test]
+fn display_runtime_without_meta_info() {
+    let error = ScriptError {
+        info: ErrorInfo::Runtime("test".to_string(), None),
     };
     println!("{}", error);
 }

@@ -1,7 +1,6 @@
 use crate::utils::io;
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
-use duckscript::types::instruction::InstructionMetaInfo;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -24,9 +23,9 @@ impl Command for CommandImpl {
         include_str!("help.md").to_string()
     }
 
-    fn run(&self, arguments: Vec<String>, meta_info: InstructionMetaInfo) -> CommandResult {
+    fn run(&self, arguments: Vec<String>) -> CommandResult {
         if arguments.is_empty() {
-            CommandResult::Error("File name not provided.".to_string(), meta_info)
+            CommandResult::Error("File name not provided.".to_string())
         } else {
             let result = io::read_text_file(&arguments[0]);
 
@@ -36,7 +35,7 @@ impl Command for CommandImpl {
 
                     CommandResult::Continue(Some(text))
                 }
-                Err(error) => CommandResult::Error(error.to_string(), meta_info),
+                Err(error) => CommandResult::Error(error.to_string()),
             }
         }
     }

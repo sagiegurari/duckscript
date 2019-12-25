@@ -36,10 +36,10 @@ impl Command for FunctionCommand {
         state: &mut HashMap<String, StateValue>,
         commands: &mut Commands,
         arguments: Vec<String>,
-        meta_info: InstructionMetaInfo,
+        _meta_info: InstructionMetaInfo,
     ) -> CommandResult {
         if arguments.is_empty() {
-            CommandResult::Error("Missing function name.".to_string(), meta_info)
+            CommandResult::Error("Missing function name.".to_string())
         } else {
             let function_name = arguments[0].clone();
             let fn_state_key = self.name();
@@ -48,7 +48,6 @@ impl Command for FunctionCommand {
             if fn_state.contains_key(&function_name) {
                 CommandResult::Error(
                     format!("Function: {} was already defined.", &function_name).to_string(),
-                    meta_info,
                 )
             } else {
                 pub(crate) struct CallFunctionCommand {
@@ -84,7 +83,7 @@ impl Command for FunctionCommand {
                     name: function_name.clone(),
                 })) {
                     Ok(_) => CommandResult::Continue(None),
-                    Err(error) => CommandResult::Error(error.to_string(), meta_info),
+                    Err(error) => CommandResult::Error(error.to_string()),
                 }
             }
         }

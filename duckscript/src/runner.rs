@@ -11,9 +11,7 @@ use crate::expansion;
 use crate::parser;
 use crate::types::command::CommandResult;
 use crate::types::error::{ErrorInfo, ScriptError};
-use crate::types::instruction::{
-    Instruction, InstructionMetaInfo, InstructionType, ScriptInstruction,
-};
+use crate::types::instruction::{Instruction, InstructionType, ScriptInstruction};
 use crate::types::runtime::{Context, Runtime, StateValue};
 use std::collections::HashMap;
 
@@ -70,10 +68,12 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
     let mut state = runtime.context.state.clone();
 
     loop {
-        let instruction_option = match runtime.instructions {
+        let (instruction, meta_info) = match runtime.instructions {
             Some(ref instructions) => {
                 if instructions.len() > line {
-                    Some(instructions[line].clone())
+                    let instruction = instructions[line].clone();
+                    let meta_info = instruction.meta_info.clone();
+                    (instruction, meta_info)
                 } else {
                     break;
                 }
@@ -82,7 +82,7 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
         };
 
         let (command_result, output_variable) =
-            run_instruction(&mut runtime.context, &mut state, instruction_option);
+            run_instruction(&mut runtime.context, &mut state, instruction);
 
         match command_result {
             CommandResult::Exit(output) => {
@@ -90,9 +90,9 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
 
                 break;
             }
-            CommandResult::Error(error, meta_info) => {
+            CommandResult::Error(error) => {
                 return Err(ScriptError {
-                    info: ErrorInfo::Runtime(error, meta_info),
+                    info: ErrorInfo::Runtime(error, Some(meta_info)),
                 });
             }
             CommandResult::Continue(output) => {
@@ -108,13 +108,10 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
                 match runtime.label_to_line.get(&label) {
                     Some(value) => line = *value,
                     None => {
-                        let mut meta_info = InstructionMetaInfo::new();
-                        meta_info.line = Some(line);
-
                         return Err(ScriptError {
                             info: ErrorInfo::Runtime(
                                 format!("Label: {} not found.", label),
-                                meta_info,
+                                Some(meta_info),
                             ),
                         });
                     }
@@ -143,50 +140,44 @@ fn update_output(runtime: &mut Runtime, output_variable: Option<String>, output:
 fn run_instruction(
     context: &mut Context,
     state: &mut HashMap<String, StateValue>,
-    instruction_option: Option<Instruction>,
+    instruction: Instruction,
 ) -> (CommandResult, Option<String>) {
     let mut commands = &mut context.commands;
 
     let mut output_variable = None;
-    let command_result = match instruction_option {
-        Some(ref instruction) => match instruction.instruction_type {
-            InstructionType::Empty => CommandResult::Continue(None),
-            InstructionType::PreProcess(_) => CommandResult::Continue(None),
-            InstructionType::Script(ref script_instruction) => {
-                output_variable = script_instruction.output.clone();
+    let command_result = match instruction.instruction_type {
+        InstructionType::Empty => CommandResult::Continue(None),
+        InstructionType::PreProcess(_) => CommandResult::Continue(None),
+        InstructionType::Script(ref script_instruction) => {
+            output_variable = script_instruction.output.clone();
 
-                match script_instruction.command {
-                    Some(ref command) => match commands.get_for_use(command) {
-                        Some(command_instance) => {
-                            let command_arguments =
-                                bind_command_arguments(&context.variables, &script_instruction);
+            match script_instruction.command {
+                Some(ref command) => match commands.get_for_use(command) {
+                    Some(command_instance) => {
+                        let command_arguments =
+                            bind_command_arguments(&context.variables, &script_instruction);
+
+                        let command_result = if command_instance.requires_context() {
                             let meta_info_clone = instruction.meta_info.clone();
+                            command_instance.run_with_context(
+                                state,
+                                &mut commands,
+                                command_arguments,
+                                meta_info_clone,
+                            )
+                        } else {
+                            command_instance.run(command_arguments)
+                        };
 
-                            let command_result = if command_instance.requires_context() {
-                                command_instance.run_with_context(
-                                    state,
-                                    &mut commands,
-                                    command_arguments,
-                                    meta_info_clone,
-                                )
-                            } else {
-                                command_instance.run(command_arguments, meta_info_clone)
-                            };
+                        commands.return_after_usage(command_instance);
 
-                            commands.return_after_usage(command_instance);
-
-                            command_result
-                        }
-                        None => CommandResult::Error(
-                            format!("Command: {} not found.", &command),
-                            instruction.meta_info.clone(),
-                        ),
-                    },
-                    None => CommandResult::Continue(None),
-                }
+                        command_result
+                    }
+                    None => CommandResult::Error(format!("Command: {} not found.", &command)),
+                },
+                None => CommandResult::Continue(None),
             }
-        },
-        None => CommandResult::Continue(None),
+        }
     };
 
     (command_result, output_variable)

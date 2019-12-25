@@ -47,7 +47,7 @@ fn command_default_run() {
     }
 
     let command = InnerCommand {};
-    let result = command.run(vec![], InstructionMetaInfo::new());
+    let result = command.run(vec![]);
 
     test::validate_continue_result(&result, None);
 }

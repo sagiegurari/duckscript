@@ -1,6 +1,5 @@
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
-use duckscript::types::instruction::InstructionMetaInfo;
 use std::env;
 
 #[cfg(test)]
@@ -24,9 +23,9 @@ impl Command for CommandImpl {
         include_str!("help.md").to_string()
     }
 
-    fn run(&self, arguments: Vec<String>, meta_info: InstructionMetaInfo) -> CommandResult {
+    fn run(&self, arguments: Vec<String>) -> CommandResult {
         if arguments.is_empty() {
-            CommandResult::Error("Missing environment variable name.".to_string(), meta_info)
+            CommandResult::Error("Missing environment variable name.".to_string())
         } else {
             match env::var(&arguments[0]) {
                 Ok(value) => CommandResult::Continue(Some(value)),

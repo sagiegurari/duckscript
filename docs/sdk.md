@@ -47,7 +47,9 @@ echo
 <a name="sdk__Function"></a>
 ## sdk::Function
 ```sh
-echo [arg]*
+function my_function
+# function content
+end_function
 ```
 
 The echo command will printout all provided arguments.<br>

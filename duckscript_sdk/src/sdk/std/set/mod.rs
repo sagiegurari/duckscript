@@ -1,6 +1,5 @@
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
-use duckscript::types::instruction::InstructionMetaInfo;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -23,7 +22,7 @@ impl Command for CommandImpl {
         include_str!("help.md").to_string()
     }
 
-    fn run(&self, arguments: Vec<String>, _meta_info: InstructionMetaInfo) -> CommandResult {
+    fn run(&self, arguments: Vec<String>) -> CommandResult {
         let output = if arguments.is_empty() {
             None
         } else {

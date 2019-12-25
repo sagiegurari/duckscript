@@ -36,13 +36,10 @@ impl Command for CommandImpl {
         _state: &mut HashMap<String, StateValue>,
         commands: &mut Commands,
         arguments: Vec<String>,
-        meta_info: InstructionMetaInfo,
+        _meta_info: InstructionMetaInfo,
     ) -> CommandResult {
         if arguments.is_empty() {
-            CommandResult::Error(
-                "Documentation output directory not provided.".to_string(),
-                meta_info,
-            )
+            CommandResult::Error("Documentation output directory not provided.".to_string())
         } else {
             let names = commands.get_all_command_names();
             let mut buffer = String::new();
@@ -61,10 +58,7 @@ impl Command for CommandImpl {
                         }
                     }
                     None => {
-                        return CommandResult::Error(
-                            format!("Command: {} not found", name),
-                            meta_info.clone(),
-                        );
+                        return CommandResult::Error(format!("Command: {} not found", name));
                     }
                 };
             }
@@ -75,10 +69,7 @@ impl Command for CommandImpl {
                 let command = match commands.get(name) {
                     Some(command) => command,
                     None => {
-                        return CommandResult::Error(
-                            format!("Command: {} not found", name),
-                            meta_info.clone(),
-                        );
+                        return CommandResult::Error(format!("Command: {} not found", name));
                     }
                 };
 
@@ -120,9 +111,9 @@ impl Command for CommandImpl {
 
             let file = arguments[0].clone();
 
-            match io::write_text_file(&file, &buffer, &meta_info) {
+            match io::write_text_file(&file, &buffer) {
                 Ok(_) => CommandResult::Continue(Some(file)),
-                Err(error) => CommandResult::Error(error.to_string(), meta_info),
+                Err(error) => CommandResult::Error(error.to_string()),
             }
         }
     }

@@ -20,7 +20,7 @@ pub enum CommandResult {
     /// Holds the command output and tells the runner to jump to the provided label
     GoTo(Option<String>, String),
     /// Holds the error message and the meta info of the instruction that caused it
-    Error(String, InstructionMetaInfo),
+    Error(String),
     /// Holds the command output and tells the runner to stop the script execution
     Exit(Option<String>),
 }
@@ -46,11 +46,8 @@ pub trait Command {
     }
 
     /// Runs the given instruction
-    fn run(&self, _arguments: Vec<String>, meta_info: InstructionMetaInfo) -> CommandResult {
-        CommandResult::Error(
-            format!("Not implemented for command: {}", &self.name()).to_string(),
-            meta_info,
-        )
+    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+        CommandResult::Error(format!("Not implemented for command: {}", &self.name()).to_string())
     }
 
     /// Run the instruction with access to the runtime context
@@ -59,12 +56,9 @@ pub trait Command {
         _state: &mut HashMap<String, StateValue>,
         _commands: &mut Commands,
         _arguments: Vec<String>,
-        meta_info: InstructionMetaInfo,
+        _meta_info: InstructionMetaInfo,
     ) -> CommandResult {
-        CommandResult::Error(
-            format!("Not implemented for command: {}", &self.name()).to_string(),
-            meta_info,
-        )
+        CommandResult::Error(format!("Not implemented for command: {}", &self.name()).to_string())
     }
 }
 

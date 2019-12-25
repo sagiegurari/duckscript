@@ -1,5 +1,4 @@
 use crate::types::command::{Command, CommandResult};
-use crate::types::instruction::InstructionMetaInfo;
 use crate::types::instruction::{
     Instruction, InstructionType, PreProcessInstruction, ScriptInstruction,
 };
@@ -15,7 +14,7 @@ impl Command for SetCommand {
         vec![]
     }
 
-    fn run(&self, arguments: Vec<String>, _meta_info: InstructionMetaInfo) -> CommandResult {
+    fn run(&self, arguments: Vec<String>) -> CommandResult {
         let output = if arguments.is_empty() {
             None
         } else {
@@ -37,7 +36,7 @@ impl Command for ExitCommand {
         vec![]
     }
 
-    fn run(&self, arguments: Vec<String>, _meta_info: InstructionMetaInfo) -> CommandResult {
+    fn run(&self, arguments: Vec<String>) -> CommandResult {
         let output = if arguments.is_empty() {
             None
         } else {
@@ -59,8 +58,8 @@ impl Command for ErrorCommand {
         vec![]
     }
 
-    fn run(&self, _arguments: Vec<String>, meta_info: InstructionMetaInfo) -> CommandResult {
-        CommandResult::Error("test".to_string(), meta_info.clone())
+    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+        CommandResult::Error("test".to_string())
     }
 }
 
@@ -75,7 +74,7 @@ impl Command for GoToCommand {
         vec![]
     }
 
-    fn run(&self, arguments: Vec<String>, _meta_info: InstructionMetaInfo) -> CommandResult {
+    fn run(&self, arguments: Vec<String>) -> CommandResult {
         let (output, label) = if arguments.is_empty() {
             (None, "target".to_string())
         } else {
@@ -97,7 +96,7 @@ impl Command for TestCommand1 {
         vec!["test11".to_string(), "test12".to_string()]
     }
 
-    fn run(&self, _arguments: Vec<String>, _meta_info: InstructionMetaInfo) -> CommandResult {
+    fn run(&self, _arguments: Vec<String>) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
@@ -113,7 +112,7 @@ impl Command for TestCommand2 {
         vec!["test21".to_string(), "test22".to_string()]
     }
 
-    fn run(&self, _arguments: Vec<String>, _meta_info: InstructionMetaInfo) -> CommandResult {
+    fn run(&self, _arguments: Vec<String>) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
@@ -129,7 +128,7 @@ impl Command for TestCommand3 {
         vec!["test3".to_string()]
     }
 
-    fn run(&self, _arguments: Vec<String>, _meta_info: InstructionMetaInfo) -> CommandResult {
+    fn run(&self, _arguments: Vec<String>) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
@@ -145,7 +144,7 @@ impl Command for TestCommand4 {
         vec!["test11".to_string()]
     }
 
-    fn run(&self, _arguments: Vec<String>, _meta_info: InstructionMetaInfo) -> CommandResult {
+    fn run(&self, _arguments: Vec<String>) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
@@ -208,7 +207,7 @@ pub(crate) fn validate_goto_result(result: &CommandResult, value: Option<String>
 
 pub(crate) fn validate_error_result(result: &CommandResult) -> bool {
     match result {
-        CommandResult::Error(_, _) => true,
+        CommandResult::Error(_) => true,
         _ => false,
     }
 }
