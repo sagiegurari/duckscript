@@ -15,7 +15,7 @@ struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        format!("{}::Cat", &self.package).to_string()
+        format!("{}::Print", &self.package).to_string()
     }
 
     fn aliases(&self) -> Vec<String> {

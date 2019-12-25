@@ -1,5 +1,5 @@
-mod cat;
-mod readfile;
+mod read;
+mod print;
 
 use duckscript::types::command::Commands;
 use duckscript::types::error::ScriptError;
@@ -11,8 +11,8 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     package.push_str("::");
     package.push_str(PACKAGE);
 
-    commands.set(cat::create(&package))?;
-    commands.set(readfile::create(&package))?;
+    commands.set(print::create(&package))?;
+    commands.set(read::create(&package))?;
 
     Ok(())
 }
