@@ -1,4 +1,4 @@
-use crate::types::command::{Command, CommandResult};
+use crate::types::command::{Command, CommandResult, GoToValue};
 use crate::types::instruction::{
     Instruction, InstructionType, PreProcessInstruction, ScriptInstruction,
 };
@@ -63,9 +63,9 @@ impl Command for ErrorCommand {
     }
 }
 
-pub(crate) struct GoToCommand {}
+pub(crate) struct GoToLabelCommand {}
 
-impl Command for GoToCommand {
+impl Command for GoToLabelCommand {
     fn name(&self) -> String {
         "goto".to_string()
     }
@@ -81,7 +81,32 @@ impl Command for GoToCommand {
             (Some(arguments[0].clone()), arguments[0].clone())
         };
 
-        CommandResult::GoTo(output, label)
+        CommandResult::GoTo(output, GoToValue::Label(label))
+    }
+}
+
+pub(crate) struct GoToLineCommand {}
+
+impl Command for GoToLineCommand {
+    fn name(&self) -> String {
+        "goto".to_string()
+    }
+
+    fn aliases(&self) -> Vec<String> {
+        vec![]
+    }
+
+    fn run(&self, arguments: Vec<String>) -> CommandResult {
+        let (output, line) = if arguments.is_empty() {
+            (None, 900)
+        } else {
+            (
+                Some(arguments[0].clone()),
+                arguments[0].clone().parse().unwrap(),
+            )
+        };
+
+        CommandResult::GoTo(output, GoToValue::Line(line))
     }
 }
 
@@ -190,15 +215,36 @@ pub(crate) fn validate_exit_result(result: &CommandResult, value: Option<String>
     }
 }
 
-pub(crate) fn validate_goto_result(result: &CommandResult, value: Option<String>) -> bool {
+pub(crate) fn validate_goto_label_result(result: &CommandResult, value: Option<String>) -> bool {
     match result {
         CommandResult::GoTo(output, label) => {
             assert_eq!(output, &value);
             if value.is_some() {
-                assert_eq!(output, &Some(label.to_string()));
+                match label {
+                    GoToValue::Label(label_text) => {
+                        assert_eq!(output, &Some(label_text.to_string()));
+                        true
+                    }
+                    _ => false,
+                }
             } else {
-                assert_eq!(label, "target");
+                match label {
+                    GoToValue::Label(label_text) => {
+                        assert_eq!("target", label_text);
+                        true
+                    }
+                    _ => false,
+                }
             }
+        }
+        _ => false,
+    }
+}
+
+pub(crate) fn validate_goto_line_result(result: &CommandResult, value: Option<String>) -> bool {
+    match result {
+        CommandResult::GoTo(output, _) => {
+            assert_eq!(output, &value);
             true
         }
         _ => false,

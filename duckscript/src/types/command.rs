@@ -12,13 +12,22 @@ use crate::types::instruction::InstructionMetaInfo;
 use crate::types::runtime::StateValue;
 use std::collections::HashMap;
 
+/// GoTo type value
+#[derive(Debug, Clone)]
+pub enum GoToValue {
+    /// label target
+    Label(String),
+    /// Line number
+    Line(usize),
+}
+
 /// Command execution result
 #[derive(Debug, Clone)]
 pub enum CommandResult {
     /// Holds the command output and tells the runner to continue to next instruction
     Continue(Option<String>),
     /// Holds the command output and tells the runner to jump to the provided label
-    GoTo(Option<String>, String),
+    GoTo(Option<String>, GoToValue),
     /// Holds the error message and the meta info of the instruction that caused it
     Error(String),
     /// Holds the command output and tells the runner to stop the script execution

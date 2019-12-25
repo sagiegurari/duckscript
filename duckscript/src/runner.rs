@@ -9,7 +9,7 @@ mod runner_test;
 
 use crate::expansion;
 use crate::parser;
-use crate::types::command::CommandResult;
+use crate::types::command::{CommandResult, GoToValue};
 use crate::types::error::{ErrorInfo, ScriptError};
 use crate::types::instruction::{Instruction, InstructionType, ScriptInstruction};
 use crate::types::runtime::{Context, Runtime, StateValue};
@@ -102,20 +102,23 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
 
                 ()
             }
-            CommandResult::GoTo(output, label) => {
+            CommandResult::GoTo(output, goto_value) => {
                 update_output(&mut runtime, output_variable, output);
 
-                match runtime.label_to_line.get(&label) {
-                    Some(value) => line = *value,
-                    None => {
-                        return Err(ScriptError {
-                            info: ErrorInfo::Runtime(
-                                format!("Label: {} not found.", label),
-                                Some(meta_info),
-                            ),
-                        });
-                    }
-                };
+                match goto_value {
+                    GoToValue::Label(label) => match runtime.label_to_line.get(&label) {
+                        Some(value) => line = *value,
+                        None => {
+                            return Err(ScriptError {
+                                info: ErrorInfo::Runtime(
+                                    format!("Label: {} not found.", label),
+                                    Some(meta_info),
+                                ),
+                            });
+                        }
+                    },
+                    GoToValue::Line(line_number) => line = line_number,
+                }
             }
         };
     }
