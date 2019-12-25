@@ -3,9 +3,6 @@ use crate::types::instruction::InstructionMetaInfo;
 use crate::types::instruction::{
     Instruction, InstructionType, PreProcessInstruction, ScriptInstruction,
 };
-use crate::types::runtime::Context;
-use std::cell::RefCell;
-use std::rc::Rc;
 
 pub(crate) struct SetCommand {}
 
@@ -18,12 +15,7 @@ impl Command for SetCommand {
         vec![]
     }
 
-    fn run(
-        &self,
-        _context: Rc<RefCell<&Context>>,
-        arguments: Vec<String>,
-        _meta_info: &InstructionMetaInfo,
-    ) -> CommandResult {
+    fn run(&self, arguments: Vec<String>, _meta_info: InstructionMetaInfo) -> CommandResult {
         let output = if arguments.is_empty() {
             None
         } else {
@@ -45,12 +37,7 @@ impl Command for ExitCommand {
         vec![]
     }
 
-    fn run(
-        &self,
-        _context: Rc<RefCell<&Context>>,
-        arguments: Vec<String>,
-        _meta_info: &InstructionMetaInfo,
-    ) -> CommandResult {
+    fn run(&self, arguments: Vec<String>, _meta_info: InstructionMetaInfo) -> CommandResult {
         let output = if arguments.is_empty() {
             None
         } else {
@@ -72,12 +59,7 @@ impl Command for ErrorCommand {
         vec![]
     }
 
-    fn run(
-        &self,
-        _context: Rc<RefCell<&Context>>,
-        _arguments: Vec<String>,
-        meta_info: &InstructionMetaInfo,
-    ) -> CommandResult {
+    fn run(&self, _arguments: Vec<String>, meta_info: InstructionMetaInfo) -> CommandResult {
         CommandResult::Error("test".to_string(), meta_info.clone())
     }
 }
@@ -93,12 +75,7 @@ impl Command for GoToCommand {
         vec![]
     }
 
-    fn run(
-        &self,
-        _context: Rc<RefCell<&Context>>,
-        arguments: Vec<String>,
-        _meta_info: &InstructionMetaInfo,
-    ) -> CommandResult {
+    fn run(&self, arguments: Vec<String>, _meta_info: InstructionMetaInfo) -> CommandResult {
         let (output, label) = if arguments.is_empty() {
             (None, "target".to_string())
         } else {
@@ -120,12 +97,7 @@ impl Command for TestCommand1 {
         vec!["test11".to_string(), "test12".to_string()]
     }
 
-    fn run(
-        &self,
-        _context: Rc<RefCell<&Context>>,
-        _arguments: Vec<String>,
-        _meta_info: &InstructionMetaInfo,
-    ) -> CommandResult {
+    fn run(&self, _arguments: Vec<String>, _meta_info: InstructionMetaInfo) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
@@ -141,12 +113,7 @@ impl Command for TestCommand2 {
         vec!["test21".to_string(), "test22".to_string()]
     }
 
-    fn run(
-        &self,
-        _context: Rc<RefCell<&Context>>,
-        _arguments: Vec<String>,
-        _meta_info: &InstructionMetaInfo,
-    ) -> CommandResult {
+    fn run(&self, _arguments: Vec<String>, _meta_info: InstructionMetaInfo) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
@@ -162,12 +129,7 @@ impl Command for TestCommand3 {
         vec!["test3".to_string()]
     }
 
-    fn run(
-        &self,
-        _context: Rc<RefCell<&Context>>,
-        _arguments: Vec<String>,
-        _meta_info: &InstructionMetaInfo,
-    ) -> CommandResult {
+    fn run(&self, _arguments: Vec<String>, _meta_info: InstructionMetaInfo) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
@@ -183,12 +145,7 @@ impl Command for TestCommand4 {
         vec!["test11".to_string()]
     }
 
-    fn run(
-        &self,
-        _context: Rc<RefCell<&Context>>,
-        _arguments: Vec<String>,
-        _meta_info: &InstructionMetaInfo,
-    ) -> CommandResult {
+    fn run(&self, _arguments: Vec<String>, _meta_info: InstructionMetaInfo) -> CommandResult {
         CommandResult::Continue(None)
     }
 }

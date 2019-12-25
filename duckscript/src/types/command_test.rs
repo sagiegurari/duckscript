@@ -1,5 +1,8 @@
 use super::*;
+use crate::test;
 use crate::test::{TestCommand1, TestCommand2, TestCommand3, TestCommand4};
+use crate::types::runtime::Context;
+use std::collections::HashMap;
 
 #[test]
 fn command_default_aliases() {
@@ -8,15 +11,6 @@ fn command_default_aliases() {
     impl Command for InnerCommand {
         fn name(&self) -> String {
             "".to_string()
-        }
-
-        fn run(
-            &self,
-            _context: Rc<RefCell<&Context>>,
-            _arguments: Vec<String>,
-            _meta_info: &InstructionMetaInfo,
-        ) -> CommandResult {
-            CommandResult::Continue(None)
         }
     }
 
@@ -34,21 +28,50 @@ fn command_default_help() {
         fn name(&self) -> String {
             "".to_string()
         }
-
-        fn run(
-            &self,
-            _context: Rc<RefCell<&Context>>,
-            _arguments: Vec<String>,
-            _meta_info: &InstructionMetaInfo,
-        ) -> CommandResult {
-            CommandResult::Continue(None)
-        }
     }
 
     let command = InnerCommand {};
     let help = command.help();
 
     assert!(!help.is_empty());
+}
+
+#[test]
+fn command_default_run() {
+    struct InnerCommand {}
+
+    impl Command for InnerCommand {
+        fn name(&self) -> String {
+            "".to_string()
+        }
+    }
+
+    let command = InnerCommand {};
+    let result = command.run(vec![], InstructionMetaInfo::new());
+
+    test::validate_continue_result(&result, None);
+}
+
+#[test]
+fn command_default_run_with_context() {
+    struct InnerCommand {}
+
+    impl Command for InnerCommand {
+        fn name(&self) -> String {
+            "".to_string()
+        }
+    }
+
+    let mut context = Context::new();
+    let command = InnerCommand {};
+    let result = command.run_with_context(
+        &mut HashMap::new(),
+        &mut context.commands,
+        vec![],
+        InstructionMetaInfo::new(),
+    );
+
+    test::validate_continue_result(&result, None);
 }
 
 #[test]
@@ -89,8 +112,8 @@ fn commands_set_alias_valid() {
 fn commands_set_get_exists() {
     let mut commands = Commands::new();
 
-    assert!(commands.get("test1").is_none());
-    assert!(commands.get("test2").is_none());
+    assert!(commands.get_for_use("test1").is_none());
+    assert!(commands.get_for_use("test2").is_none());
 
     commands.set(Box::new(TestCommand1 {})).unwrap();
     commands.set(Box::new(TestCommand2 {})).unwrap();
@@ -105,13 +128,44 @@ fn commands_set_get_exists() {
 }
 
 #[test]
+fn commands_set_get_return_exists() {
+    let mut commands = Commands::new();
+
+    assert!(commands.get_for_use("test1").is_none());
+    assert!(commands.get_for_use("test2").is_none());
+
+    commands.set(Box::new(TestCommand1 {})).unwrap();
+    commands.set(Box::new(TestCommand2 {})).unwrap();
+
+    let mut command = commands.get_for_use("test1").unwrap();
+    assert_eq!(command.name(), "test1");
+    commands.return_after_usage(command);
+    command = commands.get_for_use("test2").unwrap();
+    assert_eq!(command.name(), "test2");
+    commands.return_after_usage(command);
+
+    command = commands.get_for_use("test11").unwrap();
+    assert_eq!(command.name(), "test1");
+    commands.return_after_usage(command);
+    command = commands.get_for_use("test12").unwrap();
+    assert_eq!(command.name(), "test1");
+    commands.return_after_usage(command);
+    command = commands.get_for_use("test21").unwrap();
+    assert_eq!(command.name(), "test2");
+    commands.return_after_usage(command);
+    command = commands.get_for_use("test22").unwrap();
+    assert_eq!(command.name(), "test2");
+    commands.return_after_usage(command);
+}
+
+#[test]
 fn commands_set_get_not_found() {
     let mut commands = Commands::new();
 
     commands.set(Box::new(TestCommand1 {})).unwrap();
     commands.set(Box::new(TestCommand2 {})).unwrap();
 
-    assert!(commands.get("test3").is_none());
+    assert!(commands.get_for_use("test3").is_none());
 }
 
 #[test]

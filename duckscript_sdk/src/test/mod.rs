@@ -3,9 +3,15 @@ use duckscript::types::command::Command;
 use duckscript::types::error::ScriptError;
 use duckscript::types::runtime::Context;
 
+pub(crate) enum CommandValidation {
+    None,
+    Match(String, String),
+    Contains(String, String),
+}
+
 pub(crate) fn test_common_command_functions(command: Box<dyn Command>) {
     assert!(command.name().len() > 0);
-    assert!(command.help().len() > 0);
+    command.help();
     command.aliases();
 }
 
@@ -23,27 +29,19 @@ pub(crate) fn run_command_and_fail(command: Box<dyn Command>, script: &str) {
 pub(crate) fn validate_command(
     command: Box<dyn Command>,
     script: &str,
-    output_key: Option<String>,
-    output_value: Option<String>,
-    contains_value: bool,
+    validation: CommandValidation,
 ) -> Context {
     let result = run_command(command, script);
     match result {
         Ok(context) => {
-            match output_key {
-                Some(ref key) => {
-                    let value_option = context.variables.get(key);
-                    assert!(value_option.is_some());
-
-                    let value = value_option.unwrap();
-
-                    if contains_value {
-                        assert!(value.contains(&output_value.unwrap()));
-                    } else {
-                        assert_eq!(value, &output_value.unwrap());
-                    }
+            match validation {
+                CommandValidation::None => assert!(context.variables.is_empty()),
+                CommandValidation::Match(key, value) => {
+                    assert_eq!(context.variables.get(&key), Some(&value))
                 }
-                None => assert!(context.variables.is_empty()),
+                CommandValidation::Contains(key, value) => {
+                    assert!(context.variables.get(&key).unwrap().contains(&value))
+                }
             };
 
             context

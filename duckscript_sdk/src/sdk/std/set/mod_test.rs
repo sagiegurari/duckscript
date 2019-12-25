@@ -1,5 +1,6 @@
 use super::*;
 use crate::test;
+use crate::test::CommandValidation;
 
 #[test]
 fn common_functions() {
@@ -8,7 +9,7 @@ fn common_functions() {
 
 #[test]
 fn run_no_arguments() {
-    test::validate_command(create(""), "out = set", None, None, false);
+    test::validate_command(create(""), "out = set", CommandValidation::None);
 }
 
 #[test]
@@ -16,9 +17,7 @@ fn run_single_argument() {
     test::validate_command(
         create(""),
         "out = set test",
-        Some("out".to_string()),
-        Some("test".to_string()),
-        false,
+        CommandValidation::Match("out".to_string(), "test".to_string()),
     );
 }
 
@@ -27,8 +26,6 @@ fn run_multiple_arguments() {
     test::validate_command(
         create(""),
         "out = set test1 test2",
-        Some("out".to_string()),
-        Some("test1".to_string()),
-        false,
+        CommandValidation::Match("out".to_string(), "test1".to_string()),
     );
 }

@@ -9,10 +9,8 @@ mod command_test;
 
 use crate::types::error::{ErrorInfo, ScriptError};
 use crate::types::instruction::InstructionMetaInfo;
-use crate::types::runtime::Context;
-use std::cell::RefCell;
+use crate::types::runtime::StateValue;
 use std::collections::HashMap;
-use std::rc::Rc;
 
 /// Command execution result
 #[derive(Debug, Clone)]
@@ -42,21 +40,40 @@ pub trait Command {
         format!("No documentation found for command: {}", self.name())
     }
 
+    /// If true the run with the context will be invoked
+    fn requires_context(&self) -> bool {
+        false
+    }
+
     /// Runs the given instruction
-    fn run(
+    fn run(&self, _arguments: Vec<String>, meta_info: InstructionMetaInfo) -> CommandResult {
+        CommandResult::Error(
+            format!("Not implemented for command: {}", &self.name()).to_string(),
+            meta_info,
+        )
+    }
+
+    /// Run the instruction with access to the runtime context
+    fn run_with_context(
         &self,
-        context: Rc<RefCell<&Context>>,
-        arguments: Vec<String>,
-        meta_info: &InstructionMetaInfo,
-    ) -> CommandResult;
+        _state: &mut HashMap<String, StateValue>,
+        _commands: &mut Commands,
+        _arguments: Vec<String>,
+        meta_info: InstructionMetaInfo,
+    ) -> CommandResult {
+        CommandResult::Error(
+            format!("Not implemented for command: {}", &self.name()).to_string(),
+            meta_info,
+        )
+    }
 }
 
 /// Holds and enables access to the runtime commands implementations
 pub struct Commands {
     /// mapping between command names to implementations
-    commands: HashMap<String, Box<dyn Command>>,
+    pub commands: HashMap<String, Box<dyn Command>>,
     /// mapping between aliases to command names
-    aliases: HashMap<String, String>,
+    pub aliases: HashMap<String, String>,
 }
 
 impl Commands {
@@ -66,6 +83,14 @@ impl Commands {
             commands: HashMap::new(),
             aliases: HashMap::new(),
         }
+    }
+
+    /// Returns the command after it was being used.
+    /// No validations will be made.
+    pub fn return_after_usage(&mut self, command: Box<dyn Command>) {
+        let name = command.name();
+
+        self.commands.insert(name.clone(), command);
     }
 
     /// Adds a new command definition.
@@ -103,12 +128,26 @@ impl Commands {
     /// Return the command based on the given command name/alias
     pub fn get(&self, name: &str) -> Option<&Box<dyn Command>> {
         let command_name = match self.aliases.get(name) {
-            Some(value) => value,
+            Some(ref value) => value,
             None => name,
         };
 
         match self.commands.get(command_name) {
             Some(ref value) => Some(value.clone()),
+            None => None,
+        }
+    }
+
+    /// Return the command based on the given command name/alias.
+    /// It will also remove it in the process.
+    pub fn get_for_use(&mut self, name: &str) -> Option<Box<dyn Command>> {
+        let command_name = match self.aliases.get(name) {
+            Some(ref value) => value,
+            None => name,
+        };
+
+        match self.commands.remove(command_name) {
+            Some(value) => Some(value),
             None => None,
         }
     }

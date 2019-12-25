@@ -11,12 +11,27 @@ use crate::types::command::Commands;
 use crate::types::instruction::Instruction;
 use std::collections::HashMap;
 
+/// enum defining what values can be stored in the state map
+#[derive(Debug, Clone)]
+pub enum StateValue {
+    /// boolean value
+    Boolean(bool),
+    /// signed number
+    Number(isize),
+    /// textual value
+    String(String),
+    /// list
+    List(Vec<StateValue>),
+    /// sub state value
+    SubState(HashMap<String, StateValue>),
+}
+
 /// The context structure
 pub struct Context {
     /// The runtime variables
     pub variables: HashMap<String, String>,
     /// The runtime state
-    pub state: HashMap<String, String>,
+    pub state: HashMap<String, StateValue>,
     /// The command implementations
     pub commands: Commands,
 }

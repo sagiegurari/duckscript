@@ -8,3 +8,8 @@ additional_profiles = [
     "ci-all-build-tasks",
     "publish-pre-cleanup"
 ]
+
+[tasks.generate-sdk-docs]
+workspace = false
+command = "cargo"
+args = [ "run", "--", "./sdkdocs.ds", ]

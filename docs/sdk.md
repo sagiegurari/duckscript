@@ -1,33 +1,11 @@
 # Table of Contents
-* [internal::sdkdocs](#internal__sdkdocs)
 * [sdk::Echo](#sdk__Echo)
+* [sdk::Function](#sdk__Function)
 * [sdk::Set](#sdk__Set)
-* [sdk::fs::Cat](#sdk__fs__Cat)
+* [sdk::env::Get](#sdk__env__Get)
+* [sdk::env::Set](#sdk__env__Set)
+* [sdk::fs::Print](#sdk__fs__Print)
 * [sdk::fs::Read](#sdk__fs__Read)
-
-
-<a name="internal__sdkdocs"></a>
-## internal::sdkdocs
-```sh
-doc_file = internal::sdkdocs output_file
-```
-
-Generates markdown documentation of all known commands and writes them into the provided file.
-
-#### Parameters
-
-The target file name which will hold the generated documentation.
-
-
-#### Return Value
-
-The target file name.
-
-#### Examples
-
-```sh
-doc_file = internal::sdkdocs ./docs/sdk.md
-```
 
 
 <a name="sdk__Echo"></a>
@@ -66,6 +44,42 @@ echo "hello    world"
 #### Aliases:
 echo
 
+<a name="sdk__Function"></a>
+## sdk::Function
+```sh
+echo [arg]*
+```
+
+The echo command will printout all provided arguments.<br>
+After all input is done, an end of line will be printed as well.
+
+#### Parameters
+
+Any number of arguments may be provided and will be printed.
+
+
+#### Return Value
+
+The amount of arguments printed.
+
+#### Examples
+
+Print multiple arguments:
+
+```sh
+echo hello world
+```
+
+Print multiple spaces between words
+
+```sh
+echo "hello    world"
+```
+
+
+#### Aliases:
+function, fn
+
 <a name="sdk__Set"></a>
 ## sdk::Set
 ```sh
@@ -101,8 +115,65 @@ var = set "home: ${HOME}"
 #### Aliases:
 set
 
-<a name="sdk__fs__Cat"></a>
-## sdk::fs::Cat
+<a name="sdk__env__Get"></a>
+## sdk::env::Get
+```sh
+var = get_env key
+```
+
+Returns the environment variable value for the provided key.
+
+#### Parameters
+
+First argument is the environment variable key.
+
+
+#### Return Value
+
+The environment variable value.
+
+#### Examples
+
+```sh
+home = get_env HOME
+```
+
+
+#### Aliases:
+get_env
+
+<a name="sdk__env__Set"></a>
+## sdk::env::Set
+```sh
+set_env key value
+```
+
+Sets the environment variable defined by the provided key to the provided value.
+
+#### Parameters
+
+Two arguments are required:
+
+* key - The name of the environment variable to set
+* value - The new environment variable value
+
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+set_env HOME /usr/me
+```
+
+
+#### Aliases:
+set_env
+
+<a name="sdk__fs__Print"></a>
+## sdk::fs::Print
 ```sh
 var = cat file
 ```

@@ -1,9 +1,7 @@
 use crate::utils::io;
+use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
 use duckscript::types::instruction::InstructionMetaInfo;
-use duckscript::types::runtime::Context;
-use std::cell::RefCell;
-use std::rc::Rc;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -15,7 +13,7 @@ struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        format!("{}::Read", &self.package).to_string()
+        pckg::concat(&self.package, "Read")
     }
 
     fn aliases(&self) -> Vec<String> {
@@ -26,20 +24,15 @@ impl Command for CommandImpl {
         include_str!("help.md").to_string()
     }
 
-    fn run(
-        &self,
-        _context: Rc<RefCell<&Context>>,
-        arguments: Vec<String>,
-        meta_info: &InstructionMetaInfo,
-    ) -> CommandResult {
+    fn run(&self, arguments: Vec<String>, meta_info: InstructionMetaInfo) -> CommandResult {
         if arguments.is_empty() {
-            CommandResult::Error("File name not provided.".to_string(), meta_info.clone())
+            CommandResult::Error("File name not provided.".to_string(), meta_info)
         } else {
             let result = io::read_text_file(&arguments[0]);
 
             match result {
                 Ok(text) => CommandResult::Continue(Some(text)),
-                Err(error) => CommandResult::Error(error.to_string(), meta_info.clone()),
+                Err(error) => CommandResult::Error(error.to_string(), meta_info),
             }
         }
     }

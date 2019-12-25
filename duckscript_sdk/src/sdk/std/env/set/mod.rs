@@ -1,6 +1,7 @@
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
 use duckscript::types::instruction::InstructionMetaInfo;
+use std::env;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -16,21 +17,26 @@ impl Command for CommandImpl {
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["set".to_string()]
+        vec!["set_env".to_string()]
     }
 
     fn help(&self) -> String {
         include_str!("help.md").to_string()
     }
 
-    fn run(&self, arguments: Vec<String>, _meta_info: InstructionMetaInfo) -> CommandResult {
-        let output = if arguments.is_empty() {
-            None
+    fn run(&self, arguments: Vec<String>, meta_info: InstructionMetaInfo) -> CommandResult {
+        if arguments.is_empty() {
+            CommandResult::Error(
+                "Missing environment variable name and value.".to_string(),
+                meta_info,
+            )
+        } else if arguments.len() == 1 {
+            CommandResult::Error("Missing environment variable value.".to_string(), meta_info)
         } else {
-            Some(arguments[0].clone())
-        };
+            env::set_var(&arguments[0], &arguments[1]);
 
-        CommandResult::Continue(output)
+            CommandResult::Continue(None)
+        }
     }
 }
 

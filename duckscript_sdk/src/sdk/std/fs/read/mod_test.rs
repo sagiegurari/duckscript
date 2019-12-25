@@ -1,5 +1,6 @@
 use super::*;
 use crate::test;
+use crate::test::CommandValidation;
 
 #[test]
 fn common_functions() {
@@ -16,8 +17,6 @@ fn run_valid() {
     test::validate_command(
         create(""),
         "out = readfile ./Cargo.toml",
-        Some("out".to_string()),
-        Some("duckscript".to_string()),
-        true,
+        CommandValidation::Contains("out".to_string(), "duckscript".to_string()),
     );
 }

@@ -14,9 +14,8 @@ use crate::types::error::{ErrorInfo, ScriptError};
 use crate::types::instruction::{
     Instruction, InstructionMetaInfo, InstructionType, ScriptInstruction,
 };
-use crate::types::runtime::{Context, Runtime};
-use std::cell::RefCell;
-use std::rc::Rc;
+use crate::types::runtime::{Context, Runtime, StateValue};
+use std::collections::HashMap;
 
 /// Executes the provided script with the given context
 pub fn run_script(text: &str, context: Context) -> Result<Context, ScriptError> {
@@ -68,6 +67,7 @@ fn create_runtime(instructions: Vec<Instruction>, context: Context) -> Runtime {
 
 fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, ScriptError> {
     let mut line = start_at;
+    let mut state = runtime.context.state.clone();
 
     loop {
         let instruction_option = match runtime.instructions {
@@ -81,7 +81,8 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
             None => break,
         };
 
-        let (command_result, output_variable) = run_instruction(&mut runtime, instruction_option);
+        let (command_result, output_variable) =
+            run_instruction(&mut runtime.context, &mut state, instruction_option);
 
         match command_result {
             CommandResult::Exit(output) => {
@@ -122,6 +123,8 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
         };
     }
 
+    runtime.context.state = state;
+
     Ok(runtime.context)
 }
 
@@ -138,10 +141,11 @@ fn update_output(runtime: &mut Runtime, output_variable: Option<String>, output:
 }
 
 fn run_instruction(
-    runtime: &mut Runtime,
+    context: &mut Context,
+    state: &mut HashMap<String, StateValue>,
     instruction_option: Option<Instruction>,
 ) -> (CommandResult, Option<String>) {
-    let rc_context = Rc::new(RefCell::new(&runtime.context));
+    let mut commands = &mut context.commands;
 
     let mut output_variable = None;
     let command_result = match instruction_option {
@@ -152,31 +156,32 @@ fn run_instruction(
                 output_variable = script_instruction.output.clone();
 
                 match script_instruction.command {
-                    Some(ref command) => {
-                        let mut command_instance_box = None;
-                        let context = rc_context.clone();
-                        match context.borrow().commands.get(command) {
-                            Some(command_box) => command_instance_box = Some(command_box.clone()),
-                            _ => (),
-                        };
+                    Some(ref command) => match commands.get_for_use(command) {
+                        Some(command_instance) => {
+                            let command_arguments =
+                                bind_command_arguments(&context.variables, &script_instruction);
+                            let meta_info_clone = instruction.meta_info.clone();
 
-                        match command_instance_box {
-                            Some(ref command_instance_box) => {
-                                let command_arguments =
-                                    bind_command_arguments(rc_context.clone(), &script_instruction);
-                                let command_instance = *command_instance_box;
-                                command_instance.run(
-                                    rc_context.clone(),
+                            let command_result = if command_instance.requires_context() {
+                                command_instance.run_with_context(
+                                    state,
+                                    &mut commands,
                                     command_arguments,
-                                    &instruction.meta_info,
+                                    meta_info_clone,
                                 )
-                            }
-                            None => CommandResult::Error(
-                                format!("Command: {} not found.", &command),
-                                instruction.meta_info.clone(),
-                            ),
+                            } else {
+                                command_instance.run(command_arguments, meta_info_clone)
+                            };
+
+                            commands.return_after_usage(command_instance);
+
+                            command_result
                         }
-                    }
+                        None => CommandResult::Error(
+                            format!("Command: {} not found.", &command),
+                            instruction.meta_info.clone(),
+                        ),
+                    },
                     None => CommandResult::Continue(None),
                 }
             }
@@ -188,11 +193,9 @@ fn run_instruction(
 }
 
 fn bind_command_arguments(
-    rc_context: Rc<RefCell<&Context>>,
+    variables: &HashMap<String, String>,
     instruction: &ScriptInstruction,
 ) -> Vec<String> {
-    let context = rc_context.borrow();
-    let variables = &context.variables;
     let mut arguments = vec![];
 
     match instruction.arguments {

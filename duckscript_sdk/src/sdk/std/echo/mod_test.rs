@@ -1,5 +1,6 @@
 use super::*;
 use crate::test;
+use crate::test::CommandValidation;
 
 #[test]
 fn common_functions() {
@@ -11,9 +12,7 @@ fn run_no_args() {
     test::validate_command(
         create(""),
         "out = echo",
-        Some("out".to_string()),
-        Some("0".to_string()),
-        false,
+        CommandValidation::Match("out".to_string(), "0".to_string()),
     );
 }
 
@@ -22,8 +21,6 @@ fn run_multiple_args() {
     test::validate_command(
         create(""),
         "out = echo 1 2 \"3 4\"",
-        Some("out".to_string()),
-        Some("3".to_string()),
-        false,
+        CommandValidation::Match("out".to_string(), "3".to_string()),
     );
 }

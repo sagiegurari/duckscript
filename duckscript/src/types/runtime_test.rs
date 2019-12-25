@@ -2,11 +2,11 @@ use super::*;
 
 #[test]
 fn context_new() {
-    let context = Context::new();
+    let mut context = Context::new();
 
     assert!(context.variables.is_empty());
     assert!(context.state.is_empty());
-    assert!(context.commands.get("test").is_none());
+    assert!(context.commands.get_for_use("test").is_none());
 }
 
 #[test]

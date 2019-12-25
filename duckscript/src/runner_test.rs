@@ -452,9 +452,7 @@ fn bind_command_arguments_mixed() {
         "${bad} is bad".to_string(),
     ]);
 
-    let rc_context = Rc::new(RefCell::new(&context));
-
-    let arguments = bind_command_arguments(rc_context.clone(), &script_instruction);
+    let arguments = bind_command_arguments(&context.variables, &script_instruction);
 
     assert_eq!(
         arguments,
@@ -470,9 +468,10 @@ fn bind_command_arguments_mixed() {
 
 #[test]
 fn run_instruction_none_type() {
-    let mut runtime = create_runtime(vec![], Context::new());
+    let mut context = Context::new();
 
-    let (command_result, output_variable) = run_instruction(&mut runtime, None);
+    let (command_result, output_variable) =
+        run_instruction(&mut context, &mut HashMap::new(), None);
 
     assert!(output_variable.is_none());
     assert!(test::validate_continue_result(&command_result, None));
@@ -485,9 +484,10 @@ fn run_instruction_empty_instruction() {
         instruction_type: InstructionType::Empty,
     };
 
-    let mut runtime = create_runtime(vec![], Context::new());
+    let mut context = Context::new();
 
-    let (command_result, output_variable) = run_instruction(&mut runtime, Some(instruction));
+    let (command_result, output_variable) =
+        run_instruction(&mut context, &mut HashMap::new(), Some(instruction));
 
     assert!(output_variable.is_none());
     assert!(test::validate_continue_result(&command_result, None));
@@ -500,9 +500,10 @@ fn run_instruction_pre_processor_instruction() {
         instruction_type: InstructionType::PreProcess(PreProcessInstruction::new()),
     };
 
-    let mut runtime = create_runtime(vec![], Context::new());
+    let mut context = Context::new();
 
-    let (command_result, output_variable) = run_instruction(&mut runtime, Some(instruction));
+    let (command_result, output_variable) =
+        run_instruction(&mut context, &mut HashMap::new(), Some(instruction));
 
     assert!(output_variable.is_none());
     assert!(test::validate_continue_result(&command_result, None));
@@ -515,9 +516,10 @@ fn run_instruction_script_instruction_no_command() {
         instruction_type: InstructionType::Script(ScriptInstruction::new()),
     };
 
-    let mut runtime = create_runtime(vec![], Context::new());
+    let mut context = Context::new();
 
-    let (command_result, output_variable) = run_instruction(&mut runtime, Some(instruction));
+    let (command_result, output_variable) =
+        run_instruction(&mut context, &mut HashMap::new(), Some(instruction));
 
     assert!(output_variable.is_none());
     assert!(test::validate_continue_result(&command_result, None));
@@ -533,9 +535,10 @@ fn run_instruction_script_instruction_unknown_command() {
         instruction_type: InstructionType::Script(script_instruction),
     };
 
-    let mut runtime = create_runtime(vec![], Context::new());
+    let mut context = Context::new();
 
-    let (command_result, output_variable) = run_instruction(&mut runtime, Some(instruction));
+    let (command_result, output_variable) =
+        run_instruction(&mut context, &mut HashMap::new(), Some(instruction));
 
     assert!(output_variable.is_none());
     assert!(test::validate_error_result(&command_result));
@@ -555,9 +558,8 @@ fn run_instruction_script_instruction_continue_result_no_output() {
     let result = context.commands.set(Box::new(SetCommand {}));
     assert!(result.is_ok());
 
-    let mut runtime = create_runtime(vec![], context);
-
-    let (command_result, output_variable) = run_instruction(&mut runtime, Some(instruction));
+    let (command_result, output_variable) =
+        run_instruction(&mut context, &mut HashMap::new(), Some(instruction));
 
     assert!(output_variable.is_none());
     assert!(test::validate_continue_result(&command_result, None));
@@ -579,9 +581,8 @@ fn run_instruction_script_instruction_continue_result_with_output() {
     let result = context.commands.set(Box::new(SetCommand {}));
     assert!(result.is_ok());
 
-    let mut runtime = create_runtime(vec![], context);
-
-    let (command_result, output_variable) = run_instruction(&mut runtime, Some(instruction));
+    let (command_result, output_variable) =
+        run_instruction(&mut context, &mut HashMap::new(), Some(instruction));
 
     assert_eq!(output_variable.unwrap(), "out");
     assert!(test::validate_continue_result(
@@ -604,9 +605,8 @@ fn run_instruction_script_instruction_exit_result_no_output() {
     let result = context.commands.set(Box::new(ExitCommand {}));
     assert!(result.is_ok());
 
-    let mut runtime = create_runtime(vec![], context);
-
-    let (command_result, output_variable) = run_instruction(&mut runtime, Some(instruction));
+    let (command_result, output_variable) =
+        run_instruction(&mut context, &mut HashMap::new(), Some(instruction));
 
     assert!(output_variable.is_none());
     assert!(test::validate_exit_result(&command_result, None));
@@ -628,9 +628,8 @@ fn run_instruction_script_instruction_exit_result_with_output() {
     let result = context.commands.set(Box::new(ExitCommand {}));
     assert!(result.is_ok());
 
-    let mut runtime = create_runtime(vec![], context);
-
-    let (command_result, output_variable) = run_instruction(&mut runtime, Some(instruction));
+    let (command_result, output_variable) =
+        run_instruction(&mut context, &mut HashMap::new(), Some(instruction));
 
     assert_eq!(output_variable.unwrap(), "out");
     assert!(test::validate_exit_result(
@@ -653,9 +652,8 @@ fn run_instruction_script_instruction_goto_result_no_output() {
     let result = context.commands.set(Box::new(GoToCommand {}));
     assert!(result.is_ok());
 
-    let mut runtime = create_runtime(vec![], context);
-
-    let (command_result, output_variable) = run_instruction(&mut runtime, Some(instruction));
+    let (command_result, output_variable) =
+        run_instruction(&mut context, &mut HashMap::new(), Some(instruction));
 
     assert!(output_variable.is_none());
     assert!(test::validate_goto_result(&command_result, None));
@@ -677,9 +675,8 @@ fn run_instruction_script_instruction_goto_result_with_output() {
     let result = context.commands.set(Box::new(GoToCommand {}));
     assert!(result.is_ok());
 
-    let mut runtime = create_runtime(vec![], context);
-
-    let (command_result, output_variable) = run_instruction(&mut runtime, Some(instruction));
+    let (command_result, output_variable) =
+        run_instruction(&mut context, &mut HashMap::new(), Some(instruction));
 
     assert_eq!(output_variable.unwrap(), "out");
     assert!(test::validate_goto_result(
@@ -702,9 +699,8 @@ fn run_instruction_script_instruction_error_result() {
     let result = context.commands.set(Box::new(ErrorCommand {}));
     assert!(result.is_ok());
 
-    let mut runtime = create_runtime(vec![], context);
-
-    let (command_result, output_variable) = run_instruction(&mut runtime, Some(instruction));
+    let (command_result, output_variable) =
+        run_instruction(&mut context, &mut HashMap::new(), Some(instruction));
 
     assert!(output_variable.is_none());
     assert!(test::validate_error_result(&command_result));

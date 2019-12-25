@@ -1,5 +1,6 @@
 use super::*;
 use crate::test;
+use crate::test::CommandValidation;
 
 #[test]
 fn common_functions() {
@@ -16,8 +17,6 @@ fn run_valid() {
     test::validate_command(
         create("internal"),
         "out = internal::sdkdocs ./target/temp.md",
-        Some("out".to_string()),
-        Some("./target/temp.md".to_string()),
-        false,
+        CommandValidation::Match("out".to_string(), "./target/temp.md".to_string()),
     );
 }
