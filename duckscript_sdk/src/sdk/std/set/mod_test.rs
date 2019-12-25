@@ -8,24 +8,27 @@ fn common_functions() {
 
 #[test]
 fn run_no_arguments() {
-    let command = create("");
-    let context = test::run_command_valid_with_default_context(command, "out = set");
-
-    assert!(context.variables.is_empty());
+    test::validate_command(create(""), "out = set", None, None, false);
 }
 
 #[test]
 fn run_single_argument() {
-    let command = create("");
-    let context = test::run_command_valid_with_default_context(command, "out = set test");
-
-    assert_eq!(context.variables.get("out").unwrap(), "test");
+    test::validate_command(
+        create(""),
+        "out = set test",
+        Some("out".to_string()),
+        Some("test".to_string()),
+        false,
+    );
 }
 
 #[test]
 fn run_multiple_arguments() {
-    let command = create("");
-    let context = test::run_command_valid_with_default_context(command, "out = set test1 test2");
-
-    assert_eq!(context.variables.get("out").unwrap(), "test1");
+    test::validate_command(
+        create(""),
+        "out = set test1 test2",
+        Some("out".to_string()),
+        Some("test1".to_string()),
+        false,
+    );
 }

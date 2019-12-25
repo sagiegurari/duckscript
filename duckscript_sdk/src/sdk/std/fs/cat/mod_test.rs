@@ -8,14 +8,16 @@ fn common_functions() {
 
 #[test]
 fn run_no_file_provided() {
-    let command = create("");
-    test::run_command_and_fail_with_default_context(command, "cat ./Cargo2.toml");
+    test::run_command_and_fail(create(""), "cat ./Cargo2.toml");
 }
 
 #[test]
 fn run_valid() {
-    let command = create("");
-    let context = test::run_command_valid_with_default_context(command, "out = cat ./Cargo.toml");
-
-    assert!(context.variables.get("out").unwrap().contains("duckscript"));
+    test::validate_command(
+        create(""),
+        "out = cat ./Cargo.toml",
+        Some("out".to_string()),
+        Some("duckscript".to_string()),
+        true,
+    );
 }

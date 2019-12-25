@@ -9,36 +9,45 @@ pub(crate) fn test_common_command_functions(command: Box<dyn Command>) {
     command.aliases();
 }
 
-fn run_command(
-    command: Box<dyn Command>,
-    mut context: Context,
-    script: &str,
-) -> Result<Context, ScriptError> {
+fn run_command(command: Box<dyn Command>, script: &str) -> Result<Context, ScriptError> {
+    let mut context = Context::new();
     context.commands.set(command)?;
     runner::run_script(script, context)
 }
 
-fn run_command_with_default_context(
-    command: Box<dyn Command>,
-    script: &str,
-) -> Result<Context, ScriptError> {
-    let context = Context::new();
-
-    run_command(command, context, script)
-}
-
-pub(crate) fn run_command_and_fail_with_default_context(command: Box<dyn Command>, script: &str) {
-    let result = run_command_with_default_context(command, script);
+pub(crate) fn run_command_and_fail(command: Box<dyn Command>, script: &str) {
+    let result = run_command(command, script);
     assert!(result.is_err());
 }
 
-pub(crate) fn run_command_valid_with_default_context(
+pub(crate) fn validate_command(
     command: Box<dyn Command>,
     script: &str,
+    output_key: Option<String>,
+    output_value: Option<String>,
+    contains_value: bool,
 ) -> Context {
-    let result = run_command_with_default_context(command, script);
+    let result = run_command(command, script);
     match result {
-        Ok(context) => context,
+        Ok(context) => {
+            match output_key {
+                Some(ref key) => {
+                    let value_option = context.variables.get(key);
+                    assert!(value_option.is_some());
+
+                    let value = value_option.unwrap();
+
+                    if contains_value {
+                        assert!(value.contains(&output_value.unwrap()));
+                    } else {
+                        assert_eq!(value, &output_value.unwrap());
+                    }
+                }
+                None => assert!(context.variables.is_empty()),
+            };
+
+            context
+        }
         Err(error) => panic!(error.to_string()),
     }
 }

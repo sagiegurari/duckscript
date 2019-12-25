@@ -8,16 +8,22 @@ fn common_functions() {
 
 #[test]
 fn run_no_args() {
-    let command = create("");
-    let context = test::run_command_valid_with_default_context(command, "out = echo");
-
-    assert_eq!(context.variables.get("out").unwrap(), "0");
+    test::validate_command(
+        create(""),
+        "out = echo",
+        Some("out".to_string()),
+        Some("0".to_string()),
+        false,
+    );
 }
 
 #[test]
 fn run_multiple_args() {
-    let command = create("");
-    let context = test::run_command_valid_with_default_context(command, "out = echo 1 2 \"3 4\"");
-
-    assert_eq!(context.variables.get("out").unwrap(), "3");
+    test::validate_command(
+        create(""),
+        "out = echo 1 2 \"3 4\"",
+        Some("out".to_string()),
+        Some("3".to_string()),
+        false,
+    );
 }
