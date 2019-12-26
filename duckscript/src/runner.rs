@@ -81,8 +81,13 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
             break;
         };
 
-        let (command_result, output_variable) =
-            run_instruction(&mut runtime.context, &mut state, &instructions, instruction);
+        let (command_result, output_variable) = run_instruction(
+            &mut runtime.context,
+            &mut state,
+            &instructions,
+            instruction,
+            line,
+        );
 
         match command_result {
             CommandResult::Exit(output) => {
@@ -142,6 +147,7 @@ fn run_instruction(
     state: &mut HashMap<String, StateValue>,
     instructions: &Vec<Instruction>,
     instruction: Instruction,
+    line: usize,
 ) -> (CommandResult, Option<String>) {
     let mut commands = &mut context.commands;
     let mut variables = &mut context.variables;
@@ -169,6 +175,7 @@ fn run_instruction(
                                 &instructions,
                                 &mut commands,
                                 meta_info_clone,
+                                line,
                             )
                         } else {
                             command_instance.run(command_arguments)

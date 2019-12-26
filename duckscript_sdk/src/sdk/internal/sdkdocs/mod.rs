@@ -36,9 +36,11 @@ impl Command for CommandImpl {
         arguments: Vec<String>,
         _state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
+        _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
         commands: &mut Commands,
         _meta_info: InstructionMetaInfo,
+        _line: usize,
     ) -> CommandResult {
         if arguments.is_empty() {
             CommandResult::Error("Documentation output directory not provided.".to_string())

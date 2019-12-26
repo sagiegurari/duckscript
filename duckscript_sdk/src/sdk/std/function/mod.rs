@@ -177,41 +177,35 @@ fn run_call(
     arguments: Vec<String>,
     state: &mut HashMap<String, StateValue>,
     variables: &mut HashMap<String, String>,
-    meta_info: InstructionMetaInfo,
+    output_variable: Option<String>,
+    line: usize,
 ) -> CommandResult {
-    match meta_info.line {
-        Some(line) => {
-            match get_fn_info_from_state(state, &function_name) {
-                Some(fn_info) => {
-                    // define function arguments
-                    let mut index = 0;
-                    for argument in arguments {
-                        let mut key = String::from("$");
-                        key.push_str(&index.to_string());
-                        variables.insert(key, argument);
+    match get_fn_info_from_state(state, &function_name) {
+        Some(fn_info) => {
+            // define function arguments
+            let mut index = 0;
+            for argument in arguments {
+                index = index + 1;
 
-                        index = index + 1;
-                    }
-
-                    // store to call stack
-                    let call_info = CallInfo {
-                        call_line: line,
-                        start_line: fn_info.start,
-                        end_line: fn_info.end,
-                        output_variable: None, //TODO IMLP THIS>>>
-                    };
-                    push_to_call_stack(state, &call_info);
-
-                    CommandResult::GoTo(None, GoToValue::Line(fn_info.start + 1))
-                }
-                None => CommandResult::Error(
-                    format!("Function: {} not found.", &function_name).to_string(),
-                ),
+                let mut key = String::from("$");
+                key.push_str(&index.to_string());
+                variables.insert(key, argument);
             }
+
+            // store to call stack
+            let call_info = CallInfo {
+                call_line: line,
+                start_line: fn_info.start,
+                end_line: fn_info.end,
+                output_variable,
+            };
+            push_to_call_stack(state, &call_info);
+
+            CommandResult::GoTo(None, GoToValue::Line(fn_info.start + 1))
         }
-        None => CommandResult::Error(
-            "Missing function call line number, meta info is partial.".to_string(),
-        ),
+        None => {
+            CommandResult::Error(format!("Function: {} not found.", &function_name).to_string())
+        }
     }
 }
 
@@ -241,121 +235,116 @@ impl Command for FunctionCommand {
         arguments: Vec<String>,
         state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
+        _output_variable: Option<String>,
         instructions: &Vec<Instruction>,
         commands: &mut Commands,
-        meta_info: InstructionMetaInfo,
+        _meta_info: InstructionMetaInfo,
+        line: usize,
     ) -> CommandResult {
         if arguments.is_empty() {
             CommandResult::Error("Missing function name.".to_string())
         } else {
-            match meta_info.line {
-                Some(fn_start_line) => {
-                    let function_name = arguments[0].clone();
-                    match get_fn_info_from_state(state, &function_name) {
-                        Some(fn_info) => {
-                            if fn_info.start != fn_start_line {
-                                CommandResult::Error(
-                                    format!(
-                                        "Function: {} already defined at: {} to: {}",
-                                        &fn_info.name, fn_info.start, fn_info.end
-                                    )
-                                    .to_string(),
-                                )
-                            } else {
-                                CommandResult::GoTo(None, GoToValue::Line(fn_info.end + 1))
-                            }
-                        }
-                        None => {
-                            let mut start_names = self.aliases();
-                            start_names.push(self.name());
-                            let end_command = EndFunctionCommand {
-                                package: self.package.clone(),
-                            };
-                            let mut end_names = end_command.aliases();
-                            end_names.push(end_command.name());
-
-                            match instruction_query::find_command(
-                                &instructions,
-                                &end_names,
-                                Some(fn_start_line + 1),
-                                None,
-                                &start_names,
-                            ) {
-                                Ok(fn_end_line_option) => match fn_end_line_option {
-                                    Some(fn_end_line) => {
-                                        let fn_info = FunctionMetaInfo {
-                                            name: function_name.clone(),
-                                            start: fn_start_line,
-                                            end: fn_end_line,
-                                        };
-
-                                        match store_fn_info_in_state(state, &fn_info) {
-                                            Ok(_) => {
-                                                pub(crate) struct CallFunctionCommand {
-                                                    name: String,
-                                                }
-
-                                                impl Command for CallFunctionCommand {
-                                                    fn name(&self) -> String {
-                                                        self.name.clone()
-                                                    }
-
-                                                    fn help(&self) -> String {
-                                                        "".to_string()
-                                                    }
-
-                                                    fn requires_context(&self) -> bool {
-                                                        true
-                                                    }
-
-                                                    fn run_with_context(
-                                                        &self,
-                                                        arguments: Vec<String>,
-                                                        state: &mut HashMap<String, StateValue>,
-                                                        variables: &mut HashMap<String, String>,
-                                                        _instructions: &Vec<Instruction>,
-                                                        _commands: &mut Commands,
-                                                        meta_info: InstructionMetaInfo,
-                                                    ) -> CommandResult
-                                                    {
-                                                        run_call(
-                                                            self.name(),
-                                                            arguments,
-                                                            state,
-                                                            variables,
-                                                            meta_info,
-                                                        )
-                                                    }
-                                                }
-
-                                                match commands.set(Box::new(CallFunctionCommand {
-                                                    name: function_name.clone(),
-                                                })) {
-                                                    Ok(_) => CommandResult::GoTo(
-                                                        None,
-                                                        GoToValue::Line(fn_end_line + 1),
-                                                    ),
-                                                    Err(error) => {
-                                                        CommandResult::Error(error.to_string())
-                                                    }
-                                                }
-                                            }
-                                            Err(error) => CommandResult::Error(error),
-                                        }
-                                    }
-                                    None => CommandResult::Error(
-                                        format!("Function: {} end not found.", &function_name)
-                                            .to_string(),
-                                    ),
-                                },
-                                Err(error) => CommandResult::Error(error),
-                            }
-                        }
+            let function_name = arguments[0].clone();
+            match get_fn_info_from_state(state, &function_name) {
+                Some(fn_info) => {
+                    if fn_info.start != line {
+                        CommandResult::Error(
+                            format!(
+                                "Function: {} already defined at: {} to: {}",
+                                &fn_info.name, fn_info.start, fn_info.end
+                            )
+                            .to_string(),
+                        )
+                    } else {
+                        CommandResult::GoTo(None, GoToValue::Line(fn_info.end + 1))
                     }
                 }
-                None => CommandResult::Error(
-                    "Missing function line number, meta info is partial.".to_string(),
-                ),
+                None => {
+                    let mut start_names = self.aliases();
+                    start_names.push(self.name());
+                    let end_command = EndFunctionCommand {
+                        package: self.package.clone(),
+                    };
+                    let mut end_names = end_command.aliases();
+                    end_names.push(end_command.name());
+
+                    match instruction_query::find_command(
+                        &instructions,
+                        &end_names,
+                        Some(line + 1),
+                        None,
+                        &start_names,
+                    ) {
+                        Ok(fn_end_line_option) => match fn_end_line_option {
+                            Some(fn_end_line) => {
+                                let fn_info = FunctionMetaInfo {
+                                    name: function_name.clone(),
+                                    start: line,
+                                    end: fn_end_line,
+                                };
+
+                                match store_fn_info_in_state(state, &fn_info) {
+                                    Ok(_) => {
+                                        pub(crate) struct CallFunctionCommand {
+                                            name: String,
+                                        }
+
+                                        impl Command for CallFunctionCommand {
+                                            fn name(&self) -> String {
+                                                self.name.clone()
+                                            }
+
+                                            fn help(&self) -> String {
+                                                "".to_string()
+                                            }
+
+                                            fn requires_context(&self) -> bool {
+                                                true
+                                            }
+
+                                            fn run_with_context(
+                                                &self,
+                                                arguments: Vec<String>,
+                                                state: &mut HashMap<String, StateValue>,
+                                                variables: &mut HashMap<String, String>,
+                                                output_variable: Option<String>,
+                                                _instructions: &Vec<Instruction>,
+                                                _commands: &mut Commands,
+                                                _meta_info: InstructionMetaInfo,
+                                                line: usize,
+                                            ) -> CommandResult
+                                            {
+                                                run_call(
+                                                    self.name(),
+                                                    arguments,
+                                                    state,
+                                                    variables,
+                                                    output_variable,
+                                                    line,
+                                                )
+                                            }
+                                        }
+
+                                        match commands.set(Box::new(CallFunctionCommand {
+                                            name: function_name.clone(),
+                                        })) {
+                                            Ok(_) => CommandResult::GoTo(
+                                                None,
+                                                GoToValue::Line(fn_end_line + 1),
+                                            ),
+                                            Err(error) => CommandResult::Error(error.to_string()),
+                                        }
+                                    }
+                                    Err(error) => CommandResult::Error(error),
+                                }
+                            }
+                            None => CommandResult::Error(
+                                format!("Function: {} end not found.", &function_name).to_string(),
+                            ),
+                        },
+                        Err(error) => CommandResult::Error(error),
+                    }
+                }
             }
         }
     }
@@ -387,23 +376,22 @@ impl Command for EndFunctionCommand {
         _arguments: Vec<String>,
         state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
+        _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
-        meta_info: InstructionMetaInfo,
+        _meta_info: InstructionMetaInfo,
+        line: usize,
     ) -> CommandResult {
-        match meta_info.line {
-            Some(line) => match pop_from_call_stack(state) {
-                Some(call_info) => {
-                    if call_info.end_line == line {
-                        let next_line = call_info.call_line + 1;
-                        CommandResult::GoTo(None, GoToValue::Line(next_line))
-                    } else {
-                        push_to_call_stack(state, &call_info);
-                        CommandResult::Continue(None)
-                    }
+        match pop_from_call_stack(state) {
+            Some(call_info) => {
+                if call_info.end_line == line {
+                    let next_line = call_info.call_line + 1;
+                    CommandResult::GoTo(None, GoToValue::Line(next_line))
+                } else {
+                    push_to_call_stack(state, &call_info);
+                    CommandResult::Continue(None)
                 }
-                None => CommandResult::Continue(None),
-            },
+            }
             None => CommandResult::Continue(None),
         }
     }
@@ -432,26 +420,36 @@ impl Command for ReturnCommand {
 
     fn run_with_context(
         &self,
-        _arguments: Vec<String>,
+        arguments: Vec<String>,
         state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
+        variables: &mut HashMap<String, String>,
+        _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
-        meta_info: InstructionMetaInfo,
+        _meta_info: InstructionMetaInfo,
+        line: usize,
     ) -> CommandResult {
-        match meta_info.line {
-            Some(line) => match pop_from_call_stack(state) {
-                Some(call_info) => {
-                    if call_info.start_line < line && call_info.end_line > line {
-                        let next_line = call_info.call_line + 1;
-                        CommandResult::GoTo(None, GoToValue::Line(next_line))
-                    } else {
-                        push_to_call_stack(state, &call_info);
-                        CommandResult::Continue(None)
-                    }
+        match pop_from_call_stack(state) {
+            Some(call_info) => {
+                if call_info.start_line < line && call_info.end_line > line {
+                    match call_info.output_variable {
+                        Some(name) => {
+                            if arguments.is_empty() {
+                                variables.remove(&name);
+                            } else {
+                                variables.insert(name, arguments[0].clone());
+                            }
+                        }
+                        None => (),
+                    };
+
+                    let next_line = call_info.call_line + 1;
+                    CommandResult::GoTo(None, GoToValue::Line(next_line))
+                } else {
+                    push_to_call_stack(state, &call_info);
+                    CommandResult::Continue(None)
                 }
-                None => CommandResult::Continue(None),
-            },
+            }
             None => CommandResult::Continue(None),
         }
     }

@@ -568,7 +568,7 @@ fn run_instruction_empty_instruction() {
     let mut context = Context::new();
 
     let (command_result, output_variable) =
-        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction);
+        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction, 0);
 
     assert!(output_variable.is_none());
     assert!(test::validate_continue_result(&command_result, None));
@@ -584,7 +584,7 @@ fn run_instruction_pre_processor_instruction() {
     let mut context = Context::new();
 
     let (command_result, output_variable) =
-        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction);
+        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction, 0);
 
     assert!(output_variable.is_none());
     assert!(test::validate_continue_result(&command_result, None));
@@ -600,7 +600,7 @@ fn run_instruction_script_instruction_no_command() {
     let mut context = Context::new();
 
     let (command_result, output_variable) =
-        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction);
+        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction, 0);
 
     assert!(output_variable.is_none());
     assert!(test::validate_continue_result(&command_result, None));
@@ -619,7 +619,7 @@ fn run_instruction_script_instruction_unknown_command() {
     let mut context = Context::new();
 
     let (command_result, output_variable) =
-        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction);
+        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction, 0);
 
     assert!(output_variable.is_none());
     assert!(test::validate_error_result(&command_result));
@@ -640,7 +640,7 @@ fn run_instruction_script_instruction_continue_result_no_output() {
     assert!(result.is_ok());
 
     let (command_result, output_variable) =
-        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction);
+        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction, 0);
 
     assert!(output_variable.is_none());
     assert!(test::validate_continue_result(&command_result, None));
@@ -663,7 +663,7 @@ fn run_instruction_script_instruction_continue_result_with_output() {
     assert!(result.is_ok());
 
     let (command_result, output_variable) =
-        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction);
+        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction, 0);
 
     assert_eq!(output_variable.unwrap(), "out");
     assert!(test::validate_continue_result(
@@ -687,7 +687,7 @@ fn run_instruction_script_instruction_exit_result_no_output() {
     assert!(result.is_ok());
 
     let (command_result, output_variable) =
-        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction);
+        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction, 0);
 
     assert!(output_variable.is_none());
     assert!(test::validate_exit_result(&command_result, None));
@@ -710,7 +710,7 @@ fn run_instruction_script_instruction_exit_result_with_output() {
     assert!(result.is_ok());
 
     let (command_result, output_variable) =
-        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction);
+        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction, 0);
 
     assert_eq!(output_variable.unwrap(), "out");
     assert!(test::validate_exit_result(
@@ -734,7 +734,7 @@ fn run_instruction_script_instruction_goto_label_result_no_output() {
     assert!(result.is_ok());
 
     let (command_result, output_variable) =
-        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction);
+        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction, 0);
 
     assert!(output_variable.is_none());
     assert!(test::validate_goto_label_result(&command_result, None));
@@ -757,7 +757,7 @@ fn run_instruction_script_instruction_goto_label_result_with_output() {
     assert!(result.is_ok());
 
     let (command_result, output_variable) =
-        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction);
+        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction, 0);
 
     assert_eq!(output_variable.unwrap(), "out");
     assert!(test::validate_goto_label_result(
@@ -781,7 +781,7 @@ fn run_instruction_script_instruction_goto_line_result_no_output() {
     assert!(result.is_ok());
 
     let (command_result, output_variable) =
-        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction);
+        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction, 0);
 
     assert!(output_variable.is_none());
     assert!(test::validate_goto_line_result(&command_result, None));
@@ -804,7 +804,7 @@ fn run_instruction_script_instruction_goto_line_result_with_output() {
     assert!(result.is_ok());
 
     let (command_result, output_variable) =
-        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction);
+        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction, 0);
 
     assert_eq!(output_variable.unwrap(), "out");
     assert!(test::validate_goto_line_result(
@@ -828,7 +828,7 @@ fn run_instruction_script_instruction_error_result() {
     assert!(result.is_ok());
 
     let (command_result, output_variable) =
-        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction);
+        run_instruction(&mut context, &mut HashMap::new(), &vec![], instruction, 0);
 
     assert!(output_variable.is_none());
     assert!(test::validate_error_result(&command_result));

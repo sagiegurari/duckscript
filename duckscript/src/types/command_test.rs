@@ -72,6 +72,7 @@ fn command_default_run_with_context() {
         &vec![],
         &mut context.commands,
         InstructionMetaInfo::new(),
+        0,
     );
 
     test::validate_continue_result(&result, None);

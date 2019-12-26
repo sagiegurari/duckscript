@@ -69,6 +69,7 @@ pub trait Command {
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         _meta_info: InstructionMetaInfo,
+        _line: usize,
     ) -> CommandResult {
         CommandResult::Error(format!("Not implemented for command: {}", &self.name()).to_string())
     }
