@@ -144,6 +144,7 @@ fn run_instruction(
     instruction: Instruction,
 ) -> (CommandResult, Option<String>) {
     let mut commands = &mut context.commands;
+    let mut variables = &mut context.variables;
 
     let mut output_variable = None;
     let command_result = match instruction.instruction_type {
@@ -156,15 +157,16 @@ fn run_instruction(
                 Some(ref command) => match commands.get_for_use(command) {
                     Some(command_instance) => {
                         let command_arguments =
-                            bind_command_arguments(&context.variables, &script_instruction);
+                            bind_command_arguments(&variables, &script_instruction);
 
                         let command_result = if command_instance.requires_context() {
                             let meta_info_clone = instruction.meta_info.clone();
                             command_instance.run_with_context(
+                                command_arguments,
                                 state,
+                                &mut variables,
                                 &instructions,
                                 &mut commands,
-                                command_arguments,
                                 meta_info_clone,
                             )
                         } else {

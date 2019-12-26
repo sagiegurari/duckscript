@@ -62,10 +62,11 @@ pub trait Command {
     /// Run the instruction with access to the runtime context
     fn run_with_context(
         &self,
+        _arguments: Vec<String>,
         _state: &mut HashMap<String, StateValue>,
+        _variables: &mut HashMap<String, String>,
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
-        _arguments: Vec<String>,
         _meta_info: InstructionMetaInfo,
     ) -> CommandResult {
         CommandResult::Error(format!("Not implemented for command: {}", &self.name()).to_string())

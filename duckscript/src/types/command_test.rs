@@ -65,10 +65,11 @@ fn command_default_run_with_context() {
     let mut context = Context::new();
     let command = InnerCommand {};
     let result = command.run_with_context(
+        vec![],
+        &mut HashMap::new(),
         &mut HashMap::new(),
         &vec![],
         &mut context.commands,
-        vec![],
         InstructionMetaInfo::new(),
     );
 

@@ -33,10 +33,11 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
+        arguments: Vec<String>,
         _state: &mut HashMap<String, StateValue>,
+        _variables: &mut HashMap<String, String>,
         _instructions: &Vec<Instruction>,
         commands: &mut Commands,
-        arguments: Vec<String>,
         _meta_info: InstructionMetaInfo,
     ) -> CommandResult {
         if arguments.is_empty() {

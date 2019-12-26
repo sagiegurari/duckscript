@@ -1,4 +1,5 @@
 use duckscript::types::instruction::{Instruction, InstructionType};
+use std::cmp::min;
 
 #[cfg(test)]
 #[path = "./instruction_query_test.rs"]
@@ -16,33 +17,31 @@ pub(crate) fn find_command(
         None => 0,
     };
     let end_index = match end {
-        Some(value) => {
-            if value > instructions.len() {
-                instructions.len()
-            } else {
-                value
-            }
-        }
+        Some(value) => min(instructions.len(), value),
         None => instructions.len(),
     };
 
     for line in start_index..end_index {
         let instruction = &instructions[line];
 
-        match instruction.instruction_type {
-            InstructionType::Script(ref script_instruction) => match script_instruction.command {
-                Some(ref command) => {
-                    if name_or_alias.contains(command) {
-                        return Ok(Some(line));
-                    } else if error_on_command.contains(command) {
-                        return Err(command.to_string());
-                    }
+        match instruction.meta_info.line {
+            Some(line) => match instruction.instruction_type {
+                InstructionType::Script(ref script_instruction) => match script_instruction.command
+                {
+                    Some(ref command) => {
+                        if name_or_alias.contains(command) {
+                            return Ok(Some(line));
+                        } else if error_on_command.contains(command) {
+                            return Err(command.to_string());
+                        }
 
-                    ()
-                }
-                None => (),
+                        ()
+                    }
+                    None => (),
+                },
+                _ => (),
             },
-            _ => (),
+            None => (),
         }
     }
 
