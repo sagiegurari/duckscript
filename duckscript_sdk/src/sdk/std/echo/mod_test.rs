@@ -9,8 +9,8 @@ fn common_functions() {
 
 #[test]
 fn run_no_args() {
-    test::validate_command(
-        create(""),
+    test::run_script_and_validate(
+        vec![create("")],
         "out = echo",
         CommandValidation::Match("out".to_string(), "0".to_string()),
     );
@@ -18,8 +18,8 @@ fn run_no_args() {
 
 #[test]
 fn run_multiple_args() {
-    test::validate_command(
-        create(""),
+    test::run_script_and_validate(
+        vec![create("")],
         "out = echo 1 2 \"3 4\"",
         CommandValidation::Match("out".to_string(), "3".to_string()),
     );

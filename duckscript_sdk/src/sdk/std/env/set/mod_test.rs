@@ -9,19 +9,19 @@ fn common_functions() {
 
 #[test]
 fn run_no_arguments() {
-    test::run_command_and_fail(create(""), "set_env");
+    test::run_script_and_fail(vec![create("")], "set_env");
 }
 
 #[test]
 fn run_single_argument() {
-    test::run_command_and_fail(create(""), "set_env key");
+    test::run_script_and_fail(vec![create("")], "set_env key");
 }
 
 #[test]
 fn run_set() {
     env::remove_var("DUCKSCRIPT_SDK_SET_ENV");
-    test::validate_command(
-        create(""),
+    test::run_script_and_validate(
+        vec![create("")],
         "set_env DUCKSCRIPT_SDK_SET_ENV test",
         CommandValidation::None,
     );

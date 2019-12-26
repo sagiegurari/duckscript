@@ -9,14 +9,14 @@ fn common_functions() {
 
 #[test]
 fn run_no_arguments() {
-    test::run_command_and_fail(create(""), "out = get_env");
+    test::run_script_and_fail(vec![create("")], "out = get_env");
 }
 
 #[test]
 fn run_env_not_exists() {
     env::remove_var("DUCKSCRIPT_SDK_GET_ENV_NOT_EXISTS");
-    test::validate_command(
-        create(""),
+    test::run_script_and_validate(
+        vec![create("")],
         "out = get_env DUCKSCRIPT_SDK_GET_ENV_NOT_EXISTS",
         CommandValidation::None,
     );
@@ -25,8 +25,8 @@ fn run_env_not_exists() {
 #[test]
 fn run_env_exists() {
     env::set_var("DUCKSCRIPT_SDK_GET_ENV_EXISTS", "test");
-    test::validate_command(
-        create(""),
+    test::run_script_and_validate(
+        vec![create("")],
         "out = get_env DUCKSCRIPT_SDK_GET_ENV_EXISTS",
         CommandValidation::Match("out".to_string(), "test".to_string()),
     );

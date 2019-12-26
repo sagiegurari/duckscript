@@ -15,23 +15,25 @@ pub(crate) fn test_common_command_functions(command: Box<dyn Command>) {
     command.aliases();
 }
 
-fn run_command(command: Box<dyn Command>, script: &str) -> Result<Context, ScriptError> {
+fn run_command(commands: Vec<Box<dyn Command>>, script: &str) -> Result<Context, ScriptError> {
     let mut context = Context::new();
-    context.commands.set(command)?;
+    for command in commands {
+        context.commands.set(command)?;
+    }
     runner::run_script(script, context)
 }
 
-pub(crate) fn run_command_and_fail(command: Box<dyn Command>, script: &str) {
-    let result = run_command(command, script);
+pub(crate) fn run_script_and_fail(commands: Vec<Box<dyn Command>>, script: &str) {
+    let result = run_command(commands, script);
     assert!(result.is_err());
 }
 
-pub(crate) fn validate_command(
-    command: Box<dyn Command>,
+pub(crate) fn run_script_and_validate(
+    commands: Vec<Box<dyn Command>>,
     script: &str,
     validation: CommandValidation,
 ) -> Context {
-    let result = run_command(command, script);
+    let result = run_command(commands, script);
     match result {
         Ok(context) => {
             match validation {

@@ -9,13 +9,13 @@ fn common_functions() {
 
 #[test]
 fn run_no_arguments() {
-    test::validate_command(create(""), "out = set", CommandValidation::None);
+    test::run_script_and_validate(vec![create("")], "out = set", CommandValidation::None);
 }
 
 #[test]
 fn run_single_argument() {
-    test::validate_command(
-        create(""),
+    test::run_script_and_validate(
+        vec![create("")],
         "out = set test",
         CommandValidation::Match("out".to_string(), "test".to_string()),
     );
@@ -23,8 +23,8 @@ fn run_single_argument() {
 
 #[test]
 fn run_multiple_arguments() {
-    test::validate_command(
-        create(""),
+    test::run_script_and_validate(
+        vec![create("")],
         "out = set test1 test2",
         CommandValidation::Match("out".to_string(), "test1".to_string()),
     );

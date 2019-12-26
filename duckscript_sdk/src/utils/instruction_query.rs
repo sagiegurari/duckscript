@@ -12,34 +12,39 @@ pub(crate) fn find_command(
     end: Option<usize>,
     error_on_command: &Vec<String>,
 ) -> Result<Option<usize>, String> {
-    let start_index = match start {
-        Some(value) => value,
-        None => 0,
-    };
-    let end_index = match end {
-        Some(value) => min(instructions.len(), value),
-        None => instructions.len(),
-    };
+    if name_or_alias.is_empty() {
+        Err("No command names/aliases provided for search.".to_string())
+    } else {
+        let start_index = match start {
+            Some(value) => value,
+            None => 0,
+        };
+        let end_index = match end {
+            Some(value) => min(instructions.len(), value),
+            None => instructions.len(),
+        };
 
-    for line in start_index..end_index {
-        let instruction = &instructions[line];
+        for line in start_index..end_index {
+            let instruction = &instructions[line];
 
-        match instruction.instruction_type {
-            InstructionType::Script(ref script_instruction) => match script_instruction.command {
-                Some(ref command) => {
-                    if name_or_alias.contains(command) {
-                        return Ok(Some(line));
-                    } else if error_on_command.contains(command) {
-                        return Err(command.to_string());
+            match instruction.instruction_type {
+                InstructionType::Script(ref script_instruction) => match script_instruction.command
+                {
+                    Some(ref command) => {
+                        if name_or_alias.contains(command) {
+                            return Ok(Some(line));
+                        } else if error_on_command.contains(command) {
+                            return Err(command.to_string());
+                        }
+
+                        ()
                     }
-
-                    ()
-                }
-                None => (),
-            },
-            _ => (),
+                    None => (),
+                },
+                _ => (),
+            }
         }
-    }
 
-    Ok(None)
+        Ok(None)
+    }
 }

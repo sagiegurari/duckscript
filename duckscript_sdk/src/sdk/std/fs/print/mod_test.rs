@@ -9,13 +9,13 @@ fn common_functions() {
 
 #[test]
 fn run_no_file_provided() {
-    test::run_command_and_fail(create(""), "cat ./Cargo2.toml");
+    test::run_script_and_fail(vec![create("")], "cat ./Cargo2.toml");
 }
 
 #[test]
 fn run_valid() {
-    test::validate_command(
-        create(""),
+    test::run_script_and_validate(
+        vec![create("")],
         "out = cat ./Cargo.toml",
         CommandValidation::Contains("out".to_string(), "duckscript".to_string()),
     );
