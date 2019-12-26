@@ -65,6 +65,7 @@ pub trait Command {
         _arguments: Vec<String>,
         _state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
+        _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         _meta_info: InstructionMetaInfo,

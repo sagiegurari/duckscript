@@ -68,6 +68,7 @@ fn command_default_run_with_context() {
         vec![],
         &mut HashMap::new(),
         &mut HashMap::new(),
+        None,
         &vec![],
         &mut context.commands,
         InstructionMetaInfo::new(),

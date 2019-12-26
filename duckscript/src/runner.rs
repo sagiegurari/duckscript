@@ -165,6 +165,7 @@ fn run_instruction(
                                 command_arguments,
                                 state,
                                 &mut variables,
+                                output_variable.clone(),
                                 &instructions,
                                 &mut commands,
                                 meta_info_clone,
