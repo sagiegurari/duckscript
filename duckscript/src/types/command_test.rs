@@ -66,6 +66,7 @@ fn command_default_run_with_context() {
     let command = InnerCommand {};
     let result = command.run_with_context(
         &mut HashMap::new(),
+        &vec![],
         &mut context.commands,
         vec![],
         InstructionMetaInfo::new(),

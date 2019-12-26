@@ -8,7 +8,7 @@
 mod command_test;
 
 use crate::types::error::{ErrorInfo, ScriptError};
-use crate::types::instruction::InstructionMetaInfo;
+use crate::types::instruction::{Instruction, InstructionMetaInfo};
 use crate::types::runtime::StateValue;
 use std::collections::HashMap;
 
@@ -63,6 +63,7 @@ pub trait Command {
     fn run_with_context(
         &self,
         _state: &mut HashMap<String, StateValue>,
+        _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         _arguments: Vec<String>,
         _meta_info: InstructionMetaInfo,

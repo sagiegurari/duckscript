@@ -18,6 +18,8 @@ pub enum StateValue {
     Boolean(bool),
     /// signed number
     Number(isize),
+    /// unsigned number
+    UnsignedNumber(usize),
     /// textual value
     String(String),
     /// list

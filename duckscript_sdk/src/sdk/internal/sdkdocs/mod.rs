@@ -2,7 +2,7 @@ use crate::utils::io;
 use crate::utils::pckg;
 use duckscript::types::command::Commands;
 use duckscript::types::command::{Command, CommandResult};
-use duckscript::types::instruction::InstructionMetaInfo;
+use duckscript::types::instruction::{Instruction, InstructionMetaInfo};
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
 
@@ -34,6 +34,7 @@ impl Command for CommandImpl {
     fn run_with_context(
         &self,
         _state: &mut HashMap<String, StateValue>,
+        _instructions: &Vec<Instruction>,
         commands: &mut Commands,
         arguments: Vec<String>,
         _meta_info: InstructionMetaInfo,

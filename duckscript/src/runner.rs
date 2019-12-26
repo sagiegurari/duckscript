@@ -67,26 +67,26 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
     let mut line = start_at;
     let mut state = runtime.context.state.clone();
 
+    let instructions = match runtime.instructions {
+        Some(ref instructions) => instructions,
+        None => return Ok(runtime.context),
+    };
+
     loop {
-        let (instruction, meta_info) = match runtime.instructions {
-            Some(ref instructions) => {
-                if instructions.len() > line {
-                    let instruction = instructions[line].clone();
-                    let meta_info = instruction.meta_info.clone();
-                    (instruction, meta_info)
-                } else {
-                    break;
-                }
-            }
-            None => break,
+        let (instruction, meta_info) = if instructions.len() > line {
+            let instruction = instructions[line].clone();
+            let meta_info = instruction.meta_info.clone();
+            (instruction, meta_info)
+        } else {
+            break;
         };
 
         let (command_result, output_variable) =
-            run_instruction(&mut runtime.context, &mut state, instruction);
+            run_instruction(&mut runtime.context, &mut state, &instructions, instruction);
 
         match command_result {
             CommandResult::Exit(output) => {
-                update_output(&mut runtime, output_variable, output);
+                update_output(&mut runtime.context, output_variable, output);
 
                 break;
             }
@@ -96,14 +96,14 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
                 });
             }
             CommandResult::Continue(output) => {
-                update_output(&mut runtime, output_variable, output);
+                update_output(&mut runtime.context, output_variable, output);
 
                 line = line + 1;
 
                 ()
             }
             CommandResult::GoTo(output, goto_value) => {
-                update_output(&mut runtime, output_variable, output);
+                update_output(&mut runtime.context, output_variable, output);
 
                 match goto_value {
                     GoToValue::Label(label) => match runtime.label_to_line.get(&label) {
@@ -128,14 +128,11 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
     Ok(runtime.context)
 }
 
-fn update_output(runtime: &mut Runtime, output_variable: Option<String>, output: Option<String>) {
+fn update_output(context: &mut Context, output_variable: Option<String>, output: Option<String>) {
     if output_variable.is_some() {
         match output {
-            Some(value) => runtime
-                .context
-                .variables
-                .insert(output_variable.unwrap(), value),
-            None => runtime.context.variables.remove(&output_variable.unwrap()),
+            Some(value) => context.variables.insert(output_variable.unwrap(), value),
+            None => context.variables.remove(&output_variable.unwrap()),
         };
     }
 }
@@ -143,6 +140,7 @@ fn update_output(runtime: &mut Runtime, output_variable: Option<String>, output:
 fn run_instruction(
     context: &mut Context,
     state: &mut HashMap<String, StateValue>,
+    instructions: &Vec<Instruction>,
     instruction: Instruction,
 ) -> (CommandResult, Option<String>) {
     let mut commands = &mut context.commands;
@@ -164,6 +162,7 @@ fn run_instruction(
                             let meta_info_clone = instruction.meta_info.clone();
                             command_instance.run_with_context(
                                 state,
+                                &instructions,
                                 &mut commands,
                                 command_arguments,
                                 meta_info_clone,
