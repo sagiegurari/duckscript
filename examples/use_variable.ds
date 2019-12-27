@@ -1,0 +1,8 @@
+
+out = set "hello world"
+
+# This will print: "The out variable holds the value: hello world"
+echo The out variable holds the value: ${out}
+
+# This will print: "To use the out variable just write: ${out}"
+echo To use the out variable just write: \${out}

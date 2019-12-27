@@ -1,6 +1,7 @@
 # Table of Contents
 * [sdk::Echo](#sdk__Echo)
 * [sdk::Function](#sdk__Function)
+* [sdk::GoTo](#sdk__GoTo)
 * [sdk::Set](#sdk__Set)
 * [sdk::env::Get](#sdk__env__Get)
 * [sdk::env::Set](#sdk__env__Set)
@@ -20,7 +21,6 @@ After all input is done, an end of line will be printed as well.
 #### Parameters
 
 Any number of arguments may be provided and will be printed.
-
 
 #### Return Value
 
@@ -150,6 +150,36 @@ echo ${output}
 
 #### Aliases:
 function, fn
+
+<a name="sdk__GoTo"></a>
+## sdk::GoTo
+```sh
+goto :label
+```
+
+The goto command enables you to jump to any position in the script, if that position has a label value.
+
+#### Parameters
+
+A single valid label value.
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+goto :good
+
+echo bad
+
+:good echo good
+```
+
+
+#### Aliases:
+goto
 
 <a name="sdk__Set"></a>
 ## sdk::Set

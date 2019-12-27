@@ -2,6 +2,7 @@ mod echo;
 mod env;
 mod fs;
 mod function;
+mod goto;
 mod set;
 
 use duckscript::types::command::Commands;
@@ -11,6 +12,7 @@ static PACKAGE: &str = "sdk";
 
 pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     commands.set(echo::create(PACKAGE))?;
+    commands.set(goto::create(PACKAGE))?;
     commands.set(set::create(PACKAGE))?;
 
     env::load(commands, PACKAGE)?;

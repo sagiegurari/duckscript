@@ -247,15 +247,37 @@ fn parse_next_value(
         let mut using_quotes = false;
         let mut in_control = false;
         let mut found_end = false;
+        let mut found_variable_prefix = false;
         for _i in index..end_index {
             let character = line_text[index];
             index = index + 1;
 
             if in_argument {
                 if in_control {
-                    if character == '\\' || character == '"' {
+                    if found_variable_prefix {
+                        if character == '{' {
+                            argument.push_str("\\${");
+                            in_control = false;
+                            found_variable_prefix = false;
+                        } else {
+                            return Err(ScriptError {
+                                info: ErrorInfo::ControlWithoutValidValue(meta_info.clone()),
+                            });
+                        }
+                    } else if character == '\\' || character == '"' {
                         argument.push(character);
                         in_control = false;
+                    } else if character == 'n' {
+                        argument.push('\n');
+                        in_control = false;
+                    } else if character == 'r' {
+                        argument.push('\r');
+                        in_control = false;
+                    } else if character == 't' {
+                        argument.push('\t');
+                        in_control = false;
+                    } else if character == '$' {
+                        found_variable_prefix = true;
                     } else {
                         return Err(ScriptError {
                             info: ErrorInfo::ControlWithoutValidValue(meta_info.clone()),
@@ -264,6 +286,7 @@ fn parse_next_value(
                 } else if character == '\\' {
                     if allow_control {
                         in_control = true;
+                        found_variable_prefix = false;
                     } else {
                         return Err(ScriptError {
                             info: ErrorInfo::InvalidControlLocation(meta_info.clone()),

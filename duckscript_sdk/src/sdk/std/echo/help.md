@@ -9,7 +9,6 @@ After all input is done, an end of line will be printed as well.
 
 Any number of arguments may be provided and will be printed.
 
-
 #### Return Value
 
 The amount of arguments printed.

@@ -123,3 +123,44 @@ fn expand_by_wrapper_no_suffix_single() {
 
     assert_eq!("${NO_SUFFIX_SINGLE", output);
 }
+
+#[test]
+fn expand_by_wrapper_with_escape() {
+    let mut variables = HashMap::new();
+    variables.insert("FOUND1".to_string(), "test1".to_string());
+    variables.insert("FOUND2".to_string(), "test2".to_string());
+    variables.insert("FOUND3".to_string(), "test3".to_string());
+    variables.insert("FOUND4".to_string(), "test4".to_string());
+
+    let output = expand_by_wrapper(
+        r#"
+value1:\${FOUND1}
+value2:\${FOUND2}
+value3:\${FOUND3}
+value4:\${FOUND4}
+
+value1:${FOUND1}
+value2:${FOUND2}
+value3:${FOUND3}
+value4:${FOUND4}
+    "#,
+        "${",
+        '}',
+        &mut variables,
+    );
+
+    assert_eq!(
+        r#"
+value1:${FOUND1}
+value2:${FOUND2}
+value3:${FOUND3}
+value4:${FOUND4}
+
+value1:test1
+value2:test2
+value3:test3
+value4:test4
+    "#,
+        output
+    );
+}

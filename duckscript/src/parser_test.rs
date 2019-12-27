@@ -159,15 +159,15 @@ fn parse_next_argument_empty_with_quots() {
 
 #[test]
 fn parse_next_argument_value_with_control() {
-    let chars = r#"  \"test\"\\  "#.chars().collect();
+    let chars = r#"  \"test\"\\\n\r\t test   "#.chars().collect();
     let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
 
     assert!(result.is_ok());
 
     let (index, value) = result.unwrap();
 
-    assert_eq!(index, 12);
-    assert_eq!(value.unwrap(), "\"test\"\\");
+    assert_eq!(index, 18);
+    assert_eq!(value.unwrap(), "\"test\"\\\n\r\t");
 }
 
 #[test]
@@ -231,11 +231,32 @@ fn parse_next_argument_value_with_control_error() {
 }
 
 #[test]
+fn parse_next_argument_value_with_partial_variable_control_error() {
+    let chars = r#"  \$  "#.chars().collect();
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+
+    assert!(result.is_err());
+}
+
+#[test]
 fn parse_next_argument_value_with_control_end_error() {
     let chars = r#"  \"#.chars().collect();
     let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
 
     assert!(result.is_err());
+}
+
+#[test]
+fn parse_next_argument_value_with_variable_control() {
+    let chars = r#"  \${out}  "#.chars().collect();
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+
+    assert!(result.is_ok());
+
+    let (index, value) = result.unwrap();
+
+    assert_eq!(index, 9);
+    assert_eq!(value.unwrap(), "\\${out}");
 }
 
 #[test]

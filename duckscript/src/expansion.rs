@@ -27,9 +27,16 @@ pub(crate) fn expand_by_wrapper(
 
     let mut found_prefix = false;
     let mut key = String::new();
+    let mut force_push = false;
     for next_char in value.chars() {
         if !found_prefix {
-            if next_char == prefix_chars[prefix_index] {
+            if next_char == '\\' && prefix_index == 0 {
+                // skip this character
+                force_push = true
+            } else if force_push {
+                value_string.push(next_char);
+                force_push = false;
+            } else if next_char == prefix_chars[prefix_index] {
                 prefix_index = prefix_index + 1;
 
                 if prefix_index == prefix_length {

@@ -1,0 +1,6 @@
+
+goto :good
+
+echo error!!!!
+
+:good echo yay!!!!
