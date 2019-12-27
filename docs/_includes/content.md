@@ -353,14 +353,14 @@ The run_with_context signature is as follows:
 /// * `line` - The current instruction line number (global line number after including all scripts into one global script)
 fn run_with_context(
     &self,
-    _arguments: Vec<String>,
-    _state: &mut HashMap<String, StateValue>,
-    _variables: &mut HashMap<String, String>,
-    _output_variable: Option<String>,
-    _instructions: &Vec<Instruction>,
-    _commands: &mut Commands,
-    _meta_info: InstructionMetaInfo,
-    _line: usize,
+    arguments: Vec<String>,
+    state: &mut HashMap<String, StateValue>,
+    variables: &mut HashMap<String, String>,
+    output_variable: Option<String>,
+    instructions: &Vec<Instruction>,
+    commands: &mut Commands,
+    meta_info: InstructionMetaInfo,
+    line: usize,
 ) -> CommandResult;
 ```
 
