@@ -331,7 +331,7 @@ You can look at more examples in the duckscript_sdk folder.
 <a name="sdk-tutorial-context-commands"></a>
 ## Context Commands
 Context commands are exactly the same as standard commands except that they have access to the runtime context.<br>
-Therefore they implement the same Command trait but this time instead if implementing the run function, they need to implement the following:
+Therefore they implement the same Command trait but this time instead of implementing the run function, they need to implement the following:
 
 * requires_context - Must return true
 * run_with_context - The same logic you would put in the run function but now you have access to a lot more of the runtime context.
