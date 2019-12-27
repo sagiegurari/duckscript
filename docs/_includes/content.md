@@ -248,6 +248,58 @@ If you want to know how to write your own commands or embed the duckscript runti
 
 <a name="sdk-tutorial"></a>
 ## Duckscript Command Implementation Tutorial
+Want to write new custom commands so you can use them in your duckscripts? great!<br>
+Hopefully the following sections will help you gain the basic knowledge on how to write them.<br>
+
+First of all it is important to understand that there are two types of commands:
+
+* Commands which execute some action like copying files, printing some text to the console or returning an environment variable.
+* Commands which provide flow control or some more complex action and require modifying the internal context in runtime.
+
+<a name="sdk-tutorial-standard-commands"></a>
+## Standard Commands
+Commands are structs that must implement the Command trait.<br>
+They must have a name, which is used to invoke the command.<br>
+They optionally may have aliases which can also be used too invoke the command.<br>
+They should return help documentation in markdown in order to generate SDK documentation (must for PRs to duckscript SDK).<br>
+And they must implement the **run** function which holds the command logic.<br>
+
+The run function accepts the command arguments (variables already replaced to actual values) and returns the command result.<br>
+The command result can be one of the following:
+
+* Continue(Option<String>) - Tells the runner to continue to the next command and optionally set the output variable the given value.
+* GoTo(Option<String>, GoToValue) - Tells the runner to jump to the requested line or label and optionally set the output variable the given value.
+* Error(String) - Tells the runner to stop the exection and return the error message.
+* Exit(Option<String>) - Tells the runner to stop the execution and optionally set the output variable the given value.
+
+Let's implement a simple **set** command which accepts a single argument and sets the output variable to that value.<br>
+And if no argument was provided, return a None which will tell the runner to delete the output variable.<br>
+Afterwards the runner should continue to the next line.<br>
+So we need to use a Continue(Option<String>) result.<br>
+Full example:
+
+```rust
+struct SetCommand {}
+
+impl Command for SetCommand {
+    fn name(&self) -> String {
+        "set".to_string()
+    }
+
+    fn run(&self, arguments: Vec<String>) -> CommandResult {
+        let output = if arguments.is_empty() {
+            None
+        } else {
+            Some(arguments[0].clone())
+        };
+
+        CommandResult::Continue(output)
+    }
+}
+```
+
+<a name="sdk-tutorial-context-commands"></a>
+## Context Commands
 
 <a name="embed-tutorial"></a>
 ## Duckscript Embedding Tutorial
