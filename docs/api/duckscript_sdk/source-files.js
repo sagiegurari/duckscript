@@ -1,0 +1,3 @@
+var N = null;var sourcesIndex = {};
+sourcesIndex["duckscriptsdk"] = {"name":"","dirs":[{"name":"sdk","dirs":[{"name":"internal","dirs":[{"name":"sdkdocs","files":["mod.rs"]}],"files":["mod.rs"]},{"name":"std","dirs":[{"name":"echo","files":["mod.rs"]},{"name":"env","dirs":[{"name":"get","files":["mod.rs"]},{"name":"set","files":["mod.rs"]}],"files":["mod.rs"]},{"name":"fs","dirs":[{"name":"print","files":["mod.rs"]},{"name":"read","files":["mod.rs"]}],"files":["mod.rs"]},{"name":"function","files":["mod.rs"]},{"name":"set","files":["mod.rs"]}],"files":["mod.rs"]}],"files":["mod.rs"]},{"name":"utils","files":["instruction_query.rs","io.rs","mod.rs","pckg.rs","state.rs"]}],"files":["lib.rs"]};
+createSourceSidebar();

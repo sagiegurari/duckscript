@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["load","Loads all core commands"]]});
