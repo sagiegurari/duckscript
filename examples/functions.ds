@@ -1,0 +1,12 @@
+
+function print_first_and_second_argument
+echo ${$1} ${$2}
+return printed
+end_function
+
+function run_flow
+status = print_first_and_second_argument hello world
+echo The printout status is: ${status}
+end_function
+
+run_flow

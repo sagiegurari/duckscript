@@ -1,0 +1,6 @@
+
+# load the hello_world.ds script here
+!include_files ./hello_world.ds
+
+# load 2 scripts here. The hello_world.ds is loaded again.
+!include_files ./hello_world.ds ./use_variable.ds

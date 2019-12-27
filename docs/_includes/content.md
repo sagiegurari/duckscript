@@ -163,6 +163,129 @@ For example:
 echo This will print # But this will not
 ```
 
+<a name="tutorial-pre-processing"></a>
+### Pre Processing
+Pre processing is the phase that duckscript is parsing the script content.<br>
+It is possible to run specific commands at that phase to modify the script during the parsing phase.<br>
+
+The basic syntax of a pre processing command line is:
+
+```
+!command [arguments]
+```
+
+<a name="tutorial-pre-processing-including-files"></a>
+#### !include_files
+The include_files command enables you to load script files into the position of the pre processor command.<br>
+Basically it enables you to include many scripts and generate one bigger script for runtime.<br>
+The include files command accepts any number of files and all will be loaded by the order they are defined.<br>
+For example:
+
+```sh
+# load the hello_world.ds script here
+!include_files ./hello_world.ds
+
+# load 2 scripts here. The hello_world.ds is loaded again.
+!include_files ./hello_world.ds ./use_variable.ds
+```
+
+Important to note that the script paths included are relative to the script file including them and not to the current working directory.
+
+<a name="tutorial-pre-processing-including-files"></a>
+#### !print
+The print pre processing command allows to print any number of arguments, which could be useful for debugging.<br>
+In the following example, although the print command comes after the echo command, it will execute first as it is invoked in the parsing phase and not in the script execution phase which comes later:
+
+```sh
+# this will print "hello world during script execution"
+echo hello world during script execution
+
+# this will print "hello world during parsing"
+!print hello world during parsing
+```
+
+<a name="tutorial-standard-api"></a>
+### Standard API
+Duckscript is split to several modules and while the script runner does not require it, by default it will come with the standard duckscript API called the duckscript SDK.<br>
+This SDK holds the most common commands, some which execute actions (such as echo) and some which serve as flow control (such as function).<br>
+The SDK enables users to develop their scripts and have a good starting point without the need to develop the commands on their own (as that is a bit more complex).
+
+<a name="tutorial-standard-api-commands-lang-features"></a>
+#### Commands Instead Of Language Features
+As mentioned before, duckscript is really simple and only has few basic rules.<br>
+In order to provide a more richer development experience, common language features such as functions and conditional blocks have been implemented as commands.<br>
+This is an example of the [function command](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md#sdk__Function):
+
+```sh
+function print_first_and_second_argument
+echo ${$1} ${$2}
+return printed
+end_function
+
+function run_flow
+status = print_first_and_second_argument hello world
+echo The printout status is: ${status}
+end_function
+
+run_flow
+```
+
+This example demonstrates how functions as a concept do not need to be part of the language and can be implemented by anyone as a command.<br>
+This also means that other developers can replace the function command with their implementation to provide additional/different functionality.
+
+<a name="tutorial-standard-api-full-sdk-docs"></a>
+#### Full SDK Docs
+The full SDK docs can be found [here](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md)
+
+<a name="tutorial-final-notes"></a>
+### Final Notes
+That's It!!!!<br>
+That is all the language.<br>
+Short, simple, only few rules to follow and you mastered duckscript.<br>
+
+If you want to know what more you can do with it, look at the [SDK docs](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md).<br>
+If you want to know how to write your own commands or embed the duckscript runtime in your application, continue reading.
+
+<a name="sdk-tutorial"></a>
+## Duckscript Command Implementation Tutorial
+
+<a name="embed-tutorial"></a>
+## Duckscript Embedding Tutorial
+Embedding duckscript is really simple and this is one of the language main goals.<br>
+The duckscript cli basically embeds duckscript so you can look at it as a reference, but basically it boils down to really few lines of code:
+
+```rust
+let mut context = Context::new();
+duckscriptsdk::load(&mut context.commands)?;
+runner::run_script_file(file, context)?;
+```
+
+That's it!<br>
+Unless you want to provide your own custom SDK, prepopulate the runtime context with custom variables/state or
+pull information out of the context after invocation than those 3 lines of code is all you need to do.<br>
+Let's go over it line by line.<br>
+
+<a name="embed-tutorial-setup-context"></a>
+## Setting Up The Context
+The context holds the initial known commands, variables and state (internal objects used by commands).<br>
+Running the ```Context::new()``` simply creates a new empty context.<br>
+You can add to it any command, variable or state object you want before running the scripts.<br>
+In our example we load all default standard API commands into the new context via: ```duckscriptsdk::load(&mut context.commands)?;```
+
+<a name="embed-tutorial-running"></a>
+## Running The Script
+After we have a context setup, we will run the script.<br>
+The **runner** enables to run a script text or a script file.<br>
+The following public functions are available:
+
+```rust
+/// Executes the provided script with the given context
+pub fn run_script(text: &str, context: Context) -> Result<Context, ScriptError>
+
+/// Executes the provided script file with the given context
+pub fn run_script_file(file: &str, context: Context) -> Result<Context, ScriptError>
+```
+
 ## Contributing
 See [contributing guide](https://github.com/sagiegurari/duckscript/blob/master/.github/CONTRIBUTING.md)
 

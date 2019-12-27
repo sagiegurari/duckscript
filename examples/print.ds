@@ -1,0 +1,6 @@
+
+# this will print "hello world during script execution"
+echo hello world during script execution
+
+# this will print "hello world during parsing"
+!print hello world during parsing
