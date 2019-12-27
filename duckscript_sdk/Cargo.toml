@@ -24,6 +24,7 @@ include = [
 
 [dependencies]
 duckscript = { path = "../duckscript" }
+home = "^0.5"
 
 [badges.travis-ci]
 branch = "master"

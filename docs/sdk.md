@@ -4,7 +4,9 @@
 * [sdk::GoTo](#sdk__GoTo)
 * [sdk::Set](#sdk__Set)
 * [sdk::env::Get](#sdk__env__Get)
+* [sdk::env::PrintCurrentDirectory](#sdk__env__PrintCurrentDirectory)
 * [sdk::env::Set](#sdk__env__Set)
+* [sdk::env::SetCurrentDir](#sdk__env__SetCurrentDir)
 * [sdk::fs::Print](#sdk__fs__Print)
 * [sdk::fs::Read](#sdk__fs__Read)
 
@@ -228,7 +230,6 @@ Returns the environment variable value for the provided key.
 
 First argument is the environment variable key.
 
-
 #### Return Value
 
 The environment variable value.
@@ -242,6 +243,40 @@ home = get_env HOME
 
 #### Aliases:
 get_env
+
+<a name="sdk__env__PrintCurrentDirectory"></a>
+## sdk::env::PrintCurrentDirectory
+```sh
+var = pwd
+```
+
+Prints and also returns the current directory.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The current directory path.
+
+#### Examples
+
+Print the current directory:
+
+```sh
+pwd
+```
+
+Print and also store the current directory:
+
+```sh
+directory = pwd
+```
+
+
+#### Aliases:
+pwd
 
 <a name="sdk__env__Set"></a>
 ## sdk::env::Set
@@ -258,7 +293,6 @@ Two arguments are required:
 * key - The name of the environment variable to set
 * value - The new environment variable value
 
-
 #### Return Value
 
 None
@@ -272,6 +306,34 @@ set_env HOME /usr/me
 
 #### Aliases:
 set_env
+
+<a name="sdk__env__SetCurrentDir"></a>
+## sdk::env::SetCurrentDir
+```sh
+cd path
+```
+
+Sets the current directory based on the input path.<br>
+If no path is provided, it will default to the user home directory.<br>
+If the path does not exist, it will return an error.
+
+#### Parameters
+
+The new current directory.
+
+#### Return Value
+
+The new current directory.
+
+#### Examples
+
+```sh
+home = get_env HOME
+```
+
+
+#### Aliases:
+cd, set_current_dir
 
 <a name="sdk__fs__Print"></a>
 ## sdk::fs::Print

@@ -42,7 +42,13 @@ pub(crate) fn run_script_and_validate(
                     assert_eq!(context.variables.get(&key), Some(&value))
                 }
                 CommandValidation::Contains(key, value) => {
-                    assert!(context.variables.get(&key).unwrap().contains(&value))
+                    let var_value = context.variables.get(&key).unwrap();
+                    assert!(
+                        var_value.contains(&value),
+                        "The value: {} is not contained in: {}",
+                        &value,
+                        &var_value
+                    )
                 }
             };
 

@@ -11,7 +11,6 @@ Two arguments are required:
 * key - The name of the environment variable to set
 * value - The new environment variable value
 
-
 #### Return Value
 
 None
