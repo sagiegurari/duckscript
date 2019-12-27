@@ -407,6 +407,8 @@ fn run_with_context(
 ) -> CommandResult;
 ```
 
+With access to this context you can add/remove/switch commands in runtime, store/pull internal state, add/remove/change variables and so on...
+
 <a name="embed-tutorial"></a>
 ## Duckscript Embedding Tutorial
 Embedding duckscript is really simple and this is one of the language main goals.<br>
