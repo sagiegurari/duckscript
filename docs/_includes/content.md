@@ -280,10 +280,10 @@ The following public functions are available:
 
 ```rust
 /// Executes the provided script with the given context
-pub fn run_script(text: &str, context: Context) -> Result<Context, ScriptError>
+pub fn run_script(text: &str, context: Context) -> Result<Context, ScriptError>;
 
 /// Executes the provided script file with the given context
-pub fn run_script_file(file: &str, context: Context) -> Result<Context, ScriptError>
+pub fn run_script_file(file: &str, context: Context) -> Result<Context, ScriptError>;
 ```
 
 ## Contributing
