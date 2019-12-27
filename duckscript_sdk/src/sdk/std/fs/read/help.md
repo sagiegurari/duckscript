@@ -8,7 +8,6 @@ The readfile command will read the requested file and return the value to the ou
 
 A single parameter holding the file path.
 
-
 #### Return Value
 
 The file content.

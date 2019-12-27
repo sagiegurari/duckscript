@@ -9,6 +9,7 @@
 * [sdk::env::SetCurrentDir](#sdk__env__SetCurrentDir)
 * [sdk::fs::Print](#sdk__fs__Print)
 * [sdk::fs::Read](#sdk__fs__Read)
+* [sdk::fs::Write](#sdk__fs__Write)
 
 
 <a name="sdk__Echo"></a>
@@ -356,7 +357,6 @@ In addition it will also return the value to the output variable.
 
 A single parameter holding the file path.
 
-
 #### Return Value
 
 The file content.
@@ -383,7 +383,6 @@ The readfile command will read the requested file and return the value to the ou
 
 A single parameter holding the file path.
 
-
 #### Return Value
 
 The file content.
@@ -397,6 +396,34 @@ text = readfile ./Cargo.toml
 
 #### Aliases:
 readfile
+
+<a name="sdk__fs__Write"></a>
+## sdk::fs::Write
+```sh
+result = writefile file text
+```
+
+This command enables to write the provided text into the requested file.<br>
+It will return true/false value based if it was able to write the text to the file.
+
+#### Parameters
+
+* The target file
+* The text content to write
+
+#### Return Value
+
+true/false based if it was able to write the text to the file.
+
+#### Examples
+
+```sh
+out = writefile ./target/tests/writefile.txt "line 1\nline 2"
+```
+
+
+#### Aliases:
+writefile
 
 ### License
 Developed by Sagie Gur-Ari and licensed under the

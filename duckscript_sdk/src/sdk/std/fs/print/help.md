@@ -9,7 +9,6 @@ In addition it will also return the value to the output variable.
 
 A single parameter holding the file path.
 
-
 #### Return Value
 
 The file content.

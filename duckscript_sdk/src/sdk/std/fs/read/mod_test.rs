@@ -9,6 +9,11 @@ fn common_functions() {
 
 #[test]
 fn run_no_file_provided() {
+    test::run_script_and_fail(vec![create("")], "readfile");
+}
+
+#[test]
+fn run_file_not_exists() {
     test::run_script_and_fail(vec![create("")], "readfile ./Cargo2.toml");
 }
 

@@ -1,5 +1,6 @@
 mod print;
 mod read;
+mod write;
 
 use crate::utils::pckg;
 use duckscript::types::command::Commands;
@@ -12,6 +13,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
 
     commands.set(print::create(&package))?;
     commands.set(read::create(&package))?;
+    commands.set(write::create(&package))?;
 
     Ok(())
 }
