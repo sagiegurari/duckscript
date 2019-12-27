@@ -298,8 +298,71 @@ impl Command for SetCommand {
 }
 ```
 
+Let's implement a **get_env** command which pulls an environment variable value and sets the output variable with that value.<br>
+In case no input was provided we will throw an error, otherwise we will use the first input as the environment variable key.<br>
+We will return the value if exists or nothing if it does not.<br>
+Full example:
+
+```rust
+struct GetEnvCommand {
+    package: String,
+}
+
+impl Command for GetEnvCommand {
+    fn name(&self) -> String {
+        "get_env".to_string()
+    }
+
+    fn run(&self, arguments: Vec<String>) -> CommandResult {
+        if arguments.is_empty() {
+            CommandResult::Error("Missing environment variable name.".to_string())
+        } else {
+            match env::var(&arguments[0]) {
+                Ok(value) => CommandResult::Continue(Some(value)),
+                Err(_) => CommandResult::Continue(None),
+            }
+        }
+    }
+}
+```
+
+You can look at more examples in the duckscript_sdk folder.
+
 <a name="sdk-tutorial-context-commands"></a>
 ## Context Commands
+Complex commands are exactly the same as standard commands except that they have access to the runtime context.<br>
+Therefore they implement the same Command trait but this time instead if implementing the run function, they need to implement the following:
+
+* requires_context - Must return true
+* run_with_context - The same logic you would put in the run function but now you have access to a lot more of the runtime context.
+
+The run_with_context signature is as follows:
+
+```rust
+/// Run the instruction with access to the runtime context.
+///
+/// # Arguments
+///
+/// * `arguments` - The command arguments array
+/// * `state` - Internal state which is only used by commands to store/pull data
+/// * `variables` - All script variables
+/// * `output_variable` - The output variable name (if defined)
+/// * `instructions` - The entire list of instructions which make up the currently running script
+/// * `commands` - The currently known commands
+/// * `meta_info` - The current instruction line meta info including (if available) the source file and line number in that source file
+/// * `line` - The current instruction line number (global line number after including all scripts into one global script)
+fn run_with_context(
+    &self,
+    _arguments: Vec<String>,
+    _state: &mut HashMap<String, StateValue>,
+    _variables: &mut HashMap<String, String>,
+    _output_variable: Option<String>,
+    _instructions: &Vec<Instruction>,
+    _commands: &mut Commands,
+    _meta_info: InstructionMetaInfo,
+    _line: usize,
+) -> CommandResult;
+```
 
 <a name="embed-tutorial"></a>
 ## Duckscript Embedding Tutorial

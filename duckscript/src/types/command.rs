@@ -36,20 +36,20 @@ pub enum CommandResult {
 
 /// Defines the command capabilities
 pub trait Command {
-    /// The full command name which can be used to invoke this command
+    /// The full command name which can be used to invoke this command.
     fn name(&self) -> String;
 
-    /// A list of aliases that can also be used to invoke this command
+    /// A list of aliases that can also be used to invoke this command.
     fn aliases(&self) -> Vec<String> {
         vec![]
     }
 
-    /// Command documentation
+    /// Command documentation.
     fn help(&self) -> String {
         format!("No documentation found for command: {}", self.name())
     }
 
-    /// If true the run with the context will be invoked
+    /// If true the run with the context will be invoked.
     fn requires_context(&self) -> bool {
         false
     }
@@ -59,7 +59,18 @@ pub trait Command {
         CommandResult::Error(format!("Not implemented for command: {}", &self.name()).to_string())
     }
 
-    /// Run the instruction with access to the runtime context
+    /// Run the instruction with access to the runtime context.
+    ///
+    /// # Arguments
+    ///
+    /// * `arguments` - The command arguments array
+    /// * `state` - Internal state which is only used by commands to store/pull data
+    /// * `variables` - All script variables
+    /// * `output_variable` - The output variable name (if defined)
+    /// * `instructions` - The entire list of instructions which make up the currently running script
+    /// * `commands` - The currently known commands
+    /// * `meta_info` - The current instruction line meta info including (if available) the source file and line number in that source file
+    /// * `line` - The current instruction line number (global line number after including all scripts into one global script)
     fn run_with_context(
         &self,
         _arguments: Vec<String>,
