@@ -286,7 +286,19 @@ pub fn run_script(text: &str, context: Context) -> Result<Context, ScriptError>;
 pub fn run_script_file(file: &str, context: Context) -> Result<Context, ScriptError>;
 ```
 
+<a name="contributing"></a>
 ## Contributing
+There are many ways to contribute to duckscript, including:
+
+* Writing more commands and adding them to the standard SDK
+* Improving existing commands by adding more features
+* Improving the documentation
+* Opening issues with new feature requests or bugs found
+* Spreading the word :)
+
+As for expanding the language, I personally prefer not to make it complex.<br>
+Let's try to add more language feature using commands and not changing the language itself.<br>
+
 See [contributing guide](https://github.com/sagiegurari/duckscript/blob/master/.github/CONTRIBUTING.md)
 
 <a name="history"></a>
