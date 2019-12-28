@@ -9,7 +9,7 @@ mod runner_test;
 
 use crate::expansion;
 use crate::parser;
-use crate::types::command::{CommandResult, GoToValue};
+use crate::types::command::{CommandResult, Commands, GoToValue};
 use crate::types::error::{ErrorInfo, ScriptError};
 use crate::types::instruction::{Instruction, InstructionType, ScriptInstruction};
 use crate::types::runtime::{Context, Runtime, StateValue};
@@ -82,7 +82,8 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
         };
 
         let (command_result, output_variable) = run_instruction(
-            &mut runtime.context,
+            &mut runtime.context.commands,
+            &mut runtime.context.variables,
             &mut state,
             &instructions,
             instruction,
@@ -142,16 +143,15 @@ fn update_output(context: &mut Context, output_variable: Option<String>, output:
     }
 }
 
-fn run_instruction(
-    context: &mut Context,
+/// Enables to evaluate a single instruction and return its result.
+pub fn run_instruction(
+    commands: &mut Commands,
+    variables: &mut HashMap<String, String>,
     state: &mut HashMap<String, StateValue>,
     instructions: &Vec<Instruction>,
     instruction: Instruction,
     line: usize,
 ) -> (CommandResult, Option<String>) {
-    let mut commands = &mut context.commands;
-    let mut variables = &mut context.variables;
-
     let mut output_variable = None;
     let command_result = match instruction.instruction_type {
         InstructionType::Empty => CommandResult::Continue(None),
@@ -170,10 +170,10 @@ fn run_instruction(
                             command_instance.run_with_context(
                                 command_arguments,
                                 state,
-                                &mut variables,
+                                variables,
                                 output_variable.clone(),
                                 &instructions,
-                                &mut commands,
+                                commands,
                                 meta_info_clone,
                                 line,
                             )

@@ -1,5 +1,6 @@
 # Table of Contents
 * [sdk::Echo](#sdk__Echo)
+* [sdk::Eval](#sdk__Eval)
 * [sdk::Function](#sdk__Function)
 * [sdk::GoTo](#sdk__GoTo)
 * [sdk::Set](#sdk__Set)
@@ -46,6 +47,34 @@ echo "hello    world"
 
 #### Aliases:
 echo
+
+<a name="sdk__Eval"></a>
+## sdk::Eval
+```sh
+eval command arguments
+```
+
+The eval command enables to run dynamically created commands.<br>
+The command and arguments passed can be variables in the form of ${name}.
+
+#### Parameters
+
+Any number of arguments which will construct a line to evaluate and execute.
+
+#### Return Value
+
+The result of the evaluated line.
+
+#### Examples
+
+```sh
+command = set echo
+eval ${command} hello world
+```
+
+
+#### Aliases:
+eval
 
 <a name="sdk__Function"></a>
 ## sdk::Function

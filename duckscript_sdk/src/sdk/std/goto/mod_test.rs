@@ -1,6 +1,6 @@
 use super::*;
 use crate::test;
-use crate::test::CommandValidation;
+use crate::test::{CommandValidation, SetCommand};
 
 #[test]
 fn common_functions() {
@@ -29,17 +29,6 @@ fn run_label_not_found() {
 
 #[test]
 fn run_no_args() {
-    struct SetCommand {}
-
-    impl Command for SetCommand {
-        fn name(&self) -> String {
-            "set".to_string()
-        }
-
-        fn run(&self, arguments: Vec<String>) -> CommandResult {
-            CommandResult::Continue(Some(arguments[0].clone()))
-        }
-    }
     let set_command = SetCommand {};
 
     let context = test::run_script_and_validate(
@@ -47,9 +36,9 @@ fn run_no_args() {
         r#"
 goto :valid
 
-out1 = set 1
+out1 = test_set 1
 
-:valid out2 = set 2
+:valid out2 = test_set 2
         "#,
         CommandValidation::Match("out2".to_string(), "2".to_string()),
     );

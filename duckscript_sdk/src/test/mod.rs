@@ -1,7 +1,23 @@
 use duckscript::runner;
-use duckscript::types::command::Command;
+use duckscript::types::command::{Command, CommandResult};
 use duckscript::types::error::ScriptError;
 use duckscript::types::runtime::Context;
+
+pub(crate) struct SetCommand {}
+
+impl Command for SetCommand {
+    fn name(&self) -> String {
+        "test_set".to_string()
+    }
+
+    fn run(&self, arguments: Vec<String>) -> CommandResult {
+        if arguments.is_empty() {
+            CommandResult::Continue(None)
+        } else {
+            CommandResult::Continue(Some(arguments[0].clone()))
+        }
+    }
+}
 
 pub(crate) enum CommandValidation {
     None,
