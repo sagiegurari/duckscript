@@ -33,10 +33,9 @@ fn run_with_args() {
     );
 
     let state = get_handles_sub_state(&mut context.state);
-    let list_value = state.get(context.variables.get("out").unwrap()).unwrap();
+    let list_value = state.remove(context.variables.get("out").unwrap()).unwrap();
     match list_value {
-        StateValue::List(list_ref) => {
-            let list = *list_ref;
+        StateValue::List(mut list) => {
             assert_eq!(list.len(), 3);
 
             match list.pop().unwrap() {

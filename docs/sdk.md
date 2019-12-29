@@ -1,4 +1,5 @@
 # Table of Contents
+* [sdk::Array](#sdk__Array)
 * [sdk::Echo](#sdk__Echo)
 * [sdk::Eval](#sdk__Eval)
 * [sdk::Function](#sdk__Function)
@@ -15,6 +16,35 @@
 * [sdk::fs::Write](#sdk__fs__Write)
 * [sdk::thread::Sleep](#sdk__thread__Sleep)
 
+
+<a name="sdk__Array"></a>
+## sdk::Array
+```sh
+release handle
+```
+
+Releases an internal handle stored in the runtime memory.<br>
+Certain commands (such as **array**) will create a handle and the variable will only hold a reference to that handle.<br>
+In order to release those handles once they are no longer needed, the release command should be used.
+
+#### Parameters
+
+The handle name.
+
+#### Return Value
+
+* true - If a handle was found and removed
+* false - If no handle was found
+
+#### Examples
+
+```sh
+release ${array_handle}
+```
+
+
+#### Aliases:
+array
 
 <a name="sdk__Echo"></a>
 ## sdk::Echo
