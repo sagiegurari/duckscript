@@ -14,7 +14,7 @@ struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "SetCurrentDir")
+        pckg::concat(&self.package, "SetCurrentDirectory")
     }
 
     fn aliases(&self) -> Vec<String> {

@@ -11,7 +11,7 @@
 * [sdk::env::Get](#sdk__env__Get)
 * [sdk::env::PrintCurrentDirectory](#sdk__env__PrintCurrentDirectory)
 * [sdk::env::Set](#sdk__env__Set)
-* [sdk::env::SetCurrentDir](#sdk__env__SetCurrentDir)
+* [sdk::env::SetCurrentDirectory](#sdk__env__SetCurrentDirectory)
 * [sdk::fs::Print](#sdk__fs__Print)
 * [sdk::fs::Read](#sdk__fs__Read)
 * [sdk::fs::Write](#sdk__fs__Write)
@@ -552,8 +552,8 @@ set_env HOME /usr/me
 #### Aliases:
 set_env
 
-<a name="sdk__env__SetCurrentDir"></a>
-## sdk::env::SetCurrentDir
+<a name="sdk__env__SetCurrentDirectory"></a>
+## sdk::env::SetCurrentDirectory
 ```sh
 cd path
 ```
