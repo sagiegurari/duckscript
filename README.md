@@ -261,7 +261,7 @@ This is an example of the [function command](https://github.com/sagiegurari/duck
 
 ```sh
 function print_first_and_second_argument
-echo ${$1} ${$2}
+echo ${1} ${2}
 return printed
 end_function
 

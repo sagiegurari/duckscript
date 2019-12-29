@@ -187,9 +187,7 @@ fn run_call(
             for argument in arguments {
                 index = index + 1;
 
-                let mut key = String::from("$");
-                key.push_str(&index.to_string());
-                variables.insert(key, argument);
+                variables.insert(index.to_string(), argument);
             }
 
             // store to call stack

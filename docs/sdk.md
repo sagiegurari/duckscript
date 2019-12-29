@@ -247,7 +247,7 @@ function print_input
 
 # $1 is set with the value 'hello'
 # $2 is set with the value 'world'
-echo ${$1} ${$2}
+echo ${1} ${2}
 
 end_function
 

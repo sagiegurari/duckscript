@@ -140,17 +140,17 @@ fn run_function_call_multiple_functions_pass_arguments_and_return_output() {
         create(""),
         r#"
     function test_fn2
-    return "fn2 ${$1} ${$2} ${$3}"
+    return "fn2 ${1} ${2} ${3}"
     end_function
 
     function test_fn
     out1 = test_fn1 a b c
     out2 = test_fn2 d e f
-    return "test ${out1} ${out2} ${$4}"
+    return "test ${out1} ${out2} ${4}"
     end_function
 
     function test_fn1
-    return "fn1 ${$1} ${$2} ${$3}"
+    return "fn1 ${1} ${2} ${3}"
     end_function
 
     out = test_fn 1 2 3 4
