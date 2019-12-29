@@ -1,0 +1,14 @@
+
+exec echo hello world
+
+handle = exec echo hello world
+
+stdout = get_stdout ${handle}
+stderr = get_stderr ${handle}
+exit_code = get_exit_code ${handle}
+
+echo stdout: ${stdout}
+echo stderr: ${stderr}
+echo exit code: ${exit_code}
+
+release handle

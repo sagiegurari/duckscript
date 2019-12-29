@@ -1,3 +1,4 @@
+mod exec;
 mod exit;
 
 use crate::utils::pckg;
@@ -10,6 +11,8 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     let package = pckg::concat(parent, PACKAGE);
 
     commands.set(exit::create(&package))?;
+
+    exec::load(commands, PACKAGE)?;
 
     Ok(())
 }

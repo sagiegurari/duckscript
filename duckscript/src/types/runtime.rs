@@ -20,6 +20,10 @@ pub enum StateValue {
     Number(isize),
     /// unsigned number
     UnsignedNumber(usize),
+    /// signed number
+    Number32Bit(i32),
+    /// unsigned number
+    UnsignedNumber32Bit(u32),
     /// textual value
     String(String),
     /// list
