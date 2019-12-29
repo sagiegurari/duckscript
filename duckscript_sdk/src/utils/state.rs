@@ -1,6 +1,9 @@
 use crate::utils::pckg;
 use duckscript::types::runtime::StateValue;
+use rand::distributions::Alphanumeric;
+use rand::{thread_rng, Rng};
 use std::collections::HashMap;
+use std::iter;
 
 #[cfg(test)]
 #[path = "./state_test.rs"]
@@ -21,6 +24,22 @@ pub(crate) fn get_handles_sub_state(
     state: &mut HashMap<String, StateValue>,
 ) -> &mut HashMap<String, StateValue> {
     get_sub_state(HANDLE_SUB_STATE_KEY.to_string(), state)
+}
+
+pub(crate) fn put_handle(state: &mut HashMap<String, StateValue>, value: StateValue) -> String {
+    // generate unique key
+    let mut rng = thread_rng();
+    let mut key: String = iter::repeat(())
+        .map(|()| rng.sample(Alphanumeric))
+        .take(20)
+        .collect();
+    key.insert_str(0, "handle:");
+
+    let handle_state = get_handles_sub_state(state);
+
+    handle_state.insert(key.clone(), value);
+
+    key
 }
 
 fn ensure_sub_state(key: &str, state: &mut HashMap<String, StateValue>) {

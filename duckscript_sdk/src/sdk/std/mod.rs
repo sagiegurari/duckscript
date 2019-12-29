@@ -1,3 +1,4 @@
+mod array;
 mod echo;
 mod env;
 mod eval;
@@ -15,6 +16,7 @@ use duckscript::types::error::ScriptError;
 static PACKAGE: &str = "sdk";
 
 pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
+    commands.set(array::create(PACKAGE))?;
     commands.set(echo::create(PACKAGE))?;
     commands.set(eval::create(PACKAGE))?;
     commands.set(goto::create(PACKAGE))?;
