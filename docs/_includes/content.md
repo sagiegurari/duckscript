@@ -253,11 +253,14 @@ Below an example of loops using the [for/in command](https://github.com/sagiegur
 
 ```sh
 range = array 1 2 3
+
 for i in range
     for j in range
         echo i: ${i} j: ${j}
     end_for
 end_for
+
+release range
 ```
 
 <a name="tutorial-standard-api-full-sdk-docs"></a>
