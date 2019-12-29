@@ -36,16 +36,10 @@ fn run_positive_number() {
 
 #[test]
 fn run_negative_number() {
-    test::run_script_and_fail(
-        vec![create("")],
-        "out = exit 10",
-    );
+    test::run_script_and_fail(vec![create("")], "out = exit -10");
 }
 
 #[test]
 fn run_text() {
-    test::run_script_and_fail(
-        vec![create("")],
-        "out = exit test",
-    );
+    test::run_script_and_fail(vec![create("")], "out = exit test");
 }

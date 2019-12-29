@@ -15,6 +15,7 @@
 * [sdk::fs::Print](#sdk__fs__Print)
 * [sdk::fs::Read](#sdk__fs__Read)
 * [sdk::fs::Write](#sdk__fs__Write)
+* [sdk::process::Exit](#sdk__process__Exit)
 * [sdk::thread::Sleep](#sdk__thread__Sleep)
 
 
@@ -667,6 +668,40 @@ out = writefile ./target/tests/writefile.txt "line 1\nline 2"
 
 #### Aliases:
 writefile
+
+<a name="sdk__process__Exit"></a>
+## sdk::process::Exit
+```sh
+code = exit [code]
+```
+
+Exits the script with the given code stored in the output variable.
+
+#### Parameters
+
+A positive number as exit code or none for 0.
+
+#### Return Value
+
+The exit code.
+
+#### Examples
+
+Example of exit with code '0'
+
+```sh
+code = exit
+```
+
+Example of exit with error code '1'
+
+```sh
+code = exit 1
+```
+
+
+#### Aliases:
+exit
 
 <a name="sdk__thread__Sleep"></a>
 ## sdk::thread::Sleep

@@ -27,8 +27,10 @@ impl Command for CommandImpl {
             CommandResult::Exit(Some("0".to_string()))
         } else {
             match arguments[0].parse::<u32>() {
-                Ok(code) => CommandResult::Exit(Some(arguments[0].clone())),
-                Err(_) => CommandResult::Error(format!("Invalid exit code: {}", arguments[0]).to_string()),
+                Ok(_) => CommandResult::Exit(Some(arguments[0].clone())),
+                Err(_) => {
+                    CommandResult::Error(format!("Invalid exit code: {}", arguments[0]).to_string())
+                }
             }
         }
     }

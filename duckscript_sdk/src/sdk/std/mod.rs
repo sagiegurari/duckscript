@@ -7,6 +7,7 @@ mod fs;
 mod function;
 mod goto;
 mod ifelse;
+mod process;
 mod release;
 mod set;
 mod thread;
@@ -29,6 +30,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     fs::load(commands, PACKAGE)?;
     function::load(commands, PACKAGE)?;
     ifelse::load(commands, PACKAGE)?;
+    process::load(commands, PACKAGE)?;
     thread::load(commands, PACKAGE)?;
 
     Ok(())
