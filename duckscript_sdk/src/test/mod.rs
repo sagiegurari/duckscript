@@ -1,4 +1,4 @@
-use crate::utils::state::get_handles_sub_state;
+use crate::utils::state::{get_handles_sub_state, put_handle};
 use duckscript::runner;
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::error::ScriptError;
@@ -50,6 +50,39 @@ impl Command for SetHandleCommand {
             state.insert(arguments[0].clone(), StateValue::String("test".to_string()));
             CommandResult::Continue(None)
         }
+    }
+}
+
+pub(crate) struct ArrayCommand {}
+
+impl Command for ArrayCommand {
+    fn name(&self) -> String {
+        "test_array".to_string()
+    }
+
+    fn requires_context(&self) -> bool {
+        true
+    }
+
+    fn run_with_context(
+        &self,
+        arguments: Vec<String>,
+        state: &mut HashMap<String, StateValue>,
+        _variables: &mut HashMap<String, String>,
+        _output_variable: Option<String>,
+        _instructions: &Vec<Instruction>,
+        _commands: &mut Commands,
+        _line: usize,
+    ) -> CommandResult {
+        let mut array = vec![];
+
+        for argument in arguments {
+            array.push(StateValue::String(argument));
+        }
+
+        let key = put_handle(state, StateValue::List(array));
+
+        CommandResult::Continue(Some(key))
     }
 }
 

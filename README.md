@@ -276,7 +276,7 @@ run_flow
 This example demonstrates how functions as a concept do not need to be part of the language and can be implemented by anyone as a command.<br>
 This also means that other developers can replace the function command with their implementation to provide additional/different functionality.
 
-Another example, now of the [if/else command](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md#sdk__If):
+Below an example of [if/else command](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md#sdk__If):
 
 ```sh
 if set false
@@ -291,6 +291,18 @@ else
     echo should not be here
 end_if
 ```
+
+Below an example of loops using the [for/in command](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md#sdk__ForIn):
+
+```sh
+range = array 1 2 3
+for i in range
+    for j in range
+        echo i: ${i} j: ${j}
+    end_for
+end_for
+```
+
 <a name="tutorial-standard-api-full-sdk-docs"></a>
 #### Full SDK Docs
 The full SDK docs can be found [here](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md)

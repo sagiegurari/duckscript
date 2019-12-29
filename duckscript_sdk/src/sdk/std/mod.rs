@@ -2,6 +2,7 @@ mod array;
 mod echo;
 mod env;
 mod eval;
+mod forin;
 mod fs;
 mod function;
 mod goto;
@@ -24,6 +25,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     commands.set(set::create(PACKAGE))?;
 
     env::load(commands, PACKAGE)?;
+    forin::load(commands, PACKAGE)?;
     fs::load(commands, PACKAGE)?;
     function::load(commands, PACKAGE)?;
     ifelse::load(commands, PACKAGE)?;

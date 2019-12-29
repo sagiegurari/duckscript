@@ -42,6 +42,15 @@ pub(crate) fn put_handle(state: &mut HashMap<String, StateValue>, value: StateVa
     key
 }
 
+pub(crate) fn get_handle(
+    state: &mut HashMap<String, StateValue>,
+    key: String,
+) -> Option<&StateValue> {
+    let handle_state = get_handles_sub_state(state);
+
+    handle_state.get(&key)
+}
+
 fn ensure_sub_state(key: &str, state: &mut HashMap<String, StateValue>) {
     match state.get(key) {
         Some(value) => match value {
