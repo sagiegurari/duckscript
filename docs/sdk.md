@@ -553,32 +553,27 @@ writefile
 <a name="sdk__thread__Sleep"></a>
 ## sdk::thread::Sleep
 ```sh
-echo [arg]*
+sleep millies
 ```
 
-The echo command will printout all provided arguments.<br>
-After all input is done, an end of line will be printed as well.
+Will cause the script execution to half for the given amount of milliseconds.<br>
+The command will also return the amount of milliseconds waited.
 
 #### Parameters
 
-Any number of arguments may be provided and will be printed.
+A positive numeric value.
 
 #### Return Value
 
-The amount of arguments printed.
+The amount of milliseconds waited.
 
 #### Examples
 
-Print multiple arguments:
+Example of sleep for 10 milliseconds"
 
 ```sh
-echo hello world
-```
-
-Print multiple spaces between words
-
-```sh
-echo "hello    world"
+time = sleep 10
+echo Waited for ${time} milliseconds.
 ```
 
 
