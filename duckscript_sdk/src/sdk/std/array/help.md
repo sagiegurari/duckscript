@@ -1,22 +1,24 @@
 ```sh
-release handle
+handle = array value1 value2 value3 ...
 ```
 
-Releases an internal handle stored in the runtime memory.<br>
-Certain commands (such as **array**) will create a handle and the variable will only hold a reference to that handle.<br>
-In order to release those handles once they are no longer needed, the release command should be used.
+Creates an array from the input arguments and returns a handle to that array.<br>
+This handle can be passed to other commands which support arrays using handles.<br>
+Once the array is no longer used, it should be released using the **release** command.
 
 #### Parameters
 
-The handle name.
+Any number of arguments which will construct the array.
 
 #### Return Value
 
-* true - If a handle was found and removed
-* false - If no handle was found
+A handle to the array.
 
 #### Examples
 
 ```sh
-release ${array_handle}
+handle = array ${var} "hello world" 5 ${another_var}
+
+# once done we should release the handle
+release ${handle}
 ```
