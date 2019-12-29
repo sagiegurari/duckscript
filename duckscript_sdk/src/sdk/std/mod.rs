@@ -4,6 +4,7 @@ mod eval;
 mod fs;
 mod function;
 mod goto;
+mod ifelse;
 mod set;
 
 use duckscript::types::command::Commands;
@@ -20,6 +21,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     env::load(commands, PACKAGE)?;
     fs::load(commands, PACKAGE)?;
     function::load(commands, PACKAGE)?;
+    ifelse::load(commands, PACKAGE)?;
 
     Ok(())
 }

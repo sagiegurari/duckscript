@@ -8,11 +8,13 @@ fn common_functions() {
 }
 
 #[test]
+#[ignore]
 fn run_to_directory_does_not_exist() {
     test::run_script_and_fail(vec![create("")], "out = cd test123_bad");
 }
 
 #[test]
+#[ignore]
 fn run_no_arguments() {
     let current_dir = env::current_dir().unwrap().to_string_lossy().into_owned();
     let home_dir = home::home_dir().unwrap().to_string_lossy().into_owned();
@@ -28,6 +30,7 @@ fn run_no_arguments() {
 }
 
 #[test]
+#[ignore]
 fn run_specific_directory() {
     let current_dir = env::current_dir().unwrap().to_string_lossy().into_owned();
     test::run_script_and_validate(

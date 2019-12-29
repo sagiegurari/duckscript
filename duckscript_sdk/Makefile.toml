@@ -6,3 +6,19 @@ additional_profiles = [
     "ci-all-build-tasks",
     "publish-pre-cleanup"
 ]
+
+[tasks.test]
+clear = true
+run_task = { name = ["test-thread-safe", "test-single-threaded"] }
+
+[tasks.test-thread-safe]
+private = true
+env = { RUST_TEST_THREADS = { unset = true } }
+command = "cargo"
+args = ["test"]
+
+[tasks.test-single-threaded]
+private = true
+env = { RUST_TEST_THREADS = "1" }
+command = "cargo"
+args = ["test", "--", "--ignored"]
