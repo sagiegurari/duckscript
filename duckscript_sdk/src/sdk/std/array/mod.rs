@@ -1,7 +1,7 @@
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
 use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::{Instruction, InstructionMetaInfo};
+use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
 
@@ -38,7 +38,6 @@ impl Command for CommandImpl {
         _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
-        _meta_info: InstructionMetaInfo,
         _line: usize,
     ) -> CommandResult {
         let mut array = vec![];

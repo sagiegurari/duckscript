@@ -3,7 +3,7 @@ use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_stat
 use crate::utils::{eval, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
 use duckscript::types::error::ScriptError;
-use duckscript::types::instruction::{Instruction, InstructionMetaInfo};
+use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
 
@@ -311,7 +311,6 @@ impl Command for IfCommand {
         _output_variable: Option<String>,
         instructions: &Vec<Instruction>,
         commands: &mut Commands,
-        _meta_info: InstructionMetaInfo,
         line: usize,
     ) -> CommandResult {
         if arguments.is_empty() {
@@ -397,7 +396,6 @@ impl Command for ElseIfCommand {
         _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
         commands: &mut Commands,
-        _meta_info: InstructionMetaInfo,
         line: usize,
     ) -> CommandResult {
         if arguments.is_empty() {
@@ -488,7 +486,6 @@ impl Command for ElseCommand {
         _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
-        _meta_info: InstructionMetaInfo,
         line: usize,
     ) -> CommandResult {
         match pop_call_info_for_line(line, state) {

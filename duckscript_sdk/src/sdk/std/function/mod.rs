@@ -3,7 +3,7 @@ use crate::utils::pckg;
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
 use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
 use duckscript::types::error::ScriptError;
-use duckscript::types::instruction::{Instruction, InstructionMetaInfo};
+use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
 
@@ -238,7 +238,6 @@ impl Command for FunctionCommand {
         _output_variable: Option<String>,
         instructions: &Vec<Instruction>,
         commands: &mut Commands,
-        _meta_info: InstructionMetaInfo,
         line: usize,
     ) -> CommandResult {
         if arguments.is_empty() {
@@ -310,7 +309,6 @@ impl Command for FunctionCommand {
                                                 output_variable: Option<String>,
                                                 _instructions: &Vec<Instruction>,
                                                 _commands: &mut Commands,
-                                                _meta_info: InstructionMetaInfo,
                                                 line: usize,
                                             ) -> CommandResult
                                             {
@@ -379,7 +377,6 @@ impl Command for EndFunctionCommand {
         _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
-        _meta_info: InstructionMetaInfo,
         line: usize,
     ) -> CommandResult {
         match pop_from_call_stack(state) {
@@ -426,7 +423,6 @@ impl Command for ReturnCommand {
         _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
-        _meta_info: InstructionMetaInfo,
         line: usize,
     ) -> CommandResult {
         match pop_from_call_stack(state) {

@@ -2,7 +2,7 @@ use crate::utils::state::get_handles_sub_state;
 use duckscript::runner;
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::error::ScriptError;
-use duckscript::types::instruction::{Instruction, InstructionMetaInfo};
+use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::{Context, StateValue};
 use std::collections::HashMap;
 
@@ -41,7 +41,6 @@ impl Command for SetHandleCommand {
         _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
-        _meta_info: InstructionMetaInfo,
         _line: usize,
     ) -> CommandResult {
         if arguments.is_empty() {

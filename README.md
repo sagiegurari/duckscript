@@ -407,7 +407,6 @@ The run_with_context signature is as follows:
 /// * `output_variable` - The output variable name (if defined)
 /// * `instructions` - The entire list of instructions which make up the currently running script
 /// * `commands` - The currently known commands
-/// * `meta_info` - The current instruction line meta info including (if available) the source file and line number in that source file
 /// * `line` - The current instruction line number (global line number after including all scripts into one global script)
 fn run_with_context(
     &self,
@@ -417,7 +416,6 @@ fn run_with_context(
     output_variable: Option<String>,
     instructions: &Vec<Instruction>,
     commands: &mut Commands,
-    meta_info: InstructionMetaInfo,
     line: usize,
 ) -> CommandResult;
 ```

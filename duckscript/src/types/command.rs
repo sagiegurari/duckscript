@@ -8,7 +8,7 @@
 mod command_test;
 
 use crate::types::error::{ErrorInfo, ScriptError};
-use crate::types::instruction::{Instruction, InstructionMetaInfo};
+use crate::types::instruction::Instruction;
 use crate::types::runtime::StateValue;
 use std::collections::HashMap;
 
@@ -69,7 +69,6 @@ pub trait Command {
     /// * `output_variable` - The output variable name (if defined)
     /// * `instructions` - The entire list of instructions which make up the currently running script
     /// * `commands` - The currently known commands
-    /// * `meta_info` - The current instruction line meta info including (if available) the source file and line number in that source file
     /// * `line` - The current instruction line number (global line number after including all scripts into one global script)
     fn run_with_context(
         &self,
@@ -79,7 +78,6 @@ pub trait Command {
         _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
-        _meta_info: InstructionMetaInfo,
         _line: usize,
     ) -> CommandResult {
         CommandResult::Error(format!("Not implemented for command: {}", &self.name()).to_string())

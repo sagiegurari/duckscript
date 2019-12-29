@@ -166,7 +166,6 @@ pub fn run_instruction(
                             bind_command_arguments(&variables, &script_instruction);
 
                         let command_result = if command_instance.requires_context() {
-                            let meta_info_clone = instruction.meta_info.clone();
                             command_instance.run_with_context(
                                 command_arguments,
                                 state,
@@ -174,7 +173,6 @@ pub fn run_instruction(
                                 output_variable.clone(),
                                 &instructions,
                                 commands,
-                                meta_info_clone,
                                 line,
                             )
                         } else {

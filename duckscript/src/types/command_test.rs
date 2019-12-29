@@ -71,7 +71,6 @@ fn command_default_run_with_context() {
         None,
         &vec![],
         &mut context.commands,
-        InstructionMetaInfo::new(),
         0,
     );
 

@@ -2,7 +2,7 @@ use crate::utils::io;
 use crate::utils::pckg;
 use duckscript::types::command::Commands;
 use duckscript::types::command::{Command, CommandResult};
-use duckscript::types::instruction::{Instruction, InstructionMetaInfo};
+use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
 
@@ -39,7 +39,6 @@ impl Command for CommandImpl {
         _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
         commands: &mut Commands,
-        _meta_info: InstructionMetaInfo,
         _line: usize,
     ) -> CommandResult {
         if arguments.is_empty() {
