@@ -12,7 +12,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
 
     commands.set(exit::create(&package))?;
 
-    exec::load(commands, PACKAGE)?;
+    exec::load(commands, &package)?;
 
     Ok(())
 }
