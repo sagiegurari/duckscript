@@ -1,7 +1,10 @@
+use crate::utils::state::get_handles_sub_state;
 use duckscript::runner;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::error::ScriptError;
-use duckscript::types::runtime::Context;
+use duckscript::types::instruction::{Instruction, InstructionMetaInfo};
+use duckscript::types::runtime::{Context, StateValue};
+use std::collections::HashMap;
 
 pub(crate) struct SetCommand {}
 
@@ -15,6 +18,38 @@ impl Command for SetCommand {
             CommandResult::Continue(None)
         } else {
             CommandResult::Continue(Some(arguments[0].clone()))
+        }
+    }
+}
+
+pub(crate) struct SetHandleCommand {}
+
+impl Command for SetHandleCommand {
+    fn name(&self) -> String {
+        "test_set_handle".to_string()
+    }
+
+    fn requires_context(&self) -> bool {
+        true
+    }
+
+    fn run_with_context(
+        &self,
+        arguments: Vec<String>,
+        state: &mut HashMap<String, StateValue>,
+        _variables: &mut HashMap<String, String>,
+        _output_variable: Option<String>,
+        _instructions: &Vec<Instruction>,
+        _commands: &mut Commands,
+        _meta_info: InstructionMetaInfo,
+        _line: usize,
+    ) -> CommandResult {
+        if arguments.is_empty() {
+            CommandResult::Continue(None)
+        } else {
+            let state = get_handles_sub_state(state);
+            state.insert(arguments[0].clone(), StateValue::String("test".to_string()));
+            CommandResult::Continue(None)
         }
     }
 }

@@ -5,6 +5,7 @@ mod fs;
 mod function;
 mod goto;
 mod ifelse;
+mod release;
 mod set;
 mod thread;
 
@@ -17,6 +18,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     commands.set(echo::create(PACKAGE))?;
     commands.set(eval::create(PACKAGE))?;
     commands.set(goto::create(PACKAGE))?;
+    commands.set(release::create(PACKAGE))?;
     commands.set(set::create(PACKAGE))?;
 
     env::load(commands, PACKAGE)?;

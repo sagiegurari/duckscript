@@ -6,6 +6,8 @@ use std::collections::HashMap;
 #[path = "./state_test.rs"]
 mod state_test;
 
+static HANDLE_SUB_STATE_KEY: &str = "handles";
+
 pub(crate) fn get_core_sub_state_for_command(
     state: &mut HashMap<String, StateValue>,
     name: String,
@@ -13,6 +15,12 @@ pub(crate) fn get_core_sub_state_for_command(
     let sub_state_name = pckg::concat("duckscript", &name);
 
     get_sub_state(sub_state_name, state)
+}
+
+pub(crate) fn get_handles_sub_state(
+    state: &mut HashMap<String, StateValue>,
+) -> &mut HashMap<String, StateValue> {
+    get_sub_state(HANDLE_SUB_STATE_KEY.to_string(), state)
 }
 
 fn ensure_sub_state(key: &str, state: &mut HashMap<String, StateValue>) {
