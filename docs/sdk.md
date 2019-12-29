@@ -12,6 +12,7 @@
 * [sdk::fs::Print](#sdk__fs__Print)
 * [sdk::fs::Read](#sdk__fs__Read)
 * [sdk::fs::Write](#sdk__fs__Write)
+* [sdk::thread::Sleep](#sdk__thread__Sleep)
 
 
 <a name="sdk__Echo"></a>
@@ -548,6 +549,41 @@ out = writefile ./target/tests/writefile.txt "line 1\nline 2"
 
 #### Aliases:
 writefile
+
+<a name="sdk__thread__Sleep"></a>
+## sdk::thread::Sleep
+```sh
+echo [arg]*
+```
+
+The echo command will printout all provided arguments.<br>
+After all input is done, an end of line will be printed as well.
+
+#### Parameters
+
+Any number of arguments may be provided and will be printed.
+
+#### Return Value
+
+The amount of arguments printed.
+
+#### Examples
+
+Print multiple arguments:
+
+```sh
+echo hello world
+```
+
+Print multiple spaces between words
+
+```sh
+echo "hello    world"
+```
+
+
+#### Aliases:
+sleep
 
 ### License
 Developed by Sagie Gur-Ari and licensed under the

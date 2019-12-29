@@ -6,6 +6,7 @@ mod function;
 mod goto;
 mod ifelse;
 mod set;
+mod thread;
 
 use duckscript::types::command::Commands;
 use duckscript::types::error::ScriptError;
@@ -22,6 +23,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     fs::load(commands, PACKAGE)?;
     function::load(commands, PACKAGE)?;
     ifelse::load(commands, PACKAGE)?;
+    thread::load(commands, PACKAGE)?;
 
     Ok(())
 }
