@@ -340,7 +340,7 @@ Commands are structs that must implement the Command trait.<br>
 * They must have a name, which is used to invoke the command.<br>
 * They optionally may have aliases which can also be used to invoke the command.<br>
 * They should return help documentation in markdown format in order to generate SDK documentation (must for PRs to duckscript official SDK).<br>
-* hey must implement the **run** function which holds the command logic.<br>
+* They must implement the **run** function which holds the command logic.<br>
 
 The run function accepts the command arguments (variables already replaced to actual values) and returns the command result.<br>
 The command result can be one of the following:
