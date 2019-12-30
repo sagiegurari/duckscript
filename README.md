@@ -261,13 +261,13 @@ This is an example of the [function command](https://github.com/sagiegurari/duck
 
 ```sh
 function print_first_and_second_argument
-echo ${1} ${2}
-return printed
+    echo ${1} ${2}
+    return printed
 end_function
 
 function run_flow
-status = print_first_and_second_argument hello world
-echo The printout status is: ${status}
+    status = print_first_and_second_argument hello world
+    echo The printout status is: ${status}
 end_function
 
 run_flow
@@ -336,10 +336,11 @@ First of all it is important to understand that there are two types of commands:
 <a name="sdk-tutorial-standard-commands"></a>
 ## Standard Commands
 Commands are structs that must implement the Command trait.<br>
-They must have a name, which is used to invoke the command.<br>
-They optionally may have aliases which can also be used too invoke the command.<br>
-They should return help documentation in markdown in order to generate SDK documentation (must for PRs to duckscript SDK).<br>
-And they must implement the **run** function which holds the command logic.<br>
+
+* They must have a name, which is used to invoke the command.<br>
+* They optionally may have aliases which can also be used to invoke the command.<br>
+* They should return help documentation in markdown format in order to generate SDK documentation (must for PRs to duckscript official SDK).<br>
+* hey must implement the **run** function which holds the command logic.<br>
 
 The run function accepts the command arguments (variables already replaced to actual values) and returns the command result.<br>
 The command result can be one of the following:
