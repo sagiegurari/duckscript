@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "duckscript",
+    "duckscript_sdk",
+    "duckscript_cli",
+]

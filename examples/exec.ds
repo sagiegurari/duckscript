@@ -1,0 +1,12 @@
+
+exec echo hello world
+
+output = exec echo hello world
+
+stdout = set ${output.stdout}
+stderr = set ${output.stderr}
+exit_code = set ${output.code}
+
+echo stdout: ${stdout}
+echo stderr: ${stderr}
+echo exit code: ${exit_code}

@@ -1,0 +1,18 @@
+
+args = array a b c
+echo array handle: ${args}
+
+for arg in args
+    echo current arg is: ${arg}
+end_for
+release args
+
+range = array 1 2 3
+
+for i in range
+    for j in range
+        echo i: ${i} j: ${j}
+    end_for
+end_for
+
+release range

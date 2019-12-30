@@ -1,0 +1,3 @@
+
+# print the text "hello world"
+echo "hello world"

@@ -1,0 +1,43 @@
+[package]
+name = "duckscriptsdk"
+version = "0.1.0"
+authors = ["Sagie Gur-Ari <sagiegurari@gmail.com>"]
+description = "The duckscript SDK."
+license = "Apache-2.0"
+edition = "2018"
+documentation = "https://sagiegurari.github.io/duckscript/api/duckscript/index.html"
+homepage = "http://github.com/sagiegurari/duckscript"
+repository = "https://github.com/sagiegurari/duckscript.git"
+readme = "README.md"
+keywords = ["script", "script-engine", "language"]
+categories = ["command-line-utilities", "development-tools"]
+include = [
+    "/benches/*",
+    "/docs/*",
+    "/examples/*",
+    "/src/*",
+    "/tests/*",
+    "/Cargo.toml",
+    "/LICENSE",
+    "/README.md"
+]
+
+[dependencies]
+duckscript = { path = "../duckscript" }
+home = "^0.5"
+rand = "^0.7"
+
+[badges.travis-ci]
+branch = "master"
+repository = "sagiegurari/duckscript"
+
+[badges.appveyor]
+repository = "sagiegurari/duckscript"
+service = "github"
+branch = "master"
+project_name = "sagiegurari/duckscript"
+
+[badges.codecov]
+branch = "master"
+repository = "sagiegurari/duckscript"
+service = "github"

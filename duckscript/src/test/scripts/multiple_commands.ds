@@ -1,0 +1,4 @@
+toml = cat ./Cargo.toml
+
+echo "The output is:"
+echo ${toml}

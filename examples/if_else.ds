@@ -1,0 +1,30 @@
+
+if set true
+    echo in if
+end_if
+
+if set false
+    echo should not be here
+else
+    echo in else
+end_if
+
+if set false
+    echo should not be here
+elseif set true
+    echo in else if
+else
+    echo should not be here
+end_if
+
+if set false
+    echo should not be here
+elseif set true
+    echo in else if but not done yet
+
+    if set true
+        echo nested if
+    end_if
+else
+    echo should not be here
+end_if

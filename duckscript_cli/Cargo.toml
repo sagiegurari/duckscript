@@ -1,0 +1,46 @@
+[package]
+name = "duckscript_cli"
+version = "0.1.0"
+authors = ["Sagie Gur-Ari <sagiegurari@gmail.com>"]
+description = "The duckscript command line executable."
+license = "Apache-2.0"
+edition = "2018"
+documentation = "https://sagiegurari.github.io/duckscript/api/duckscript/index.html"
+homepage = "http://github.com/sagiegurari/duckscript"
+repository = "https://github.com/sagiegurari/duckscript.git"
+readme = "README.md"
+keywords = ["script", "script-engine", "language"]
+categories = ["command-line-utilities", "development-tools"]
+include = [
+    "/benches/*",
+    "/docs/*",
+    "/examples/*",
+    "/src/*",
+    "/tests/*",
+    "/Cargo.toml",
+    "/LICENSE",
+    "/README.md"
+]
+
+[[bin]]
+name = "duckscript"
+path = "src/main.rs"
+
+[dependencies]
+duckscript = { path = "../duckscript" }
+duckscriptsdk = { path = "../duckscript_sdk" }
+
+[badges.travis-ci]
+branch = "master"
+repository = "sagiegurari/duckscript"
+
+[badges.appveyor]
+repository = "sagiegurari/duckscript"
+service = "github"
+branch = "master"
+project_name = "sagiegurari/duckscript"
+
+[badges.codecov]
+branch = "master"
+repository = "sagiegurari/duckscript"
+service = "github"
