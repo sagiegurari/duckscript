@@ -1,3 +1,4 @@
+use crate::utils::state::get_sub_state;
 use crate::utils::{eval, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
@@ -8,10 +9,13 @@ use std::collections::HashMap;
 #[path = "./mod_test.rs"]
 mod mod_test;
 
+pub(crate) static ALIAS_STATE_KEY: &str = "ALIAS_STATE";
+
 fn create_alias_command(
     name: String,
     arguments: Vec<String>,
     commands: &mut Commands,
+    sub_state: &mut HashMap<String, StateValue>,
 ) -> Result<(), String> {
     struct AliasCommand {
         name: String,
@@ -49,10 +53,16 @@ fn create_alias_command(
         }
     }
 
-    let command = AliasCommand { name, arguments };
+    let command = AliasCommand {
+        name: name.clone(),
+        arguments,
+    };
 
     match commands.set(Box::new(command)) {
-        Ok(_) => Ok(()),
+        Ok(_) => {
+            sub_state.insert(name.clone(), StateValue::Boolean(true));
+            Ok(())
+        }
         Err(error) => Err(error.to_string()),
     }
 }
@@ -81,7 +91,7 @@ impl Command for CommandImpl {
     fn run_with_context(
         &self,
         arguments: Vec<String>,
-        _state: &mut HashMap<String, StateValue>,
+        state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
@@ -93,7 +103,9 @@ impl Command for CommandImpl {
         } else {
             let name = arguments[0].clone();
 
-            match create_alias_command(name, arguments[1..].to_vec(), commands) {
+            let sub_state = get_sub_state(ALIAS_STATE_KEY.to_string(), state);
+
+            match create_alias_command(name, arguments[1..].to_vec(), commands, sub_state) {
                 Ok(_) => CommandResult::Continue(None),
                 Err(error) => CommandResult::Error(error),
             }

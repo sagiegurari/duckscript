@@ -9,6 +9,7 @@
 * [sdk::If](#sdk__If)
 * [sdk::Release](#sdk__Release)
 * [sdk::Set](#sdk__Set)
+* [sdk::Unalias](#sdk__Unalias)
 * [sdk::env::Get](#sdk__env__Get)
 * [sdk::env::PrintCurrentDirectory](#sdk__env__PrintCurrentDirectory)
 * [sdk::env::Set](#sdk__env__Set)
@@ -24,25 +25,29 @@
 <a name="sdk__Alias"></a>
 ## sdk::Alias
 ```sh
-eval command arguments
+alias command arguments
 ```
 
-The eval command enables to run dynamically created commands.<br>
-The command and arguments passed can be variables in the form of ${name}.
+This command enables to define new commands with default arguments.<br>
+The new alias can be invoked with additional arguments that will be appended to the default set.
 
 #### Parameters
 
-Any number of arguments which will construct a line to evaluate and execute.
+Any number of arguments which will be added to the already defined arguments set during the aliasing.
 
 #### Return Value
 
-The result of the evaluated line.
+None
 
 #### Examples
 
+This example creates a new **my_echo** alias that will print the prefix before the requested arguments.
+
 ```sh
-command = set echo
-eval ${command} hello world
+alias my_echo echo [ECHO]
+
+# This will print "[ECHO] hello world "
+my_echo hello world
 ```
 
 
@@ -492,6 +497,41 @@ var = set "home: ${HOME}"
 
 #### Aliases:
 set
+
+<a name="sdk__Unalias"></a>
+## sdk::Unalias
+```sh
+unalias name
+```
+
+Removes previously defined alias and return true/false based if an alias was actually removed.
+
+#### Parameters
+
+The alias name to remove.
+
+#### Return Value
+
+A true/false value in case an alias with the provided name existed.
+
+#### Examples
+
+```sh
+alias my_echo echo [ECHO]
+
+# This will print "[ECHO] hello world "
+my_echo hello world
+
+unalias my_echo
+
+# This will error
+echo The script will now error as my_echo is no longer defined
+my_echo hello world
+```
+
+
+#### Aliases:
+unalias
 
 <a name="sdk__env__Get"></a>
 ## sdk::env::Get

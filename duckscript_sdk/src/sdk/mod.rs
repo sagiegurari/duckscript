@@ -1,5 +1,5 @@
 mod internal;
-mod std;
+pub(crate) mod std;
 
 use duckscript::types::command::Commands;
 use duckscript::types::error::ScriptError;

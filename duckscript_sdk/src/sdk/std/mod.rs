@@ -1,4 +1,4 @@
-mod alias;
+pub(crate) mod alias;
 mod array;
 mod echo;
 mod env;
@@ -12,6 +12,7 @@ mod process;
 mod release;
 mod set;
 mod thread;
+mod unalias;
 
 use duckscript::types::command::Commands;
 use duckscript::types::error::ScriptError;
@@ -26,6 +27,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     commands.set(goto::create(PACKAGE))?;
     commands.set(release::create(PACKAGE))?;
     commands.set(set::create(PACKAGE))?;
+    commands.set(unalias::create(PACKAGE))?;
 
     env::load(commands, PACKAGE)?;
     forin::load(commands, PACKAGE)?;

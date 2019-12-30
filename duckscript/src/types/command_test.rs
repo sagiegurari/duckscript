@@ -191,3 +191,15 @@ fn commands_set_get_all_command_names_exists() {
 
     assert_eq!(names, vec!["test1", "test2"]);
 }
+
+#[test]
+fn commands_remove() {
+    let command = TestCommand1 {};
+    let mut commands = Commands::new();
+
+    commands.set(Box::new(command)).unwrap();
+
+    assert_eq!(commands.get("test11").unwrap().name(), "test1");
+    commands.remove("test11");
+    assert!(commands.get("test11").is_none());
+}

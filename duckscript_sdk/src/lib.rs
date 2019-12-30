@@ -120,7 +120,7 @@
 //! [Apache 2](https://github.com/sagiegurari/duckscript/blob/master/LICENSE) open source license.
 //!
 
-mod sdk;
+pub(crate) mod sdk;
 mod utils;
 
 #[cfg(test)]
