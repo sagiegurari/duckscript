@@ -19,6 +19,6 @@ The error stack trace
 ```
 
 **Code Sample**
-```rust
-/// paste code here
+```sh
+# paste code here
 ```

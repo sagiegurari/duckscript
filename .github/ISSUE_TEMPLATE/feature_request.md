@@ -14,6 +14,6 @@ A clear description of the feature request.
 A clear and concise description of what you want to happen.
 
 **Code Sample**
-```rust
-/// paste code here
+```sh
+# paste code here
 ```
