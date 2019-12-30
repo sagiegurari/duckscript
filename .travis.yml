@@ -1,60 +1,56 @@
 language: rust
 matrix:
   allow_failures:
-    - rust: nightly
+  - rust: nightly
   include:
-  # Stable
   - rust: stable
     os: linux
   - rust: stable
     os: osx
   - rust: stable
     os: windows
-  # Beta
   - rust: beta
     os: linux
   - rust: beta
     os: osx
   - rust: beta
     os: windows
-  # Nightly
   - rust: nightly
     os: linux
   - rust: nightly
     os: osx
   - rust: nightly
     os: windows
-  # Deploy jobs
   - env: DEPLOY=1
     rust: stable
     os: osx
     script:
-      - cargo make zip-release-ci-flow --env TARGET=x86_64-apple-darwin
+    - cargo make zip-release-ci-flow --env TARGET=x86_64-apple-darwin
   - env: DEPLOY=1
     rust: stable
     os: windows
     before_script:
-      - rustup target add x86_64-pc-windows-msvc
-      - cargo install --debug cargo-make
+    - rustup target add x86_64-pc-windows-msvc
+    - cargo install --debug cargo-make
     script:
-      - cargo make zip-release-ci-flow --env TARGET=x86_64-pc-windows-msvc
+    - cargo make zip-release-ci-flow --env TARGET=x86_64-pc-windows-msvc
   - env: DEPLOY=1
     rust: stable
     os: linux
     script:
-      - cargo make zip-release-ci-flow --env TARGET=x86_64-unknown-linux-musl
+    - cargo make zip-release-ci-flow --env TARGET=x86_64-unknown-linux-musl
     addons:
       apt:
         packages:
         - musl-tools
 before_script:
-  - cargo install --debug cargo-make
+- cargo install --debug cargo-make
 script:
-  - cargo make --no-workspace workspace-ci-flow
+- cargo make --no-workspace workspace-ci-flow
 deploy:
   provider: releases
   api_key:
-    secure: U5ziHSOtcXHe7XX1KdEIIVVbOd/AKMvXquYoS2GJnnil3gxGRarOGkZ/F3iFGEzccXwNPuvhnBwSciVMx/Rsx4gl6ET8bila8T4/AppRhORBM4RBfAweJVZUibDoGzQVjc9Y4Aeo2E2oy8yMNFAh8WLu9tY4v5x/hlgUmffW88j3Mg6EdJb5rMQZ0aqyuTzJm6XvDixQQLaJ1bjONFAG7eRQzfs+TC/wiDXipm2bs/wcLcCl/GeB3KDyT7GH1dkeyChwdVt2rqiQM2N7gwSVKZsiV9ZFcv4SFRdwl/W2FKSAlNeIF68qXA4OAaWQxWIlfHqUk6iYgzCA8XbFIFDgRFjFvLEP5fK8Ul5gsOCZF6D9hSDYXvFvbPEqqaOKJUlxZrOaID8+j64E5gI5cPMGlYG4OPkqRYvx/NsES4OUhkrfr8j2wFAUqBPrBqCOnbp1PUkLFoQGRxy28gudhoHPjfPYcFokNErriwz4HG05UBIeGQzUKLNynxVFrwMN8u8UxOh6TDMmOa+okWLcn0jnZPTTi7zCtz34G4ltE/ikL5ERK0tV/lyvqbI6PXQfpW1mXVWf00pfkW88vXaE/uYlOdHU3FnpcGV4nynpniIvk0VJ78Fp/g2cwxw4QTMb6rIjwxmH0Dl9s1aiU/fNHnm/6vE46dwdOdykj1Uim0XgVmw=
+    secure: XquK9EB1DJ1BsCjqxVuPiUe89lrp8FJtGHZ+iCgwpG504w5muAPoWsM+oNe1S3gbR14SnxwgHfowITceM/oe8Q72SoQ98jKVXEyZGcpSgFbr9Vr16PpWGCP3mRNjqGoY0nguFjm4srgOSMykpaT45YK+Y3Pty8vaOnd4TLa8etxLREt7QD3nm2043/85tRlTf0QIQHI+L+Xbj2Peey4HV3uYs3SGYi4lAuk6fVakcSLQQCNCLgR2l7rhlELInKoTIHTIC91phlfeHK/wJSuTtw8X0TrvR35BxmpxKnXZm7dJPX3Ve03Lee4RPe75tUTpbPLHYML0JM3P3JyTmsRRENYJwvHvkTXGIQTfzNXr2zpNjBqFcURU3UU6YySH6xyqHkrc6qhHnvIABGWG7a3GnrN/qrW4cAFtXx5jIjFBZcVqQOAr6WtLwfyldidap1y253IjdINB5STNQ9Yco9Oq81SN+KMcmakcWgq90rCaE/mNLiHdPQGIxyTtC31EvvnzViwyCXX8/9reeuQEiVz0rD/E80CkrswVR6E+KMnNpVcjaiYthuYP/+D8PirX5oJ+FbX3n+R1WCVuraTtVXjaEqt1csbqBDudfqPPeoZPwKbANdCu3NE0yTpzhqI7CtCuHBmkA6GpjTd3AV35MZ2QasHhphefrwDMzMgzp4LnpTc=
   file_glob: true
   file: "*.zip"
   on:
