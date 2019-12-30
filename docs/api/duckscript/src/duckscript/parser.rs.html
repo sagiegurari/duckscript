@@ -442,6 +442,29 @@
 <span id="442">442</span>
 <span id="443">443</span>
 <span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # parser</span>
 <span class="doccomment">//!</span>
@@ -692,15 +715,37 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">using_quotes</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">in_control</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">found_end</span> <span class="op">=</span> <span class="bool-val">false</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">found_variable_prefix</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="kw">for</span> <span class="ident">_i</span> <span class="kw">in</span> <span class="ident">index</span>..<span class="ident">end_index</span> {
             <span class="kw">let</span> <span class="ident">character</span> <span class="op">=</span> <span class="ident">line_text</span>[<span class="ident">index</span>];
             <span class="ident">index</span> <span class="op">=</span> <span class="ident">index</span> <span class="op">+</span> <span class="number">1</span>;
 
             <span class="kw">if</span> <span class="ident">in_argument</span> {
                 <span class="kw">if</span> <span class="ident">in_control</span> {
-                    <span class="kw">if</span> <span class="ident">character</span> <span class="op">==</span> <span class="string">&#39;\\&#39;</span> <span class="op">||</span> <span class="ident">character</span> <span class="op">==</span> <span class="string">&#39;&quot;&#39;</span> {
+                    <span class="kw">if</span> <span class="ident">found_variable_prefix</span> {
+                        <span class="kw">if</span> <span class="ident">character</span> <span class="op">==</span> <span class="string">&#39;{&#39;</span> {
+                            <span class="ident">argument</span>.<span class="ident">push_str</span>(<span class="string">&quot;\\${&quot;</span>);
+                            <span class="ident">in_control</span> <span class="op">=</span> <span class="bool-val">false</span>;
+                            <span class="ident">found_variable_prefix</span> <span class="op">=</span> <span class="bool-val">false</span>;
+                        } <span class="kw">else</span> {
+                            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ScriptError</span> {
+                                <span class="ident">info</span>: <span class="ident">ErrorInfo</span>::<span class="ident">ControlWithoutValidValue</span>(<span class="ident">meta_info</span>.<span class="ident">clone</span>()),
+                            });
+                        }
+                    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">character</span> <span class="op">==</span> <span class="string">&#39;\\&#39;</span> <span class="op">||</span> <span class="ident">character</span> <span class="op">==</span> <span class="string">&#39;&quot;&#39;</span> {
                         <span class="ident">argument</span>.<span class="ident">push</span>(<span class="ident">character</span>);
                         <span class="ident">in_control</span> <span class="op">=</span> <span class="bool-val">false</span>;
+                    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">character</span> <span class="op">==</span> <span class="string">&#39;n&#39;</span> {
+                        <span class="ident">argument</span>.<span class="ident">push</span>(<span class="string">&#39;\n&#39;</span>);
+                        <span class="ident">in_control</span> <span class="op">=</span> <span class="bool-val">false</span>;
+                    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">character</span> <span class="op">==</span> <span class="string">&#39;r&#39;</span> {
+                        <span class="ident">argument</span>.<span class="ident">push</span>(<span class="string">&#39;\r&#39;</span>);
+                        <span class="ident">in_control</span> <span class="op">=</span> <span class="bool-val">false</span>;
+                    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">character</span> <span class="op">==</span> <span class="string">&#39;t&#39;</span> {
+                        <span class="ident">argument</span>.<span class="ident">push</span>(<span class="string">&#39;\t&#39;</span>);
+                        <span class="ident">in_control</span> <span class="op">=</span> <span class="bool-val">false</span>;
+                    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">character</span> <span class="op">==</span> <span class="string">&#39;$&#39;</span> {
+                        <span class="ident">found_variable_prefix</span> <span class="op">=</span> <span class="bool-val">true</span>;
                     } <span class="kw">else</span> {
                         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ScriptError</span> {
                             <span class="ident">info</span>: <span class="ident">ErrorInfo</span>::<span class="ident">ControlWithoutValidValue</span>(<span class="ident">meta_info</span>.<span class="ident">clone</span>()),
@@ -709,6 +754,7 @@
                 } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">character</span> <span class="op">==</span> <span class="string">&#39;\\&#39;</span> {
                     <span class="kw">if</span> <span class="ident">allow_control</span> {
                         <span class="ident">in_control</span> <span class="op">=</span> <span class="bool-val">true</span>;
+                        <span class="ident">found_variable_prefix</span> <span class="op">=</span> <span class="bool-val">false</span>;
                     } <span class="kw">else</span> {
                         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ScriptError</span> {
                             <span class="ident">info</span>: <span class="ident">ErrorInfo</span>::<span class="ident">InvalidControlLocation</span>(<span class="ident">meta_info</span>.<span class="ident">clone</span>()),

@@ -12,7 +12,7 @@
 <span id="12">12</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">internal</span>;
-<span class="kw">mod</span> <span class="ident">std</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">std</span>;
 
 <span class="kw">use</span> <span class="ident">duckscript</span>::<span class="ident">types</span>::<span class="ident">command</span>::<span class="ident">Commands</span>;
 <span class="kw">use</span> <span class="ident">duckscript</span>::<span class="ident">types</span>::<span class="ident">error</span>::<span class="ident">ScriptError</span>;

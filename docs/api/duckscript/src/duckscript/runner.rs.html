@@ -214,8 +214,6 @@
 <span id="214">214</span>
 <span id="215">215</span>
 <span id="216">216</span>
-<span id="217">217</span>
-<span id="218">218</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # runner</span>
 <span class="doccomment">//!</span>
@@ -228,7 +226,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">expansion</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">parser</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::<span class="ident">command</span>::{<span class="ident">CommandResult</span>, <span class="ident">GoToValue</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::<span class="ident">command</span>::{<span class="ident">CommandResult</span>, <span class="ident">Commands</span>, <span class="ident">GoToValue</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::<span class="ident">error</span>::{<span class="ident">ErrorInfo</span>, <span class="ident">ScriptError</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::<span class="ident">instruction</span>::{<span class="ident">Instruction</span>, <span class="ident">InstructionType</span>, <span class="ident">ScriptInstruction</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::<span class="ident">runtime</span>::{<span class="ident">Context</span>, <span class="ident">Runtime</span>, <span class="ident">StateValue</span>};
@@ -301,7 +299,8 @@
         };
 
         <span class="kw">let</span> (<span class="ident">command_result</span>, <span class="ident">output_variable</span>) <span class="op">=</span> <span class="ident">run_instruction</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">runtime</span>.<span class="ident">context</span>,
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">runtime</span>.<span class="ident">context</span>.<span class="ident">commands</span>,
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">runtime</span>.<span class="ident">context</span>.<span class="ident">variables</span>,
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">state</span>,
             <span class="kw-2">&amp;</span><span class="ident">instructions</span>,
             <span class="ident">instruction</span>,
@@ -361,16 +360,15 @@
     }
 }
 
-<span class="kw">fn</span> <span class="ident">run_instruction</span>(
-    <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span>,
+<span class="doccomment">/// Enables to evaluate a single instruction and return its result.</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run_instruction</span>(
+    <span class="ident">commands</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Commands</span>,
+    <span class="ident">variables</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">String</span><span class="op">&gt;</span>,
     <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">StateValue</span><span class="op">&gt;</span>,
     <span class="ident">instructions</span>: <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Instruction</span><span class="op">&gt;</span>,
     <span class="ident">instruction</span>: <span class="ident">Instruction</span>,
     <span class="ident">line</span>: <span class="ident">usize</span>,
 ) <span class="op">-&gt;</span> (<span class="ident">CommandResult</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">commands</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>.<span class="ident">commands</span>;
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">variables</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>.<span class="ident">variables</span>;
-
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">output_variable</span> <span class="op">=</span> <span class="prelude-val">None</span>;
     <span class="kw">let</span> <span class="ident">command_result</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">instruction</span>.<span class="ident">instruction_type</span> {
         <span class="ident">InstructionType</span>::<span class="ident">Empty</span> <span class="op">=&gt;</span> <span class="ident">CommandResult</span>::<span class="ident">Continue</span>(<span class="prelude-val">None</span>),
@@ -385,15 +383,13 @@
                             <span class="ident">bind_command_arguments</span>(<span class="kw-2">&amp;</span><span class="ident">variables</span>, <span class="kw-2">&amp;</span><span class="ident">script_instruction</span>);
 
                         <span class="kw">let</span> <span class="ident">command_result</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">command_instance</span>.<span class="ident">requires_context</span>() {
-                            <span class="kw">let</span> <span class="ident">meta_info_clone</span> <span class="op">=</span> <span class="ident">instruction</span>.<span class="ident">meta_info</span>.<span class="ident">clone</span>();
                             <span class="ident">command_instance</span>.<span class="ident">run_with_context</span>(
                                 <span class="ident">command_arguments</span>,
                                 <span class="ident">state</span>,
-                                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">variables</span>,
+                                <span class="ident">variables</span>,
                                 <span class="ident">output_variable</span>.<span class="ident">clone</span>(),
                                 <span class="kw-2">&amp;</span><span class="ident">instructions</span>,
-                                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">commands</span>,
-                                <span class="ident">meta_info_clone</span>,
+                                <span class="ident">commands</span>,
                                 <span class="ident">line</span>,
                             )
                         } <span class="kw">else</span> {
