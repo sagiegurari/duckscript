@@ -2,6 +2,9 @@
 [env]
 CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = "true"
 
+[env.sdk]
+CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = "duckscript_sdk;duckscript_cli"
+
 [config]
 additional_profiles = [
     "ci-coverage-tasks",
