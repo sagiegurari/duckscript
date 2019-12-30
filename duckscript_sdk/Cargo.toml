@@ -23,7 +23,7 @@ include = [
 ]
 
 [dependencies]
-duckscript = { path = "../duckscript" }
+duckscript = { version = "^0.1", path = "../duckscript" }
 home = "^0.5"
 rand = "^0.7"
 
