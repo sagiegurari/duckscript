@@ -267,6 +267,10 @@ release range
 #### Full SDK Docs
 The full SDK docs can be found [here](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md)
 
+Keep in mind that the command names (such as **sdk::Echo**) can be used to invoke the commands, however for simplicity, the documentation
+examples uses the alias form of the commands (for example: **echo**).<br>
+Each command may have multiple aliases which can be used to invoke it.
+
 <a name="tutorial-final-notes"></a>
 ### Final Notes
 That's It!!!!<br>
