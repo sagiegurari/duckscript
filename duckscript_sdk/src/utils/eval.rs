@@ -9,7 +9,7 @@ use std::collections::HashMap;
 mod eval_test;
 
 pub(crate) fn eval(
-    arguments: Vec<String>,
+    arguments: &Vec<String>,
     state: &mut HashMap<String, StateValue>,
     variables: &mut HashMap<String, String>,
     commands: &mut Commands,
@@ -18,7 +18,7 @@ pub(crate) fn eval(
         CommandResult::Continue(None)
     } else {
         let mut line_buffer = String::new();
-        for argument in &arguments {
+        for argument in arguments {
             if argument.contains(" ") {
                 line_buffer.push('"');
             }

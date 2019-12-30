@@ -46,13 +46,8 @@ impl Command for CommandImpl {
         } else {
             let mut command = ProcessCommand::new(&arguments[0]);
 
-            let mut skip = true;
-            for argument in &arguments {
-                if skip {
-                    skip = false;
-                } else {
-                    command.arg(argument);
-                }
+            for argument in &arguments[1..] {
+                command.arg(argument);
             }
 
             command.stdin(Stdio::inherit());

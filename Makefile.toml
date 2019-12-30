@@ -33,3 +33,9 @@ dependencies = [
     "generate-sdk-docs",
     "generate-readme"
 ]
+
+[tasks.install_local]
+workspace = false
+cwd = "./duckscript_cli"
+command = "cargo"
+args = [ "install", "--force", "--path", "." ]

@@ -154,7 +154,7 @@ fn eval_condition(
     variables: &mut HashMap<String, String>,
     commands: &mut Commands,
 ) -> Result<bool, String> {
-    match eval::eval(arguments, state, variables, commands) {
+    match eval::eval(&arguments, state, variables, commands) {
         CommandResult::Continue(value) => {
             let failed = match value {
                 Some(value_str) => {

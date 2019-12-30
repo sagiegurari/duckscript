@@ -1,4 +1,5 @@
 # Table of Contents
+* [sdk::Alias](#sdk__Alias)
 * [sdk::Array](#sdk__Array)
 * [sdk::Echo](#sdk__Echo)
 * [sdk::Eval](#sdk__Eval)
@@ -19,6 +20,34 @@
 * [sdk::process::Exit](#sdk__process__Exit)
 * [sdk::thread::Sleep](#sdk__thread__Sleep)
 
+
+<a name="sdk__Alias"></a>
+## sdk::Alias
+```sh
+eval command arguments
+```
+
+The eval command enables to run dynamically created commands.<br>
+The command and arguments passed can be variables in the form of ${name}.
+
+#### Parameters
+
+Any number of arguments which will construct a line to evaluate and execute.
+
+#### Return Value
+
+The result of the evaluated line.
+
+#### Examples
+
+```sh
+command = set echo
+eval ${command} hello world
+```
+
+
+#### Aliases:
+alias
 
 <a name="sdk__Array"></a>
 ## sdk::Array

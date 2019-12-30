@@ -6,7 +6,7 @@ fn eval_empty_arguments() {
     let mut commands = Commands::new();
 
     let result = eval(
-        vec![],
+        &vec![],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
@@ -23,7 +23,7 @@ fn eval_label_only() {
     let mut commands = Commands::new();
 
     let result = eval(
-        vec![":label".to_string()],
+        &vec![":label".to_string()],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
@@ -44,7 +44,7 @@ fn eval_command_no_output() {
     };
 
     let result = eval(
-        vec!["test_set".to_string()],
+        &vec!["test_set".to_string()],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
@@ -65,7 +65,7 @@ fn eval_command_with_output() {
     };
 
     let result = eval(
-        vec!["test_set".to_string(), "test".to_string()],
+        &vec!["test_set".to_string(), "test".to_string()],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
@@ -86,7 +86,7 @@ fn eval_command_with_output_with_spaces() {
     };
 
     let result = eval(
-        vec!["test_set".to_string(), "test 1 2 3".to_string()],
+        &vec!["test_set".to_string(), "test 1 2 3".to_string()],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
@@ -107,7 +107,7 @@ fn eval_command_with_output_with_spaces_and_all_line_types() {
     };
 
     let result = eval(
-        vec![
+        &vec![
             ":label".to_string(),
             "out".to_string(),
             "=".to_string(),
@@ -132,7 +132,7 @@ fn eval_parse_error() {
     let mut commands = Commands::new();
 
     let result = eval(
-        vec![":label".to_string(), ":label".to_string()],
+        &vec![":label".to_string(), ":label".to_string()],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
