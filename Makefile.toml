@@ -2,6 +2,7 @@
 [env]
 CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = "true"
 CARGO_MAKE_DUCKSCRIPT_PROJECT_NAME = "duckscript"
+CARGO_MAKE_DUCKSCRIPT_VERSION = "0.1.0"
 
 [env.sdk]
 CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = "duckscript_sdk;duckscript_cli"
@@ -40,6 +41,14 @@ workspace = false
 cwd = "./duckscript_cli"
 command = "cargo"
 args = [ "install", "--force", "--path", "." ]
+
+[tasks.github-publish-curl]
+script = [
+'''
+    API_JSON=$(printf '{"tag_name": "%s","target_commitish": "master","name": "%s v%s","body": "release","draft": false,"prerelease": false}' ${CARGO_MAKE_DUCKSCRIPT_VERSION} ${CARGO_MAKE_DUCKSCRIPT_PROJECT_NAME} ${CARGO_MAKE_DUCKSCRIPT_VERSION})
+    curl --data "$API_JSON" https://api.github.com/repos/${GITHUB_REPO_NAME}/releases?access_token=${GITHUB_API_TOKEN}
+'''
+]
 
 [tasks.zip-release-ci-flow]
 description = "Compiles the binary in release mode and zips it up"

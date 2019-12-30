@@ -2,4 +2,3 @@ theme: jekyll-theme-cayman
 title: duckscript
 description: Simple, extendable and embeddable scripting language.
 show_downloads: false
-version: 0.1.1
