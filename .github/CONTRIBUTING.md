@@ -18,7 +18,7 @@ Your pull request build must pass (the build will run automatically).<br>
 You can run the following command locally to ensure the build will pass:
 
 ````sh
-cargo make workspace-ci-flow
+cargo make --no-workspace workspace-ci-flow
 ````
 
 * There are many automatic unit tests as part of the library which provide full coverage of the functionality.<br>Any fix/enhancement must come with a set of tests to ensure it's working well.

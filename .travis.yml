@@ -50,7 +50,7 @@ matrix:
 before_script:
   - cargo install --debug cargo-make
 script:
-  - cargo make workspace-ci-flow
+  - cargo make --no-workspace workspace-ci-flow
 deploy:
   provider: releases
   api_key:
