@@ -1,6 +1,10 @@
 
+if true
+    echo in if as value
+end_if
+
 if set true
-    echo in if
+    echo in if as command
 end_if
 
 if set false

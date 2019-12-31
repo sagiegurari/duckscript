@@ -1,4 +1,5 @@
 use super::*;
+use crate::test::{ErrorCommand, SetCommand};
 
 #[test]
 fn is_true_none() {
@@ -54,4 +55,114 @@ fn is_true_valid() {
     let passed = is_true(Some("some value".to_string()));
 
     assert!(passed);
+}
+
+#[test]
+fn eval_condition_empty() {
+    let result = eval_condition(
+        vec![],
+        &mut HashMap::new(),
+        &mut HashMap::new(),
+        &mut Commands::new(),
+    );
+
+    assert!(result.is_ok());
+
+    let passed = result.unwrap();
+
+    assert!(!passed);
+}
+
+#[test]
+fn eval_condition_value_true() {
+    let result = eval_condition(
+        vec!["true".to_string()],
+        &mut HashMap::new(),
+        &mut HashMap::new(),
+        &mut Commands::new(),
+    );
+
+    assert!(result.is_ok());
+
+    let passed = result.unwrap();
+
+    assert!(passed);
+}
+
+#[test]
+fn eval_condition_value_false() {
+    let result = eval_condition(
+        vec!["false".to_string()],
+        &mut HashMap::new(),
+        &mut HashMap::new(),
+        &mut Commands::new(),
+    );
+
+    assert!(result.is_ok());
+
+    let passed = result.unwrap();
+
+    assert!(!passed);
+}
+
+#[test]
+fn eval_condition_command_true() {
+    let mut commands = Commands::new();
+    match commands.set(Box::new(SetCommand {})) {
+        Ok(_) => (),
+        _ => panic!("Test error"),
+    }
+
+    let result = eval_condition(
+        vec!["test_set".to_string(), "true".to_string()],
+        &mut HashMap::new(),
+        &mut HashMap::new(),
+        &mut commands,
+    );
+
+    assert!(result.is_ok());
+
+    let passed = result.unwrap();
+
+    assert!(passed);
+}
+
+#[test]
+fn eval_condition_command_false() {
+    let mut commands = Commands::new();
+    match commands.set(Box::new(SetCommand {})) {
+        Ok(_) => (),
+        _ => panic!("Test error"),
+    }
+
+    let result = eval_condition(
+        vec!["test_set".to_string(), "false".to_string()],
+        &mut HashMap::new(),
+        &mut HashMap::new(),
+        &mut commands,
+    );
+
+    assert!(result.is_ok());
+
+    let passed = result.unwrap();
+
+    assert!(!passed);
+}
+
+#[test]
+fn eval_condition_command_error() {
+    let mut commands = Commands::new();
+    match commands.set(Box::new(ErrorCommand {})) {
+        Ok(_) => (),
+        _ => panic!("Test error"),
+    }
+
+    let result = eval_condition(
+        vec!["test_error".to_string()],
+        &mut HashMap::new(),
+        &mut HashMap::new(),
+        &mut commands,
+    );
+
+    assert!(result.is_err());
 }

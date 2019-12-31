@@ -25,33 +25,32 @@ pub(crate) fn eval_condition(
     variables: &mut HashMap<String, String>,
     commands: &mut Commands,
 ) -> Result<bool, String> {
-    let eval_statement = if arguments.len() == 1 {
-        match commands.get(&arguments[0]) {
-            Some(_) => true,
-            None => false,
-        }
+    if arguments.is_empty() {
+        Ok(is_true(None))
     } else {
-        true
-    };
-
-    if eval_statement {
-        match eval::eval(&arguments, state, variables, commands) {
-            CommandResult::Continue(value) => {
-                let passed = is_true(value);
-
-                Ok(passed)
+        let eval_statement = if arguments.len() == 1 {
+            match commands.get(&arguments[0]) {
+                Some(_) => true,
+                None => false,
             }
-            CommandResult::Error(error) => Err(error.to_string()),
-            _ => Err("Invalid condition evaluation result.".to_string()),
-        }
-    } else {
-        let value = match variables.get(&arguments[0]) {
-            Some(value) => Some(value.to_string()),
-            None => None,
+        } else {
+            true
         };
 
-        let passed = is_true(value);
+        if eval_statement {
+            match eval::eval(&arguments, state, variables, commands) {
+                CommandResult::Continue(value) => {
+                    let passed = is_true(value);
 
-        Ok(passed)
+                    Ok(passed)
+                }
+                CommandResult::Error(error) => Err(error.to_string()),
+                _ => Err("Invalid condition evaluation result.".to_string()),
+            }
+        } else {
+            let passed = is_true(Some(arguments[0].to_string()));
+
+            Ok(passed)
+        }
     }
 }

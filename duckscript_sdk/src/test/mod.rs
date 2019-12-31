@@ -6,6 +6,18 @@ use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::{Context, StateValue};
 use std::collections::HashMap;
 
+pub(crate) struct ErrorCommand {}
+
+impl Command for ErrorCommand {
+    fn name(&self) -> String {
+        "test_error".to_string()
+    }
+
+    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+        CommandResult::Error("test".to_string())
+    }
+}
+
 pub(crate) struct SetCommand {}
 
 impl Command for SetCommand {
