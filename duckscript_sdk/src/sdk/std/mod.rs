@@ -8,6 +8,7 @@ mod fs;
 mod function;
 mod goto;
 mod ifelse;
+mod not;
 mod process;
 mod release;
 mod set;
@@ -25,6 +26,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     commands.set(echo::create(PACKAGE))?;
     commands.set(eval::create(PACKAGE))?;
     commands.set(goto::create(PACKAGE))?;
+    commands.set(not::create(PACKAGE))?;
     commands.set(release::create(PACKAGE))?;
     commands.set(set::create(PACKAGE))?;
     commands.set(unalias::create(PACKAGE))?;

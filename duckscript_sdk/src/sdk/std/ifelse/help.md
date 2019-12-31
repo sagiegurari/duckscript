@@ -1,7 +1,7 @@
 ```sh
-if command
+if command|value
     # commands
-elseif command
+elseif command|value
     # commands
 else
     # commands
@@ -15,13 +15,18 @@ This command provides the if/elseif/else condition language feature as a set of 
 * else - Optinoal fallback block
 * end_if - Defines the end of the entire if/else block
 
-if and elseif commands accept a command with arguments and invokes it.<br>
-If the result of the command is one of the following:
+if and elseif commands accept either:
+
+* A command with optional arguments and invokes it
+* A single value which doesn't match any known command
+
+If the value or the result of the command is one of the following:
 
 * No output
 * false (case insensitive)
 * 0
 * no (case insensitive)
+* Empty value
 
 It is considered falsy.<br>
 In case of falsy value, it will skip to the next elseif/else block.<br>
@@ -44,6 +49,14 @@ Simple example of an if statement that evaluates the argument value as true and 
 
 ```sh
 if true
+    echo in if
+end_if
+```
+
+Example of using **not** command to reverse the output value
+
+```sh
+if not false
     echo in if
 end_if
 ```

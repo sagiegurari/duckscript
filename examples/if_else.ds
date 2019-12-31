@@ -3,6 +3,14 @@ if true
     echo in if as value
 end_if
 
+if false
+    echo should not be here
+end_if
+
+if not false
+    echo in if as value with not condition
+end_if
+
 if set true
     echo in if as command
 end_if
