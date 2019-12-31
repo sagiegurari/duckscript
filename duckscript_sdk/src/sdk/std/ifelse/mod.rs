@@ -1,6 +1,6 @@
 use crate::utils::instruction_query;
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
-use crate::utils::{eval, pckg};
+use crate::utils::{condition, eval, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
@@ -156,15 +156,9 @@ fn eval_condition(
 ) -> Result<bool, String> {
     match eval::eval(&arguments, state, variables, commands) {
         CommandResult::Continue(value) => {
-            let failed = match value {
-                Some(value_str) => {
-                    let lower_case = value_str.to_lowercase();
-                    lower_case == "0" || lower_case == "false" || lower_case == "no"
-                }
-                None => true,
-            };
+            let passed = condition::is_true(value);
 
-            Ok(!failed)
+            Ok(passed)
         }
         CommandResult::Error(error) => Err(error.to_string()),
         _ => Err("Invalid condition evaluation result.".to_string()),
