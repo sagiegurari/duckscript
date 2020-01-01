@@ -279,13 +279,22 @@ This also means that other developers can replace the function command with thei
 Below an example of [if/else command](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md#sdk__If):
 
 ```sh
-if set false
+value = set false
+if ${value}
     echo should not be here
-elseif set true
+elseif true
     echo in else if but not done yet
 
-    if set true
+    value = set true
+
+    if not false
         echo nested if
+
+        if set ${value}
+            echo after command
+        else
+            echo should not be here
+        end_if
     end_if
 else
     echo should not be here

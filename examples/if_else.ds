@@ -40,3 +40,24 @@ elseif set true
 else
     echo should not be here
 end_if
+
+value = set false
+if ${value}
+    echo should not be here
+elseif true
+    echo in else if but not done yet
+
+    value = set true
+
+    if not false
+        echo nested if
+
+        if set ${value}
+            echo after command
+        else
+            echo should not be here
+        end_if
+    end_if
+else
+    echo should not be here
+end_if
