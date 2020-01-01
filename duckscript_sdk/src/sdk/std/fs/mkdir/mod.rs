@@ -11,11 +11,11 @@ struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "Write")
+        pckg::concat(&self.package, "CreateDirectory")
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["writefile".to_string()]
+        vec!["mkdir".to_string()]
     }
 
     fn help(&self) -> String {
@@ -24,15 +24,11 @@ impl Command for CommandImpl {
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {
         if arguments.is_empty() {
-            CommandResult::Error("File name and text not provided.".to_string())
-        } else if arguments.len() == 1 {
-            CommandResult::Error("Text not provided.".to_string())
+            CommandResult::Error("Directory name not provided.".to_string())
         } else {
-            let result = io::write_text_file(&arguments[0], &arguments[1]);
-
-            match result {
+            match io::create_directory(&arguments[0]) {
                 Ok(_) => CommandResult::Continue(Some("true".to_string())),
-                Err(_) => CommandResult::Continue(Some("false".to_string())),
+                Err(error) => CommandResult::Error(error),
             }
         }
     }

@@ -7,6 +7,19 @@ use std::path::Path;
 #[path = "./io_test.rs"]
 mod io_test;
 
+pub(crate) fn create_directory(directory: &str) -> Result<(), String> {
+    let directory_path = Path::new(directory);
+
+    create_directory_for_path(&directory_path)
+}
+
+fn create_directory_for_path(directory_path: &Path) -> Result<(), String> {
+    match create_dir_all(&directory_path) {
+        Ok(_) => Ok(()),
+        Err(error) => Err(error.to_string()),
+    }
+}
+
 pub(crate) fn read_text_file(file: &str) -> Result<String, ScriptError> {
     let file_path = Path::new(file);
 
@@ -29,7 +42,7 @@ pub(crate) fn write_text_file(file: &str, text: &str) -> Result<(), ScriptError>
     // create parent directory
     let directory = file_path.parent();
     match directory {
-        Some(directory_path) => match create_dir_all(&directory_path) {
+        Some(directory_path) => match create_directory_for_path(&directory_path) {
             _ => (),
         },
         None => (),

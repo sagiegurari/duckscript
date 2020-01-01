@@ -1,3 +1,4 @@
+mod mkdir;
 mod print;
 mod read;
 mod write;
@@ -11,6 +12,7 @@ static PACKAGE: &str = "fs";
 pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptError> {
     let package = pckg::concat(parent, PACKAGE);
 
+    commands.set(mkdir::create(&package))?;
     commands.set(print::create(&package))?;
     commands.set(read::create(&package))?;
     commands.set(write::create(&package))?;

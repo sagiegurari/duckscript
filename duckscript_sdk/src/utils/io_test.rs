@@ -16,11 +16,11 @@ fn read_text_file_not_found() {
 
 #[test]
 fn write_text_file_valid() {
-    let result = write_text_file("./target/temp/test/test.txt", "test file");
+    let result = write_text_file("./target/_duckscript/temp/test/test.txt", "test file");
 
     assert!(result.is_ok());
 
-    let text = read_text_file("./target/temp/test/test.txt").unwrap();
+    let text = read_text_file("./target/_duckscript/temp/test/test.txt").unwrap();
 
     assert_eq!(text, "test file");
 }
