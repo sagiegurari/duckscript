@@ -4,6 +4,7 @@ mod dirname;
 mod mkdir;
 mod print;
 mod read;
+mod touch;
 mod write;
 
 use crate::utils::pckg;
@@ -21,6 +22,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(mkdir::create(&package))?;
     commands.set(print::create(&package))?;
     commands.set(read::create(&package))?;
+    commands.set(touch::create(&package))?;
     commands.set(write::create(&package))?;
 
     Ok(())

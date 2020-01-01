@@ -7,8 +7,17 @@ additional_profiles = [
     "publish-pre-cleanup"
 ]
 
+[tasks.clean-target]
+script_runner = "@shell"
+script = [
+    "rm -Rf ./target"
+]
+
 [tasks.test]
 clear = true
+dependencies = [
+    "clean-target"
+]
 run_task = { name = ["test-thread-safe", "test-single-threaded"] }
 
 [tasks.test-thread-safe]

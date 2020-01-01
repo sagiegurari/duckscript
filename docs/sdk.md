@@ -16,6 +16,7 @@
 * [sdk::env::Set](#sdk__env__Set)
 * [sdk::env::SetCurrentDirectory](#sdk__env__SetCurrentDirectory)
 * [sdk::fs::CreateDirectory](#sdk__fs__CreateDirectory)
+* [sdk::fs::CreateEmptyFile](#sdk__fs__CreateEmptyFile)
 * [sdk::fs::GetCanonicalPath](#sdk__fs__GetCanonicalPath)
 * [sdk::fs::GetFileName](#sdk__fs__GetFileName)
 * [sdk::fs::GetParentDirectory](#sdk__fs__GetParentDirectory)
@@ -765,6 +766,34 @@ exists = mkdir ./dir/subdir
 
 #### Aliases:
 mkdir
+
+<a name="sdk__fs__CreateEmptyFile"></a>
+## sdk::fs::CreateEmptyFile
+```sh
+var = touch file
+```
+
+This command will create an empty file and return true/false if the file exists.<br>
+If file exits, it will not be modified.
+
+#### Parameters
+
+The file path.
+
+#### Return Value
+
+If the file exists after the command, it will return true.<br>
+In case of any error, it will return false.
+
+#### Examples
+
+```sh
+exists = touch ./dir/file.txt
+```
+
+
+#### Aliases:
+touch
 
 <a name="sdk__fs__GetCanonicalPath"></a>
 ## sdk::fs::GetCanonicalPath

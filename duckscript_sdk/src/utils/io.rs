@@ -105,3 +105,33 @@ pub(crate) fn write_text_file(file: &str, text: &str) -> Result<(), ScriptError>
         }),
     }
 }
+
+pub(crate) fn create_empty_file(file: &str) -> Result<(), String> {
+    let file_path = Path::new(file);
+
+    if file_path.exists() {
+        if file_path.is_file() {
+            Ok(())
+        } else {
+            Err(format!(
+                "Unable to create file: {} directory with that path exists.",
+                file
+            )
+            .to_string())
+        }
+    } else {
+        // create parent directory
+        let directory = file_path.parent();
+        match directory {
+            Some(directory_path) => match create_directory_for_path(&directory_path) {
+                _ => (),
+            },
+            None => (),
+        };
+
+        match File::create(&file_path) {
+            Ok(_) => Ok(()),
+            _ => Err(format!("Unable to create file: {}", file).to_string()),
+        }
+    }
+}

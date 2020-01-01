@@ -45,3 +45,30 @@ fn write_text_file_valid() {
 
     assert_eq!(text, "test file");
 }
+
+#[test]
+fn create_empty_file_not_exists() {
+    let path = "./target/_duckscript/temp/create_empty_file_not_exists/file.txt";
+    let file_path = Path::new(path);
+    assert!(!file_path.exists());
+
+    let result = create_empty_file(path);
+
+    assert!(result.is_ok());
+    assert!(file_path.exists());
+}
+
+#[test]
+fn create_empty_file_exists() {
+    let path = "./target/_duckscript/temp/create_empty_file_exists/file.txt";
+    let file_path = Path::new(path);
+    assert!(!file_path.exists());
+
+    let result = create_empty_file(path);
+
+    assert!(result.is_ok());
+    assert!(file_path.exists());
+
+    let result = create_empty_file(path);
+    assert!(result.is_ok());
+}
