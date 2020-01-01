@@ -1,19 +1,20 @@
 ```sh
-var = mkdir directory
+var = basename path
 ```
 
-This command will create the requested directory (and needed parent directories) and return true/false if it was successful.
+This command will return the last path element of the provided path.<br>
+If unable, it will return none.
 
 #### Parameters
 
-The directory name to create.
+The path to extract the last element from.
 
 #### Return Value
 
-The operation success value - true if directory exists, else false.
+The last path element or none if unsuccessful.
 
 #### Examples
 
 ```sh
-exists = mkdir ./dir/subdir
+file = basename ./dir/file.txt
 ```
