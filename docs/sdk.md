@@ -7,6 +7,7 @@
 * [sdk::Function](#sdk__Function)
 * [sdk::GoTo](#sdk__GoTo)
 * [sdk::If](#sdk__If)
+* [sdk::Not](#sdk__Not)
 * [sdk::Release](#sdk__Release)
 * [sdk::Set](#sdk__Set)
 * [sdk::Unalias](#sdk__Unalias)
@@ -14,6 +15,9 @@
 * [sdk::env::PrintCurrentDirectory](#sdk__env__PrintCurrentDirectory)
 * [sdk::env::Set](#sdk__env__Set)
 * [sdk::env::SetCurrentDirectory](#sdk__env__SetCurrentDirectory)
+* [sdk::fs::CreateDirectory](#sdk__fs__CreateDirectory)
+* [sdk::fs::GetCanonicalPath](#sdk__fs__GetCanonicalPath)
+* [sdk::fs::GetFileName](#sdk__fs__GetFileName)
 * [sdk::fs::Print](#sdk__fs__Print)
 * [sdk::fs::Read](#sdk__fs__Read)
 * [sdk::fs::Write](#sdk__fs__Write)
@@ -343,9 +347,9 @@ goto
 <a name="sdk__If"></a>
 ## sdk::If
 ```sh
-if command
+if command|value
     # commands
-elseif command
+elseif command|value
     # commands
 else
     # commands
@@ -359,13 +363,18 @@ This command provides the if/elseif/else condition language feature as a set of 
 * else - Optinoal fallback block
 * end_if - Defines the end of the entire if/else block
 
-if and elseif commands accept a command with arguments and invokes it.<br>
-If the result of the command is one of the following:
+if and elseif commands accept either:
+
+* A command with optional arguments and invokes it
+* A single value which doesn't match any known command
+
+If the value or the result of the command is one of the following:
 
 * No output
 * false (case insensitive)
 * 0
 * no (case insensitive)
+* Empty value
 
 It is considered falsy.<br>
 In case of falsy value, it will skip to the next elseif/else block.<br>
@@ -375,7 +384,7 @@ if blocks can be nested in other if blocks (see examples).
 
 #### Parameters
 
-* if/elseif - A command and its arguments to invoke and evaluate its output
+* if/elseif - A command and its arguments to invoke and evaluate its output, if a single value is provided an no such command exists, it is evaluated as a value.
 * else/end_if - no parameters
 
 #### Return Value
@@ -384,7 +393,23 @@ None
 
 #### Examples
 
-Simple example of an if statement that evaluates to true and echos "in if"
+Simple example of an if statement that evaluates the argument value as true and echos "in if"
+
+```sh
+if true
+    echo in if
+end_if
+```
+
+Example of using **not** command to reverse the output value
+
+```sh
+if not false
+    echo in if
+end_if
+```
+
+Example of an if statement that evaluates the command as true and echos "in if"
 
 ```sh
 if set true
@@ -433,6 +458,62 @@ end_if
 
 #### Aliases:
 if
+
+<a name="sdk__Not"></a>
+## sdk::Not
+```sh
+output = not command|value
+```
+
+Enables to switch falsy to true and truthy to false.<br>
+The **not** commands accept either:
+
+* A command with optional arguments and invokes it
+* A single value which doesn't match any known command
+
+If the value or the result of the command is one of the following:
+
+* No output
+* false (case insensitive)
+* 0
+* no (case insensitive)
+* Empty value
+
+It will return true, otherwise it will return false.
+
+#### Parameters
+
+A command and its arguments to invoke and evaluate its output, if a single value is provided an no such command exists, it is evaluated as a value.
+
+#### Return Value
+
+The switched value of the input.
+
+#### Examples
+
+Simple example of converting true/false values
+
+```sh
+is_false = not true
+echo is false: ${is_false}
+
+is_true = not false
+echo is true: ${is_true}
+```
+
+Example of converting command output value
+
+```sh
+is_false = not set true
+echo is false: ${is_false}
+
+is_true = not set false
+echo is true: ${is_true}
+```
+
+
+#### Aliases:
+not
 
 <a name="sdk__Release"></a>
 ## sdk::Release
@@ -657,6 +738,86 @@ cd ./scripts
 
 #### Aliases:
 cd, set_current_dir
+
+<a name="sdk__fs__CreateDirectory"></a>
+## sdk::fs::CreateDirectory
+```sh
+var = mkdir directory
+```
+
+This command will create the requested directory (and needed parent directories) and return true/false if it was successful.
+
+#### Parameters
+
+The directory name to create.
+
+#### Return Value
+
+The operation success value - true if directory exists, else false.
+
+#### Examples
+
+```sh
+exists = mkdir ./dir/subdir
+```
+
+
+#### Aliases:
+mkdir
+
+<a name="sdk__fs__GetCanonicalPath"></a>
+## sdk::fs::GetCanonicalPath
+```sh
+var = canonicalize path
+```
+
+This command will return the c path for the provided input.<br>
+In case unable, it will return the original input.
+
+#### Parameters
+
+The file/directory path to canonicalize.
+
+#### Return Value
+
+The canonicalized path, or if unsuccessful, the original path.
+
+#### Examples
+
+```sh
+path = canonicalize ./target
+```
+
+
+#### Aliases:
+canonicalize
+
+<a name="sdk__fs__GetFileName"></a>
+## sdk::fs::GetFileName
+```sh
+var = basename path
+```
+
+This command will return the last path element of the provided path.<br>
+If unable, it will return none.
+
+#### Parameters
+
+The path to extract the last element from.
+
+#### Return Value
+
+The last path element or none if unsuccessful.
+
+#### Examples
+
+```sh
+file = basename ./dir/file.txt
+```
+
+
+#### Aliases:
+basename
 
 <a name="sdk__fs__Print"></a>
 ## sdk::fs::Print
