@@ -16,7 +16,7 @@ additional_profiles = [
 [tasks.generate-sdk-docs]
 workspace = false
 command = "cargo"
-args = [ "run", "--bin", "duckscript", "--", "./sdkdocs.ds", ]
+args = [ "run", "--bin", "duckscript", "--", "./sdkdocs.ds" ]
 
 [tasks.generate-readme]
 script = [

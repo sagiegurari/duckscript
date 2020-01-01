@@ -26,6 +26,24 @@ pub(crate) fn get_base_name(path: &str) -> Option<String> {
     }
 }
 
+pub(crate) fn get_parent_directory_name(path: &str) -> Option<String> {
+    let file_path = Path::new(path);
+
+    let directory = file_path.parent();
+    match directory {
+        Some(directory_path) => {
+            let directory = directory_path.to_string_lossy().into_owned();
+
+            if directory.is_empty() {
+                None
+            } else {
+                Some(directory)
+            }
+        }
+        None => None,
+    }
+}
+
 pub(crate) fn create_directory(directory: &str) -> Result<(), String> {
     let directory_path = Path::new(directory);
 

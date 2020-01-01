@@ -18,6 +18,7 @@
 * [sdk::fs::CreateDirectory](#sdk__fs__CreateDirectory)
 * [sdk::fs::GetCanonicalPath](#sdk__fs__GetCanonicalPath)
 * [sdk::fs::GetFileName](#sdk__fs__GetFileName)
+* [sdk::fs::GetParentDirectory](#sdk__fs__GetParentDirectory)
 * [sdk::fs::Print](#sdk__fs__Print)
 * [sdk::fs::Read](#sdk__fs__Read)
 * [sdk::fs::Write](#sdk__fs__Write)
@@ -818,6 +819,33 @@ file = basename ./dir/file.txt
 
 #### Aliases:
 basename
+
+<a name="sdk__fs__GetParentDirectory"></a>
+## sdk::fs::GetParentDirectory
+```sh
+var = dirname path
+```
+
+This command will return the parent path of the provided path.<br>
+If the parent path is empty, it will return none.
+
+#### Parameters
+
+The path to extract the parent path from.
+
+#### Return Value
+
+The parent path or none.
+
+#### Examples
+
+```sh
+directory = dirname ./dir/file.txt
+```
+
+
+#### Aliases:
+dirname
 
 <a name="sdk__fs__Print"></a>
 ## sdk::fs::Print
