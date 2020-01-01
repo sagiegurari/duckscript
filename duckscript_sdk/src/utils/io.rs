@@ -7,6 +7,25 @@ use std::path::Path;
 #[path = "./io_test.rs"]
 mod io_test;
 
+pub(crate) fn get_canonical_path(path: &str) -> String {
+    let path_obj = Path::new(path);
+
+    match path_obj.canonicalize() {
+        Ok(path_buf) => path_buf.to_string_lossy().into_owned(),
+        _ => path.to_string(),
+    }
+}
+
+pub(crate) fn get_base_name(path: &str) -> Option<String> {
+    let canonical_path = get_canonical_path(path);
+    let path = Path::new(&canonical_path);
+
+    match path.file_name() {
+        Some(name) => Some(name.to_string_lossy().into_owned()),
+        None => None,
+    }
+}
+
 pub(crate) fn create_directory(directory: &str) -> Result<(), String> {
     let directory_path = Path::new(directory);
 

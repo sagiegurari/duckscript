@@ -2,6 +2,8 @@
 
 ### v0.1.2
 
+* New **canonicalize** command #21
+* New **basename** command #5
 * New **mkdir** command #13
 * New **not** command #12
 
