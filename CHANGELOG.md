@@ -2,6 +2,8 @@
 
 ### v0.1.2
 
+* New **rmdir** command #14
+* New **assert_eq** command #22
 * New **assert_fail** command #3
 * New **assert** command #2
 * New **touch** command #4
