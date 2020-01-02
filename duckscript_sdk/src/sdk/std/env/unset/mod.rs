@@ -12,11 +12,11 @@ struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "GetVar")
+        pckg::concat(&self.package, "UnsetVar")
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["get_env".to_string()]
+        vec!["unset_env".to_string()]
     }
 
     fn help(&self) -> String {
@@ -27,10 +27,9 @@ impl Command for CommandImpl {
         if arguments.is_empty() {
             CommandResult::Error("Missing environment variable name.".to_string())
         } else {
-            match env::var(&arguments[0]) {
-                Ok(value) => CommandResult::Continue(Some(value)),
-                Err(_) => CommandResult::Continue(None),
-            }
+            env::remove_var(&arguments[0]);
+
+            CommandResult::Continue(None)
         }
     }
 }

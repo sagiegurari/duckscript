@@ -2,6 +2,7 @@ mod cd;
 mod get;
 mod pwd;
 mod set;
+mod unset;
 
 use crate::utils::pckg;
 use duckscript::types::command::Commands;
@@ -16,6 +17,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(get::create(&package))?;
     commands.set(pwd::create(&package))?;
     commands.set(set::create(&package))?;
+    commands.set(unset::create(&package))?;
 
     Ok(())
 }

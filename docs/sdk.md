@@ -11,10 +11,11 @@
 * [sdk::Release](#sdk__Release)
 * [sdk::Set](#sdk__Set)
 * [sdk::Unalias](#sdk__Unalias)
-* [sdk::env::Get](#sdk__env__Get)
+* [sdk::env::GetVar](#sdk__env__GetVar)
 * [sdk::env::PrintCurrentDirectory](#sdk__env__PrintCurrentDirectory)
-* [sdk::env::Set](#sdk__env__Set)
 * [sdk::env::SetCurrentDirectory](#sdk__env__SetCurrentDirectory)
+* [sdk::env::SetVar](#sdk__env__SetVar)
+* [sdk::env::UnsetVar](#sdk__env__UnsetVar)
 * [sdk::fs::CreateDirectory](#sdk__fs__CreateDirectory)
 * [sdk::fs::CreateEmptyFile](#sdk__fs__CreateEmptyFile)
 * [sdk::fs::DeleteEmptyDirectory](#sdk__fs__DeleteEmptyDirectory)
@@ -574,8 +575,8 @@ my_echo hello world
 #### Aliases:
 unalias
 
-<a name="sdk__env__Get"></a>
-## sdk::env::Get
+<a name="sdk__env__GetVar"></a>
+## sdk::env::GetVar
 ```sh
 var = get_env key
 ```
@@ -630,35 +631,6 @@ directory = pwd
 #### Aliases:
 pwd
 
-<a name="sdk__env__Set"></a>
-## sdk::env::Set
-```sh
-set_env key value
-```
-
-Sets the environment variable defined by the provided key to the provided value.
-
-#### Parameters
-
-Two arguments are required:
-
-* key - The name of the environment variable to set
-* value - The new environment variable value
-
-#### Return Value
-
-None
-
-#### Examples
-
-```sh
-set_env HOME /usr/me
-```
-
-
-#### Aliases:
-set_env
-
 <a name="sdk__env__SetCurrentDirectory"></a>
 ## sdk::env::SetCurrentDirectory
 ```sh
@@ -690,6 +662,61 @@ cd ./scripts
 
 #### Aliases:
 cd, set_current_dir
+
+<a name="sdk__env__SetVar"></a>
+## sdk::env::SetVar
+```sh
+set_env key value
+```
+
+Sets the environment variable defined by the provided key to the provided value.
+
+#### Parameters
+
+Two arguments are required:
+
+* key - The name of the environment variable to set
+* value - The new environment variable value
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+set_env HOME /usr/me
+```
+
+
+#### Aliases:
+set_env
+
+<a name="sdk__env__UnsetVar"></a>
+## sdk::env::UnsetVar
+```sh
+unset_env key
+```
+
+Removes the environment variable defined by the provided key.
+
+#### Parameters
+
+The name of the environment variable to remove
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+unset_env HOME
+```
+
+
+#### Aliases:
+unset_env
 
 <a name="sdk__fs__CreateDirectory"></a>
 ## sdk::fs::CreateDirectory
