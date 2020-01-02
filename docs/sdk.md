@@ -26,6 +26,7 @@
 * [sdk::process::Execute](#sdk__process__Execute)
 * [sdk::process::Exit](#sdk__process__Exit)
 * [sdk::test::Assert](#sdk__test__Assert)
+* [sdk::test::AssertFail](#sdk__test__AssertFail)
 * [sdk::thread::Sleep](#sdk__thread__Sleep)
 
 
@@ -1070,7 +1071,7 @@ It is considered falsy and will exist with an error.
 
 #### Return Value
 
-**true** is truthy.
+**true** if truthy.
 
 #### Examples
 
@@ -1097,6 +1098,35 @@ assert false "This is my error message"
 
 #### Aliases:
 assert
+
+<a name="sdk__test__AssertFail"></a>
+## sdk::test::AssertFail
+```sh
+assert_fail [error message]
+```
+
+This command will exist with an error.<br>
+If error message is provided, it will be used as part of the error output.
+
+#### Parameters
+
+Optional error message.
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+assert_fail
+
+assert_fail "This is my error message"
+```
+
+
+#### Aliases:
+assert_fail
 
 <a name="sdk__thread__Sleep"></a>
 ## sdk::thread::Sleep

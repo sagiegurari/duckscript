@@ -20,7 +20,7 @@ It is considered falsy and will exist with an error.
 
 #### Return Value
 
-**true** is truthy.
+**true** if truthy.
 
 #### Examples
 
