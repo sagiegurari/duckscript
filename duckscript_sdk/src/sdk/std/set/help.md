@@ -15,14 +15,10 @@ The first command argument.
 
 #### Examples
 
-Return a simple text value:
-
 ```sh
+# Return simple 'hello' text value
 var = set hello
-```
 
-Return an expanded value:
-
-```sh
+# Return expanded value: 'home: ....'
 var = set "home: ${HOME}"
 ```

@@ -51,6 +51,10 @@ pub(crate) fn create_directory(directory: &str) -> Result<(), String> {
 }
 
 fn create_directory_for_path(directory_path: &Path) -> Result<(), String> {
+    if directory_path.is_dir() && directory_path.exists() {
+        return Ok(());
+    }
+
     match create_dir_all(&directory_path) {
         Ok(_) => Ok(()),
         Err(error) => Err(error.to_string()),

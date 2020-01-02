@@ -24,6 +24,7 @@ include = [
 
 [dependencies]
 duckscript = { version = "^0.1", path = "../duckscript" }
+fs_extra = "^1"
 home = "^0.5"
 rand = "^0.7"
 

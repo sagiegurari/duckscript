@@ -24,9 +24,8 @@ None
 
 #### Examples
 
-Simple example iteration over the list of letters:
-
 ```sh
+# Simple example iteration over the list of letters:
 args = array a b c
 
 for arg in args
@@ -34,11 +33,8 @@ for arg in args
 end_for
 
 release args
-```
 
-Example nested loops:
-
-```sh
+# Example nested loops:
 range = array 1 2 3
 for i in range
     for j in range

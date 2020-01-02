@@ -28,19 +28,15 @@ The switched value of the input.
 
 #### Examples
 
-Simple example of converting true/false values
-
 ```sh
+# Simple example of converting true/false values
 is_false = not true
 echo is false: ${is_false}
 
 is_true = not false
 echo is true: ${is_true}
-```
 
-Example of converting command output value
-
-```sh
+# Example of converting command output value
 is_false = not set true
 echo is false: ${is_false}
 

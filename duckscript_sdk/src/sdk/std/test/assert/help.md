@@ -24,20 +24,16 @@ It is considered falsy and will exist with an error.
 
 #### Examples
 
-Valid condition:
-
 ```sh
+# valid conditions
 assert ok
 assert true
 assert yes
 
 value = set "some text"
 assert ${value}
-```
 
-Error example:
-
-```sh
+# error conditions
 assert
 assert false
 assert 0

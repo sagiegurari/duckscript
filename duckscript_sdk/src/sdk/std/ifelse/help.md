@@ -45,43 +45,30 @@ None
 
 #### Examples
 
-Simple example of an if statement that evaluates the argument value as true and echos "in if"
-
 ```sh
+# Simple example of an if statement that evaluates the argument value as true and echos "in if"
 if true
     echo in if
 end_if
-```
 
-Example of using **not** command to reverse the output value
-
-```sh
+# Example of using **not** command to reverse the output value
 if not false
     echo in if
 end_if
-```
 
-Example of an if statement that evaluates the command as true and echos "in if"
-
-```sh
+# Example of an if statement that evaluates the command as true and echos "in if"
 if set true
     echo in if
 end_if
-```
 
-Example of if condition returning a falsy result and navigation goes to the else block which echos "in else"
-
-```sh
+# Example of if condition returning a falsy result and navigation goes to the else block which echos "in else"
 if set false
     echo should not be here
 else
     echo in else
 end_if
-```
 
-Example of if condition returning a falsy result and navigation goes to the elseif block has a truthy condition
-
-```sh
+# Example of if condition returning a falsy result and navigation goes to the elseif block has a truthy condition
 if set false
     echo should not be here
 elseif set true
@@ -89,11 +76,8 @@ elseif set true
 else
     echo should not be here
 end_if
-```
 
-Nested if example:
-
-```sh
+# Nested if example:
 if set false
     echo should not be here
 elseif set true

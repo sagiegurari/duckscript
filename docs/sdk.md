@@ -22,6 +22,7 @@
 * [sdk::fs::GetCanonicalPath](#sdk__fs__GetCanonicalPath)
 * [sdk::fs::GetFileName](#sdk__fs__GetFileName)
 * [sdk::fs::GetParentDirectory](#sdk__fs__GetParentDirectory)
+* [sdk::fs::MovePath](#sdk__fs__MovePath)
 * [sdk::fs::Print](#sdk__fs__Print)
 * [sdk::fs::Read](#sdk__fs__Read)
 * [sdk::fs::Write](#sdk__fs__Write)
@@ -52,9 +53,8 @@ None
 
 #### Examples
 
-This example creates a new **my_echo** alias that will print the prefix before the requested arguments.
-
 ```sh
+# This example creates a new **my_echo** alias that will print the prefix before the requested arguments.
 alias my_echo echo [ECHO]
 
 # This will print "[ECHO] hello world "
@@ -115,15 +115,11 @@ The amount of arguments printed.
 
 #### Examples
 
-Print multiple arguments:
-
 ```sh
+# Print multiple arguments:
 echo hello world
-```
 
-Print multiple spaces between words
-
-```sh
+# Print multiple spaces between words
 echo "hello    world"
 ```
 
@@ -187,9 +183,8 @@ None
 
 #### Examples
 
-Simple example iteration over the list of letters:
-
 ```sh
+# Simple example iteration over the list of letters:
 args = array a b c
 
 for arg in args
@@ -197,11 +192,8 @@ for arg in args
 end_for
 
 release args
-```
 
-Example nested loops:
-
-```sh
+# Example nested loops:
 range = array 1 2 3
 for i in range
     for j in range
@@ -255,27 +247,20 @@ The function invocation returns the output provided by the return command.
 
 #### Examples
 
-Simple example of a function definition which echo 'hello world' and exists.
-
 ```sh
+# Simple example of a function definition which echo 'hello world' and exists.
+
 # function start
 function hello_world
-
-echo hello world
-
+    echo hello world
 end_function
 
 # function invocation
 hello_world
-```
 
-Example of calling a function and returning a value
-
-```sh
+# Example of calling a function and returning a value
 function get_hello_world
-
-return "hello world"
-
+    return "hello world"
 end_function
 
 # function invocation
@@ -283,32 +268,24 @@ text = get_hello_world
 
 # this will print "hello world"
 echo ${text}
-```
 
-Example of passing arguments
-
-```sh
+# Example of passing arguments
 function print_input
-
-# $1 is set with the value 'hello'
-# $2 is set with the value 'world'
-echo ${1} ${2}
-
+    # $1 is set with the value 'hello'
+    # $2 is set with the value 'world'
+    echo ${1} ${2}
 end_function
 
 print_input hello world
-```
 
-Functions can call other functions
-
-```sh
+# Functions can call other functions
 function get_one
-return 1
+    return 1
 end_function
 
 function get_number
-number = get_one
-return ${number}
+    number = get_one
+    return ${number}
 end_function
 
 output = get_number
@@ -400,43 +377,30 @@ None
 
 #### Examples
 
-Simple example of an if statement that evaluates the argument value as true and echos "in if"
-
 ```sh
+# Simple example of an if statement that evaluates the argument value as true and echos "in if"
 if true
     echo in if
 end_if
-```
 
-Example of using **not** command to reverse the output value
-
-```sh
+# Example of using **not** command to reverse the output value
 if not false
     echo in if
 end_if
-```
 
-Example of an if statement that evaluates the command as true and echos "in if"
-
-```sh
+# Example of an if statement that evaluates the command as true and echos "in if"
 if set true
     echo in if
 end_if
-```
 
-Example of if condition returning a falsy result and navigation goes to the else block which echos "in else"
-
-```sh
+# Example of if condition returning a falsy result and navigation goes to the else block which echos "in else"
 if set false
     echo should not be here
 else
     echo in else
 end_if
-```
 
-Example of if condition returning a falsy result and navigation goes to the elseif block has a truthy condition
-
-```sh
+# Example of if condition returning a falsy result and navigation goes to the elseif block has a truthy condition
 if set false
     echo should not be here
 elseif set true
@@ -444,11 +408,8 @@ elseif set true
 else
     echo should not be here
 end_if
-```
 
-Nested if example:
-
-```sh
+# Nested if example:
 if set false
     echo should not be here
 elseif set true
@@ -498,19 +459,15 @@ The switched value of the input.
 
 #### Examples
 
-Simple example of converting true/false values
-
 ```sh
+# Simple example of converting true/false values
 is_false = not true
 echo is false: ${is_false}
 
 is_true = not false
 echo is true: ${is_true}
-```
 
-Example of converting command output value
-
-```sh
+# Example of converting command output value
 is_false = not set true
 echo is false: ${is_false}
 
@@ -570,15 +527,11 @@ The first command argument.
 
 #### Examples
 
-Return a simple text value:
-
 ```sh
+# Return simple 'hello' text value
 var = set hello
-```
 
-Return an expanded value:
-
-```sh
+# Return expanded value: 'home: ....'
 var = set "home: ${HOME}"
 ```
 
@@ -665,15 +618,11 @@ The current directory path.
 
 #### Examples
 
-Print the current directory:
-
 ```sh
+# Print the current directory:
 pwd
-```
 
-Print and also store the current directory:
-
-```sh
+# Print and also store the current directory:
 directory = pwd
 ```
 
@@ -730,15 +679,11 @@ The new current directory.
 
 #### Examples
 
-Move to user home directory and store the path in the home variable
-
 ```sh
+# Move to user home directory and store the path in the home variable
 home = cd
-```
 
-Move to the requested directory
-
-```sh
+# Move to the requested directory
 cd ./scripts
 ```
 
@@ -940,6 +885,45 @@ directory = dirname ./dir/file.txt
 #### Aliases:
 dirname
 
+<a name="sdk__fs__MovePath"></a>
+## sdk::fs::MovePath
+```sh
+var = mv source target
+```
+
+This command moves the requested source path to the target path.
+
+* If the source and target paths define a file, it will move the file as defined.
+* If target path is a directory path, it will move the source file/directory into that target directory path.
+
+All missing parent directories in the target path will be created as needed.
+
+#### Parameters
+
+* The source path to copy
+* The target path
+
+#### Return Value
+
+**true** if the move was successful.
+
+#### Examples
+
+```sh
+# move a single file
+moved = mv ./file1.txt ./file2.txt
+
+# move a single file into the target directory
+moved = mv ./file1.txt ./somedir
+
+# move entire directory into another directory
+moved = mv ./source ./target/subdir
+```
+
+
+#### Aliases:
+mv
+
 <a name="sdk__fs__Print"></a>
 ## sdk::fs::Print
 ```sh
@@ -1051,15 +1035,11 @@ Optionally a base name to access the process stout, stderr and exit code informa
 
 #### Examples
 
-Example of running a command and flushing its output to the parent process.
-
 ```sh
+# Example of running a command and flushing its output to the parent process.
 exec echo hello world
-```
 
-Example of running a command and storing its output.
-
-```sh
+# Example of running a command and storing its output.
 output = exec echo hello world
 
 stdout = set ${output.stdout}
@@ -1093,15 +1073,11 @@ The exit code.
 
 #### Examples
 
-Example of exit with code '0'
-
 ```sh
+# exit with code '0'
 code = exit
-```
 
-Example of exit with error code '1'
-
-```sh
+# exit with code '1'
 code = exit 1
 ```
 
@@ -1137,20 +1113,16 @@ It is considered falsy and will exist with an error.
 
 #### Examples
 
-Valid condition:
-
 ```sh
+# valid conditions
 assert ok
 assert true
 assert yes
 
 value = set "some text"
 assert ${value}
-```
 
-Error example:
-
-```sh
+# error conditions
 assert
 assert false
 assert 0
@@ -1181,19 +1153,15 @@ If they are not, the command will exist with an error.
 
 #### Examples
 
-Valid condition:
-
 ```sh
+# valid conditions
 assert_eq yes yes
 assert_eq false false
 
 value = set "some text"
 assert_eq ${value} "some text"
-```
 
-Error example:
-
-```sh
+# error conditions
 assert_eq 1 2
 assert_eq 1 2 "This is my error message"
 ```
@@ -1250,9 +1218,8 @@ The amount of milliseconds waited.
 
 #### Examples
 
-Example of sleep for 10 milliseconds"
-
 ```sh
+# will sleep for 10 milliseconds
 time = sleep 10
 echo Waited for ${time} milliseconds.
 ```

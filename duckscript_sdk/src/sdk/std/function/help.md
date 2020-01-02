@@ -37,27 +37,20 @@ The function invocation returns the output provided by the return command.
 
 #### Examples
 
-Simple example of a function definition which echo 'hello world' and exists.
-
 ```sh
+# Simple example of a function definition which echo 'hello world' and exists.
+
 # function start
 function hello_world
-
-echo hello world
-
+    echo hello world
 end_function
 
 # function invocation
 hello_world
-```
 
-Example of calling a function and returning a value
-
-```sh
+# Example of calling a function and returning a value
 function get_hello_world
-
-return "hello world"
-
+    return "hello world"
 end_function
 
 # function invocation
@@ -65,32 +58,24 @@ text = get_hello_world
 
 # this will print "hello world"
 echo ${text}
-```
 
-Example of passing arguments
-
-```sh
+# Example of passing arguments
 function print_input
-
-# $1 is set with the value 'hello'
-# $2 is set with the value 'world'
-echo ${1} ${2}
-
+    # $1 is set with the value 'hello'
+    # $2 is set with the value 'world'
+    echo ${1} ${2}
 end_function
 
 print_input hello world
-```
 
-Functions can call other functions
-
-```sh
+# Functions can call other functions
 function get_one
-return 1
+    return 1
 end_function
 
 function get_number
-number = get_one
-return ${number}
+    number = get_one
+    return ${number}
 end_function
 
 output = get_number

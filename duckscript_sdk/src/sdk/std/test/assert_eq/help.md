@@ -16,19 +16,15 @@ If they are not, the command will exist with an error.
 
 #### Examples
 
-Valid condition:
-
 ```sh
+# valid conditions
 assert_eq yes yes
 assert_eq false false
 
 value = set "some text"
 assert_eq ${value} "some text"
-```
 
-Error example:
-
-```sh
+# error conditions
 assert_eq 1 2
 assert_eq 1 2 "This is my error message"
 ```

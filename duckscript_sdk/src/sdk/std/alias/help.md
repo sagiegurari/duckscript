@@ -15,9 +15,8 @@ None
 
 #### Examples
 
-This example creates a new **my_echo** alias that will print the prefix before the requested arguments.
-
 ```sh
+# This example creates a new **my_echo** alias that will print the prefix before the requested arguments.
 alias my_echo echo [ECHO]
 
 # This will print "[ECHO] hello world "

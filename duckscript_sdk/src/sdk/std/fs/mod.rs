@@ -2,6 +2,7 @@ mod basename;
 mod canonical;
 mod dirname;
 mod mkdir;
+mod mv;
 mod print;
 mod read;
 mod rm;
@@ -22,6 +23,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(canonical::create(&package))?;
     commands.set(dirname::create(&package))?;
     commands.set(mkdir::create(&package))?;
+    commands.set(mv::create(&package))?;
     commands.set(print::create(&package))?;
     commands.set(read::create(&package))?;
     commands.set(rm::create(&package))?;

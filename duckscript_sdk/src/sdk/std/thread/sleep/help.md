@@ -15,9 +15,8 @@ The amount of milliseconds waited.
 
 #### Examples
 
-Example of sleep for 10 milliseconds"
-
 ```sh
+# will sleep for 10 milliseconds
 time = sleep 10
 echo Waited for ${time} milliseconds.
 ```

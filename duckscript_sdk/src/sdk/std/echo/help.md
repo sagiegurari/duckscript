@@ -15,14 +15,10 @@ The amount of arguments printed.
 
 #### Examples
 
-Print multiple arguments:
-
 ```sh
+# Print multiple arguments:
 echo hello world
-```
 
-Print multiple spaces between words
-
-```sh
+# Print multiple spaces between words
 echo "hello    world"
 ```

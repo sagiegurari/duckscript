@@ -16,14 +16,10 @@ The new current directory.
 
 #### Examples
 
-Move to user home directory and store the path in the home variable
-
 ```sh
+# Move to user home directory and store the path in the home variable
 home = cd
-```
 
-Move to the requested directory
-
-```sh
+# Move to the requested directory
 cd ./scripts
 ```

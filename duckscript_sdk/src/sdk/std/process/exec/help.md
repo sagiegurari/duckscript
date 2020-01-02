@@ -26,15 +26,11 @@ Optionally a base name to access the process stout, stderr and exit code informa
 
 #### Examples
 
-Example of running a command and flushing its output to the parent process.
-
 ```sh
+# Example of running a command and flushing its output to the parent process.
 exec echo hello world
-```
 
-Example of running a command and storing its output.
-
-```sh
+# Example of running a command and storing its output.
 output = exec echo hello world
 
 stdout = set ${output.stdout}
