@@ -1,6 +1,7 @@
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
 use std::fs;
+use std::path::Path;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -27,11 +28,16 @@ impl Command for CommandImpl {
         if arguments.is_empty() {
             CommandResult::Error("Directory path not provided.".to_string())
         } else {
-            let result = fs::remove_dir(&arguments[0]);
+            let path = Path::new(&arguments[0]);
+            if !path.exists() {
+                CommandResult::Continue(Some("true".to_string()))
+            } else {
+                let result = fs::remove_dir(&arguments[0]);
 
-            match result {
-                Ok(_) => CommandResult::Continue(Some("true".to_string())),
-                Err(error) => CommandResult::Error(error.to_string()),
+                match result {
+                    Ok(_) => CommandResult::Continue(Some("true".to_string())),
+                    Err(error) => CommandResult::Error(error.to_string()),
+                }
             }
         }
     }

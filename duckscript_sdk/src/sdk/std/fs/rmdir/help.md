@@ -3,7 +3,7 @@ var = rmdir path
 ```
 
 This command delete the requested empty directory and returns true if successful.<br>
-If the path leads to a file or the directory is not empty, this command will fail.
+If the path leads to a file or a directory which is not empty, this command will fail.
 
 #### Parameters
 

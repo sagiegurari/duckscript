@@ -18,6 +18,7 @@
 * [sdk::fs::CreateDirectory](#sdk__fs__CreateDirectory)
 * [sdk::fs::CreateEmptyFile](#sdk__fs__CreateEmptyFile)
 * [sdk::fs::DeleteEmptyDirectory](#sdk__fs__DeleteEmptyDirectory)
+* [sdk::fs::DeletePath](#sdk__fs__DeletePath)
 * [sdk::fs::GetCanonicalPath](#sdk__fs__GetCanonicalPath)
 * [sdk::fs::GetFileName](#sdk__fs__GetFileName)
 * [sdk::fs::GetParentDirectory](#sdk__fs__GetParentDirectory)
@@ -806,7 +807,7 @@ var = rmdir path
 ```
 
 This command delete the requested empty directory and returns true if successful.<br>
-If the path leads to a file or the directory is not empty, this command will fail.
+If the path leads to a file or a directory which is not empty, this command will fail.
 
 #### Parameters
 
@@ -825,6 +826,38 @@ deleted = rmdir ./mydir
 
 #### Aliases:
 rmdir
+
+<a name="sdk__fs__DeletePath"></a>
+## sdk::fs::DeletePath
+```sh
+var = rm [-r] path
+```
+
+This command delete the requested file, empty directory or recursively deletes a directory
+and all its content (files and sub directories) if the **-r** flag is provided.
+
+#### Parameters
+
+* Optional flags (currently only -r is supported which indicates recursive deletion)
+* The path to delete
+
+#### Return Value
+
+**true** if the path was deleted.
+
+#### Examples
+
+```sh
+# delete a file or empty directory
+deleted = rm ./target
+
+# deletes a directory and all its content
+deleted = rm -r ./target
+```
+
+
+#### Aliases:
+rm
 
 <a name="sdk__fs__GetCanonicalPath"></a>
 ## sdk::fs::GetCanonicalPath

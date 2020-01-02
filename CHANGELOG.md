@@ -2,6 +2,7 @@
 
 ### v0.1.2
 
+* New **rm** command #15
 * New **rmdir** command #14
 * New **assert_eq** command #22
 * New **assert_fail** command #3

@@ -15,7 +15,11 @@ fn run_no_path_provided() {
 
 #[test]
 fn run_path_not_exists() {
-    test::run_script_and_fail(vec![create("")], "rmdir ./target/_duckscript/rmdir/newdir");
+    test::run_script_and_validate(
+        vec![create("")],
+        "out = rmdir ./target/_duckscript/rmdir/newdir",
+        CommandValidation::Match("out".to_string(), "true".to_string()),
+    );
 }
 
 #[test]
