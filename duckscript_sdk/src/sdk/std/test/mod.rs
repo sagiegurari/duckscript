@@ -1,4 +1,5 @@
 mod assert;
+mod assert_eq;
 mod assert_fail;
 
 use crate::utils::pckg;
@@ -11,6 +12,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     let package = pckg::concat(parent, PACKAGE);
 
     commands.set(assert::create(&package))?;
+    commands.set(assert_eq::create(&package))?;
     commands.set(assert_fail::create(&package))?;
 
     Ok(())
