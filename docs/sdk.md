@@ -25,6 +25,7 @@
 * [sdk::fs::Write](#sdk__fs__Write)
 * [sdk::process::Execute](#sdk__process__Execute)
 * [sdk::process::Exit](#sdk__process__Exit)
+* [sdk::test::Assert](#sdk__test__Assert)
 * [sdk::thread::Sleep](#sdk__thread__Sleep)
 
 
@@ -1044,6 +1045,58 @@ code = exit 1
 
 #### Aliases:
 exit
+
+<a name="sdk__test__Assert"></a>
+## sdk::test::Assert
+```sh
+assert value [error message]
+```
+
+Used to validate the input is truthy.<br>
+If the value is one of the following:
+
+* No output
+* false (case insensitive)
+* 0
+* no (case insensitive)
+* Empty value
+
+It is considered falsy and will exist with an error.
+
+#### Parameters
+
+* The value to evaluate
+* Optional error message
+
+#### Return Value
+
+**true** is truthy.
+
+#### Examples
+
+Valid condition:
+
+```sh
+assert ok
+assert true
+assert yes
+
+value = set "some text"
+assert ${value}
+```
+
+Error example:
+
+```sh
+assert
+assert false
+assert 0
+assert false "This is my error message"
+```
+
+
+#### Aliases:
+assert
 
 <a name="sdk__thread__Sleep"></a>
 ## sdk::thread::Sleep

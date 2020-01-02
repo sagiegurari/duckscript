@@ -2,6 +2,7 @@
 
 ### v0.1.2
 
+* New **assert** command #2
 * New **touch** command #4
 * New **dirname** command #6
 * New **canonicalize** command #21
