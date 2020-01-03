@@ -27,9 +27,10 @@ fn run_path_not_empty() {
     let result = io::create_directory("./target/_duckscript/rmdir/not_empty/dir1");
     assert!(result.is_ok());
 
-    test::run_script_and_fail(
+    test::run_script_and_validate(
         vec![create("")],
-        "rmdir ./target/_duckscript/rmdir/not_empty",
+        "out = rmdir ./target/_duckscript/rmdir/not_empty",
+        CommandValidation::Match("out".to_string(), "false".to_string()),
     );
 }
 
@@ -38,9 +39,10 @@ fn run_path_is_file() {
     let result = io::create_empty_file("./target/_duckscript/rmdir/file.txt");
     assert!(result.is_ok());
 
-    test::run_script_and_fail(
+    test::run_script_and_validate(
         vec![create("")],
-        "rmdir ./target/_duckscript/rmdir/file.txt",
+        "out = rmdir ./target/_duckscript/rmdir/file.txt",
+        CommandValidation::Match("out".to_string(), "false".to_string()),
     );
 }
 

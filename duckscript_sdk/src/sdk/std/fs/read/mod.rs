@@ -30,7 +30,7 @@ impl Command for CommandImpl {
 
             match result {
                 Ok(text) => CommandResult::Continue(Some(text)),
-                Err(error) => CommandResult::Error(error.to_string()),
+                Err(_) => CommandResult::Continue(None),
             }
         }
     }

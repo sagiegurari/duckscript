@@ -35,7 +35,7 @@ impl Command for CommandImpl {
 
                     CommandResult::Continue(Some(text))
                 }
-                Err(error) => CommandResult::Error(error.to_string()),
+                Err(_) => CommandResult::Continue(None),
             }
         }
     }

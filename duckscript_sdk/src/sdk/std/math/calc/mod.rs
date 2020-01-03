@@ -24,7 +24,7 @@ impl Command for CommandImpl {
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {
         if arguments.is_empty() {
-            CommandResult::Error("Assert failed, empty value.".to_string())
+            CommandResult::Error("Missing input.".to_string())
         } else {
             let operation = arguments.join(" ");
 

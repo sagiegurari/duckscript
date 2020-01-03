@@ -53,7 +53,7 @@ impl Command for CommandImpl {
 
             match result {
                 Ok(_) => CommandResult::Continue(Some("true".to_string())),
-                Err(error) => CommandResult::Error(error.to_string()),
+                Err(_) => CommandResult::Continue(Some("false".to_string())),
             }
         }
     }

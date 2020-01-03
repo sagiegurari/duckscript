@@ -32,7 +32,11 @@ fn run_path_not_empty_not_recursive() {
     let result = io::create_directory("./target/_duckscript/rm/not_empty/dir1");
     assert!(result.is_ok());
 
-    test::run_script_and_fail(vec![create("")], "rm ./target/_duckscript/rm/not_empty");
+    test::run_script_and_validate(
+        vec![create("")],
+        "out = rm ./target/_duckscript/rm/not_empty",
+        CommandValidation::Match("out".to_string(), "false".to_string()),
+    );
 }
 
 #[test]

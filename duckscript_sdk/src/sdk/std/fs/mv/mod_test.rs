@@ -19,9 +19,10 @@ fn run_single_path_provided() {
 
 #[test]
 fn run_input_path_not_exists() {
-    test::run_script_and_fail(
+    test::run_script_and_validate(
         vec![create("")],
-        "mv ./target/_duckscript/mv/not_exists.txt ./target/_duckscript/mv/not_exists/",
+        "out = mv ./target/_duckscript/mv/not_exists.txt ./target/_duckscript/mv/not_exists/",
+        CommandValidation::Match("out".to_string(), "false".to_string()),
     );
 }
 

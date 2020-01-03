@@ -63,7 +63,8 @@ impl Command for CommandImpl {
                     if name == &self.name() || self.aliases().contains(name) {
                         print_help(self.help(), &self.name())
                     } else {
-                        CommandResult::Error(format!("Command: {} not found.", name).to_string())
+                        println!("Command: {} not found.", name);
+                        CommandResult::Continue(None)
                     }
                 }
             }

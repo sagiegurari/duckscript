@@ -41,7 +41,7 @@
 <a name="sdk__Alias"></a>
 ## sdk::Alias
 ```sh
-alias command arguments
+var = alias command arguments
 ```
 
 This command enables to define new commands with default arguments.<br>
@@ -53,16 +53,16 @@ Any number of arguments which will be added to the already defined arguments set
 
 #### Return Value
 
-None
+**true** if the alias was created, else **false**.
 
 #### Examples
 
 ```sh
 # This example creates a new **my_echo** alias that will print the prefix before the requested arguments.
-alias my_echo echo [ECHO]
+created = alias my_echo echo [ECHO]
 
 # This will print "[ECHO] hello world "
-my_echo hello world
+created = my_echo hello world
 ```
 
 
@@ -668,7 +668,7 @@ cd path
 
 Sets the current directory based on the input path.<br>
 If no path is provided, it will default to the user home directory.<br>
-If the path does not exist, it will return an error.
+If the path does not exist, it will return none.
 
 #### Parameters
 
@@ -676,7 +676,7 @@ The new current directory.
 
 #### Return Value
 
-The new current directory.
+The new current directory or none in case of any error such as target directory not found.
 
 #### Examples
 
@@ -1027,7 +1027,7 @@ A single parameter holding the file path.
 
 #### Return Value
 
-The file content.
+The file content or none if the file does not exist.
 
 #### Examples
 
@@ -1053,7 +1053,7 @@ A single parameter holding the file path.
 
 #### Return Value
 
-The file content.
+The file content or none in case file does not exist.
 
 #### Examples
 

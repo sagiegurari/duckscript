@@ -106,8 +106,8 @@ impl Command for CommandImpl {
             let sub_state = get_sub_state(ALIAS_STATE_KEY.to_string(), state);
 
             match create_alias_command(name, arguments[1..].to_vec(), commands, sub_state) {
-                Ok(_) => CommandResult::Continue(None),
-                Err(error) => CommandResult::Error(error),
+                Ok(_) => CommandResult::Continue(Some("true".to_string())),
+                Err(_) => CommandResult::Continue(Some("true".to_string())),
             }
         }
     }

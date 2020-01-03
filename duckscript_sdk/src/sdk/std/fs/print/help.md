@@ -11,7 +11,7 @@ A single parameter holding the file path.
 
 #### Return Value
 
-The file content.
+The file content or none if the file does not exist.
 
 #### Examples
 

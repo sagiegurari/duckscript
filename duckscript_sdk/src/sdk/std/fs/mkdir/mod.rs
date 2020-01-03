@@ -28,7 +28,7 @@ impl Command for CommandImpl {
         } else {
             match io::create_directory(&arguments[0]) {
                 Ok(_) => CommandResult::Continue(Some("true".to_string())),
-                Err(error) => CommandResult::Error(error),
+                Err(_) => CommandResult::Continue(Some("false".to_string())),
             }
         }
     }

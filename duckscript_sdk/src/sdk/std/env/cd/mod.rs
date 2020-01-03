@@ -39,9 +39,9 @@ impl Command for CommandImpl {
                     let directory_str = directory.to_string_lossy().into_owned();
                     CommandResult::Continue(Some(directory_str))
                 }
-                Err(error) => CommandResult::Error(error.to_string()),
+                Err(_) => CommandResult::Continue(None),
             },
-            None => CommandResult::Error("Unable to get target directory path.".to_string()),
+            None => CommandResult::Continue(None),
         }
     }
 }
