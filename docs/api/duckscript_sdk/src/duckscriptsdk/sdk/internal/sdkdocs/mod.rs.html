@@ -127,6 +127,18 @@
 <span id="127">127</span>
 <span id="128">128</span>
 <span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="ident">io</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="ident">pckg</span>;
@@ -183,10 +195,22 @@
                 <span class="kw">match</span> <span class="ident">commands</span>.<span class="ident">get</span>(<span class="ident">name</span>) {
                     <span class="prelude-val">Some</span>(<span class="ident">command</span>) <span class="op">=&gt;</span> {
                         <span class="kw">if</span> <span class="op">!</span><span class="ident">command</span>.<span class="ident">help</span>().<span class="ident">is_empty</span>() {
+                            <span class="kw">let</span> <span class="ident">aliases</span> <span class="op">=</span> <span class="ident">command</span>.<span class="ident">aliases</span>();
+                            <span class="kw">let</span> <span class="ident">aliases_line</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">aliases</span>.<span class="ident">is_empty</span>() {
+                                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">aliases_docs_buffer</span> <span class="op">=</span> <span class="ident">aliases</span>.<span class="ident">join</span>(<span class="string">&quot;, &quot;</span>);
+                                <span class="ident">aliases_docs_buffer</span>.<span class="ident">insert_str</span>(<span class="number">0</span>, <span class="string">&quot; (&quot;</span>);
+                                <span class="ident">aliases_docs_buffer</span>.<span class="ident">push_str</span>(<span class="string">&quot;)&quot;</span>);
+
+                                <span class="ident">aliases_docs_buffer</span>
+                            } <span class="kw">else</span> {
+                                <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>()
+                            };
+
                             <span class="ident">buffer</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(
-                                <span class="string">&quot;* [{}](#{})\n&quot;</span>,
+                                <span class="string">&quot;* [{}{}](#{})\n&quot;</span>,
                                 <span class="ident">name</span>,
-                                <span class="ident">name</span>.<span class="ident">replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;_&quot;</span>)
+                                <span class="ident">aliases_line</span>,
+                                <span class="ident">name</span>.<span class="ident">replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;_&quot;</span>),
                             ));
                         }
                     }

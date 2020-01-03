@@ -31,3 +31,6 @@ private = true
 env = { RUST_TEST_THREADS = "1" }
 command = "cargo"
 args = ["test", "--", "--ignored"]
+
+[tasks.pre-coverage]
+alias = "clean-target"

@@ -227,8 +227,8 @@
             <span class="kw">let</span> <span class="ident">sub_state</span> <span class="op">=</span> <span class="ident">get_sub_state</span>(<span class="ident">ALIAS_STATE_KEY</span>.<span class="ident">to_string</span>(), <span class="ident">state</span>);
 
             <span class="kw">match</span> <span class="ident">create_alias_command</span>(<span class="ident">name</span>, <span class="ident">arguments</span>[<span class="number">1</span>..].<span class="ident">to_vec</span>(), <span class="ident">commands</span>, <span class="ident">sub_state</span>) {
-                <span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="ident">CommandResult</span>::<span class="ident">Continue</span>(<span class="prelude-val">None</span>),
-                <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=&gt;</span> <span class="ident">CommandResult</span>::<span class="ident">Error</span>(<span class="ident">error</span>),
+                <span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="ident">CommandResult</span>::<span class="ident">Continue</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;true&quot;</span>.<span class="ident">to_string</span>())),
+                <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="ident">CommandResult</span>::<span class="ident">Continue</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;true&quot;</span>.<span class="ident">to_string</span>())),
             }
         }
     }

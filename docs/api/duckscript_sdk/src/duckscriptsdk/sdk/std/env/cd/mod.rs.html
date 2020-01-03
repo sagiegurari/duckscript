@@ -93,9 +93,9 @@
                     <span class="kw">let</span> <span class="ident">directory_str</span> <span class="op">=</span> <span class="ident">directory</span>.<span class="ident">to_string_lossy</span>().<span class="ident">into_owned</span>();
                     <span class="ident">CommandResult</span>::<span class="ident">Continue</span>(<span class="prelude-val">Some</span>(<span class="ident">directory_str</span>))
                 }
-                <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=&gt;</span> <span class="ident">CommandResult</span>::<span class="ident">Error</span>(<span class="ident">error</span>.<span class="ident">to_string</span>()),
+                <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="ident">CommandResult</span>::<span class="ident">Continue</span>(<span class="prelude-val">None</span>),
             },
-            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">CommandResult</span>::<span class="ident">Error</span>(<span class="string">&quot;Unable to get target directory path.&quot;</span>.<span class="ident">to_string</span>()),
+            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">CommandResult</span>::<span class="ident">Continue</span>(<span class="prelude-val">None</span>),
         }
     }
 }
