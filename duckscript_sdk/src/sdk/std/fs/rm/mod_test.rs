@@ -14,6 +14,11 @@ fn run_no_path_provided() {
 }
 
 #[test]
+fn run_no_path_provided_only_flags() {
+    test::run_script_and_fail(vec![create("")], "rm -r");
+}
+
+#[test]
 fn run_path_not_exists() {
     test::run_script_and_validate(
         vec![create("")],

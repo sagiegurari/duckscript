@@ -25,7 +25,9 @@ impl Command for CommandImpl {
     }
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.is_empty() {
+        if arguments.is_empty()
+            || (arguments.len() == 1 && flags::is_unix_flags_argument(&arguments[0]))
+        {
             CommandResult::Error("Path not provided.".to_string())
         } else {
             let (path_str, recursive) = if arguments.len() == 1 {

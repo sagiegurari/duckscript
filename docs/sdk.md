@@ -17,6 +17,7 @@
 * [sdk::env::SetCurrentDirectory](#sdk__env__SetCurrentDirectory)
 * [sdk::env::SetVar](#sdk__env__SetVar)
 * [sdk::env::UnsetVar](#sdk__env__UnsetVar)
+* [sdk::fs::CopyPath](#sdk__fs__CopyPath)
 * [sdk::fs::CreateDirectory](#sdk__fs__CreateDirectory)
 * [sdk::fs::CreateEmptyFile](#sdk__fs__CreateEmptyFile)
 * [sdk::fs::DeleteEmptyDirectory](#sdk__fs__DeleteEmptyDirectory)
@@ -745,6 +746,38 @@ unset_env HOME
 
 #### Aliases:
 unset_env
+
+<a name="sdk__fs__CopyPath"></a>
+## sdk::fs::CopyPath
+```sh
+var = cp source target
+```
+
+This command copies the requested file or directory to the target location.<br>
+If the source directory is not empty, its entire contents will be copied as well.
+
+#### Parameters
+
+* The source path to copy
+* The target path
+
+#### Return Value
+
+**true** if the path was copied.
+
+#### Examples
+
+```sh
+# copy a single file
+copied = cp ./file1.txt ./file2.txt
+
+# copy a directory
+copied = cp ./source ./target
+```
+
+
+#### Aliases:
+cp
 
 <a name="sdk__fs__CreateDirectory"></a>
 ## sdk::fs::CreateDirectory

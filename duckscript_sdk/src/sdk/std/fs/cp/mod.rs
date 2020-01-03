@@ -1,6 +1,6 @@
 use crate::utils::{io, pckg};
 use duckscript::types::command::{Command, CommandResult};
-use fs_extra::{dir, move_items};
+use fs_extra::dir;
 use std::fs;
 use std::path::Path;
 
@@ -14,11 +14,11 @@ struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "MovePath")
+        pckg::concat(&self.package, "CopyPath")
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["mv".to_string()]
+        vec!["cp".to_string()]
     }
 
     fn help(&self) -> String {
@@ -29,33 +29,34 @@ impl Command for CommandImpl {
         if arguments.len() < 2 {
             CommandResult::Error("Paths not provided.".to_string())
         } else {
-            let source_path = Path::new(&arguments[0]);
-
+            let source_path_str = &arguments[0];
+            let source_path = Path::new(source_path_str);
             if !source_path.exists() {
-                CommandResult::Error(
-                    format!("Source path: {} not found.", &arguments[0]).to_string(),
-                )
+                CommandResult::Continue(Some("false".to_string()))
             } else {
-                let target_path = Path::new(&arguments[1]);
                 let source_file = source_path.is_file();
-                let target_file = target_path.is_file();
 
-                if source_file && target_file {
-                    match fs::rename(&arguments[0], &arguments[1]) {
-                        Ok(_) => CommandResult::Continue(Some("true".to_string())),
-                        Err(error) => CommandResult::Error(error.to_string()),
+                let target_path_str = &arguments[1];
+
+                if source_file {
+                    match io::create_parent_directory(target_path_str) {
+                        Ok(_) => match fs::copy(source_path_str, target_path_str) {
+                            Ok(_) => CommandResult::Continue(Some("true".to_string())),
+                            Err(_) => CommandResult::Continue(Some("false".to_string())),
+                        },
+                        Err(_) => CommandResult::Continue(Some("false".to_string())),
                     }
                 } else {
-                    match io::create_directory(&arguments[1]) {
+                    match io::create_directory(target_path_str) {
                         Ok(_) => {
                             let options = dir::CopyOptions::new();
-                            let from_paths = vec![&arguments[0]];
-                            match move_items(&from_paths, &arguments[1], &options) {
+
+                            match dir::copy(source_path_str, target_path_str, &options) {
                                 Ok(_) => CommandResult::Continue(Some("true".to_string())),
-                                Err(error) => CommandResult::Error(error.to_string()),
+                                Err(_) => CommandResult::Continue(Some("false".to_string())),
                             }
                         }
-                        Err(error) => CommandResult::Error(error),
+                        Err(_) => CommandResult::Continue(Some("false".to_string())),
                     }
                 }
             }

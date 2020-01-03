@@ -2,6 +2,7 @@
 
 ### v0.1.2
 
+* New **cp** command #7
 * New **man** command #16
 * New **calc** command #10
 * New **unset_env** command #23

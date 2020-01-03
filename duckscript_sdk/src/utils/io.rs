@@ -50,6 +50,13 @@ pub(crate) fn create_directory(directory: &str) -> Result<(), String> {
     create_directory_for_path(&directory_path)
 }
 
+pub(crate) fn create_parent_directory(file: &str) -> Result<(), String> {
+    match get_parent_directory_name(file) {
+        Some(parent) => create_directory(&parent),
+        None => Ok(()),
+    }
+}
+
 fn create_directory_for_path(directory_path: &Path) -> Result<(), String> {
     if directory_path.is_dir() && directory_path.exists() {
         return Ok(());
@@ -81,13 +88,17 @@ pub(crate) fn write_text_file(file: &str, text: &str) -> Result<(), ScriptError>
     let file_path = Path::new(file);
 
     // create parent directory
-    let directory = file_path.parent();
-    match directory {
-        Some(directory_path) => match create_directory_for_path(&directory_path) {
-            _ => (),
-        },
-        None => (),
-    };
+    match create_parent_directory(file) {
+        Ok(_) => (),
+        Err(_) => {
+            return Err(ScriptError {
+                info: ErrorInfo::Runtime(
+                    format!("Error creating parent directory for file: {}", file).to_string(),
+                    None,
+                ),
+            });
+        }
+    }
 
     match File::create(&file_path) {
         Ok(mut fd) => match fd.write_all(text.as_bytes()) {
