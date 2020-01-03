@@ -25,6 +25,10 @@ impl Command for SetCommand {
         "test_set".to_string()
     }
 
+    fn help(&self) -> String {
+        "".to_string()
+    }
+
     fn run(&self, arguments: Vec<String>) -> CommandResult {
         if arguments.is_empty() {
             CommandResult::Continue(None)

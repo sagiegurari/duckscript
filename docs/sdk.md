@@ -10,6 +10,7 @@
 * [sdk::Not](#sdk__Not)
 * [sdk::Release](#sdk__Release)
 * [sdk::Set](#sdk__Set)
+* [sdk::ShowCommandDocumentation](#sdk__ShowCommandDocumentation)
 * [sdk::Unalias](#sdk__Unalias)
 * [sdk::env::GetVar](#sdk__env__GetVar)
 * [sdk::env::PrintCurrentDirectory](#sdk__env__PrintCurrentDirectory)
@@ -540,6 +541,32 @@ var = set "home: ${HOME}"
 
 #### Aliases:
 set
+
+<a name="sdk__ShowCommandDocumentation"></a>
+## sdk::ShowCommandDocumentation
+```sh
+var = man command
+```
+
+Prints and returns the help documentation of the provided command.
+
+#### Parameters
+
+The command name.
+
+#### Return Value
+
+The help documentation or if not found, none.
+
+#### Examples
+
+```sh
+man set
+```
+
+
+#### Aliases:
+man
 
 <a name="sdk__Unalias"></a>
 ## sdk::Unalias

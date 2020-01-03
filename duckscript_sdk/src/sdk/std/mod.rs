@@ -8,6 +8,7 @@ mod fs;
 mod function;
 mod goto;
 mod ifelse;
+mod man;
 mod math;
 mod not;
 mod process;
@@ -28,6 +29,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     commands.set(echo::create(PACKAGE))?;
     commands.set(eval::create(PACKAGE))?;
     commands.set(goto::create(PACKAGE))?;
+    commands.set(man::create(PACKAGE))?;
     commands.set(not::create(PACKAGE))?;
     commands.set(release::create(PACKAGE))?;
     commands.set(set::create(PACKAGE))?;
