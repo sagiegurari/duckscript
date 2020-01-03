@@ -1,6 +1,6 @@
 [package]
 name = "duckscript_cli"
-version = "0.1.0"
+version = "0.1.3"
 authors = ["Sagie Gur-Ari <sagiegurari@gmail.com>"]
 description = "The duckscript command line executable."
 license = "Apache-2.0"
