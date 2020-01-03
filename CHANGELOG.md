@@ -2,6 +2,7 @@
 
 ### v0.1.2
 
+* New **calc** command #10
 * New **unset_env** command #23
 * New **mv** command #8
 * New **rm** command #15

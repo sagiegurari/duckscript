@@ -26,6 +26,7 @@ include = [
 duckscript = { version = "^0.1", path = "../duckscript" }
 fs_extra = "^1"
 home = "^0.5"
+meval = "^0.2"
 rand = "^0.7"
 
 [badges.travis-ci]

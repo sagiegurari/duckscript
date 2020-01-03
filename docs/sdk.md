@@ -27,6 +27,7 @@
 * [sdk::fs::Print](#sdk__fs__Print)
 * [sdk::fs::Read](#sdk__fs__Read)
 * [sdk::fs::Write](#sdk__fs__Write)
+* [sdk::math::Calc](#sdk__math__Calc)
 * [sdk::process::Execute](#sdk__process__Execute)
 * [sdk::process::Exit](#sdk__process__Exit)
 * [sdk::test::Assert](#sdk__test__Assert)
@@ -1031,6 +1032,34 @@ out = writefile ./target/tests/writefile.txt "line 1\nline 2"
 
 #### Aliases:
 writefile
+
+<a name="sdk__math__Calc"></a>
+## sdk::math::Calc
+```sh
+var = calc [operation]
+```
+
+The calc command accepts multiple arguments which make up a mathematical operation which will be
+calculated and its result will be returned.
+
+#### Parameters
+
+Any number of arguments which will construct a line to calculate.
+
+#### Return Value
+
+The result of the mathematical calculation.
+
+#### Examples
+
+```sh
+# result is 36
+result = calc 1 + 5 * 7
+```
+
+
+#### Aliases:
+calc
 
 <a name="sdk__process__Execute"></a>
 ## sdk::process::Execute
