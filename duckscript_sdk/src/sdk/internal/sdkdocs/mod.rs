@@ -53,10 +53,22 @@ impl Command for CommandImpl {
                 match commands.get(name) {
                     Some(command) => {
                         if !command.help().is_empty() {
+                            let aliases = command.aliases();
+                            let aliases_line = if !aliases.is_empty() {
+                                let mut aliases_docs_buffer = aliases.join(", ");
+                                aliases_docs_buffer.insert_str(0, " (");
+                                aliases_docs_buffer.push_str(")");
+
+                                aliases_docs_buffer
+                            } else {
+                                "".to_string()
+                            };
+
                             buffer.push_str(&format!(
-                                "* [{}](#{})\n",
+                                "* [{}{}](#{})\n",
                                 name,
-                                name.replace(":", "_")
+                                aliases_line,
+                                name.replace(":", "_"),
                             ));
                         }
                     }
