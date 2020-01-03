@@ -1,13 +1,13 @@
 ## CHANGELOG
 
-### v0.1.3
+### v0.1.4 (2020-01-03)
 
 * New **contains** command #28
 * New **ends_with** command #27
 * New **starts_with** command #26
 * New **equals** command #25
 *
-### v0.1.2 (2020-01-03)
+### v0.1.3 (2020-01-03)
 
 * New **ls** command #9
 * New **cp** command #7
