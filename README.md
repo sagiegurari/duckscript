@@ -290,7 +290,9 @@ elseif true
     if not false
         echo nested if
 
-        if set ${value}
+        value = set "some text"
+
+        if starts_with ${value} "some"
             echo after command
         else
             echo should not be here
