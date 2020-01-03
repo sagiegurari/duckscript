@@ -1,0 +1,45 @@
+use super::*;
+use crate::test;
+use crate::test::CommandValidation;
+
+#[test]
+fn common_functions() {
+    test::test_common_command_functions(create(""));
+}
+
+#[test]
+fn run_no_args() {
+    test::run_script_and_fail(vec![create("")], "out = ends_with");
+}
+
+#[test]
+fn run_single_argument() {
+    test::run_script_and_fail(vec![create("")], "out = ends_with true");
+}
+
+#[test]
+fn run_two_arguments_equal() {
+    test::run_script_and_validate(
+        vec![create("")],
+        "out = ends_with false false",
+        CommandValidation::Match("out".to_string(), "true".to_string()),
+    );
+}
+
+#[test]
+fn run_two_arguments_not_ends_with() {
+    test::run_script_and_validate(
+        vec![create("")],
+        "out = ends_with abcd abc",
+        CommandValidation::Match("out".to_string(), "false".to_string()),
+    );
+}
+
+#[test]
+fn run_two_arguments_ends_with() {
+    test::run_script_and_validate(
+        vec![create("")],
+        "out = ends_with abcd bcd",
+        CommandValidation::Match("out".to_string(), "true".to_string()),
+    );
+}

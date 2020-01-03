@@ -33,6 +33,10 @@
 * [sdk::math::Calc (calc)](#sdk__math__Calc)
 * [sdk::process::Execute (exec)](#sdk__process__Execute)
 * [sdk::process::Exit (exit)](#sdk__process__Exit)
+* [sdk::string::Contains (contains)](#sdk__string__Contains)
+* [sdk::string::EndsWith (ends_with)](#sdk__string__EndsWith)
+* [sdk::string::Equals (equals, eq)](#sdk__string__Equals)
+* [sdk::string::StartsWith (starts_with)](#sdk__string__StartsWith)
 * [sdk::test::Assert (assert)](#sdk__test__Assert)
 * [sdk::test::AssertEquals (assert_eq)](#sdk__test__AssertEquals)
 * [sdk::test::AssertFail (assert_fail)](#sdk__test__AssertFail)
@@ -1252,6 +1256,142 @@ code = exit 1
 #### Aliases:
 exit
 
+<a name="sdk__string__Contains"></a>
+## sdk::string::Contains
+```sh
+var = contains all partial
+```
+
+Returns true if the first argument contains the value of the second argument.
+
+#### Parameters
+
+* The full text to search in
+* The text to search for
+
+#### Return Value
+
+**true** if contains.
+
+#### Examples
+
+```sh
+# valid conditions
+result = contains abcd bc
+
+value = set "some text"
+result = contains ${value} "me tex"
+
+# will return false
+result = contains abcd b1c
+```
+
+
+#### Aliases:
+contains
+
+<a name="sdk__string__EndsWith"></a>
+## sdk::string::EndsWith
+```sh
+var = ends_with all partial
+```
+
+Returns true if the first argument ends with the value of the second argument.
+
+#### Parameters
+
+* The full text to search in
+* The suffix text to search for
+
+#### Return Value
+
+**true** if ends with.
+
+#### Examples
+
+```sh
+# valid conditions
+result = ends_with abcd abc
+
+value = set "some text"
+result = ends_with ${value} "me text"
+
+# will return false
+result = ends_with abcd abc
+```
+
+
+#### Aliases:
+ends_with
+
+<a name="sdk__string__Equals"></a>
+## sdk::string::Equals
+```sh
+var = eq value1 value2
+```
+
+Returns true if both provided values are equal.
+
+#### Parameters
+
+Two values to evaluate if they are equal
+
+#### Return Value
+
+**true** if equal.
+
+#### Examples
+
+```sh
+# valid conditions
+is_same = eq yes yes
+is_same = eq false false
+
+value = set "some text"
+is_same = eq ${value} "some text"
+
+# will return false
+is_same = eq 1 2
+```
+
+
+#### Aliases:
+equals, eq
+
+<a name="sdk__string__StartsWith"></a>
+## sdk::string::StartsWith
+```sh
+var = starts_with all partial
+```
+
+Returns true if the first argument starts with the value of the second argument.
+
+#### Parameters
+
+* The full text to search in
+* The prefix text to search for
+
+#### Return Value
+
+**true** if starts with.
+
+#### Examples
+
+```sh
+# valid conditions
+result = starts_with abcd abc
+
+value = set "some text"
+result = starts_with ${value} "some te"
+
+# will return false
+result = starts_with abcd bcd
+```
+
+
+#### Aliases:
+starts_with
+
 <a name="sdk__test__Assert"></a>
 ## sdk::test::Assert
 ```sh
@@ -1316,7 +1456,7 @@ If they are not, the command will exist with an error.
 
 #### Return Value
 
-**true** if truthy.
+**true** if equal.
 
 #### Examples
 

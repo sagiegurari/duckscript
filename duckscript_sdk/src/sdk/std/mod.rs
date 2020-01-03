@@ -14,6 +14,7 @@ mod not;
 mod process;
 mod release;
 mod set;
+mod string;
 mod test;
 mod thread;
 mod unalias;
@@ -42,6 +43,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     ifelse::load(commands, PACKAGE)?;
     math::load(commands, PACKAGE)?;
     process::load(commands, PACKAGE)?;
+    string::load(commands, PACKAGE)?;
     test::load(commands, PACKAGE)?;
     thread::load(commands, PACKAGE)?;
 

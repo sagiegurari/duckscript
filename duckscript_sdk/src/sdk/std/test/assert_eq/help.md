@@ -12,7 +12,7 @@ If they are not, the command will exist with an error.
 
 #### Return Value
 
-**true** if truthy.
+**true** if equal.
 
 #### Examples
 
