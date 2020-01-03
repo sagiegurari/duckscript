@@ -30,7 +30,7 @@ impl Command for CommandImpl {
                 println!("{}", &directory);
                 CommandResult::Continue(Some(directory.to_string()))
             }
-            Err(error) => CommandResult::Error(error.to_string()),
+            Err(_) => CommandResult::Continue(None),
         }
     }
 }

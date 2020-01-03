@@ -14,14 +14,10 @@ The exit code.
 
 #### Examples
 
-Example of exit with code '0'
-
 ```sh
+# exit with code '0'
 code = exit
-```
 
-Example of exit with error code '1'
-
-```sh
+# exit with code '1'
 code = exit 1
 ```

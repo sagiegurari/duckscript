@@ -1,6 +1,6 @@
 use crate::utils::instruction_query;
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
-use crate::utils::{eval, pckg};
+use crate::utils::{condition, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
@@ -146,29 +146,6 @@ fn deserialize_call_info(sub_state: &mut HashMap<String, StateValue>) -> Option<
         else_line_index,
         meta_info,
     })
-}
-
-fn eval_condition(
-    arguments: Vec<String>,
-    state: &mut HashMap<String, StateValue>,
-    variables: &mut HashMap<String, String>,
-    commands: &mut Commands,
-) -> Result<bool, String> {
-    match eval::eval(&arguments, state, variables, commands) {
-        CommandResult::Continue(value) => {
-            let failed = match value {
-                Some(value_str) => {
-                    let lower_case = value_str.to_lowercase();
-                    lower_case == "0" || lower_case == "false" || lower_case == "no"
-                }
-                None => true,
-            };
-
-            Ok(!failed)
-        }
-        CommandResult::Error(error) => Err(error.to_string()),
-        _ => Err("Invalid condition evaluation result.".to_string()),
-    }
 }
 
 fn create_if_meta_info_for_line(
@@ -322,45 +299,47 @@ impl Command for IfCommand {
                 instructions,
                 self.package.clone(),
             ) {
-                Ok(if_else_info) => match eval_condition(arguments, state, variables, commands) {
-                    Ok(passed) => {
-                        if passed {
-                            let next_line = if if_else_info.else_lines.is_empty() {
-                                if_else_info.end
+                Ok(if_else_info) => {
+                    match condition::eval_condition(arguments, state, variables, commands) {
+                        Ok(passed) => {
+                            if passed {
+                                let next_line = if if_else_info.else_lines.is_empty() {
+                                    if_else_info.end
+                                } else {
+                                    if_else_info.else_lines[0]
+                                };
+
+                                let call_info = CallInfo {
+                                    current: next_line,
+                                    passed,
+                                    else_line_index: 0,
+                                    meta_info: if_else_info.clone(),
+                                };
+
+                                store_call_info(&call_info, state);
+
+                                CommandResult::Continue(None)
+                            } else if if_else_info.else_lines.is_empty() {
+                                let next_line = if_else_info.end + 1;
+                                CommandResult::GoTo(None, GoToValue::Line(next_line))
                             } else {
-                                if_else_info.else_lines[0]
-                            };
+                                let next_line = if_else_info.else_lines[0];
 
-                            let call_info = CallInfo {
-                                current: next_line,
-                                passed,
-                                else_line_index: 0,
-                                meta_info: if_else_info.clone(),
-                            };
+                                let call_info = CallInfo {
+                                    current: next_line,
+                                    passed: false,
+                                    else_line_index: 0,
+                                    meta_info: if_else_info.clone(),
+                                };
 
-                            store_call_info(&call_info, state);
+                                store_call_info(&call_info, state);
 
-                            CommandResult::Continue(None)
-                        } else if if_else_info.else_lines.is_empty() {
-                            let next_line = if_else_info.end + 1;
-                            CommandResult::GoTo(None, GoToValue::Line(next_line))
-                        } else {
-                            let next_line = if_else_info.else_lines[0];
-
-                            let call_info = CallInfo {
-                                current: next_line,
-                                passed: false,
-                                else_line_index: 0,
-                                meta_info: if_else_info.clone(),
-                            };
-
-                            store_call_info(&call_info, state);
-
-                            CommandResult::GoTo(None, GoToValue::Line(next_line))
+                                CommandResult::GoTo(None, GoToValue::Line(next_line))
+                            }
                         }
+                        Err(error) => CommandResult::Error(error.to_string()),
                     }
-                    Err(error) => CommandResult::Error(error.to_string()),
-                },
+                }
                 Err(error) => CommandResult::Error(error.to_string()),
             }
         }
@@ -408,7 +387,7 @@ impl Command for ElseIfCommand {
                     CommandResult::GoTo(None, GoToValue::Line(next_line))
                 } else {
                     let if_else_info = call_info.meta_info.clone();
-                    match eval_condition(arguments, state, variables, commands) {
+                    match condition::eval_condition(arguments, state, variables, commands) {
                         Ok(passed) => {
                             if passed {
                                 let next_line = if call_info.else_line_index < if_else_info.else_lines.len() {

@@ -14,14 +14,10 @@ The current directory path.
 
 #### Examples
 
-Print the current directory:
-
 ```sh
+# Print the current directory:
 pwd
-```
 
-Print and also store the current directory:
-
-```sh
+# Print and also store the current directory:
 directory = pwd
 ```

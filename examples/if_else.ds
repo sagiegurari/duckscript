@@ -1,6 +1,18 @@
 
+if true
+    echo in if as value
+end_if
+
+if false
+    echo should not be here
+end_if
+
+if not false
+    echo in if as value with not condition
+end_if
+
 if set true
-    echo in if
+    echo in if as command
 end_if
 
 if set false
@@ -24,6 +36,27 @@ elseif set true
 
     if set true
         echo nested if
+    end_if
+else
+    echo should not be here
+end_if
+
+value = set false
+if ${value}
+    echo should not be here
+elseif true
+    echo in else if but not done yet
+
+    value = set true
+
+    if not false
+        echo nested if
+
+        if set ${value}
+            echo after command
+        else
+            echo should not be here
+        end_if
     end_if
 else
     echo should not be here

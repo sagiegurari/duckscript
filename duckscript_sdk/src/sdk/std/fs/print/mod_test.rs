@@ -9,7 +9,11 @@ fn common_functions() {
 
 #[test]
 fn run_no_file_provided() {
-    test::run_script_and_fail(vec![create("")], "cat ./Cargo2.toml");
+    test::run_script_and_validate(
+        vec![create("")],
+        "out = cat ./Cargo2.toml",
+        CommandValidation::None,
+    );
 }
 
 #[test]

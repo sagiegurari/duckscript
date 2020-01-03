@@ -42,7 +42,7 @@ impl Command for CommandImpl {
         _line: usize,
     ) -> CommandResult {
         if arguments.is_empty() {
-            CommandResult::Error("Command provided.".to_string())
+            CommandResult::Error("Command not provided.".to_string())
         } else {
             let mut command = ProcessCommand::new(&arguments[0]);
 

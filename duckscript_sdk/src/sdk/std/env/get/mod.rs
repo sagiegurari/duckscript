@@ -12,7 +12,7 @@ struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "Get")
+        pckg::concat(&self.package, "GetVar")
     }
 
     fn aliases(&self) -> Vec<String> {

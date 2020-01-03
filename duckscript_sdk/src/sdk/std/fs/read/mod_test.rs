@@ -14,7 +14,11 @@ fn run_no_file_provided() {
 
 #[test]
 fn run_file_not_exists() {
-    test::run_script_and_fail(vec![create("")], "readfile ./Cargo2.toml");
+    test::run_script_and_validate(
+        vec![create("")],
+        "readfile ./Cargo2.toml",
+        CommandValidation::None,
+    );
 }
 
 #[test]

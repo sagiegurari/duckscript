@@ -1,5 +1,4 @@
-use crate::utils::io;
-use crate::utils::pckg;
+use crate::utils::{io, pckg};
 use duckscript::types::command::{Command, CommandResult};
 
 #[cfg(test)]
@@ -31,7 +30,7 @@ impl Command for CommandImpl {
 
             match result {
                 Ok(text) => CommandResult::Continue(Some(text)),
-                Err(error) => CommandResult::Error(error.to_string()),
+                Err(_) => CommandResult::Continue(None),
             }
         }
     }

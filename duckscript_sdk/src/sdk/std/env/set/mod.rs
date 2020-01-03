@@ -12,7 +12,7 @@ struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "Set")
+        pckg::concat(&self.package, "SetVar")
     }
 
     fn aliases(&self) -> Vec<String> {

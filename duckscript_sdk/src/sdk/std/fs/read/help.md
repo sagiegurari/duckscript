@@ -10,7 +10,7 @@ A single parameter holding the file path.
 
 #### Return Value
 
-The file content.
+The file content or none in case file does not exist.
 
 #### Examples
 

@@ -10,7 +10,11 @@ fn common_functions() {
 #[test]
 #[ignore]
 fn run_to_directory_does_not_exist() {
-    test::run_script_and_fail(vec![create("")], "out = cd test123_bad");
+    test::run_script_and_validate(
+        vec![create("")],
+        "out = cd test123_bad",
+        CommandValidation::None,
+    );
 }
 
 #[test]
