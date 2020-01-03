@@ -1,0 +1,21 @@
+
+# prints current directory content
+ls
+
+# prints current directory content
+ls .
+
+# prints examples directory content
+ls ./examples
+
+# prints examples directory content with extended info
+ls -l ./examples
+
+# prints current directory content with extended info
+ls -l
+
+# prints file name
+ls ./examples/ls.ds
+
+# prints file name with extended info
+ls -l ./examples/ls.ds
