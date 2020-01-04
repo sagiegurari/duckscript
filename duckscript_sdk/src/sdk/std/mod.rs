@@ -8,6 +8,7 @@ mod fs;
 mod function;
 mod goto;
 mod ifelse;
+mod is_defined;
 mod man;
 mod math;
 mod not;
@@ -30,6 +31,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     commands.set(echo::create(PACKAGE))?;
     commands.set(eval::create(PACKAGE))?;
     commands.set(goto::create(PACKAGE))?;
+    commands.set(is_defined::create(PACKAGE))?;
     commands.set(man::create(PACKAGE))?;
     commands.set(not::create(PACKAGE))?;
     commands.set(release::create(PACKAGE))?;

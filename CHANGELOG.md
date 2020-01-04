@@ -1,5 +1,11 @@
 ## CHANGELOG
 
+### v0.1.5
+
+* New trim command
+* New is_empty command
+* New is_defined command
+
 ### v0.1.4 (2020-01-03)
 
 * New **contains** command #28

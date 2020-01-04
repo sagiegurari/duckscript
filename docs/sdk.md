@@ -7,6 +7,7 @@
 * [sdk::Function (function, fn)](#sdk__Function)
 * [sdk::GoTo (goto)](#sdk__GoTo)
 * [sdk::If (if)](#sdk__If)
+* [sdk::IsDefined (is_defined)](#sdk__IsDefined)
 * [sdk::Not (not)](#sdk__Not)
 * [sdk::Release (release)](#sdk__Release)
 * [sdk::Set (set)](#sdk__Set)
@@ -36,7 +37,9 @@
 * [sdk::string::Contains (contains)](#sdk__string__Contains)
 * [sdk::string::EndsWith (ends_with)](#sdk__string__EndsWith)
 * [sdk::string::Equals (equals, eq)](#sdk__string__Equals)
+* [sdk::string::IsEmpty (is_empty)](#sdk__string__IsEmpty)
 * [sdk::string::StartsWith (starts_with)](#sdk__string__StartsWith)
+* [sdk::string::Trim (trim)](#sdk__string__Trim)
 * [sdk::test::Assert (assert)](#sdk__test__Assert)
 * [sdk::test::AssertEquals (assert_eq)](#sdk__test__AssertEquals)
 * [sdk::test::AssertFail (assert_fail)](#sdk__test__AssertFail)
@@ -435,6 +438,33 @@ end_if
 
 #### Aliases:
 if
+
+<a name="sdk__IsDefined"></a>
+## sdk::IsDefined
+```sh
+var = is_defined key
+```
+
+Returns true if the provided variable name (not value) exists.
+
+#### Parameters
+
+The variable name.
+
+#### Return Value
+
+True if the variable is defined.
+
+#### Examples
+
+```sh
+key = set "hello world"
+exists = is_defined key
+```
+
+
+#### Aliases:
+is_defined
 
 <a name="sdk__Not"></a>
 ## sdk::Not
@@ -1358,6 +1388,33 @@ is_same = eq 1 2
 #### Aliases:
 equals, eq
 
+<a name="sdk__string__IsEmpty"></a>
+## sdk::string::IsEmpty
+```sh
+var = is_empty value
+```
+
+Returns true if the provided value is none or an empty string.
+
+#### Parameters
+
+The value to validate.
+
+#### Return Value
+
+True if the provided value is none or an empty string.
+
+#### Examples
+
+```sh
+value = set "hello world"
+empty = is_empty ${value}
+```
+
+
+#### Aliases:
+is_empty
+
 <a name="sdk__string__StartsWith"></a>
 ## sdk::string::StartsWith
 ```sh
@@ -1391,6 +1448,33 @@ result = starts_with abcd bcd
 
 #### Aliases:
 starts_with
+
+<a name="sdk__string__Trim"></a>
+## sdk::string::Trim
+```sh
+var = trim value
+```
+
+Returns the provided value with leading and trailing whitespace removed.
+
+#### Parameters
+
+The value to trim.
+
+#### Return Value
+
+The trimmed value. If no input provided, this command will return none.
+
+#### Examples
+
+```sh
+# trimmed will now hold "some  text"
+trimmed = trim "  some  text   "
+```
+
+
+#### Aliases:
+trim
 
 <a name="sdk__test__Assert"></a>
 ## sdk::test::Assert
