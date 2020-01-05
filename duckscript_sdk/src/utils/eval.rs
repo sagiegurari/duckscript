@@ -29,7 +29,9 @@ pub(crate) fn eval(
             line_buffer.push(' ');
         }
 
-        match parser::parse_text(&line_buffer) {
+        let line_str = line_buffer.replace("\r", "").replace("\n", "");
+
+        match parser::parse_text(&line_str) {
             Ok(instructions) => {
                 let (command_result, _) = runner::run_instruction(
                     commands,

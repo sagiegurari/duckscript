@@ -8,6 +8,7 @@
 * [sdk::If (if)](#sdk__If)
 * [sdk::IsDefined (is_defined)](#sdk__IsDefined)
 * [sdk::Not (not)](#sdk__Not)
+* [sdk::ReadUserInput (read)](#sdk__ReadUserInput)
 * [sdk::Release (release)](#sdk__Release)
 * [sdk::Set (set)](#sdk__Set)
 * [sdk::ShowCommandDocumentation (man)](#sdk__ShowCommandDocumentation)
@@ -490,6 +491,40 @@ echo is true: ${is_true}
 
 #### Aliases:
 not
+
+<a name="sdk__ReadUserInput"></a>
+## sdk::ReadUserInput
+```sh
+var = read
+```
+
+Reads the user input into the output variable.<br>
+If the user didn't insert any input, none will be returned.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The user input or none if no input was entered.
+
+#### Examples
+
+```sh
+echo Enter Full Name:
+name = read
+
+if is_empty ${name}
+    echo You didn't enter any value
+else
+    echo Your name is: ${name}
+end_if
+```
+
+
+#### Aliases:
+read
 
 <a name="sdk__Release"></a>
 ## sdk::Release
