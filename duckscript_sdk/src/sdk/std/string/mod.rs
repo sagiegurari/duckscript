@@ -4,6 +4,8 @@ mod equals;
 mod is_empty;
 mod starts_with;
 mod trim;
+mod trim_end;
+mod trim_start;
 
 use crate::utils::pckg;
 use duckscript::types::command::Commands;
@@ -20,6 +22,8 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(is_empty::create(&package))?;
     commands.set(starts_with::create(&package))?;
     commands.set(trim::create(&package))?;
+    commands.set(trim_start::create(&package))?;
+    commands.set(trim_end::create(&package))?;
 
     Ok(())
 }

@@ -2,6 +2,8 @@
 
 ### v0.1.5
 
+* New trim_start command #29
+* New trim_end command #30
 * New trim command
 * New is_empty command
 * New is_defined command

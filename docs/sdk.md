@@ -41,6 +41,8 @@
 * [sdk::string::IsEmpty (is_empty)](#sdk__string__IsEmpty)
 * [sdk::string::StartsWith (starts_with)](#sdk__string__StartsWith)
 * [sdk::string::Trim (trim)](#sdk__string__Trim)
+* [sdk::string::TrimEnd (trim_end)](#sdk__string__TrimEnd)
+* [sdk::string::TrimStart (trim_start)](#sdk__string__TrimStart)
 * [sdk::test::Assert (assert)](#sdk__test__Assert)
 * [sdk::test::AssertEquals (assert_eq)](#sdk__test__AssertEquals)
 * [sdk::test::AssertFail (assert_fail)](#sdk__test__AssertFail)
@@ -1508,6 +1510,60 @@ trimmed = trim "  some  text   "
 
 #### Aliases:
 trim
+
+<a name="sdk__string__TrimEnd"></a>
+## sdk::string::TrimEnd
+```sh
+var = trim_end value
+```
+
+Returns the provided value with trailing whitespace removed.
+
+#### Parameters
+
+The value to trim.
+
+#### Return Value
+
+The trimmed value. If no input provided, this command will return none.
+
+#### Examples
+
+```sh
+# trimmed will now hold "  some  text"
+trimmed = trim_end "  some  text   "
+```
+
+
+#### Aliases:
+trim_end
+
+<a name="sdk__string__TrimStart"></a>
+## sdk::string::TrimStart
+```sh
+var = trim_start value
+```
+
+Returns the provided value with leading whitespace removed.
+
+#### Parameters
+
+The value to trim.
+
+#### Return Value
+
+The trimmed value. If no input provided, this command will return none.
+
+#### Examples
+
+```sh
+# trimmed will now hold "some  text   "
+trimmed = trim_start "  some  text   "
+```
+
+
+#### Aliases:
+trim_start
 
 <a name="sdk__test__Assert"></a>
 ## sdk::test::Assert
