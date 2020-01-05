@@ -5,6 +5,7 @@
 * New trim command
 * New is_empty command
 * New is_defined command
+* New range command #32
 
 ### v0.1.4 (2020-01-03)
 
