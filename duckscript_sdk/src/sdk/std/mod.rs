@@ -1,5 +1,5 @@
 pub(crate) mod alias;
-mod array;
+mod collections;
 mod echo;
 mod env;
 mod eval;
@@ -27,7 +27,6 @@ static PACKAGE: &str = "sdk";
 
 pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     commands.set(alias::create(PACKAGE))?;
-    commands.set(array::create(PACKAGE))?;
     commands.set(echo::create(PACKAGE))?;
     commands.set(eval::create(PACKAGE))?;
     commands.set(goto::create(PACKAGE))?;
@@ -38,6 +37,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     commands.set(set::create(PACKAGE))?;
     commands.set(unalias::create(PACKAGE))?;
 
+    collections::load(commands, PACKAGE)?;
     env::load(commands, PACKAGE)?;
     forin::load(commands, PACKAGE)?;
     fs::load(commands, PACKAGE)?;

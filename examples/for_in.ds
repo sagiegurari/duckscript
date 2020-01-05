@@ -7,12 +7,12 @@ for arg in args
 end_for
 release args
 
-range = array 1 2 3
+values = range 1 10
 
-for i in range
-    for j in range
+for i in values
+    for j in values
         echo i: ${i} j: ${j}
     end_for
 end_for
 
-release range
+release values

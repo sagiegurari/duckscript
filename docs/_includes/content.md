@@ -263,15 +263,15 @@ end_if
 Below an example of loops using the [for/in command](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md#sdk__ForIn):
 
 ```sh
-range = array 1 2 3
+values = range 1 10
 
-for i in range
-    for j in range
+for i in values
+    for j in values
         echo i: ${i} j: ${j}
     end_for
 end_for
 
-release range
+release values
 ```
 
 <a name="tutorial-standard-api-full-sdk-docs"></a>

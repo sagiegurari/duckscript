@@ -210,7 +210,12 @@ fn get_next_iteration(
             StateValue::List(list) => {
                 if list.len() > iteration {
                     match list[iteration] {
-                        StateValue::String(ref string_value) => Some(string_value.to_string()),
+                        StateValue::Boolean(ref value) => Some(value.to_string()),
+                        StateValue::Number(ref value) => Some(value.to_string()),
+                        StateValue::UnsignedNumber(ref value) => Some(value.to_string()),
+                        StateValue::Number32Bit(ref value) => Some(value.to_string()),
+                        StateValue::UnsignedNumber32Bit(ref value) => Some(value.to_string()),
+                        StateValue::String(ref value) => Some(value.to_string()),
                         _ => None,
                     }
                 } else {

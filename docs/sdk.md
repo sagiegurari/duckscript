@@ -1,6 +1,5 @@
 # Table of Contents
 * [sdk::Alias (alias)](#sdk__Alias)
-* [sdk::Array (array)](#sdk__Array)
 * [sdk::Echo (echo)](#sdk__Echo)
 * [sdk::Eval (eval)](#sdk__Eval)
 * [sdk::ForIn (for)](#sdk__ForIn)
@@ -13,6 +12,8 @@
 * [sdk::Set (set)](#sdk__Set)
 * [sdk::ShowCommandDocumentation (man)](#sdk__ShowCommandDocumentation)
 * [sdk::Unalias (unalias)](#sdk__Unalias)
+* [sdk::collections::Array (array)](#sdk__collections__Array)
+* [sdk::collections::Range (range)](#sdk__collections__Range)
 * [sdk::env::GetVar (get_env)](#sdk__env__GetVar)
 * [sdk::env::PrintCurrentDirectory (pwd)](#sdk__env__PrintCurrentDirectory)
 * [sdk::env::SetCurrentDirectory (cd, set_current_dir)](#sdk__env__SetCurrentDirectory)
@@ -76,37 +77,6 @@ created = my_echo hello world
 
 #### Aliases:
 alias
-
-<a name="sdk__Array"></a>
-## sdk::Array
-```sh
-handle = array value1 value2 value3 ...
-```
-
-Creates an array from the input arguments and returns a handle to that array.<br>
-This handle can be passed to other commands which support arrays using handles.<br>
-Once the array is no longer used, it should be released using the **release** command.
-
-#### Parameters
-
-Any number of arguments which will construct the array.
-
-#### Return Value
-
-A handle to the array.
-
-#### Examples
-
-```sh
-handle = array ${var} "hello world" 5 ${another_var}
-
-# once done we should release the handle
-release ${handle}
-```
-
-
-#### Aliases:
-array
 
 <a name="sdk__Echo"></a>
 ## sdk::Echo
@@ -638,6 +608,69 @@ my_echo hello world
 
 #### Aliases:
 unalias
+
+<a name="sdk__collections__Array"></a>
+## sdk::collections::Array
+```sh
+handle = array value1 value2 value3 ...
+```
+
+Creates an array from the input arguments and returns a handle to that array.<br>
+This handle can be passed to other commands which support arrays using handles.<br>
+Once the array is no longer used, it should be released using the **release** command.
+
+#### Parameters
+
+Any number of arguments which will construct the array.
+
+#### Return Value
+
+A handle to the array.
+
+#### Examples
+
+```sh
+handle = array ${var} "hello world" 5 ${another_var}
+
+# once done we should release the handle
+release ${handle}
+```
+
+
+#### Aliases:
+array
+
+<a name="sdk__collections__Range"></a>
+## sdk::collections::Range
+```sh
+handle = range start end
+```
+
+Creates an array from the input start and end range values and returns a handle to that array.<br>
+This handle can be passed to other commands which support arrays using handles.<br>
+Once the array is no longer used, it should be released using the **release** command.
+
+#### Parameters
+
+* The start numeric value
+* The end numeric value which cannot be smaller than the start value.
+
+#### Return Value
+
+A handle to the array.
+
+#### Examples
+
+```sh
+handle = range 1 10
+
+# once done we should release the handle
+release ${handle}
+```
+
+
+#### Aliases:
+range
 
 <a name="sdk__env__GetVar"></a>
 ## sdk::env::GetVar
