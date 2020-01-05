@@ -2,6 +2,7 @@
 
 ### v0.1.5
 
+* New hostname command #18
 * New trim_start command #29
 * New trim_end command #30
 * New trim command

@@ -33,6 +33,7 @@
 * [sdk::fs::Read (readfile)](#sdk__fs__Read)
 * [sdk::fs::Write (writefile)](#sdk__fs__Write)
 * [sdk::math::Calc (calc)](#sdk__math__Calc)
+* [sdk::net::Hostname (hostname)](#sdk__net__Hostname)
 * [sdk::process::Execute (exec)](#sdk__process__Execute)
 * [sdk::process::Exit (exit)](#sdk__process__Exit)
 * [sdk::string::Contains (contains)](#sdk__string__Contains)
@@ -1240,6 +1241,32 @@ result = calc 1 + 5 * 7
 
 #### Aliases:
 calc
+
+<a name="sdk__net__Hostname"></a>
+## sdk::net::Hostname
+```sh
+var = hostname
+```
+
+Returns the hostname or none if unable to extract it.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The hostname or none in case of any error.
+
+#### Examples
+
+```sh
+name = hostname
+```
+
+
+#### Aliases:
+hostname
 
 <a name="sdk__process__Execute"></a>
 ## sdk::process::Execute

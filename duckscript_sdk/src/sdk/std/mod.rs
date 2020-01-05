@@ -11,6 +11,7 @@ mod ifelse;
 mod is_defined;
 mod man;
 mod math;
+mod net;
 mod not;
 mod process;
 mod release;
@@ -44,6 +45,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     function::load(commands, PACKAGE)?;
     ifelse::load(commands, PACKAGE)?;
     math::load(commands, PACKAGE)?;
+    net::load(commands, PACKAGE)?;
     process::load(commands, PACKAGE)?;
     string::load(commands, PACKAGE)?;
     test::load(commands, PACKAGE)?;
