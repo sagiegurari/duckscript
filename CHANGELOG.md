@@ -2,6 +2,7 @@
 
 ### v0.1.5
 
+* Changed standard namespace to std from sdk #34
 * New read command #33
 * New hostname command #18
 * New trim_start command #29

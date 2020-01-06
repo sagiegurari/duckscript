@@ -1,58 +1,58 @@
 # Table of Contents
-* [sdk::Alias (alias)](#sdk__Alias)
-* [sdk::Echo (echo)](#sdk__Echo)
-* [sdk::Eval (eval)](#sdk__Eval)
-* [sdk::ForIn (for)](#sdk__ForIn)
-* [sdk::Function (function, fn)](#sdk__Function)
-* [sdk::GoTo (goto)](#sdk__GoTo)
-* [sdk::If (if)](#sdk__If)
-* [sdk::IsDefined (is_defined)](#sdk__IsDefined)
-* [sdk::Not (not)](#sdk__Not)
-* [sdk::ReadUserInput (read)](#sdk__ReadUserInput)
-* [sdk::Release (release)](#sdk__Release)
-* [sdk::Set (set)](#sdk__Set)
-* [sdk::ShowCommandDocumentation (man)](#sdk__ShowCommandDocumentation)
-* [sdk::Unalias (unalias)](#sdk__Unalias)
-* [sdk::collections::Array (array)](#sdk__collections__Array)
-* [sdk::collections::Range (range)](#sdk__collections__Range)
-* [sdk::env::GetVar (get_env)](#sdk__env__GetVar)
-* [sdk::env::PrintCurrentDirectory (pwd)](#sdk__env__PrintCurrentDirectory)
-* [sdk::env::SetCurrentDirectory (cd, set_current_dir)](#sdk__env__SetCurrentDirectory)
-* [sdk::env::SetVar (set_env)](#sdk__env__SetVar)
-* [sdk::env::UnsetVar (unset_env)](#sdk__env__UnsetVar)
-* [sdk::fs::CopyPath (cp)](#sdk__fs__CopyPath)
-* [sdk::fs::CreateDirectory (mkdir)](#sdk__fs__CreateDirectory)
-* [sdk::fs::CreateEmptyFile (touch)](#sdk__fs__CreateEmptyFile)
-* [sdk::fs::DeleteEmptyDirectory (rmdir)](#sdk__fs__DeleteEmptyDirectory)
-* [sdk::fs::DeletePath (rm)](#sdk__fs__DeletePath)
-* [sdk::fs::GetCanonicalPath (canonicalize)](#sdk__fs__GetCanonicalPath)
-* [sdk::fs::GetFileName (basename)](#sdk__fs__GetFileName)
-* [sdk::fs::GetParentDirectory (dirname)](#sdk__fs__GetParentDirectory)
-* [sdk::fs::List (ls)](#sdk__fs__List)
-* [sdk::fs::MovePath (mv)](#sdk__fs__MovePath)
-* [sdk::fs::Print (cat)](#sdk__fs__Print)
-* [sdk::fs::Read (readfile)](#sdk__fs__Read)
-* [sdk::fs::Write (writefile)](#sdk__fs__Write)
-* [sdk::math::Calc (calc)](#sdk__math__Calc)
-* [sdk::net::Hostname (hostname)](#sdk__net__Hostname)
-* [sdk::process::Execute (exec)](#sdk__process__Execute)
-* [sdk::process::Exit (exit)](#sdk__process__Exit)
-* [sdk::string::Contains (contains)](#sdk__string__Contains)
-* [sdk::string::EndsWith (ends_with)](#sdk__string__EndsWith)
-* [sdk::string::Equals (equals, eq)](#sdk__string__Equals)
-* [sdk::string::IsEmpty (is_empty)](#sdk__string__IsEmpty)
-* [sdk::string::StartsWith (starts_with)](#sdk__string__StartsWith)
-* [sdk::string::Trim (trim)](#sdk__string__Trim)
-* [sdk::string::TrimEnd (trim_end)](#sdk__string__TrimEnd)
-* [sdk::string::TrimStart (trim_start)](#sdk__string__TrimStart)
-* [sdk::test::Assert (assert)](#sdk__test__Assert)
-* [sdk::test::AssertEquals (assert_eq)](#sdk__test__AssertEquals)
-* [sdk::test::AssertFail (assert_fail)](#sdk__test__AssertFail)
-* [sdk::thread::Sleep (sleep)](#sdk__thread__Sleep)
+* [std::Alias (alias)](#std__Alias)
+* [std::Echo (echo)](#std__Echo)
+* [std::Eval (eval)](#std__Eval)
+* [std::ForIn (for)](#std__ForIn)
+* [std::Function (function, fn)](#std__Function)
+* [std::GoTo (goto)](#std__GoTo)
+* [std::If (if)](#std__If)
+* [std::IsDefined (is_defined)](#std__IsDefined)
+* [std::Not (not)](#std__Not)
+* [std::ReadUserInput (read)](#std__ReadUserInput)
+* [std::Release (release)](#std__Release)
+* [std::Set (set)](#std__Set)
+* [std::ShowCommandDocumentation (man)](#std__ShowCommandDocumentation)
+* [std::Unalias (unalias)](#std__Unalias)
+* [std::collections::Array (array)](#std__collections__Array)
+* [std::collections::Range (range)](#std__collections__Range)
+* [std::env::GetVar (get_env)](#std__env__GetVar)
+* [std::env::PrintCurrentDirectory (pwd)](#std__env__PrintCurrentDirectory)
+* [std::env::SetCurrentDirectory (cd, set_current_dir)](#std__env__SetCurrentDirectory)
+* [std::env::SetVar (set_env)](#std__env__SetVar)
+* [std::env::UnsetVar (unset_env)](#std__env__UnsetVar)
+* [std::fs::CopyPath (cp)](#std__fs__CopyPath)
+* [std::fs::CreateDirectory (mkdir)](#std__fs__CreateDirectory)
+* [std::fs::CreateEmptyFile (touch)](#std__fs__CreateEmptyFile)
+* [std::fs::DeleteEmptyDirectory (rmdir)](#std__fs__DeleteEmptyDirectory)
+* [std::fs::DeletePath (rm)](#std__fs__DeletePath)
+* [std::fs::GetCanonicalPath (canonicalize)](#std__fs__GetCanonicalPath)
+* [std::fs::GetFileName (basename)](#std__fs__GetFileName)
+* [std::fs::GetParentDirectory (dirname)](#std__fs__GetParentDirectory)
+* [std::fs::List (ls)](#std__fs__List)
+* [std::fs::MovePath (mv)](#std__fs__MovePath)
+* [std::fs::Print (cat)](#std__fs__Print)
+* [std::fs::Read (readfile)](#std__fs__Read)
+* [std::fs::Write (writefile)](#std__fs__Write)
+* [std::math::Calc (calc)](#std__math__Calc)
+* [std::net::Hostname (hostname)](#std__net__Hostname)
+* [std::process::Execute (exec)](#std__process__Execute)
+* [std::process::Exit (exit)](#std__process__Exit)
+* [std::string::Contains (contains)](#std__string__Contains)
+* [std::string::EndsWith (ends_with)](#std__string__EndsWith)
+* [std::string::Equals (equals, eq)](#std__string__Equals)
+* [std::string::IsEmpty (is_empty)](#std__string__IsEmpty)
+* [std::string::StartsWith (starts_with)](#std__string__StartsWith)
+* [std::string::Trim (trim)](#std__string__Trim)
+* [std::string::TrimEnd (trim_end)](#std__string__TrimEnd)
+* [std::string::TrimStart (trim_start)](#std__string__TrimStart)
+* [std::test::Assert (assert)](#std__test__Assert)
+* [std::test::AssertEquals (assert_eq)](#std__test__AssertEquals)
+* [std::test::AssertFail (assert_fail)](#std__test__AssertFail)
+* [std::thread::Sleep (sleep)](#std__thread__Sleep)
 
 
-<a name="sdk__Alias"></a>
-## sdk::Alias
+<a name="std__Alias"></a>
+## std::Alias
 ```sh
 var = alias command arguments
 ```
@@ -82,8 +82,8 @@ created = my_echo hello world
 #### Aliases:
 alias
 
-<a name="sdk__Echo"></a>
-## sdk::Echo
+<a name="std__Echo"></a>
+## std::Echo
 ```sh
 echo [arg]*
 ```
@@ -113,8 +113,8 @@ echo "hello    world"
 #### Aliases:
 echo
 
-<a name="sdk__Eval"></a>
-## sdk::Eval
+<a name="std__Eval"></a>
+## std::Eval
 ```sh
 eval command arguments
 ```
@@ -141,8 +141,8 @@ eval ${command} hello world
 #### Aliases:
 eval
 
-<a name="sdk__ForIn"></a>
-## sdk::ForIn
+<a name="std__ForIn"></a>
+## std::ForIn
 ```sh
 args = array a b c
 for arg in args
@@ -192,8 +192,8 @@ end_for
 #### Aliases:
 for
 
-<a name="sdk__Function"></a>
-## sdk::Function
+<a name="std__Function"></a>
+## std::Function
 ```sh
 function my_function
 # function content
@@ -284,8 +284,8 @@ echo ${output}
 #### Aliases:
 function, fn
 
-<a name="sdk__GoTo"></a>
-## sdk::GoTo
+<a name="std__GoTo"></a>
+## std::GoTo
 ```sh
 goto :label
 ```
@@ -314,8 +314,8 @@ echo bad
 #### Aliases:
 goto
 
-<a name="sdk__If"></a>
-## sdk::If
+<a name="std__If"></a>
+## std::If
 ```sh
 if command|value
     # commands
@@ -413,8 +413,8 @@ end_if
 #### Aliases:
 if
 
-<a name="sdk__IsDefined"></a>
-## sdk::IsDefined
+<a name="std__IsDefined"></a>
+## std::IsDefined
 ```sh
 var = is_defined key
 ```
@@ -440,8 +440,8 @@ exists = is_defined key
 #### Aliases:
 is_defined
 
-<a name="sdk__Not"></a>
-## sdk::Not
+<a name="std__Not"></a>
+## std::Not
 ```sh
 output = not command|value
 ```
@@ -492,8 +492,8 @@ echo is true: ${is_true}
 #### Aliases:
 not
 
-<a name="sdk__ReadUserInput"></a>
-## sdk::ReadUserInput
+<a name="std__ReadUserInput"></a>
+## std::ReadUserInput
 ```sh
 var = read
 ```
@@ -526,8 +526,8 @@ end_if
 #### Aliases:
 read
 
-<a name="sdk__Release"></a>
-## sdk::Release
+<a name="std__Release"></a>
+## std::Release
 ```sh
 release handle
 ```
@@ -555,8 +555,8 @@ release ${array_handle}
 #### Aliases:
 release
 
-<a name="sdk__Set"></a>
-## sdk::Set
+<a name="std__Set"></a>
+## std::Set
 ```sh
 var = set arg
 ```
@@ -586,8 +586,8 @@ var = set "home: ${HOME}"
 #### Aliases:
 set
 
-<a name="sdk__ShowCommandDocumentation"></a>
-## sdk::ShowCommandDocumentation
+<a name="std__ShowCommandDocumentation"></a>
+## std::ShowCommandDocumentation
 ```sh
 var = man command
 ```
@@ -612,8 +612,8 @@ man set
 #### Aliases:
 man
 
-<a name="sdk__Unalias"></a>
-## sdk::Unalias
+<a name="std__Unalias"></a>
+## std::Unalias
 ```sh
 unalias name
 ```
@@ -647,8 +647,8 @@ my_echo hello world
 #### Aliases:
 unalias
 
-<a name="sdk__collections__Array"></a>
-## sdk::collections::Array
+<a name="std__collections__Array"></a>
+## std::collections::Array
 ```sh
 handle = array value1 value2 value3 ...
 ```
@@ -678,8 +678,8 @@ release ${handle}
 #### Aliases:
 array
 
-<a name="sdk__collections__Range"></a>
-## sdk::collections::Range
+<a name="std__collections__Range"></a>
+## std::collections::Range
 ```sh
 handle = range start end
 ```
@@ -710,8 +710,8 @@ release ${handle}
 #### Aliases:
 range
 
-<a name="sdk__env__GetVar"></a>
-## sdk::env::GetVar
+<a name="std__env__GetVar"></a>
+## std::env::GetVar
 ```sh
 var = get_env key
 ```
@@ -736,8 +736,8 @@ home = get_env HOME
 #### Aliases:
 get_env
 
-<a name="sdk__env__PrintCurrentDirectory"></a>
-## sdk::env::PrintCurrentDirectory
+<a name="std__env__PrintCurrentDirectory"></a>
+## std::env::PrintCurrentDirectory
 ```sh
 var = pwd
 ```
@@ -766,8 +766,8 @@ directory = pwd
 #### Aliases:
 pwd
 
-<a name="sdk__env__SetCurrentDirectory"></a>
-## sdk::env::SetCurrentDirectory
+<a name="std__env__SetCurrentDirectory"></a>
+## std::env::SetCurrentDirectory
 ```sh
 cd path
 ```
@@ -798,8 +798,8 @@ cd ./scripts
 #### Aliases:
 cd, set_current_dir
 
-<a name="sdk__env__SetVar"></a>
-## sdk::env::SetVar
+<a name="std__env__SetVar"></a>
+## std::env::SetVar
 ```sh
 set_env key value
 ```
@@ -827,8 +827,8 @@ set_env HOME /usr/me
 #### Aliases:
 set_env
 
-<a name="sdk__env__UnsetVar"></a>
-## sdk::env::UnsetVar
+<a name="std__env__UnsetVar"></a>
+## std::env::UnsetVar
 ```sh
 unset_env key
 ```
@@ -853,8 +853,8 @@ unset_env HOME
 #### Aliases:
 unset_env
 
-<a name="sdk__fs__CopyPath"></a>
-## sdk::fs::CopyPath
+<a name="std__fs__CopyPath"></a>
+## std::fs::CopyPath
 ```sh
 var = cp source target
 ```
@@ -885,8 +885,8 @@ copied = cp ./source ./target
 #### Aliases:
 cp
 
-<a name="sdk__fs__CreateDirectory"></a>
-## sdk::fs::CreateDirectory
+<a name="std__fs__CreateDirectory"></a>
+## std::fs::CreateDirectory
 ```sh
 var = mkdir directory
 ```
@@ -911,8 +911,8 @@ exists = mkdir ./dir/subdir
 #### Aliases:
 mkdir
 
-<a name="sdk__fs__CreateEmptyFile"></a>
-## sdk::fs::CreateEmptyFile
+<a name="std__fs__CreateEmptyFile"></a>
+## std::fs::CreateEmptyFile
 ```sh
 var = touch file
 ```
@@ -939,8 +939,8 @@ exists = touch ./dir/file.txt
 #### Aliases:
 touch
 
-<a name="sdk__fs__DeleteEmptyDirectory"></a>
-## sdk::fs::DeleteEmptyDirectory
+<a name="std__fs__DeleteEmptyDirectory"></a>
+## std::fs::DeleteEmptyDirectory
 ```sh
 var = rmdir path
 ```
@@ -966,8 +966,8 @@ deleted = rmdir ./mydir
 #### Aliases:
 rmdir
 
-<a name="sdk__fs__DeletePath"></a>
-## sdk::fs::DeletePath
+<a name="std__fs__DeletePath"></a>
+## std::fs::DeletePath
 ```sh
 var = rm [-r] path
 ```
@@ -998,8 +998,8 @@ deleted = rm -r ./target
 #### Aliases:
 rm
 
-<a name="sdk__fs__GetCanonicalPath"></a>
-## sdk::fs::GetCanonicalPath
+<a name="std__fs__GetCanonicalPath"></a>
+## std::fs::GetCanonicalPath
 ```sh
 var = canonicalize path
 ```
@@ -1025,8 +1025,8 @@ path = canonicalize ./target
 #### Aliases:
 canonicalize
 
-<a name="sdk__fs__GetFileName"></a>
-## sdk::fs::GetFileName
+<a name="std__fs__GetFileName"></a>
+## std::fs::GetFileName
 ```sh
 var = basename path
 ```
@@ -1052,8 +1052,8 @@ file = basename ./dir/file.txt
 #### Aliases:
 basename
 
-<a name="sdk__fs__GetParentDirectory"></a>
-## sdk::fs::GetParentDirectory
+<a name="std__fs__GetParentDirectory"></a>
+## std::fs::GetParentDirectory
 ```sh
 var = dirname path
 ```
@@ -1079,8 +1079,8 @@ directory = dirname ./dir/file.txt
 #### Aliases:
 dirname
 
-<a name="sdk__fs__List"></a>
-## sdk::fs::List
+<a name="std__fs__List"></a>
+## std::fs::List
 ```sh
 var = ls [flags] [path]
 ```
@@ -1129,8 +1129,8 @@ ls -l ./examples/ls.ds
 #### Aliases:
 ls
 
-<a name="sdk__fs__MovePath"></a>
-## sdk::fs::MovePath
+<a name="std__fs__MovePath"></a>
+## std::fs::MovePath
 ```sh
 var = mv source target
 ```
@@ -1168,8 +1168,8 @@ moved = mv ./source ./target/subdir
 #### Aliases:
 mv
 
-<a name="sdk__fs__Print"></a>
-## sdk::fs::Print
+<a name="std__fs__Print"></a>
+## std::fs::Print
 ```sh
 var = cat file
 ```
@@ -1195,8 +1195,8 @@ cat ./docs/sdk.md
 #### Aliases:
 cat
 
-<a name="sdk__fs__Read"></a>
-## sdk::fs::Read
+<a name="std__fs__Read"></a>
+## std::fs::Read
 ```sh
 var = readfile file
 ```
@@ -1221,8 +1221,8 @@ text = readfile ./Cargo.toml
 #### Aliases:
 readfile
 
-<a name="sdk__fs__Write"></a>
-## sdk::fs::Write
+<a name="std__fs__Write"></a>
+## std::fs::Write
 ```sh
 result = writefile file text
 ```
@@ -1249,8 +1249,8 @@ out = writefile ./target/tests/writefile.txt "line 1\nline 2"
 #### Aliases:
 writefile
 
-<a name="sdk__math__Calc"></a>
-## sdk::math::Calc
+<a name="std__math__Calc"></a>
+## std::math::Calc
 ```sh
 var = calc [operation]
 ```
@@ -1277,8 +1277,8 @@ result = calc 1 + 5 * 7
 #### Aliases:
 calc
 
-<a name="sdk__net__Hostname"></a>
-## sdk::net::Hostname
+<a name="std__net__Hostname"></a>
+## std::net::Hostname
 ```sh
 var = hostname
 ```
@@ -1303,8 +1303,8 @@ name = hostname
 #### Aliases:
 hostname
 
-<a name="sdk__process__Execute"></a>
-## sdk::process::Execute
+<a name="std__process__Execute"></a>
+## std::process::Execute
 ```sh
 exec command [args]*
 
@@ -1353,8 +1353,8 @@ echo exit code: ${exit_code}
 #### Aliases:
 exec
 
-<a name="sdk__process__Exit"></a>
-## sdk::process::Exit
+<a name="std__process__Exit"></a>
+## std::process::Exit
 ```sh
 code = exit [code]
 ```
@@ -1383,8 +1383,8 @@ code = exit 1
 #### Aliases:
 exit
 
-<a name="sdk__string__Contains"></a>
-## sdk::string::Contains
+<a name="std__string__Contains"></a>
+## std::string::Contains
 ```sh
 var = contains all partial
 ```
@@ -1417,8 +1417,8 @@ result = contains abcd b1c
 #### Aliases:
 contains
 
-<a name="sdk__string__EndsWith"></a>
-## sdk::string::EndsWith
+<a name="std__string__EndsWith"></a>
+## std::string::EndsWith
 ```sh
 var = ends_with all partial
 ```
@@ -1451,8 +1451,8 @@ result = ends_with abcd abc
 #### Aliases:
 ends_with
 
-<a name="sdk__string__Equals"></a>
-## sdk::string::Equals
+<a name="std__string__Equals"></a>
+## std::string::Equals
 ```sh
 var = eq value1 value2
 ```
@@ -1485,8 +1485,8 @@ is_same = eq 1 2
 #### Aliases:
 equals, eq
 
-<a name="sdk__string__IsEmpty"></a>
-## sdk::string::IsEmpty
+<a name="std__string__IsEmpty"></a>
+## std::string::IsEmpty
 ```sh
 var = is_empty value
 ```
@@ -1512,8 +1512,8 @@ empty = is_empty ${value}
 #### Aliases:
 is_empty
 
-<a name="sdk__string__StartsWith"></a>
-## sdk::string::StartsWith
+<a name="std__string__StartsWith"></a>
+## std::string::StartsWith
 ```sh
 var = starts_with all partial
 ```
@@ -1546,8 +1546,8 @@ result = starts_with abcd bcd
 #### Aliases:
 starts_with
 
-<a name="sdk__string__Trim"></a>
-## sdk::string::Trim
+<a name="std__string__Trim"></a>
+## std::string::Trim
 ```sh
 var = trim value
 ```
@@ -1573,8 +1573,8 @@ trimmed = trim "  some  text   "
 #### Aliases:
 trim
 
-<a name="sdk__string__TrimEnd"></a>
-## sdk::string::TrimEnd
+<a name="std__string__TrimEnd"></a>
+## std::string::TrimEnd
 ```sh
 var = trim_end value
 ```
@@ -1600,8 +1600,8 @@ trimmed = trim_end "  some  text   "
 #### Aliases:
 trim_end
 
-<a name="sdk__string__TrimStart"></a>
-## sdk::string::TrimStart
+<a name="std__string__TrimStart"></a>
+## std::string::TrimStart
 ```sh
 var = trim_start value
 ```
@@ -1627,8 +1627,8 @@ trimmed = trim_start "  some  text   "
 #### Aliases:
 trim_start
 
-<a name="sdk__test__Assert"></a>
-## sdk::test::Assert
+<a name="std__test__Assert"></a>
+## std::test::Assert
 ```sh
 assert value [error message]
 ```
@@ -1675,8 +1675,8 @@ assert false "This is my error message"
 #### Aliases:
 assert
 
-<a name="sdk__test__AssertEquals"></a>
-## sdk::test::AssertEquals
+<a name="std__test__AssertEquals"></a>
+## std::test::AssertEquals
 ```sh
 assert_eq value1 value2 [error message]
 ```
@@ -1712,8 +1712,8 @@ assert_eq 1 2 "This is my error message"
 #### Aliases:
 assert_eq
 
-<a name="sdk__test__AssertFail"></a>
-## sdk::test::AssertFail
+<a name="std__test__AssertFail"></a>
+## std::test::AssertFail
 ```sh
 assert_fail [error message]
 ```
@@ -1741,8 +1741,8 @@ assert_fail "This is my error message"
 #### Aliases:
 assert_fail
 
-<a name="sdk__thread__Sleep"></a>
-## sdk::thread::Sleep
+<a name="std__thread__Sleep"></a>
+## std::thread::Sleep
 ```sh
 sleep millies
 ```

@@ -25,7 +25,7 @@ mod unalias;
 use duckscript::types::command::Commands;
 use duckscript::types::error::ScriptError;
 
-static PACKAGE: &str = "sdk";
+static PACKAGE: &str = "std";
 
 pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     commands.set(alias::create(PACKAGE))?;
