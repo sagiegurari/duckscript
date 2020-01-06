@@ -2,6 +2,7 @@
 
 ### v0.1.5
 
+* Added 'quit' and 'q' aliases to exit command #44
 * Added state 64 bit numeric value support #39
 * Changed standard namespace to std from sdk #34
 * New read command #33

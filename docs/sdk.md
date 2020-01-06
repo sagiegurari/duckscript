@@ -36,7 +36,7 @@
 * [std::math::Calc (calc)](#std__math__Calc)
 * [std::net::Hostname (hostname)](#std__net__Hostname)
 * [std::process::Execute (exec)](#std__process__Execute)
-* [std::process::Exit (exit)](#std__process__Exit)
+* [std::process::Exit (exit, quit, q)](#std__process__Exit)
 * [std::string::Contains (contains)](#std__string__Contains)
 * [std::string::EndsWith (ends_with)](#std__string__EndsWith)
 * [std::string::Equals (equals, eq)](#std__string__Equals)
@@ -1381,7 +1381,7 @@ code = exit 1
 
 
 #### Aliases:
-exit
+exit, quit, q
 
 <a name="std__string__Contains"></a>
 ## std::string::Contains
