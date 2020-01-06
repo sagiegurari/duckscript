@@ -43,7 +43,7 @@ impl Command for CommandImpl {
         if arguments.len() < 2 {
             CommandResult::Error("Invalid arguments provided.".to_string())
         } else {
-            let start: i32 = match arguments[0].parse() {
+            let start: i64 = match arguments[0].parse() {
                 Ok(value) => value,
                 Err(_) => {
                     return CommandResult::Error(
@@ -52,7 +52,7 @@ impl Command for CommandImpl {
                 }
             };
 
-            let end: i32 = match arguments[1].parse() {
+            let end: i64 = match arguments[1].parse() {
                 Ok(value) => value,
                 Err(_) => {
                     return CommandResult::Error(
@@ -65,7 +65,7 @@ impl Command for CommandImpl {
                 CommandResult::Error("Invalid arguments provided, range start value cannot be bigger than the range end value.".to_string())
             } else {
                 let array: Vec<_> = (start..end)
-                    .map(|value| StateValue::Number32Bit(value))
+                    .map(|value| StateValue::Number64Bit(value))
                     .collect();
 
                 let key = put_handle(state, StateValue::List(array));

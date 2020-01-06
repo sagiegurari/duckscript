@@ -24,6 +24,10 @@ pub enum StateValue {
     Number32Bit(i32),
     /// unsigned number
     UnsignedNumber32Bit(u32),
+    /// signed number
+    Number64Bit(i64),
+    /// unsigned number
+    UnsignedNumber64Bit(u64),
     /// textual value
     String(String),
     /// list

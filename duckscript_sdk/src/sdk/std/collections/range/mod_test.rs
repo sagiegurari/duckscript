@@ -65,7 +65,7 @@ fn run_positive() {
 
             for index in 5..10 {
                 match list.remove(0) {
-                    StateValue::Number32Bit(value) => assert_eq!(value, index),
+                    StateValue::Number64Bit(value) => assert_eq!(value, index),
                     _ => panic!("Invalid handle value."),
                 };
             }
@@ -90,7 +90,7 @@ fn run_negative() {
 
             for index in -5..10 {
                 match list.remove(0) {
-                    StateValue::Number32Bit(value) => assert_eq!(value, index),
+                    StateValue::Number64Bit(value) => assert_eq!(value, index),
                     _ => panic!("Invalid handle value."),
                 };
             }

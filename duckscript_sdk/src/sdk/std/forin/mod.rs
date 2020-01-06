@@ -215,8 +215,11 @@ fn get_next_iteration(
                         StateValue::UnsignedNumber(ref value) => Some(value.to_string()),
                         StateValue::Number32Bit(ref value) => Some(value.to_string()),
                         StateValue::UnsignedNumber32Bit(ref value) => Some(value.to_string()),
+                        StateValue::Number64Bit(ref value) => Some(value.to_string()),
+                        StateValue::UnsignedNumber64Bit(ref value) => Some(value.to_string()),
                         StateValue::String(ref value) => Some(value.to_string()),
-                        _ => None,
+                        StateValue::List(_) => None,
+                        StateValue::SubState(_) => None,
                     }
                 } else {
                     None
