@@ -1,7 +1,9 @@
 mod contains;
 mod ends_with;
 mod equals;
+mod indexof;
 mod is_empty;
+mod last_indexof;
 mod starts_with;
 mod trim;
 mod trim_end;
@@ -19,7 +21,9 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(contains::create(&package))?;
     commands.set(ends_with::create(&package))?;
     commands.set(equals::create(&package))?;
+    commands.set(indexof::create(&package))?;
     commands.set(is_empty::create(&package))?;
+    commands.set(last_indexof::create(&package))?;
     commands.set(starts_with::create(&package))?;
     commands.set(trim::create(&package))?;
     commands.set(trim_start::create(&package))?;

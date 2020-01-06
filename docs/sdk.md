@@ -40,7 +40,9 @@
 * [std::string::Contains (contains)](#std__string__Contains)
 * [std::string::EndsWith (ends_with)](#std__string__EndsWith)
 * [std::string::Equals (equals, eq)](#std__string__Equals)
+* [std::string::IndexOf (indexof)](#std__string__IndexOf)
 * [std::string::IsEmpty (is_empty)](#std__string__IsEmpty)
+* [std::string::LastIndexOf (last_indexof)](#std__string__LastIndexOf)
 * [std::string::StartsWith (starts_with)](#std__string__StartsWith)
 * [std::string::Trim (trim)](#std__string__Trim)
 * [std::string::TrimEnd (trim_end)](#std__string__TrimEnd)
@@ -1485,6 +1487,34 @@ is_same = eq 1 2
 #### Aliases:
 equals, eq
 
+<a name="std__string__IndexOf"></a>
+## std::string::IndexOf
+```sh
+var = indexof full_text text_to_find
+```
+
+This command will attempt to find the text from the second argument inside the text in the first argument.<br>
+If found, an index value will be returned, otherwise none is returned.
+
+#### Parameters
+
+* The text to search in
+* The text to find
+
+#### Return Value
+
+The index of the text found or none if not found.
+
+#### Examples
+
+```sh
+index = indexof "    some  text   " some 
+```
+
+
+#### Aliases:
+indexof
+
 <a name="std__string__IsEmpty"></a>
 ## std::string::IsEmpty
 ```sh
@@ -1511,6 +1541,34 @@ empty = is_empty ${value}
 
 #### Aliases:
 is_empty
+
+<a name="std__string__LastIndexOf"></a>
+## std::string::LastIndexOf
+```sh
+var = indexof full_text text_to_find
+```
+
+This command will attempt to find the text from the second argument inside the text in the first argument.<br>
+If found, an index value will be returned, otherwise none is returned.
+
+#### Parameters
+
+* The text to search in
+* The text to find
+
+#### Return Value
+
+The index of the text found or none if not found.
+
+#### Examples
+
+```sh
+index = indexof "    some  text   " some 
+```
+
+
+#### Aliases:
+last_indexof
 
 <a name="std__string__StartsWith"></a>
 ## std::string::StartsWith

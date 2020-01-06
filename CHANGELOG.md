@@ -2,6 +2,8 @@
 
 ### v0.1.5
 
+* New last_indexof command #36
+* New indexof command #35
 * Added 'quit' and 'q' aliases to exit command #44
 * Added state 64 bit numeric value support #39
 * Changed standard namespace to std from sdk #34
