@@ -1,0 +1,16 @@
+
+# string is 'Hello World'
+string = substring "Hello World"
+echo ${string}
+
+# string is 'll'
+string = substring "Hello World" 2 4
+echo ${string}
+
+# string is 'llo World'
+string = substring "Hello World" 2
+echo ${string}
+
+# string is 'Hello W'
+string = substring "Hello World" -4
+echo ${string}

@@ -2,6 +2,7 @@
 
 ### v0.1.5
 
+* New substring command #37
 * New uname/os_family command #43
 * Commands should accept empty string ("") inputs #47
 * Support spread binding #46
