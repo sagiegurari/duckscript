@@ -7,11 +7,13 @@
 #[path = "./runner_test.rs"]
 mod runner_test;
 
-use crate::expansion;
+use crate::expansion::{self, ExpandedValue};
 use crate::parser;
 use crate::types::command::{CommandResult, Commands, GoToValue};
 use crate::types::error::{ErrorInfo, ScriptError};
-use crate::types::instruction::{Instruction, InstructionType, ScriptInstruction};
+use crate::types::instruction::{
+    Instruction, InstructionMetaInfo, InstructionType, ScriptInstruction,
+};
 use crate::types::runtime::{Context, Runtime, StateValue};
 use std::collections::HashMap;
 
@@ -92,24 +94,50 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
 
         match command_result {
             CommandResult::Exit(output) => {
-                update_output(&mut runtime.context, output_variable, output);
+                update_output(&mut runtime.context.variables, output_variable, output);
 
                 break;
             }
             CommandResult::Error(error) => {
+                update_output(
+                    &mut runtime.context.variables,
+                    output_variable,
+                    Some("false".to_string()),
+                );
+
+                let post_error_line = line + 1;
+
+                let should_continue = run_on_error_instruction(
+                    &mut runtime.context.commands,
+                    &mut runtime.context.variables,
+                    &mut state,
+                    &instructions,
+                    error,
+                    meta_info,
+                );
+
+                if !should_continue {
+                    break;
+                }
+
+                line = post_error_line;
+
+                ()
+            }
+            CommandResult::Crash(error) => {
                 return Err(ScriptError {
                     info: ErrorInfo::Runtime(error, Some(meta_info)),
                 });
             }
             CommandResult::Continue(output) => {
-                update_output(&mut runtime.context, output_variable, output);
+                update_output(&mut runtime.context.variables, output_variable, output);
 
                 line = line + 1;
 
                 ()
             }
             CommandResult::GoTo(output, goto_value) => {
-                update_output(&mut runtime.context, output_variable, output);
+                update_output(&mut runtime.context.variables, output_variable, output);
 
                 match goto_value {
                     GoToValue::Label(label) => match runtime.label_to_line.get(&label) {
@@ -134,12 +162,54 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
     Ok(runtime.context)
 }
 
-fn update_output(context: &mut Context, output_variable: Option<String>, output: Option<String>) {
+fn update_output(
+    variables: &mut HashMap<String, String>,
+    output_variable: Option<String>,
+    output: Option<String>,
+) {
     if output_variable.is_some() {
         match output {
-            Some(value) => context.variables.insert(output_variable.unwrap(), value),
-            None => context.variables.remove(&output_variable.unwrap()),
+            Some(value) => variables.insert(output_variable.unwrap(), value),
+            None => variables.remove(&output_variable.unwrap()),
         };
+    }
+}
+
+fn run_on_error_instruction(
+    commands: &mut Commands,
+    variables: &mut HashMap<String, String>,
+    state: &mut HashMap<String, StateValue>,
+    instructions: &Vec<Instruction>,
+    error: String,
+    meta_info: InstructionMetaInfo,
+) -> bool {
+    if commands.exists("on_error") {
+        let mut script_instruction = ScriptInstruction::new();
+        script_instruction.command = Some("on_error".to_string());
+        script_instruction.arguments = Some(vec![
+            error,
+            meta_info.line.unwrap_or(0).to_string(),
+            meta_info.source.unwrap_or("".to_string()),
+        ]);
+        let instruction = Instruction {
+            meta_info: InstructionMetaInfo::new(),
+            instruction_type: InstructionType::Script(script_instruction),
+        };
+
+        let (command_result, output_variable) =
+            run_instruction(commands, variables, state, instructions, instruction, 0);
+
+        match command_result {
+            CommandResult::Exit(output) => {
+                update_output(variables, output_variable, output);
+
+                false
+            }
+            CommandResult::Crash(_) => false,
+            _ => true,
+        }
+    } else {
+        true
     }
 }
 
@@ -162,8 +232,11 @@ pub fn run_instruction(
             match script_instruction.command {
                 Some(ref command) => match commands.get_for_use(command) {
                     Some(command_instance) => {
-                        let command_arguments =
-                            bind_command_arguments(&variables, &script_instruction);
+                        let command_arguments = bind_command_arguments(
+                            &variables,
+                            &script_instruction,
+                            &instruction.meta_info,
+                        );
 
                         let command_result = if command_instance.requires_context() {
                             command_instance.run_with_context(
@@ -196,16 +269,21 @@ pub fn run_instruction(
 fn bind_command_arguments(
     variables: &HashMap<String, String>,
     instruction: &ScriptInstruction,
+    meta_info: &InstructionMetaInfo,
 ) -> Vec<String> {
     let mut arguments = vec![];
 
     match instruction.arguments {
         Some(ref arguments_ref) => {
             for argument in arguments_ref {
-                let value = expansion::expand_by_wrapper(&argument, "${", '}', variables);
-
-                if !value.is_empty() {
-                    arguments.push(value);
+                match expansion::expand_by_wrapper(&argument, meta_info, variables) {
+                    ExpandedValue::Single(value) => arguments.push(value),
+                    ExpandedValue::Multi(values) => {
+                        for value in values {
+                            arguments.push(value)
+                        }
+                    }
+                    ExpandedValue::None => (),
                 }
             }
         }

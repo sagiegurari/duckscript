@@ -13,6 +13,7 @@ mod man;
 mod math;
 mod net;
 mod not;
+mod on_error;
 mod process;
 mod read;
 mod release;
@@ -48,6 +49,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     ifelse::load(commands, PACKAGE)?;
     math::load(commands, PACKAGE)?;
     net::load(commands, PACKAGE)?;
+    on_error::load(commands, PACKAGE)?;
     process::load(commands, PACKAGE)?;
     string::load(commands, PACKAGE)?;
     test::load(commands, PACKAGE)?;

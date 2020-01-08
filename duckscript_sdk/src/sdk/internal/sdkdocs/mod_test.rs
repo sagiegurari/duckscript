@@ -9,7 +9,7 @@ fn common_functions() {
 
 #[test]
 fn run_no_file_provided() {
-    test::run_script_and_fail(vec![create("internal")], "internal::sdkdocs");
+    test::run_script_and_error(vec![create("internal")], "out = internal::sdkdocs", "out");
 }
 
 #[test]

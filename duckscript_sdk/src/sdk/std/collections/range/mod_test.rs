@@ -10,27 +10,27 @@ fn common_functions() {
 
 #[test]
 fn run_no_args() {
-    test::run_script_and_fail(vec![create("")], "out = range");
+    test::run_script_and_error(vec![create("")], "out = range", "out");
 }
 
 #[test]
 fn run_single_arg() {
-    test::run_script_and_fail(vec![create("")], "out = range 1");
+    test::run_script_and_error(vec![create("")], "out = range 1", "out");
 }
 
 #[test]
 fn run_non_numeric_start() {
-    test::run_script_and_fail(vec![create("")], "out = range a 10");
+    test::run_script_and_error(vec![create("")], "out = range a 10", "out");
 }
 
 #[test]
 fn run_non_numeric_end() {
-    test::run_script_and_fail(vec![create("")], "out = range 1 b");
+    test::run_script_and_error(vec![create("")], "out = range 1 b", "out");
 }
 
 #[test]
 fn run_decrease() {
-    test::run_script_and_fail(vec![create("")], "out = range 2 1");
+    test::run_script_and_error(vec![create("")], "out = range 2 1", "out");
 }
 
 #[test]

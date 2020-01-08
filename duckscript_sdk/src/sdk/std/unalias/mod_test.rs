@@ -10,7 +10,7 @@ fn common_functions() {
 
 #[test]
 fn run_no_args() {
-    test::run_script_and_fail(vec![create("")], "unalias");
+    test::run_script_and_error(vec![create("")], "out = unalias", "out");
 }
 
 #[test]
@@ -39,13 +39,14 @@ fn run_valid_alias_defined() {
 
 #[test]
 fn run_after_unalias() {
-    test::run_script_and_fail(
+    test::run_script_and_error(
         vec![create(""), alias::create(""), Box::new(SetCommand {})],
         r#"
     alias set test_set
     test = set test
     out = unalias set
-    test = set test
+    out = set test
     "#,
+        "out",
     );
 }

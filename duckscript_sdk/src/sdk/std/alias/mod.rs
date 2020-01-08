@@ -107,7 +107,7 @@ impl Command for CommandImpl {
 
             match create_alias_command(name, arguments[1..].to_vec(), commands, sub_state) {
                 Ok(_) => CommandResult::Continue(Some("true".to_string())),
-                Err(_) => CommandResult::Continue(Some("true".to_string())),
+                Err(error) => CommandResult::Error(error.to_string()),
             }
         }
     }

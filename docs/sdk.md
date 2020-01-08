@@ -20,6 +20,9 @@
 * [std::env::SetCurrentDirectory (cd, set_current_dir)](#std__env__SetCurrentDirectory)
 * [std::env::SetVar (set_env)](#std__env__SetVar)
 * [std::env::UnsetVar (unset_env)](#std__env__UnsetVar)
+* [std::error::GetLastError (get_last_error)](#std__error__GetLastError)
+* [std::error::GetLastErrorLine (get_last_error_line)](#std__error__GetLastErrorLine)
+* [std::error::GetLastErrorSource (get_last_error_source)](#std__error__GetLastErrorSource)
 * [std::fs::CopyPath (cp)](#std__fs__CopyPath)
 * [std::fs::CreateDirectory (mkdir)](#std__fs__CreateDirectory)
 * [std::fs::CreateEmptyFile (touch)](#std__fs__CreateEmptyFile)
@@ -854,6 +857,96 @@ unset_env HOME
 
 #### Aliases:
 unset_env
+
+<a name="std__error__GetLastError"></a>
+## std::error::GetLastError
+```sh
+var = get_last_error
+```
+
+In case of any runtime error, this function will return the error message.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The last error message or none
+
+#### Examples
+
+```sh
+# This will trigger an error
+assert_fail
+
+error = get_last_error
+echo Error Message: ${error}
+```
+
+
+#### Aliases:
+get_last_error
+
+<a name="std__error__GetLastErrorLine"></a>
+## std::error::GetLastErrorLine
+```sh
+var = get_last_error_line
+```
+
+In case of any runtime error, this function will return the error line (if available).
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The last error line or none
+
+#### Examples
+
+```sh
+# This will trigger an error
+assert_fail
+
+line = get_last_error_line
+echo Error Line: ${line}
+```
+
+
+#### Aliases:
+get_last_error_line
+
+<a name="std__error__GetLastErrorSource"></a>
+## std::error::GetLastErrorSource
+```sh
+var = get_last_error_source
+```
+
+In case of any runtime error, this function will return the error source (such as file name) if available.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The last error source or none
+
+#### Examples
+
+```sh
+# This will trigger an error
+assert_fail
+
+source = get_last_error_source
+echo Error Source File: ${source}
+```
+
+
+#### Aliases:
+get_last_error_source
 
 <a name="std__fs__CopyPath"></a>
 ## std::fs::CopyPath

@@ -8,10 +8,10 @@ fn common_functions() {
 
 #[test]
 fn run_no_args() {
-    test::run_script_and_fail(vec![create("")], "assert_fail");
+    test::run_script_and_error(vec![create("")], "out = assert_fail", "out");
 }
 
 #[test]
 fn run_with_message() {
-    test::run_script_and_fail(vec![create("")], "assert_fail error");
+    test::run_script_and_error(vec![create("")], "out = assert_fail error", "out");
 }

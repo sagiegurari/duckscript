@@ -9,12 +9,12 @@ fn common_functions() {
 
 #[test]
 fn run_no_args() {
-    test::run_script_and_fail(vec![create("")], "out = is_defined");
+    test::run_script_and_error(vec![create("")], "out = is_defined", "out");
 }
 
 #[test]
 fn run_with_empty_string() {
-    test::run_script_and_fail(vec![create("")], r#"out = is_defined """#);
+    test::run_script_and_error(vec![create("")], r#"out = is_defined """#, "out");
 }
 
 #[test]

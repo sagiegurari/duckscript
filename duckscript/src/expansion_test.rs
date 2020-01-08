@@ -1,5 +1,27 @@
 use super::*;
 
+fn get_single_value(output: ExpandedValue) -> String {
+    match output {
+        ExpandedValue::Single(value) => value,
+        _ => panic!("Invalid type."),
+    }
+}
+
+#[test]
+fn expand_by_wrapper_found_fully() {
+    let mut variables = HashMap::new();
+    variables.insert("FOUND1".to_string(), "test1".to_string());
+    variables.insert("FOUND2".to_string(), "test2".to_string());
+    variables.insert("FOUND3".to_string(), "test3".to_string());
+    variables.insert("FOUND4".to_string(), "test4".to_string());
+
+    let output = expand_by_wrapper("${FOUND1}", &InstructionMetaInfo::new(), &mut variables);
+
+    let value = get_single_value(output);
+
+    assert_eq!("test1", value);
+}
+
 #[test]
 fn expand_by_wrapper_found() {
     let mut variables = HashMap::new();
@@ -20,10 +42,11 @@ value2:${FOUND2}
 value3:${FOUND3}
 value4:${FOUND4}
     "#,
-        "${",
-        '}',
+        &InstructionMetaInfo::new(),
         &mut variables,
     );
+
+    let value = get_single_value(output);
 
     assert_eq!(
         r#"
@@ -37,7 +60,7 @@ value2:test2
 value3:test3
 value4:test4
     "#,
-        output
+        value
     );
 }
 
@@ -60,10 +83,11 @@ value2:${PARTIAL_FOUND2}
 value3:${PARTIAL_FOUND3}
 value4:${PARTIAL_FOUND4}
     "#,
-        "${",
-        '}',
+        &InstructionMetaInfo::new(),
         &mut variables,
     );
+
+    let value = get_single_value(output);
 
     assert_eq!(
         r#"
@@ -77,7 +101,7 @@ value2:test2
 value3:test3
 value4:
     "#,
-        output
+        value
     );
 }
 
@@ -97,10 +121,11 @@ value1:${NO_SUFFIX1}
 value2:${NO_SUFFIX2}
 value3:${NO_SUFFIX3
     "#,
-        "${",
-        '}',
+        &InstructionMetaInfo::new(),
         &mut variables,
     );
+
+    let value = get_single_value(output);
 
     assert_eq!(
         r#"
@@ -112,16 +137,22 @@ value1:test1
 value2:test2
 value3:${NO_SUFFIX3
     "#,
-        output
+        value
     );
 }
 
 #[test]
 fn expand_by_wrapper_no_suffix_single() {
     let mut variables = HashMap::new();
-    let output = expand_by_wrapper("${NO_SUFFIX_SINGLE", "${", '}', &mut variables);
+    let output = expand_by_wrapper(
+        "${NO_SUFFIX_SINGLE",
+        &InstructionMetaInfo::new(),
+        &mut variables,
+    );
 
-    assert_eq!("${NO_SUFFIX_SINGLE", output);
+    let value = get_single_value(output);
+
+    assert_eq!("${NO_SUFFIX_SINGLE", value);
 }
 
 #[test]
@@ -144,10 +175,11 @@ value2:${FOUND2}
 value3:${FOUND3}
 value4:${FOUND4}
     "#,
-        "${",
-        '}',
+        &InstructionMetaInfo::new(),
         &mut variables,
     );
+
+    let value = get_single_value(output);
 
     assert_eq!(
         r#"
@@ -161,6 +193,6 @@ value2:test2
 value3:test3
 value4:test4
     "#,
-        output
+        value
     );
 }

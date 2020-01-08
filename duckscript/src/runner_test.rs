@@ -1,7 +1,10 @@
 use super::*;
 
 use crate::test;
-use crate::test::{ErrorCommand, ExitCommand, GoToLabelCommand, GoToLineCommand, SetCommand};
+use crate::test::{
+    CrashCommand, ErrorCommand, ExitCommand, GoToLabelCommand, GoToLineCommand, OnErrorCommand,
+    SetCommand,
+};
 use crate::types::instruction::{InstructionMetaInfo, PreProcessInstruction};
 
 #[test]
@@ -20,7 +23,10 @@ fn run_script_valid() {
 
 #[test]
 fn run_script_runtime_error() {
-    let result = run_script_file("./src/test/scripts/echo.ds", Context::new());
+    let mut context = Context::new();
+    let cmd_result = context.commands.set(Box::new(CrashCommand {}));
+    assert!(cmd_result.is_ok());
+    let result = run_script_file("./src/test/scripts/crash.ds", context);
 
     assert!(result.is_err());
 }
@@ -149,7 +155,7 @@ fn run_instructions_unknown_command() {
 
     let context_result = run_instructions(runtime, 0);
 
-    assert!(context_result.is_err());
+    assert!(context_result.is_ok());
 }
 
 #[test]
@@ -193,7 +199,7 @@ fn run_instructions_start_after_exit() {
 
     let context_result = run_instructions(runtime, 1);
 
-    assert!(context_result.is_err());
+    assert!(context_result.is_ok());
 }
 
 #[test]
@@ -264,6 +270,7 @@ fn run_instructions_error_result() {
     let mut instructions = vec![];
 
     let mut script_instruction = ScriptInstruction::new();
+    script_instruction.output = Some("out".to_string());
     script_instruction.command = Some("error".to_string());
     instructions.push(Instruction {
         meta_info: InstructionMetaInfo::new(),
@@ -272,6 +279,73 @@ fn run_instructions_error_result() {
 
     let mut context = Context::new();
     let result = context.commands.set(Box::new(ErrorCommand {}));
+    assert!(result.is_ok());
+
+    let runtime = create_runtime(instructions, context);
+
+    let context_result = run_instructions(runtime, 0);
+
+    assert!(context_result.is_ok());
+    let variables = context_result.unwrap().variables;
+    assert!(!variables.is_empty());
+    assert_eq!(variables.get("out").unwrap(), "false");
+}
+
+#[test]
+fn run_instructions_error_result_with_on_error() {
+    let mut instructions = vec![];
+
+    instructions.push(Instruction {
+        meta_info: InstructionMetaInfo::new(),
+        instruction_type: InstructionType::Empty,
+    });
+    instructions.push(Instruction {
+        meta_info: InstructionMetaInfo::new(),
+        instruction_type: InstructionType::Empty,
+    });
+
+    let mut meta_info = InstructionMetaInfo::new();
+    meta_info.line = Some(2);
+    meta_info.source = Some("myfile".to_string());
+    let mut script_instruction = ScriptInstruction::new();
+    script_instruction.command = Some("error".to_string());
+    instructions.push(Instruction {
+        meta_info,
+        instruction_type: InstructionType::Script(script_instruction),
+    });
+
+    let mut context = Context::new();
+    let mut result = context.commands.set(Box::new(ErrorCommand {}));
+    assert!(result.is_ok());
+    result = context.commands.set(Box::new(OnErrorCommand {}));
+    assert!(result.is_ok());
+
+    let runtime = create_runtime(instructions, context);
+
+    let context_result = run_instructions(runtime, 2);
+
+    assert!(context_result.is_ok());
+
+    let variables = context_result.unwrap().variables;
+    assert!(!variables.is_empty());
+    assert_eq!(variables.get("1").unwrap(), "test");
+    assert_eq!(variables.get("2").unwrap(), "2");
+    assert_eq!(variables.get("3").unwrap(), "myfile");
+}
+
+#[test]
+fn run_instructions_crash_result() {
+    let mut instructions = vec![];
+
+    let mut script_instruction = ScriptInstruction::new();
+    script_instruction.command = Some("crash".to_string());
+    instructions.push(Instruction {
+        meta_info: InstructionMetaInfo::new(),
+        instruction_type: InstructionType::Script(script_instruction),
+    });
+
+    let mut context = Context::new();
+    let result = context.commands.set(Box::new(CrashCommand {}));
     assert!(result.is_ok());
 
     let runtime = create_runtime(instructions, context);
@@ -544,7 +618,11 @@ fn bind_command_arguments_mixed() {
         "${bad} is bad".to_string(),
     ]);
 
-    let arguments = bind_command_arguments(&context.variables, &script_instruction);
+    let arguments = bind_command_arguments(
+        &context.variables,
+        &script_instruction,
+        &InstructionMetaInfo::new(),
+    );
 
     assert_eq!(
         arguments,
@@ -910,4 +988,140 @@ fn run_instruction_script_instruction_error_result() {
 
     assert!(output_variable.is_none());
     assert!(test::validate_error_result(&command_result));
+}
+
+#[test]
+fn run_on_error_instruction_no_command() {
+    let mut commands = Commands::new();
+    let mut variables = HashMap::new();
+    let mut state = HashMap::new();
+
+    let should_continue = run_on_error_instruction(
+        &mut commands,
+        &mut variables,
+        &mut state,
+        &vec![],
+        "error".to_string(),
+        InstructionMetaInfo::new(),
+    );
+
+    assert!(should_continue);
+}
+
+#[test]
+fn run_on_error_instruction_unknown_command() {
+    let mut commands = Commands::new();
+    let mut variables = HashMap::new();
+    let mut state = HashMap::new();
+
+    commands
+        .aliases
+        .insert("on_error".to_string(), "badcommand".to_string());
+
+    let should_continue = run_on_error_instruction(
+        &mut commands,
+        &mut variables,
+        &mut state,
+        &vec![],
+        "error".to_string(),
+        InstructionMetaInfo::new(),
+    );
+
+    assert!(should_continue);
+}
+
+#[test]
+fn run_on_error_instruction_exit_response() {
+    let mut commands = Commands::new();
+    let mut variables = HashMap::new();
+    let mut state = HashMap::new();
+
+    let result = commands.set(Box::new(ExitCommand {}));
+    assert!(result.is_ok());
+    commands
+        .aliases
+        .insert("on_error".to_string(), "exit".to_string());
+
+    let should_continue = run_on_error_instruction(
+        &mut commands,
+        &mut variables,
+        &mut state,
+        &vec![],
+        "error".to_string(),
+        InstructionMetaInfo::new(),
+    );
+
+    assert!(!should_continue);
+}
+
+#[test]
+fn run_on_error_instruction_crash_response() {
+    let mut commands = Commands::new();
+    let mut variables = HashMap::new();
+    let mut state = HashMap::new();
+
+    let result = commands.set(Box::new(CrashCommand {}));
+    assert!(result.is_ok());
+    commands
+        .aliases
+        .insert("on_error".to_string(), "crash".to_string());
+
+    let should_continue = run_on_error_instruction(
+        &mut commands,
+        &mut variables,
+        &mut state,
+        &vec![],
+        "error".to_string(),
+        InstructionMetaInfo::new(),
+    );
+
+    assert!(!should_continue);
+}
+
+#[test]
+fn run_on_error_instruction_continue_response() {
+    let mut commands = Commands::new();
+    let mut variables = HashMap::new();
+    let mut state = HashMap::new();
+
+    let result = commands.set(Box::new(SetCommand {}));
+    assert!(result.is_ok());
+    commands
+        .aliases
+        .insert("on_error".to_string(), "set".to_string());
+
+    let should_continue = run_on_error_instruction(
+        &mut commands,
+        &mut variables,
+        &mut state,
+        &vec![],
+        "error".to_string(),
+        InstructionMetaInfo::new(),
+    );
+
+    assert!(should_continue);
+}
+
+#[test]
+fn run_on_error_instruction_error_response() {
+    let mut commands = Commands::new();
+    let mut variables = HashMap::new();
+    let mut state = HashMap::new();
+
+    let result = commands.set(Box::new(ErrorCommand {}));
+    assert!(result.is_ok());
+    commands
+        .aliases
+        .insert("on_error".to_string(), "error".to_string());
+
+    let should_continue = run_on_error_instruction(
+        &mut commands,
+        &mut variables,
+        &mut state,
+        &vec![],
+        "error".to_string(),
+        InstructionMetaInfo::new(),
+    );
+
+    assert!(should_continue);
 }

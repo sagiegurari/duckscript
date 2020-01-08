@@ -1,0 +1,12 @@
+
+# This will trigger an error
+assert_fail
+
+error = get_last_error
+echo Error Message: ${error}
+
+line = get_last_error_line
+echo Error Line: ${line}
+
+source = get_last_error_source
+echo Error Source File: ${source}

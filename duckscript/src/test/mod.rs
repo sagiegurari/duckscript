@@ -1,17 +1,15 @@
-use crate::types::command::{Command, CommandResult, GoToValue};
+use crate::types::command::{Command, CommandResult, Commands, GoToValue};
 use crate::types::instruction::{
     Instruction, InstructionType, PreProcessInstruction, ScriptInstruction,
 };
+use crate::types::runtime::StateValue;
+use std::collections::HashMap;
 
 pub(crate) struct SetCommand {}
 
 impl Command for SetCommand {
     fn name(&self) -> String {
         "set".to_string()
-    }
-
-    fn aliases(&self) -> Vec<String> {
-        vec![]
     }
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {
@@ -32,10 +30,6 @@ impl Command for ExitCommand {
         "exit".to_string()
     }
 
-    fn aliases(&self) -> Vec<String> {
-        vec![]
-    }
-
     fn run(&self, arguments: Vec<String>) -> CommandResult {
         let output = if arguments.is_empty() {
             None
@@ -47,6 +41,37 @@ impl Command for ExitCommand {
     }
 }
 
+pub(crate) struct OnErrorCommand {}
+
+impl Command for OnErrorCommand {
+    fn name(&self) -> String {
+        "on_error".to_string()
+    }
+
+    fn requires_context(&self) -> bool {
+        true
+    }
+
+    fn run_with_context(
+        &self,
+        arguments: Vec<String>,
+        _state: &mut HashMap<String, StateValue>,
+        variables: &mut HashMap<String, String>,
+        _output_variable: Option<String>,
+        _instructions: &Vec<Instruction>,
+        _commands: &mut Commands,
+        _line: usize,
+    ) -> CommandResult {
+        let mut index = 0;
+        for argument in arguments {
+            index = index + 1;
+            variables.insert(index.to_string(), argument.clone());
+        }
+
+        CommandResult::Continue(None)
+    }
+}
+
 pub(crate) struct ErrorCommand {}
 
 impl Command for ErrorCommand {
@@ -54,12 +79,20 @@ impl Command for ErrorCommand {
         "error".to_string()
     }
 
-    fn aliases(&self) -> Vec<String> {
-        vec![]
+    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+        CommandResult::Error("test".to_string())
+    }
+}
+
+pub(crate) struct CrashCommand {}
+
+impl Command for CrashCommand {
+    fn name(&self) -> String {
+        "crash".to_string()
     }
 
     fn run(&self, _arguments: Vec<String>) -> CommandResult {
-        CommandResult::Error("test".to_string())
+        CommandResult::Crash("test".to_string())
     }
 }
 
@@ -68,10 +101,6 @@ pub(crate) struct GoToLabelCommand {}
 impl Command for GoToLabelCommand {
     fn name(&self) -> String {
         "goto".to_string()
-    }
-
-    fn aliases(&self) -> Vec<String> {
-        vec![]
     }
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {
@@ -90,10 +119,6 @@ pub(crate) struct GoToLineCommand {}
 impl Command for GoToLineCommand {
     fn name(&self) -> String {
         "goto".to_string()
-    }
-
-    fn aliases(&self) -> Vec<String> {
-        vec![]
     }
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {

@@ -280,7 +280,7 @@ impl Command for ForInCommand {
                             iteration: 0,
                             meta_info: forin_meta_info,
                         },
-                        Err(error) => return CommandResult::Error(error.to_string()),
+                        Err(error) => return CommandResult::Crash(error.to_string()),
                     }
                 }
             };

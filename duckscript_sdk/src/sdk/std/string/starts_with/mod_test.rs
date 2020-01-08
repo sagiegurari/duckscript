@@ -9,12 +9,12 @@ fn common_functions() {
 
 #[test]
 fn run_no_args() {
-    test::run_script_and_fail(vec![create("")], "out = starts_with");
+    test::run_script_and_error(vec![create("")], "out = starts_with", "out");
 }
 
 #[test]
 fn run_single_argument() {
-    test::run_script_and_fail(vec![create("")], "out = starts_with true");
+    test::run_script_and_error(vec![create("")], "out = starts_with true", "out");
 }
 
 #[test]

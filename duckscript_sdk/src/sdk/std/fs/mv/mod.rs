@@ -32,7 +32,7 @@ impl Command for CommandImpl {
             let source_path = Path::new(&arguments[0]);
 
             if !source_path.exists() {
-                CommandResult::Continue(Some("false".to_string()))
+                CommandResult::Error("Path does not exist.".to_string())
             } else {
                 let target_path = Path::new(&arguments[1]);
                 let source_file = source_path.is_file();
@@ -41,7 +41,7 @@ impl Command for CommandImpl {
                 if source_file && target_file {
                     match fs::rename(&arguments[0], &arguments[1]) {
                         Ok(_) => CommandResult::Continue(Some("true".to_string())),
-                        Err(_) => CommandResult::Continue(Some("false".to_string())),
+                        Err(error) => CommandResult::Error(error.to_string()),
                     }
                 } else {
                     match io::create_directory(&arguments[1]) {
@@ -50,10 +50,10 @@ impl Command for CommandImpl {
                             let from_paths = vec![&arguments[0]];
                             match move_items(&from_paths, &arguments[1], &options) {
                                 Ok(_) => CommandResult::Continue(Some("true".to_string())),
-                                Err(_) => CommandResult::Continue(Some("false".to_string())),
+                                Err(error) => CommandResult::Error(error.to_string()),
                             }
                         }
-                        Err(_) => CommandResult::Continue(Some("false".to_string())),
+                        Err(error) => CommandResult::Error(error.to_string()),
                     }
                 }
             }

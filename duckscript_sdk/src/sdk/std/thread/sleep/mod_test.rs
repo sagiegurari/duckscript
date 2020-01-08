@@ -28,7 +28,7 @@ fn run_0() {
 
 #[test]
 fn run_negative_value() {
-    test::run_script_and_fail(vec![create("")], "out = sleep -1");
+    test::run_script_and_error(vec![create("")], "out = sleep -1", "out");
 }
 
 #[test]

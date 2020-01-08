@@ -10,12 +10,12 @@ fn common_functions() {
 
 #[test]
 fn run_no_path_provided() {
-    test::run_script_and_fail(vec![create("")], "rm");
+    test::run_script_and_error(vec![create("")], "out = rm", "out");
 }
 
 #[test]
 fn run_no_path_provided_only_flags() {
-    test::run_script_and_fail(vec![create("")], "rm -r");
+    test::run_script_and_error(vec![create("")], "out = rm -r", "out");
 }
 
 #[test]
@@ -32,10 +32,10 @@ fn run_path_not_empty_not_recursive() {
     let result = io::create_directory("./target/_duckscript/rm/not_empty/dir1");
     assert!(result.is_ok());
 
-    test::run_script_and_validate(
+    test::run_script_and_error(
         vec![create("")],
         "out = rm ./target/_duckscript/rm/not_empty",
-        CommandValidation::Match("out".to_string(), "false".to_string()),
+        "out",
     );
 }
 

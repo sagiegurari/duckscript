@@ -340,7 +340,7 @@ impl Command for IfCommand {
                         Err(error) => CommandResult::Error(error.to_string()),
                     }
                 }
-                Err(error) => CommandResult::Error(error.to_string()),
+                Err(error) => CommandResult::Crash(error.to_string()),
             }
         }
     }

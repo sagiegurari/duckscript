@@ -32,7 +32,7 @@ impl Command for CommandImpl {
             let source_path_str = &arguments[0];
             let source_path = Path::new(source_path_str);
             if !source_path.exists() {
-                CommandResult::Continue(Some("false".to_string()))
+                CommandResult::Error("Path does not exist.".to_string())
             } else {
                 let source_file = source_path.is_file();
 
@@ -42,9 +42,9 @@ impl Command for CommandImpl {
                     match io::create_parent_directory(target_path_str) {
                         Ok(_) => match fs::copy(source_path_str, target_path_str) {
                             Ok(_) => CommandResult::Continue(Some("true".to_string())),
-                            Err(_) => CommandResult::Continue(Some("false".to_string())),
+                            Err(error) => CommandResult::Error(error.to_string()),
                         },
-                        Err(_) => CommandResult::Continue(Some("false".to_string())),
+                        Err(error) => CommandResult::Error(error.to_string()),
                     }
                 } else {
                     match io::create_directory(target_path_str) {
@@ -53,10 +53,10 @@ impl Command for CommandImpl {
 
                             match dir::copy(source_path_str, target_path_str, &options) {
                                 Ok(_) => CommandResult::Continue(Some("true".to_string())),
-                                Err(_) => CommandResult::Continue(Some("false".to_string())),
+                                Err(error) => CommandResult::Error(error.to_string()),
                             }
                         }
-                        Err(_) => CommandResult::Continue(Some("false".to_string())),
+                        Err(error) => CommandResult::Error(error.to_string()),
                     }
                 }
             }

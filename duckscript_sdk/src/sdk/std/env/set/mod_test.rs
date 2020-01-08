@@ -9,12 +9,12 @@ fn common_functions() {
 
 #[test]
 fn run_no_arguments() {
-    test::run_script_and_fail(vec![create("")], "set_env");
+    test::run_script_and_error(vec![create("")], "out = set_env", "out");
 }
 
 #[test]
 fn run_single_argument() {
-    test::run_script_and_fail(vec![create("")], "set_env key");
+    test::run_script_and_error(vec![create("")], "out = set_env key", "out");
 }
 
 #[test]

@@ -30,6 +30,8 @@ pub enum CommandResult {
     GoTo(Option<String>, GoToValue),
     /// Holds the error message and the meta info of the instruction that caused it
     Error(String),
+    /// Holds the critical error message and the meta info of the instruction that caused it
+    Crash(String),
     /// Holds the command output and tells the runner to stop the script execution
     Exit(Option<String>),
 }
@@ -152,6 +154,13 @@ impl Commands {
             Some(ref value) => Some(value.clone()),
             None => None,
         }
+    }
+
+    /// Return true if the command based on the given command name/alias exists
+    pub fn exists(&self, name: &str) -> bool {
+        let command = self.get(name);
+
+        command.is_some()
     }
 
     /// Return the command based on the given command name/alias.

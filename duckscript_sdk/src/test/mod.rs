@@ -102,6 +102,39 @@ impl Command for ArrayCommand {
     }
 }
 
+pub(crate) struct OnErrorCommand {}
+
+impl Command for OnErrorCommand {
+    fn name(&self) -> String {
+        "on_error".to_string()
+    }
+
+    fn requires_context(&self) -> bool {
+        true
+    }
+
+    fn run_with_context(
+        &self,
+        arguments: Vec<String>,
+        _state: &mut HashMap<String, StateValue>,
+        variables: &mut HashMap<String, String>,
+        _output_variable: Option<String>,
+        _instructions: &Vec<Instruction>,
+        _commands: &mut Commands,
+        _line: usize,
+    ) -> CommandResult {
+        let mut index = 0;
+        for argument in arguments {
+            index = index + 1;
+            variables.insert(index.to_string(), argument.clone());
+        }
+
+        variables.insert("on_error_invoked".to_string(), "true".to_string());
+
+        CommandResult::Continue(None)
+    }
+}
+
 pub(crate) enum CommandValidation {
     None,
     Match(String, String),
@@ -119,12 +152,44 @@ fn run_command(commands: Vec<Box<dyn Command>>, script: &str) -> Result<Context,
     for command in commands {
         context.commands.set(command)?;
     }
+
+    if !context.commands.exists("on_error") {
+        let added = context.commands.set(Box::new(OnErrorCommand {}));
+        assert!(added.is_ok());
+    }
+
     runner::run_script(script, context)
 }
 
-pub(crate) fn run_script_and_fail(commands: Vec<Box<dyn Command>>, script: &str) {
+pub(crate) fn run_script_and_crash(commands: Vec<Box<dyn Command>>, script: &str) {
     let result = run_command(commands, script);
     assert!(result.is_err());
+}
+
+pub(crate) fn run_script_and_error(
+    commands: Vec<Box<dyn Command>>,
+    script: &str,
+    output_variable: &str,
+) -> Context {
+    let result = run_command(commands, script);
+    match result {
+        Ok(context) => {
+            assert_eq!(
+                context.variables.get(&output_variable.to_string()).unwrap(),
+                "false"
+            );
+            assert_eq!(
+                context
+                    .variables
+                    .get(&"on_error_invoked".to_string())
+                    .unwrap(),
+                "true"
+            );
+
+            context
+        }
+        Err(error) => panic!(error.to_string()),
+    }
 }
 
 pub(crate) fn run_script_and_validate(
@@ -135,12 +200,20 @@ pub(crate) fn run_script_and_validate(
     let result = run_command(commands, script);
     match result {
         Ok(context) => {
+            assert!(context
+                .variables
+                .get(&"on_error_invoked".to_string())
+                .is_none());
+
             match validation {
                 CommandValidation::None => assert!(context.variables.is_empty()),
                 CommandValidation::Match(key, value) => {
+                    assert!(!context.variables.is_empty());
                     assert_eq!(context.variables.get(&key), Some(&value))
                 }
                 CommandValidation::Contains(key, value) => {
+                    assert!(!context.variables.is_empty());
+
                     let var_value = context.variables.get(&key).unwrap();
                     assert!(
                         var_value.contains(&value),

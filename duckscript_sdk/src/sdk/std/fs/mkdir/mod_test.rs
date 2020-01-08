@@ -9,7 +9,7 @@ fn common_functions() {
 
 #[test]
 fn run_no_directory_path_provided() {
-    test::run_script_and_fail(vec![create("")], "mkdir");
+    test::run_script_and_error(vec![create("")], "out = mkdir", "out");
 }
 
 #[test]
@@ -41,9 +41,9 @@ fn run_directory_exists_as_file() {
     );
     assert!(result.is_ok());
 
-    test::run_script_and_validate(
+    test::run_script_and_error(
         vec![create("")],
         "out = mkdir ./target/_duckscript/mkdir/run_directory_exists_as_file/test.txt",
-        CommandValidation::Match("out".to_string(), "false".to_string()),
+        "out",
     );
 }

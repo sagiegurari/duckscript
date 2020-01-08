@@ -9,20 +9,20 @@ fn common_functions() {
 
 #[test]
 fn run_no_path_provided() {
-    test::run_script_and_fail(vec![create("")], "mv");
+    test::run_script_and_error(vec![create("")], "out = mv", "out");
 }
 
 #[test]
 fn run_single_path_provided() {
-    test::run_script_and_fail(vec![create("")], "mv a");
+    test::run_script_and_error(vec![create("")], "out = mv a", "out");
 }
 
 #[test]
 fn run_input_path_not_exists() {
-    test::run_script_and_validate(
+    test::run_script_and_error(
         vec![create("")],
         "out = mv ./target/_duckscript/mv/not_exists.txt ./target/_duckscript/mv/not_exists/",
-        CommandValidation::Match("out".to_string(), "false".to_string()),
+        "out",
     );
 }
 

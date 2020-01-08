@@ -7,27 +7,44 @@
 #[path = "./expansion_test.rs"]
 mod expansion_test;
 
+use crate::parser;
+use crate::types::instruction::InstructionMetaInfo;
 use std::collections::HashMap;
+
+pub(crate) enum ExpandedValue {
+    Single(String),
+    Multi(Vec<String>),
+    None,
+}
 
 fn should_break_key(value: char) -> bool {
     value == ' ' || value == '\n' || value == '\t' || value == '\r' || value == '='
 }
 
+fn push_prefix(buffer: &mut String, single_type: bool, found_prefix_fully: bool) {
+    if single_type {
+        buffer.push('$');
+    } else {
+        buffer.push('%');
+    }
+
+    if found_prefix_fully {
+        buffer.push('{');
+    }
+}
+
 pub(crate) fn expand_by_wrapper(
     value: &str,
-    prefix: &str,
-    suffix: char,
+    meta_info: &InstructionMetaInfo,
     variables: &HashMap<String, String>,
-) -> String {
+) -> ExpandedValue {
     let mut value_string = String::new();
 
-    let prefix_length = prefix.len();
     let mut prefix_index = 0;
-    let prefix_chars: Vec<char> = prefix.chars().collect();
-
     let mut found_prefix = false;
     let mut key = String::new();
     let mut force_push = false;
+    let mut single_type = true;
     for next_char in value.chars() {
         if !found_prefix {
             if next_char == '\\' && prefix_index == 0 {
@@ -36,22 +53,22 @@ pub(crate) fn expand_by_wrapper(
             } else if force_push {
                 value_string.push(next_char);
                 force_push = false;
-            } else if next_char == prefix_chars[prefix_index] {
-                prefix_index = prefix_index + 1;
+            } else if prefix_index == 0 && (next_char == '$' || next_char == '%') {
+                prefix_index = 1;
 
-                if prefix_index == prefix_length {
-                    found_prefix = true;
-                    prefix_index = 0;
-                    key.clear();
-                }
+                single_type = if next_char == '$' { true } else { false };
+            } else if prefix_index == 1 && next_char == '{' {
+                found_prefix = true;
+                prefix_index = 0;
+                key.clear();
             } else {
-                if prefix_index > 0 {
-                    value_string.push_str(&prefix[..prefix_index]);
+                if prefix_index > 0 || found_prefix {
+                    push_prefix(&mut value_string, single_type, found_prefix);
                     prefix_index = 0;
                 }
                 value_string.push(next_char);
             }
-        } else if next_char == suffix {
+        } else if next_char == '}' {
             match variables.get(&key) {
                 Some(variable_value) => value_string.push_str(&variable_value),
                 _ => (),
@@ -60,7 +77,10 @@ pub(crate) fn expand_by_wrapper(
             key.clear();
             found_prefix = false;
         } else if should_break_key(next_char) {
-            value_string.push_str(&prefix);
+            if prefix_index > 0 || found_prefix {
+                push_prefix(&mut value_string, single_type, found_prefix);
+                prefix_index = 0;
+            }
             value_string.push_str(&key);
             value_string.push(next_char);
 
@@ -72,9 +92,24 @@ pub(crate) fn expand_by_wrapper(
     }
 
     if key.len() > 0 {
-        value_string.push_str(&prefix);
+        if prefix_index > 0 || found_prefix {
+            push_prefix(&mut value_string, single_type, found_prefix);
+        }
         value_string.push_str(&key);
     }
 
-    value_string
+    if value_string.is_empty() {
+        ExpandedValue::None
+    } else if single_type {
+        ExpandedValue::Single(value_string.to_string())
+    } else {
+        let chars = value_string.to_string().chars().collect();
+        match parser::parse_arguments(meta_info, &chars, 0) {
+            Ok(values_option) => match values_option {
+                Some(values) => ExpandedValue::Multi(values),
+                None => ExpandedValue::None,
+            },
+            Err(_) => ExpandedValue::None,
+        }
+    }
 }

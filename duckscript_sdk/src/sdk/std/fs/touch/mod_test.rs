@@ -9,7 +9,7 @@ fn common_functions() {
 
 #[test]
 fn run_no_path_provided() {
-    test::run_script_and_fail(vec![create("")], "touch");
+    test::run_script_and_error(vec![create("")], "out = touch", "out");
 }
 
 #[test]

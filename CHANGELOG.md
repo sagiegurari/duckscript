@@ -2,6 +2,9 @@
 
 ### v0.1.5
 
+* Support spread binding #46
+* Command result of type error, will not break the script and instead call the on_error command #45
+* New get_last_error, get_last_error_line and get_last_error_source commands #45
 * New last_indexof command #36
 * New indexof command #35
 * Added 'quit' and 'q' aliases to exit command #44

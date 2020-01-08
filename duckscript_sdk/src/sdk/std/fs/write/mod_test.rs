@@ -9,14 +9,15 @@ fn common_functions() {
 
 #[test]
 fn run_no_file_provided() {
-    test::run_script_and_fail(vec![create("")], "writefile");
+    test::run_script_and_error(vec![create("")], "out = writefile", "out");
 }
 
 #[test]
 fn run_no_text_provided() {
-    test::run_script_and_fail(
+    test::run_script_and_error(
         vec![create("")],
-        "writefile ./target/_duckscript/write/writefile.txt",
+        "out = writefile ./target/_duckscript/write/writefile.txt",
+        "out",
     );
 }
 

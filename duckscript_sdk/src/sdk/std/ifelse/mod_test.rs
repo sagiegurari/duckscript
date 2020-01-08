@@ -16,7 +16,7 @@ fn run_if_no_end() {
     let mut commands = create("");
     commands.push(Box::new(set_command));
 
-    test::run_script_and_fail(
+    test::run_script_and_crash(
         commands,
         r#"
     if test_set true
@@ -32,7 +32,7 @@ fn run_if_else_no_end() {
     let mut commands = create("");
     commands.push(Box::new(set_command));
 
-    test::run_script_and_fail(
+    test::run_script_and_crash(
         commands,
         r#"
     if test_set true
@@ -50,7 +50,7 @@ fn run_if_else_if_else_no_end() {
     let mut commands = create("");
     commands.push(Box::new(set_command));
 
-    test::run_script_and_fail(
+    test::run_script_and_crash(
         commands,
         r#"
     if test_set true
@@ -66,13 +66,14 @@ fn run_if_else_if_else_no_end() {
 
 #[test]
 fn run_if_no_condition() {
-    test::run_script_and_fail(
+    test::run_script_and_error(
         create(""),
         r#"
-    if
+    out = if
 
     end_if
     "#,
+        "out",
     );
 }
 
@@ -82,15 +83,16 @@ fn run_if_else_if_no_condition() {
     let mut commands = create("");
     commands.push(Box::new(set_command));
 
-    test::run_script_and_fail(
+    test::run_script_and_error(
         commands,
         r#"
     if test_set false
 
-    elseif
+    out = elseif
 
     end_if
     "#,
+        "out",
     );
 }
 
@@ -100,7 +102,7 @@ fn run_sub_if_no_end() {
     let mut commands = create("");
     commands.push(Box::new(set_command));
 
-    test::run_script_and_fail(
+    test::run_script_and_crash(
         commands,
         r#"
     if test_set true
@@ -118,7 +120,7 @@ fn run_sub_else_if_no_end() {
     let mut commands = create("");
     commands.push(Box::new(set_command));
 
-    test::run_script_and_fail(
+    test::run_script_and_crash(
         commands,
         r#"
     if test_set true
@@ -138,7 +140,7 @@ fn run_sub_else_no_end() {
     let mut commands = create("");
     commands.push(Box::new(set_command));
 
-    test::run_script_and_fail(
+    test::run_script_and_crash(
         commands,
         r#"
     if test_set true

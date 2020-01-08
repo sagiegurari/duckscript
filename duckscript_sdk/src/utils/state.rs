@@ -15,7 +15,7 @@ pub(crate) fn get_core_sub_state_for_command(
     state: &mut HashMap<String, StateValue>,
     name: String,
 ) -> &mut HashMap<String, StateValue> {
-    let sub_state_name = pckg::concat("duckscript", &name);
+    let sub_state_name = pckg::concat("duckscriptsdk", &name);
 
     get_sub_state(sub_state_name, state)
 }

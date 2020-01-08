@@ -9,12 +9,12 @@ fn common_functions() {
 
 #[test]
 fn run_no_args() {
-    test::run_script_and_fail(vec![create("")], "out = indexof");
+    test::run_script_and_error(vec![create("")], "out = indexof", "out");
 }
 
 #[test]
 fn run_single_arg() {
-    test::run_script_and_fail(vec![create("")], "out = indexof");
+    test::run_script_and_error(vec![create("")], "out = indexof", "out");
 }
 
 #[test]
