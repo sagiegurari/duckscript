@@ -14,6 +14,7 @@ mod math;
 mod net;
 mod not;
 mod on_error;
+mod os_family;
 mod process;
 mod read;
 mod release;
@@ -36,6 +37,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     commands.set(is_defined::create(PACKAGE))?;
     commands.set(man::create(PACKAGE))?;
     commands.set(not::create(PACKAGE))?;
+    commands.set(os_family::create(PACKAGE))?;
     commands.set(read::create(PACKAGE))?;
     commands.set(release::create(PACKAGE))?;
     commands.set(set::create(PACKAGE))?;

@@ -2,6 +2,7 @@
 
 ### v0.1.5
 
+* New uname/os_family command #43
 * Commands should accept empty string ("") inputs #47
 * Support spread binding #46
 * Command result of type error, will not break the script and instead call the on_error command #45

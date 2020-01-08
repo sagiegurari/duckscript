@@ -139,6 +139,7 @@ pub(crate) enum CommandValidation {
     None,
     Match(String, String),
     Contains(String, String),
+    Any(String, Vec<String>),
 }
 
 pub(crate) fn test_common_command_functions(command: Box<dyn Command>) {
@@ -220,6 +221,17 @@ pub(crate) fn run_script_and_validate(
                         "The value: {} is not contained in: {}",
                         &value,
                         &var_value
+                    )
+                }
+                CommandValidation::Any(key, values) => {
+                    assert!(!context.variables.is_empty());
+
+                    let var_value = context.variables.get(&key).unwrap();
+                    assert!(
+                        values.contains(&var_value),
+                        "The value: {} is not contained in: {:#?}",
+                        &var_value,
+                        &values
                     )
                 }
             };
