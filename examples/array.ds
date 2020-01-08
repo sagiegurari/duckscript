@@ -1,0 +1,10 @@
+
+handle = array a b c "d e"
+len = array_length ${handle}
+released = release ${handle}
+echo Array length: ${len} released: ${released}
+
+handle = range 0 10
+len = array_length ${handle}
+released = release ${handle}
+echo Array length: ${len} released: ${released}

@@ -2,6 +2,7 @@
 
 ### v0.1.5
 
+* New array_length command
 * ForIn accepts handle value not variable name
 * New length command (strlen)
 * New substring command #37

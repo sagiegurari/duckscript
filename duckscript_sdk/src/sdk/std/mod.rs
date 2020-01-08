@@ -1,5 +1,5 @@
 pub(crate) mod alias;
-mod collections;
+pub(crate) mod collections;
 mod echo;
 mod env;
 mod eval;

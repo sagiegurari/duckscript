@@ -15,6 +15,7 @@
 * [std::ShowCommandDocumentation (man)](#std__ShowCommandDocumentation)
 * [std::Unalias (unalias)](#std__Unalias)
 * [std::collections::Array (array)](#std__collections__Array)
+* [std::collections::ArrayLength (array_length, arrlen)](#std__collections__ArrayLength)
 * [std::collections::Range (range)](#std__collections__Range)
 * [std::env::GetVar (get_env)](#std__env__GetVar)
 * [std::env::PrintCurrentDirectory (pwd)](#std__env__PrintCurrentDirectory)
@@ -711,6 +712,40 @@ release ${handle}
 
 #### Aliases:
 array
+
+<a name="std__collections__ArrayLength"></a>
+## std::collections::ArrayLength
+```sh
+var = array_length handle
+```
+
+Returns the array length based on the provided array handle.
+
+#### Parameters
+
+The array handle.
+
+#### Return Value
+
+The array length.
+
+#### Examples
+
+```sh
+handle = array a b c "d e"
+len = array_length ${handle}
+released = release ${handle}
+echo Array length: ${len} released: ${released}
+
+handle = range 0 10
+len = array_length ${handle}
+released = release ${handle}
+echo Array length: ${len} released: ${released}
+```
+
+
+#### Aliases:
+array_length, arrlen
 
 <a name="std__collections__Range"></a>
 ## std::collections::Range
