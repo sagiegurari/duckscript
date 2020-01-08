@@ -47,6 +47,7 @@
 * [std::string::IndexOf (indexof)](#std__string__IndexOf)
 * [std::string::IsEmpty (is_empty)](#std__string__IsEmpty)
 * [std::string::LastIndexOf (last_indexof)](#std__string__LastIndexOf)
+* [std::string::Length (length, strlen)](#std__string__Length)
 * [std::string::StartsWith (starts_with)](#std__string__StartsWith)
 * [std::string::SubString (substring)](#std__string__SubString)
 * [std::string::Trim (trim)](#std__string__Trim)
@@ -1691,6 +1692,32 @@ index = last_indexof "    some  text   " some
 
 #### Aliases:
 last_indexof
+
+<a name="std__string__Length"></a>
+## std::string::Length
+```sh
+var = length text
+```
+
+Returns the text length.
+
+#### Parameters
+
+The text to extract the length from.
+
+#### Return Value
+
+The text length value.
+
+#### Examples
+
+```sh
+len = length "Hello World"
+```
+
+
+#### Aliases:
+length, strlen
 
 <a name="std__string__StartsWith"></a>
 ## std::string::StartsWith

@@ -14,3 +14,6 @@ echo ${string}
 # string is 'Hello W'
 string = substring "Hello World" -4
 echo ${string}
+
+len = length "Hello World"
+echo The text length is: ${len}

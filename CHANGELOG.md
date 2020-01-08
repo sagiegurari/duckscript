@@ -2,6 +2,7 @@
 
 ### v0.1.5
 
+* New length command (strlen)
 * New substring command #37
 * New uname/os_family command #43
 * Commands should accept empty string ("") inputs #47
