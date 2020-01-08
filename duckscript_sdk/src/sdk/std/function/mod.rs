@@ -334,11 +334,11 @@ impl Command for FunctionCommand {
                                     Err(error) => CommandResult::Error(error),
                                 }
                             }
-                            None => CommandResult::Error(
+                            None => CommandResult::Crash(
                                 format!("Function: {} end not found.", &function_name).to_string(),
                             ),
                         },
-                        Err(error) => CommandResult::Error(error),
+                        Err(error) => CommandResult::Crash(error),
                     }
                 }
             }

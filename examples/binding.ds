@@ -1,0 +1,14 @@
+
+out = set "Hello World"
+
+list = array ${out}
+for entry in list
+    echo current entry is: ${entry}
+end_for
+release list
+
+list = array %{out}
+for entry in list
+    echo current entry is: ${entry}
+end_for
+release list

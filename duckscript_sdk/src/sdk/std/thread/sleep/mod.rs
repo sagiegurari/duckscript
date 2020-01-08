@@ -43,7 +43,7 @@ impl Command for CommandImpl {
                     }
                 }
                 Err(_) => CommandResult::Error(
-                    format!("Non numberic value: {} provided.", &arguments[0]).to_string(),
+                    format!("Non numeric value: {} provided.", &arguments[0]).to_string(),
                 ),
             }
         }

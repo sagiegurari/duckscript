@@ -9,7 +9,7 @@ fn common_functions() {
 
 #[test]
 fn run_no_arguments() {
-    test::run_script_and_fail(vec![create("")], "unset_env");
+    test::run_script_and_error(vec![create("")], "out = unset_env", "out");
 }
 
 #[test]

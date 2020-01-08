@@ -210,8 +210,16 @@ fn get_next_iteration(
             StateValue::List(list) => {
                 if list.len() > iteration {
                     match list[iteration] {
-                        StateValue::String(ref string_value) => Some(string_value.to_string()),
-                        _ => None,
+                        StateValue::Boolean(ref value) => Some(value.to_string()),
+                        StateValue::Number(ref value) => Some(value.to_string()),
+                        StateValue::UnsignedNumber(ref value) => Some(value.to_string()),
+                        StateValue::Number32Bit(ref value) => Some(value.to_string()),
+                        StateValue::UnsignedNumber32Bit(ref value) => Some(value.to_string()),
+                        StateValue::Number64Bit(ref value) => Some(value.to_string()),
+                        StateValue::UnsignedNumber64Bit(ref value) => Some(value.to_string()),
+                        StateValue::String(ref value) => Some(value.to_string()),
+                        StateValue::List(_) => None,
+                        StateValue::SubState(_) => None,
                     }
                 } else {
                     None
@@ -272,7 +280,7 @@ impl Command for ForInCommand {
                             iteration: 0,
                             meta_info: forin_meta_info,
                         },
-                        Err(error) => return CommandResult::Error(error.to_string()),
+                        Err(error) => return CommandResult::Crash(error.to_string()),
                     }
                 }
             };
@@ -280,25 +288,20 @@ impl Command for ForInCommand {
             let iteration = call_info.iteration;
             let forin_meta_info = call_info.meta_info;
 
-            match variables.get(&arguments[2]) {
-                Some(handle) => match get_next_iteration(iteration, handle.to_string(), state) {
-                    Some(next_value) => {
-                        store_call_info(
-                            &CallInfo {
-                                iteration: iteration + 1,
-                                meta_info: forin_meta_info,
-                            },
-                            state,
-                        );
+            let handle = &arguments[2];
+            match get_next_iteration(iteration, handle.to_string(), state) {
+                Some(next_value) => {
+                    store_call_info(
+                        &CallInfo {
+                            iteration: iteration + 1,
+                            meta_info: forin_meta_info,
+                        },
+                        state,
+                    );
 
-                        variables.insert(arguments[0].clone(), next_value);
-                        CommandResult::Continue(None)
-                    }
-                    None => {
-                        let next_line = forin_meta_info.end + 1;
-                        CommandResult::GoTo(None, GoToValue::Line(next_line))
-                    }
-                },
+                    variables.insert(arguments[0].clone(), next_value);
+                    CommandResult::Continue(None)
+                }
                 None => {
                     let next_line = forin_meta_info.end + 1;
                     CommandResult::GoTo(None, GoToValue::Line(next_line))

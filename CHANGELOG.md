@@ -1,5 +1,30 @@
 ## CHANGELOG
 
+### v0.1.5
+
+* New array_length command
+* ForIn accepts handle value not variable name
+* New length command (strlen)
+* New substring command #37
+* New uname/os_family command #43
+* Commands should accept empty string ("") inputs #47
+* Support spread binding #46
+* Command result of type error, will not break the script and instead call the on_error command #45
+* New get_last_error, get_last_error_line and get_last_error_source commands #45
+* New last_indexof command #36
+* New indexof command #35
+* Added 'quit' and 'q' aliases to exit command #44
+* Added state 64 bit numeric value support #39
+* Changed standard namespace to std from sdk #34
+* New read command #33
+* New hostname command #18
+* New trim_start command #29
+* New trim_end command #30
+* New trim command
+* New is_empty command
+* New is_defined command
+* New range command #32
+
 ### v0.1.4 (2020-01-03)
 
 * New **contains** command #28

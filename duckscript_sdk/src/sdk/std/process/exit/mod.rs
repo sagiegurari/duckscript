@@ -15,7 +15,7 @@ impl Command for CommandImpl {
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["exit".to_string()]
+        vec!["exit".to_string(), "quit".to_string(), "q".to_string()]
     }
 
     fn help(&self) -> String {

@@ -10,20 +10,20 @@ fn common_functions() {
 
 #[test]
 fn run_no_path_provided() {
-    test::run_script_and_fail(vec![create("")], "cp");
+    test::run_script_and_error(vec![create("")], "out = cp", "out");
 }
 
 #[test]
 fn run_single_input() {
-    test::run_script_and_fail(vec![create("")], "cp a");
+    test::run_script_and_error(vec![create("")], "out = cp a", "out");
 }
 
 #[test]
 fn run_path_not_exists() {
-    test::run_script_and_validate(
+    test::run_script_and_error(
         vec![create("")],
         "out = cp ./target/_duckscript/cp/newdir1 ./target/_duckscript/cp/newdir2",
-        CommandValidation::Match("out".to_string(), "false".to_string()),
+        "out",
     );
 }
 

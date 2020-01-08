@@ -16,7 +16,7 @@ fn run_forin_no_end() {
     let mut commands = create("");
     commands.push(Box::new(array_command));
 
-    test::run_script_and_fail(
+    test::run_script_and_crash(
         commands,
         r#"
     args = test_array a b c
@@ -33,26 +33,28 @@ fn run_forin_no_in() {
     let mut commands = create("");
     commands.push(Box::new(array_command));
 
-    test::run_script_and_fail(
+    test::run_script_and_error(
         commands,
         r#"
     args = test_array a b c
-    for arg args
+    out = for arg ${args}
 
     end_for
     "#,
+        "out",
     );
 }
 
 #[test]
 fn run_forin_no_args() {
-    test::run_script_and_fail(
+    test::run_script_and_error(
         create(""),
         r#"
-    for
+    out = for
 
     end_for
     "#,
+        "out",
     );
 }
 
@@ -62,14 +64,15 @@ fn run_forin_too_many_args() {
     let mut commands = create("");
     commands.push(Box::new(array_command));
 
-    test::run_script_and_fail(
+    test::run_script_and_error(
         commands,
         r#"
     args = test_array a b c
-    for arg in args test
+    out = for arg in ${args} test
 
     end_for
     "#,
+        "out",
     );
 }
 
@@ -83,7 +86,7 @@ fn run_forin_valid() {
         commands,
         r#"
     args = test_array a b c
-    for arg in args
+    for arg in ${args}
         out = test_set "${out} ${arg}"
     end_for
     "#,
@@ -100,9 +103,9 @@ fn run_forin_nested() {
     test::run_script_and_validate(
         commands,
         r#"
-    range = test_array 1 2 3
-    for i in range
-        for j in range
+    args = test_array 1 2 3
+    for i in ${args}
+        for j in ${args}
             out = test_set "${out} ${i}${j}"
         end_for
     end_for

@@ -12,7 +12,7 @@ fn common_functions() {
 
 #[test]
 fn run_no_function_end() {
-    test::run_script_and_fail(
+    test::run_script_and_crash(
         create(""),
         r#"
     function test
@@ -24,7 +24,7 @@ fn run_no_function_end() {
 
 #[test]
 fn run_function_inside_function() {
-    test::run_script_and_fail(
+    test::run_script_and_crash(
         create(""),
         r#"
     function test1

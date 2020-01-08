@@ -10,7 +10,7 @@ fn common_functions() {
 #[test]
 #[test]
 fn run_no_args() {
-    test::run_script_and_fail(vec![create("")], "exec");
+    test::run_script_and_error(vec![create("")], "out = exec", "out");
 }
 
 #[test]
@@ -37,10 +37,5 @@ fn run_with_output() {
 
 #[test]
 fn run_error_code_with_output() {
-    test::run_script_and_fail(vec![create("")], "out = exec badcommand");
-}
-
-#[test]
-fn run_error_code_no_output() {
-    test::run_script_and_fail(vec![create("")], "exec badcommand");
+    test::run_script_and_error(vec![create("")], "out = exec badcommand", "out");
 }

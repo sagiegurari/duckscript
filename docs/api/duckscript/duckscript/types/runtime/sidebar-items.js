@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["StateValue","enum defining what values can be stored in the state map"]],"struct":[["Context","The context structure"],["Runtime","The runtime structure"]]});

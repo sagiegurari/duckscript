@@ -6,7 +6,7 @@ fn get_core_sub_state_for_command_valid() {
     let value = get_core_sub_state_for_command(&mut state, "test".to_string());
 
     assert!(value.is_empty());
-    assert!(state.contains_key("duckscript::test"));
+    assert!(state.contains_key("duckscriptsdk::test"));
 }
 
 #[test]

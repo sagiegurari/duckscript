@@ -189,7 +189,7 @@ fn parse_command_line(
     }
 }
 
-fn parse_arguments(
+pub(crate) fn parse_arguments(
     meta_info: &InstructionMetaInfo,
     line_text: &Vec<char>,
     start_index: usize,

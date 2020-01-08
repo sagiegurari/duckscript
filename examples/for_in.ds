@@ -1,18 +1,32 @@
 
+# Simple example iteration over the list of letters:
 args = array a b c
-echo array handle: ${args}
 
-for arg in args
+for arg in ${args}
     echo current arg is: ${arg}
 end_for
-release args
 
-range = array 1 2 3
+released = release ${args}
+echo Array released: ${released}
 
-for i in range
-    for j in range
+# Example nested loops:
+values = array 1 2 3
+for i in ${values}
+    for j in ${values}
         echo i: ${i} j: ${j}
     end_for
 end_for
 
-release range
+released = release ${values}
+echo Array released: ${released}
+
+values = range 1 10
+
+for i in ${values}
+    for j in ${values}
+        echo i: ${i} j: ${j}
+    end_for
+end_for
+
+released = release ${values}
+echo Array released: ${released}

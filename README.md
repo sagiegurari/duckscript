@@ -22,7 +22,8 @@
     * [Commands](#tutorial-commands)
         * [Passing Arguments](#tutorial-commands-passing-arguments)
         * [Storing Output](#tutorial-commands-storing-output)
-        * [Using Variables](#tutorial-commands-using-variables)
+        * [Using Variables - Binding](#tutorial-commands-using-variables-binding)
+        * [Using Variables - Spread Binding](#tutorial-commands-using-variables-spread-binding)
     * [Labels](#tutorial-labels)
     * [Comments](#tutorial-comments)
     * [Pre Processing](#tutorial-pre-processing)
@@ -85,8 +86,8 @@ The following sections will teach you how to write and run duck scripts.
 Let's take a really simple example (all examples are located in the [examples](https://github.com/sagiegurari/duckscript/tree/master/examples) directory:
 
 ```sh
-# print the text "hello world"
-echo hello world
+# print the text "Hello World"
+echo Hello World
 ```
 
 Running this script is done using the **duckscript** executable as follows:
@@ -100,7 +101,7 @@ We will understand more and breakdown this down in the following sections.
 <a name="tutorial-commands"></a>
 ### Commands
 Commands are the basis of everything in duckscript.<br>
-Commands may execute some action (like printing "hello world" to the console) or serve as flow control (such as functions or if/else conditions).<br>
+Commands may execute some action (like printing "Hello World" to the console) or serve as flow control (such as functions or if/else conditions).<br>
 In order to invoke an action, simply write the action name:
 
 ```sh
@@ -120,19 +121,19 @@ Arguments are separated with the space character.<br>
 So in the example:
 
 ```sh
-# print the text "hello world"
-echo hello world
+# print the text "Hello World"
+echo Hello World
 ```
 
 The **echo** command got 2 arguments: "hello" and "world".<br>
 If your argument contains a space, you can wrap the entire argument with the ```"``` character as follows:
 
 ```sh
-# print the text "hello world"
-echo "hello world"
+# print the text "Hello World"
+echo "Hello World"
 ```
 
-In which case the **echo** command got only one argument: "hello world" and prints it.<br>
+In which case the **echo** command got only one argument: "Hello World" and prints it.<br>
 You can escape the ```"``` character using the ```"\"``` character, for example:
 
 ```sh
@@ -154,30 +155,70 @@ Variables in duckscript have no strict type.<br>
 In the following example, the **set** command takes one argument and stores it in the **out** variable.
 
 ```sh
-out = set "hello world"
+out = set "Hello World"
 ```
 
 Duckscript has only global scope, so once you have stored a value in a variable, you may use it anywhere in your script.
 
-<a name="tutorial-commands-using-variables"></a>
-#### Using Variables
+<a name="tutorial-commands-using-variables-binding"></a>
+#### Using Variables - Binding
 Stored variables can be later on used as arguments for other commands.<br>
 In order to use a variable, we need to wrap it as follows: ```${variable}```.<br>
 <br>
 The following example uses the **set** command to store a value in the **out** variable and then prints it:
 
 ```sh
-out = set "hello world"
+out = set "Hello World"
 
-# This will print: "The out variable holds the value: hello world"
+# This will print: "The out variable holds the value: Hello World"
 echo The out variable holds the value: ${out}
 
 # This will print: "To use the out variable just write: ${out}"
 echo To use the out variable just write: \${out}
 ```
 
-In this example, although **out** holds the value **hello world** which contains a space, it is still considered as a single input argument to the **echo** command.<br>
+In this example, although **out** holds the value **Hello World** which contains a space, it is still considered as a single input argument to the **echo** command.<br>
 In the second echo command we prevented the variable name from being replaced by escaping it using the ```\``` character.
+
+<a name="tutorial-commands-using-variables-spread-binding"></a>
+#### Using Variables - Spread Binding
+
+Spread binding provides a way to convert a variable value into multiple command arguments.<br>
+For example:
+
+```sh
+out = set "Hello World"
+```
+
+The **out** variable holds the value "Hello World".<br>
+If we were to create an array from it using the **array** command as follows:
+
+```sh
+list = array ${out}
+```
+
+The array would be of size 1 and its only entry value would be "Hello World".<br>
+So it is the same as if we wrote:
+
+```sh
+list = array "Hello World"
+```
+
+But what if we want to split the value to multiple parts separated by spaces?<br>
+For that we have the spread binding which is defined as follows: ```%{variable}```.<br>
+For example:
+
+```sh
+list = array %{out}
+```
+
+Which would act the same as:
+
+```sh
+list = array Hello World
+```
+
+And now our array is of size 2 with first entry "Hello" and second entry "World".
 
 <a name="tutorial-labels"></a>
 ### Labels
@@ -240,11 +281,11 @@ The print pre processing command allows to print any number of arguments, which 
 In the following example, although the print command comes after the echo command, it will execute first as it is invoked in the parsing phase and not in the script execution phase which comes later:
 
 ```sh
-# this will print "hello world during script execution"
-echo hello world during script execution
+# this will print "Hello World during script execution"
+echo Hello World during script execution
 
-# this will print "hello world during parsing"
-!print hello world during parsing
+# this will print "Hello World during parsing"
+!print Hello World during parsing
 ```
 
 <a name="tutorial-standard-api"></a>
@@ -266,7 +307,7 @@ function print_first_and_second_argument
 end_function
 
 function run_flow
-    status = print_first_and_second_argument hello world
+    status = print_first_and_second_argument Hello World
     echo The printout status is: ${status}
 end_function
 
@@ -274,11 +315,34 @@ run_flow
 ```
 
 This example demonstrates how functions as a concept do not need to be part of the language and can be implemented by anyone as a command.<br>
-This also means that other developers can replace the function command with their implementation to provide additional/different functionality.
+This also means that other developers can replace the function command with their implementation to provide additional/different functionality.<br>
+
+Below an example of loops using the [for/in command](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md#sdk__ForIn):
+
+```sh
+values = range 1 10
+
+for i in ${values}
+    for j in ${values}
+        echo i: ${i} j: ${j}
+    end_for
+end_for
+
+release ${values}
+```
 
 Below an example of [if/else command](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md#sdk__If):
 
 ```sh
+echo Enter Full Name:
+name = read
+
+if is_empty ${name}
+    echo You didn't enter any value
+else
+    echo Your name is: ${name}
+end_if
+
 value = set false
 if ${value}
     echo should not be here
@@ -301,20 +365,6 @@ elseif true
 else
     echo should not be here
 end_if
-```
-
-Below an example of loops using the [for/in command](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md#sdk__ForIn):
-
-```sh
-range = array 1 2 3
-
-for i in range
-    for j in range
-        echo i: ${i} j: ${j}
-    end_for
-end_for
-
-release range
 ```
 
 <a name="tutorial-standard-api-full-sdk-docs"></a>
@@ -358,7 +408,8 @@ The command result can be one of the following:
 
 * Continue(Option<String>) - Tells the runner to continue to the next command and optionally set the output variable the given value.
 * GoTo(Option<String>, GoToValue) - Tells the runner to jump to the requested line or label and optionally set the output variable the given value.
-* Error(String) - Tells the runner to stop the exection and return the error message.
+* Error(String) - Returns the value 'false' and invokes the 'on_error' command if exists with the error message and instruction information.
+* Crash(String) - Tells the runner to stop the exection and return the error message.
 * Exit(Option<String>) - Tells the runner to stop the execution and optionally set the output variable the given value.
 
 Let's implement a simple **set** command which accepts a single argument and sets the output variable to that value.<br>

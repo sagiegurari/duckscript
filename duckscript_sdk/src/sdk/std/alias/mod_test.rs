@@ -9,12 +9,12 @@ fn common_functions() {
 
 #[test]
 fn run_no_args() {
-    test::run_script_and_fail(vec![create("")], "alias");
+    test::run_script_and_error(vec![create("")], "out = alias", "out");
 }
 
 #[test]
 fn run_only_name() {
-    test::run_script_and_fail(vec![create("")], "alias new");
+    test::run_script_and_error(vec![create("")], "out = alias new", "out");
 }
 
 #[test]

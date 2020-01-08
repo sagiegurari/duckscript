@@ -9,7 +9,7 @@ fn common_functions() {
 
 #[test]
 fn run_no_args() {
-    test::run_script_and_fail(vec![create("")], "not");
+    test::run_script_and_error(vec![create("")], "out = not", "out");
 }
 
 #[test]
@@ -59,8 +59,9 @@ fn run_command_no_value() {
 
 #[test]
 fn run_command_error() {
-    test::run_script_and_fail(
+    test::run_script_and_error(
         vec![create(""), Box::new(ErrorCommand {})],
         "out = not test_error",
+        "out",
     );
 }

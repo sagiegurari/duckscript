@@ -9,7 +9,7 @@ fn common_functions() {
 
 #[test]
 fn run_no_args() {
-    test::run_script_and_fail(vec![create("")], "out = calc");
+    test::run_script_and_error(vec![create("")], "out = calc", "out");
 }
 
 #[test]

@@ -9,22 +9,22 @@ fn common_functions() {
 
 #[test]
 fn run_no_arguments() {
-    test::run_script_and_fail(vec![create("")], "goto");
+    test::run_script_and_error(vec![create("")], "out = goto", "out");
 }
 
 #[test]
 fn run_mutliple_arguments() {
-    test::run_script_and_fail(vec![create("")], "goto :label1 :label2");
+    test::run_script_and_error(vec![create("")], "out = goto :label1 :label2", "out");
 }
 
 #[test]
 fn run_not_label_format() {
-    test::run_script_and_fail(vec![create("")], "goto label");
+    test::run_script_and_error(vec![create("")], "out = goto label", "out");
 }
 
 #[test]
 fn run_label_not_found() {
-    test::run_script_and_fail(vec![create("")], "goto :unknown");
+    test::run_script_and_crash(vec![create("")], "goto :unknown");
 }
 
 #[test]

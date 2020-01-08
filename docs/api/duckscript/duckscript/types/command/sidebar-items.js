@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["CommandResult","Command execution result"],["GoToValue","GoTo type value"]],"struct":[["Commands","Holds and enables access to the runtime commands implementations"]],"trait":[["Command","Defines the command capabilities"]]});

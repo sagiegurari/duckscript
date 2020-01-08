@@ -9,12 +9,12 @@ fn common_functions() {
 
 #[test]
 fn run_no_args() {
-    test::run_script_and_fail(vec![create("")], "out = assert");
+    test::run_script_and_error(vec![create("")], "out = assert", "out");
 }
 
 #[test]
 fn run_single_false_argument() {
-    test::run_script_and_fail(vec![create("")], "out = assert false");
+    test::run_script_and_error(vec![create("")], "out = assert false", "out");
 }
 
 #[test]
@@ -28,5 +28,5 @@ fn run_single_true_argument() {
 
 #[test]
 fn run_single_false_condition_and_message() {
-    test::run_script_and_fail(vec![create("")], "out = assert false test error");
+    test::run_script_and_error(vec![create("")], "out = assert false test error", "out");
 }

@@ -9,12 +9,12 @@ fn common_functions() {
 
 #[test]
 fn run_no_args() {
-    test::run_script_and_fail(vec![create("")], "out = eq");
+    test::run_script_and_error(vec![create("")], "out = eq", "out");
 }
 
 #[test]
 fn run_single_argument() {
-    test::run_script_and_fail(vec![create("")], "out = eq true");
+    test::run_script_and_error(vec![create("")], "out = eq true", "out");
 }
 
 #[test]
