@@ -27,7 +27,7 @@ name = "duckscript"
 path = "src/main.rs"
 
 [dependencies]
-duckscript = { version = "^0.1.3", path = "../duckscript" }
+duckscript = { version = "^0.1.4", path = "../duckscript" }
 duckscriptsdk = { version = "^0.1.5", path = "../duckscript_sdk" }
 
 [badges.travis-ci]
