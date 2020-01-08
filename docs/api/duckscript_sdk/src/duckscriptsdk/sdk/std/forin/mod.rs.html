@@ -373,6 +373,9 @@
 <span id="373">373</span>
 <span id="374">374</span>
 <span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="ident">instruction_query</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="ident">pckg</span>;
@@ -586,8 +589,16 @@
             <span class="ident">StateValue</span>::<span class="ident">List</span>(<span class="ident">list</span>) <span class="op">=&gt;</span> {
                 <span class="kw">if</span> <span class="ident">list</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="ident">iteration</span> {
                     <span class="kw">match</span> <span class="ident">list</span>[<span class="ident">iteration</span>] {
-                        <span class="ident">StateValue</span>::<span class="ident">String</span>(<span class="kw-2">ref</span> <span class="ident">string_value</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">string_value</span>.<span class="ident">to_string</span>()),
-                        <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+                        <span class="ident">StateValue</span>::<span class="ident">Boolean</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>.<span class="ident">to_string</span>()),
+                        <span class="ident">StateValue</span>::<span class="ident">Number</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>.<span class="ident">to_string</span>()),
+                        <span class="ident">StateValue</span>::<span class="ident">UnsignedNumber</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>.<span class="ident">to_string</span>()),
+                        <span class="ident">StateValue</span>::<span class="ident">Number32Bit</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>.<span class="ident">to_string</span>()),
+                        <span class="ident">StateValue</span>::<span class="ident">UnsignedNumber32Bit</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>.<span class="ident">to_string</span>()),
+                        <span class="ident">StateValue</span>::<span class="ident">Number64Bit</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>.<span class="ident">to_string</span>()),
+                        <span class="ident">StateValue</span>::<span class="ident">UnsignedNumber64Bit</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>.<span class="ident">to_string</span>()),
+                        <span class="ident">StateValue</span>::<span class="ident">String</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>.<span class="ident">to_string</span>()),
+                        <span class="ident">StateValue</span>::<span class="ident">List</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+                        <span class="ident">StateValue</span>::<span class="ident">SubState</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
                     }
                 } <span class="kw">else</span> {
                     <span class="prelude-val">None</span>
@@ -648,7 +659,7 @@
                             <span class="ident">iteration</span>: <span class="number">0</span>,
                             <span class="ident">meta_info</span>: <span class="ident">forin_meta_info</span>,
                         },
-                        <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="ident">CommandResult</span>::<span class="ident">Error</span>(<span class="ident">error</span>.<span class="ident">to_string</span>()),
+                        <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="ident">CommandResult</span>::<span class="ident">Crash</span>(<span class="ident">error</span>.<span class="ident">to_string</span>()),
                     }
                 }
             };
@@ -656,25 +667,20 @@
             <span class="kw">let</span> <span class="ident">iteration</span> <span class="op">=</span> <span class="ident">call_info</span>.<span class="ident">iteration</span>;
             <span class="kw">let</span> <span class="ident">forin_meta_info</span> <span class="op">=</span> <span class="ident">call_info</span>.<span class="ident">meta_info</span>;
 
-            <span class="kw">match</span> <span class="ident">variables</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">arguments</span>[<span class="number">2</span>]) {
-                <span class="prelude-val">Some</span>(<span class="ident">handle</span>) <span class="op">=&gt;</span> <span class="kw">match</span> <span class="ident">get_next_iteration</span>(<span class="ident">iteration</span>, <span class="ident">handle</span>.<span class="ident">to_string</span>(), <span class="ident">state</span>) {
-                    <span class="prelude-val">Some</span>(<span class="ident">next_value</span>) <span class="op">=&gt;</span> {
-                        <span class="ident">store_call_info</span>(
-                            <span class="kw-2">&amp;</span><span class="ident">CallInfo</span> {
-                                <span class="ident">iteration</span>: <span class="ident">iteration</span> <span class="op">+</span> <span class="number">1</span>,
-                                <span class="ident">meta_info</span>: <span class="ident">forin_meta_info</span>,
-                            },
-                            <span class="ident">state</span>,
-                        );
+            <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">arguments</span>[<span class="number">2</span>];
+            <span class="kw">match</span> <span class="ident">get_next_iteration</span>(<span class="ident">iteration</span>, <span class="ident">handle</span>.<span class="ident">to_string</span>(), <span class="ident">state</span>) {
+                <span class="prelude-val">Some</span>(<span class="ident">next_value</span>) <span class="op">=&gt;</span> {
+                    <span class="ident">store_call_info</span>(
+                        <span class="kw-2">&amp;</span><span class="ident">CallInfo</span> {
+                            <span class="ident">iteration</span>: <span class="ident">iteration</span> <span class="op">+</span> <span class="number">1</span>,
+                            <span class="ident">meta_info</span>: <span class="ident">forin_meta_info</span>,
+                        },
+                        <span class="ident">state</span>,
+                    );
 
-                        <span class="ident">variables</span>.<span class="ident">insert</span>(<span class="ident">arguments</span>[<span class="number">0</span>].<span class="ident">clone</span>(), <span class="ident">next_value</span>);
-                        <span class="ident">CommandResult</span>::<span class="ident">Continue</span>(<span class="prelude-val">None</span>)
-                    }
-                    <span class="prelude-val">None</span> <span class="op">=&gt;</span> {
-                        <span class="kw">let</span> <span class="ident">next_line</span> <span class="op">=</span> <span class="ident">forin_meta_info</span>.<span class="ident">end</span> <span class="op">+</span> <span class="number">1</span>;
-                        <span class="ident">CommandResult</span>::<span class="ident">GoTo</span>(<span class="prelude-val">None</span>, <span class="ident">GoToValue</span>::<span class="ident">Line</span>(<span class="ident">next_line</span>))
-                    }
-                },
+                    <span class="ident">variables</span>.<span class="ident">insert</span>(<span class="ident">arguments</span>[<span class="number">0</span>].<span class="ident">clone</span>(), <span class="ident">next_value</span>);
+                    <span class="ident">CommandResult</span>::<span class="ident">Continue</span>(<span class="prelude-val">None</span>)
+                }
                 <span class="prelude-val">None</span> <span class="op">=&gt;</span> {
                     <span class="kw">let</span> <span class="ident">next_line</span> <span class="op">=</span> <span class="ident">forin_meta_info</span>.<span class="ident">end</span> <span class="op">+</span> <span class="number">1</span>;
                     <span class="ident">CommandResult</span>::<span class="ident">GoTo</span>(<span class="prelude-val">None</span>, <span class="ident">GoToValue</span>::<span class="ident">Line</span>(<span class="ident">next_line</span>))

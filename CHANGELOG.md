@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.1.5
+### v0.1.5 (2020-01-09)
 
 * New array_length command
 * ForIn accepts handle value not variable name
