@@ -2,6 +2,7 @@
 
 ### v0.1.5
 
+* ForIn accepts handle value not variable name
 * New length command (strlen)
 * New substring command #37
 * New uname/os_family command #43

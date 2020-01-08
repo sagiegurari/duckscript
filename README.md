@@ -205,7 +205,7 @@ list = array "Hello World"
 ```
 
 But what if we want to split the value to multiple parts separated by spaces?<br>
-For that we have the spread binding which to be used we just need to wrap it as follows: ```%{variable}```.<br>
+For that we have the spread binding which is defined as follows: ```%{variable}```.<br>
 For example:
 
 ```sh
@@ -322,13 +322,13 @@ Below an example of loops using the [for/in command](https://github.com/sagiegur
 ```sh
 values = range 1 10
 
-for i in values
-    for j in values
+for i in ${values}
+    for j in ${values}
         echo i: ${i} j: ${j}
     end_for
 end_for
 
-release values
+release ${values}
 ```
 
 Below an example of [if/else command](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md#sdk__If):

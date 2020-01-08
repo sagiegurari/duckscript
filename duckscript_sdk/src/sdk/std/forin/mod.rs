@@ -288,25 +288,20 @@ impl Command for ForInCommand {
             let iteration = call_info.iteration;
             let forin_meta_info = call_info.meta_info;
 
-            match variables.get(&arguments[2]) {
-                Some(handle) => match get_next_iteration(iteration, handle.to_string(), state) {
-                    Some(next_value) => {
-                        store_call_info(
-                            &CallInfo {
-                                iteration: iteration + 1,
-                                meta_info: forin_meta_info,
-                            },
-                            state,
-                        );
+            let handle = &arguments[2];
+            match get_next_iteration(iteration, handle.to_string(), state) {
+                Some(next_value) => {
+                    store_call_info(
+                        &CallInfo {
+                            iteration: iteration + 1,
+                            meta_info: forin_meta_info,
+                        },
+                        state,
+                    );
 
-                        variables.insert(arguments[0].clone(), next_value);
-                        CommandResult::Continue(None)
-                    }
-                    None => {
-                        let next_line = forin_meta_info.end + 1;
-                        CommandResult::GoTo(None, GoToValue::Line(next_line))
-                    }
-                },
+                    variables.insert(arguments[0].clone(), next_value);
+                    CommandResult::Continue(None)
+                }
                 None => {
                     let next_line = forin_meta_info.end + 1;
                     CommandResult::GoTo(None, GoToValue::Line(next_line))

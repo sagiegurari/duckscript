@@ -153,7 +153,7 @@ eval
 ## std::ForIn
 ```sh
 args = array a b c
-for arg in args
+for arg in ${args}
     # commands
 end_for
 release args
@@ -181,16 +181,16 @@ None
 # Simple example iteration over the list of letters:
 args = array a b c
 
-for arg in args
+for arg in ${args}
     echo current arg is: ${arg}
 end_for
 
 release args
 
 # Example nested loops:
-range = array 1 2 3
-for i in range
-    for j in range
+args = array 1 2 3
+for i in ${args}
+    for j in ${args}
         echo i: ${i} j: ${j}
     end_for
 end_for

@@ -45,7 +45,9 @@ impl Command for CommandImpl {
         } else {
             let state = get_handles_sub_state(state);
 
-            match state.remove(&arguments[0]) {
+            let key = &arguments[0];
+
+            match state.remove(key) {
                 Some(_) => CommandResult::Continue(Some("true".to_string())),
                 None => CommandResult::Continue(Some("false".to_string())),
             }
