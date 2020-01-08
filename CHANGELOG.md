@@ -2,6 +2,7 @@
 
 ### v0.1.5
 
+* Commands should accept empty string ("") inputs #47
 * Support spread binding #46
 * Command result of type error, will not break the script and instead call the on_error command #45
 * New get_last_error, get_last_error_line and get_last_error_source commands #45

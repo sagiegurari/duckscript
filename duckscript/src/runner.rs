@@ -283,7 +283,7 @@ fn bind_command_arguments(
                             arguments.push(value)
                         }
                     }
-                    ExpandedValue::None => (),
+                    ExpandedValue::None => arguments.push("".to_string()),
                 }
             }
         }
