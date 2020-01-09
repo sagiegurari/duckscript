@@ -254,7 +254,7 @@ The SDK enables users to develop their scripts and have a good starting point wi
 #### Commands Instead Of Language Features
 As mentioned before, duckscript is really simple and only has few basic rules.<br>
 In order to provide a more richer development experience, common language features such as functions and conditional blocks have been implemented as commands.<br>
-This is an example of the [function command](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md#sdk__Function):
+This is an example of the [function command](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md#std__Function):
 
 ```sh
 function print_first_and_second_argument
@@ -273,7 +273,7 @@ run_flow
 This example demonstrates how functions as a concept do not need to be part of the language and can be implemented by anyone as a command.<br>
 This also means that other developers can replace the function command with their implementation to provide additional/different functionality.<br>
 
-Below an example of loops using the [for/in command](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md#sdk__ForIn):
+Below an example of loops using the [for/in command](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md#std__ForIn):
 
 ```sh
 values = range 1 10
@@ -287,7 +287,7 @@ end_for
 release ${values}
 ```
 
-Below an example of [if/else command](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md#sdk__If):
+Below an example of [if/else command](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md#std__If):
 
 ```sh
 echo Enter Full Name:
