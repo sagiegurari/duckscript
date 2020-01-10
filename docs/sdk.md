@@ -26,6 +26,7 @@
 * [std::error::GetLastError (get_last_error)](#std__error__GetLastError)
 * [std::error::GetLastErrorLine (get_last_error_line)](#std__error__GetLastErrorLine)
 * [std::error::GetLastErrorSource (get_last_error_source)](#std__error__GetLastErrorSource)
+* [std::error::SetExitOnError (exit_on_error, set_exit_on_error)](#std__error__SetExitOnError)
 * [std::fs::CopyPath (cp)](#std__fs__CopyPath)
 * [std::fs::CreateDirectory (mkdir)](#std__fs__CreateDirectory)
 * [std::fs::CreateEmptyFile (touch)](#std__fs__CreateEmptyFile)
@@ -57,6 +58,7 @@
 * [std::string::TrimStart (trim_start)](#std__string__TrimStart)
 * [std::test::Assert (assert)](#std__test__Assert)
 * [std::test::AssertEquals (assert_eq)](#std__test__AssertEquals)
+* [std::test::AssertError (assert_error)](#std__test__AssertError)
 * [std::test::AssertFail (assert_fail)](#std__test__AssertFail)
 * [std::thread::Sleep (sleep)](#std__thread__Sleep)
 
@@ -1026,6 +1028,41 @@ echo Error Source File: ${source}
 
 #### Aliases:
 get_last_error_source
+
+<a name="std__error__SetExitOnError"></a>
+## std::error::SetExitOnError
+```sh
+var = exit_on_error value
+```
+
+Enables to cause the script execution to stop in case of any error.<br>
+By default all errors simply trigger the on_error command which the default SDK stores and provides access to.<br>
+However, with this command you can change the on_error command to instead stop the script execution.
+
+#### Parameters
+
+If no argument is provided, it will return the current state.<br>
+If an argument is provided, it will modify the state and return it as true/false.
+
+#### Return Value
+
+The current/updated state as true/false value
+
+#### Examples
+
+```sh
+# Get current state
+will_exit = exit_on_error
+echo Current state: ${will_exit}
+
+# Update the current state
+will_exit = exit_on_error true
+echo Current state: ${will_exit}
+```
+
+
+#### Aliases:
+exit_on_error, set_exit_on_error
 
 <a name="std__fs__CopyPath"></a>
 ## std::fs::CopyPath
@@ -2017,6 +2054,35 @@ assert_eq 1 2 "This is my error message"
 
 #### Aliases:
 assert_eq
+
+<a name="std__test__AssertError"></a>
+## std::test::AssertError
+```sh
+assert_error [error message]
+```
+
+This command will cause a runtime error which will not stop the script execution.<br>
+If error message is provided, it will be used as part of the error output.
+
+#### Parameters
+
+Optional error message.
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+assert_error
+
+assert_error "This is my error message"
+```
+
+
+#### Aliases:
+assert_error
 
 <a name="std__test__AssertFail"></a>
 ## std::test::AssertFail

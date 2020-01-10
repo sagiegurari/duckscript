@@ -2,6 +2,7 @@
 
 ### v0.1.6
 
+* New exit_on_error command #49
 * Ability to write standard SDK commands with duckscript #50
 * New array_is_empty command.
 * assert commands should return 'crash' and stop execution #52

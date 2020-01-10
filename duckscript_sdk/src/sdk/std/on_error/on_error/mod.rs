@@ -1,6 +1,6 @@
-use crate::sdk::std::on_error;
-use crate::utils::pckg;
+use crate::sdk::std::on_error::{get_value, EXIT_ON_ERROR_KEY, STATE_KEY};
 use crate::utils::state::get_core_sub_state_for_command;
+use crate::utils::{condition, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -43,25 +43,33 @@ impl Command for CommandImpl {
     ) -> CommandResult {
         if !arguments.is_empty() {
             let error = arguments[0].clone();
-            let (line, source) = if arguments.len() > 1 {
-                let line = arguments[1].clone();
-                let source = if arguments.len() > 2 {
-                    arguments[2].clone()
+
+            let exit_on_error = get_value(state, EXIT_ON_ERROR_KEY.to_string());
+            let should_crash = condition::is_true(exit_on_error);
+
+            if should_crash {
+                CommandResult::Crash(error)
+            } else {
+                let (line, source) = if arguments.len() > 1 {
+                    let line = arguments[1].clone();
+                    let source = if arguments.len() > 2 {
+                        arguments[2].clone()
+                    } else {
+                        "".to_string()
+                    };
+
+                    (line, source)
                 } else {
-                    "".to_string()
+                    ("".to_string(), "".to_string())
                 };
 
-                (line, source)
-            } else {
-                ("".to_string(), "".to_string())
-            };
+                let sub_state = get_core_sub_state_for_command(state, STATE_KEY.to_string());
+                sub_state.insert("error".to_string(), StateValue::String(error));
+                sub_state.insert("line".to_string(), StateValue::String(line));
+                sub_state.insert("source".to_string(), StateValue::String(source));
 
-            let sub_state = get_core_sub_state_for_command(state, on_error::STATE_KEY.to_string());
-            sub_state.insert("error".to_string(), StateValue::String(error));
-            sub_state.insert("line".to_string(), StateValue::String(line));
-            sub_state.insert("source".to_string(), StateValue::String(source));
-
-            CommandResult::Continue(Some("false".to_string()))
+                CommandResult::Continue(Some("false".to_string()))
+            }
         } else {
             CommandResult::Crash("Invalid input provided.".to_string())
         }

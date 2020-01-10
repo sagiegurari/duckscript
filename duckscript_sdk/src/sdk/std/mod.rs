@@ -13,7 +13,7 @@ mod man;
 mod math;
 mod net;
 mod not;
-mod on_error;
+pub(crate) mod on_error;
 mod os_family;
 mod process;
 mod read;

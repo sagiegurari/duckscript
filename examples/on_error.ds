@@ -1,6 +1,7 @@
 
 # This will trigger an error
-assert_fail
+echo Going to cause an error
+assert_error
 
 error = get_last_error
 echo Error Message: ${error}
@@ -10,3 +11,18 @@ echo Error Line: ${line}
 
 source = get_last_error_source
 echo Error Source File: ${source}
+
+# Get current state
+will_exit = exit_on_error
+echo Current state: ${will_exit}
+
+# Update the current state
+will_exit = exit_on_error true
+echo Current state: ${will_exit}
+
+# This will cause the script to exit
+echo Going to cause an error
+assert_error
+
+# We will not get to this line
+echo We should not be here

@@ -4,10 +4,6 @@ use duckscript::types::runtime::StateValue;
 use duckscript::{parser, runner};
 use std::collections::HashMap;
 
-#[cfg(test)]
-#[path = "./command_test.rs"]
-mod command_test;
-
 pub(crate) struct AliasCommand {
     name: String,
     aliases: Vec<String>,
