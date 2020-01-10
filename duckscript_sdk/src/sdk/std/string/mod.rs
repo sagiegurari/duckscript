@@ -1,6 +1,6 @@
 mod contains;
 mod ends_with;
-mod equals;
+pub(crate) mod equals;
 mod indexof;
 mod is_empty;
 mod last_indexof;

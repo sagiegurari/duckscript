@@ -2,6 +2,8 @@
 
 ### v0.1.6
 
+* Ability to write standard SDK commands with duckscript #50
+* New array_is_empty command.
 * assert commands should return 'crash' and stop execution #52
 
 ### v0.1.5 (2020-01-09)

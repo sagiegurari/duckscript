@@ -123,6 +123,8 @@ impl Command for OnErrorCommand {
         _commands: &mut Commands,
         _line: usize,
     ) -> CommandResult {
+        println!("on error: {:#?}", &arguments);
+
         let mut index = 0;
         for argument in arguments {
             index = index + 1;

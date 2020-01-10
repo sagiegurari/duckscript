@@ -19,7 +19,7 @@ mod process;
 mod read;
 mod release;
 mod set;
-mod string;
+pub(crate) mod string;
 mod test;
 mod thread;
 mod unalias;

@@ -37,7 +37,7 @@ impl Command for CommandImpl {
         _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
-        _test_setline: usize,
+        _line: usize,
     ) -> CommandResult {
         if arguments.is_empty() {
             CommandResult::Error("Variable name not provided.".to_string())

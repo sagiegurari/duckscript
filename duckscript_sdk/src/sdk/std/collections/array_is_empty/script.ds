@@ -1,0 +1,2 @@
+__length = array_length ${argument1}
+equals 0 ${__length}

@@ -15,6 +15,7 @@
 * [std::ShowCommandDocumentation (man)](#std__ShowCommandDocumentation)
 * [std::Unalias (unalias)](#std__Unalias)
 * [std::collections::Array (array)](#std__collections__Array)
+* [std::collections::ArrayIsEmpty (array_is_empty)](#std__collections__ArrayIsEmpty)
 * [std::collections::ArrayLength (array_length, arrlen)](#std__collections__ArrayLength)
 * [std::collections::Range (range)](#std__collections__Range)
 * [std::env::GetVar (get_env)](#std__env__GetVar)
@@ -712,6 +713,20 @@ release ${handle}
 
 #### Aliases:
 array
+
+<a name="std__collections__ArrayIsEmpty"></a>
+## std::collections::ArrayIsEmpty
+
+Alias for:
+
+```sh
+__length = array_length ${argument1}
+equals 0 ${__length}
+```
+
+
+#### Aliases:
+array_is_empty
 
 <a name="std__collections__ArrayLength"></a>
 ## std::collections::ArrayLength
@@ -1955,7 +1970,7 @@ assert yes
 value = set "some text"
 assert ${value}
 
-# error conditions
+# error conditions (each one will break the execution)
 assert
 assert false
 assert 0
@@ -1994,7 +2009,7 @@ assert_eq false false
 value = set "some text"
 assert_eq ${value} "some text"
 
-# error conditions
+# error conditions (each one will break the execution)
 assert_eq 1 2
 assert_eq 1 2 "This is my error message"
 ```

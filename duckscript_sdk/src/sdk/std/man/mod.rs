@@ -47,7 +47,7 @@ impl Command for CommandImpl {
         _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
         commands: &mut Commands,
-        _test_setline: usize,
+        _line: usize,
     ) -> CommandResult {
         if arguments.is_empty() {
             print_help(self.help(), &self.name())

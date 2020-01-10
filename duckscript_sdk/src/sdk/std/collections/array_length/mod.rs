@@ -52,7 +52,9 @@ impl Command for CommandImpl {
                     StateValue::List(list) => CommandResult::Continue(Some(list.len().to_string())),
                     _ => CommandResult::Error("Invalid handle provided.".to_string()),
                 },
-                None => CommandResult::Error("Array not found.".to_string()),
+                None => CommandResult::Error(
+                    format!("Array for handle: {} not found.", key).to_string(),
+                ),
             }
         }
     }

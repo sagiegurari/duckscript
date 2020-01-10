@@ -43,7 +43,7 @@ fn create_alias_command(
             _output_variable: Option<String>,
             _instructions: &Vec<Instruction>,
             commands: &mut Commands,
-            _test_setline: usize,
+            _line: usize,
         ) -> CommandResult {
             let mut all_arguments = vec![];
             all_arguments.append(&mut self.arguments.clone());
@@ -96,7 +96,7 @@ impl Command for CommandImpl {
         _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
         commands: &mut Commands,
-        _test_setline: usize,
+        _line: usize,
     ) -> CommandResult {
         if arguments.len() < 2 {
             CommandResult::Error("Invalid alias provided.".to_string())
