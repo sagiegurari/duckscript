@@ -16,11 +16,7 @@ struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "sdkdocs")
-    }
-
-    fn aliases(&self) -> Vec<String> {
-        vec![]
+        pckg::concat(&self.package, "SDKDocsGen")
     }
 
     fn help(&self) -> String {

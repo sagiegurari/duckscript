@@ -16,7 +16,7 @@ additional_profiles = [
 [tasks.generate-sdk-docs]
 workspace = false
 command = "cargo"
-args = [ "run", "--bin", "duckscript", "--", "./sdkdocs.ds" ]
+args = [ "run", "--bin", "duckscript", "--", "--eval", "internal::SDKDocsGen std ./docs/sdk.md" ]
 
 [tasks.generate-readme]
 script = [
@@ -31,7 +31,7 @@ sed -i 's,https://github.com/sagiegurari/duckscript/blob/master/.github,.github,
 [tasks.test-scripts]
 workspace = false
 command = "cargo"
-args = [ "run", "--bin", "duckscript", "--", "./test.ds" ]
+args = [ "run", "--bin", "duckscript", "--", "--eval", "internal::test::TestDirectory ./test" ]
 
 [tasks.workspace-docs]
 dependencies = [

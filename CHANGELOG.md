@@ -2,6 +2,7 @@
 
 ### v0.1.6
 
+* duckscript cli now accepts inline script #40
 * Unit test framework for internal SDK commands and full test suite #51
 * New exit_on_error command #49
 * Ability to write standard SDK commands with duckscript #50

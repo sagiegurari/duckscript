@@ -152,7 +152,17 @@ fn run_cli() -> Result<(), CliError> {
 
         Ok(())
     } else {
-        match run_script(&args[1]) {
+        let (value, is_file) = if args.len() == 2 {
+            (args[1].clone(), true)
+        } else {
+            if args[1] == "-e" || args[1] == "--eval" {
+                (args[2].clone(), false)
+            } else {
+                (args[1].clone(), true)
+            }
+        };
+
+        match run_script(&value, is_file) {
             Err(error) => Err(CliError {
                 info: ErrorInfo::Script(error),
             }),
@@ -161,11 +171,15 @@ fn run_cli() -> Result<(), CliError> {
     }
 }
 
-fn run_script(file: &str) -> Result<(), ScriptError> {
+fn run_script(value: &str, is_file: bool) -> Result<(), ScriptError> {
     let mut context = Context::new();
     duckscriptsdk::load(&mut context.commands)?;
 
-    runner::run_script_file(file, context)?;
+    if is_file {
+        runner::run_script_file(value, context)?;
+    } else {
+        runner::run_script(value, context)?;
+    }
 
     Ok(())
 }

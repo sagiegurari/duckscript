@@ -30,10 +30,6 @@ impl Command for CommandImpl {
         pckg::concat(&self.package, "TestDirectory")
     }
 
-    fn aliases(&self) -> Vec<String> {
-        vec!["test_directory".to_string()]
-    }
-
     fn help(&self) -> String {
         "".to_string()
     }
@@ -65,7 +61,7 @@ impl Command for CommandImpl {
 
                     let test_script = format!(
                         r#"
-result = test_file {}
+result = internal::test::TestFile {}
 assert result
 "#,
                         &file

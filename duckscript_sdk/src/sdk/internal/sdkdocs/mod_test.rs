@@ -9,14 +9,18 @@ fn common_functions() {
 
 #[test]
 fn run_no_file_provided() {
-    test::run_script_and_error(vec![create("internal")], "out = internal::sdkdocs", "out");
+    test::run_script_and_error(
+        vec![create("internal")],
+        "out = internal::SDKDocsGen",
+        "out",
+    );
 }
 
 #[test]
 fn run_valid() {
     test::run_script_and_validate(
         vec![create("internal")],
-        "out = internal::sdkdocs ./target/temp.md",
+        "out = internal::SDKDocsGen ./target/temp.md",
         CommandValidation::Match("out".to_string(), "./target/temp.md".to_string()),
     );
 }
