@@ -1,2 +1,2 @@
-doc_file = internal::sdkdocs ./docs/sdk.md
+doc_file = internal::sdkdocs std ./docs/sdk.md
 echo "Created documentation at: ${doc_file}"
