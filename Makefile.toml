@@ -31,7 +31,14 @@ sed -i 's,https://github.com/sagiegurari/duckscript/blob/master/.github,.github,
 [tasks.test-scripts]
 workspace = false
 command = "cargo"
-args = [ "run", "--bin", "duckscript", "--", "--eval", "internal::test::TestDirectory ./test" ]
+args = [
+    "run",
+    "--bin",
+    "duckscript",
+    "--",
+    "--eval",
+    "internal::test::TestDirectory ./test"
+]
 
 [tasks.workspace-docs]
 dependencies = [
