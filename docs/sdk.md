@@ -60,6 +60,7 @@
 * [std::test::AssertEquals (assert_eq)](#std__test__AssertEquals)
 * [std::test::AssertError (assert_error)](#std__test__AssertError)
 * [std::test::AssertFail (assert_fail)](#std__test__AssertFail)
+* [std::test::AssertFalse (assert_false)](#std__test__AssertFalse)
 * [std::thread::Sleep (sleep)](#std__thread__Sleep)
 
 
@@ -2112,6 +2113,54 @@ assert_fail "This is my error message"
 
 #### Aliases:
 assert_fail
+
+<a name="std__test__AssertFalse"></a>
+## std::test::AssertFalse
+```sh
+assert_false value [error message]
+```
+
+Used to validate the input is falsy.<br>
+If the value is one of the following:
+
+* No output
+* false (case insensitive)
+* 0
+* no (case insensitive)
+* Empty value
+
+It is considered falsy.
+
+#### Parameters
+
+* The value to evaluate
+* Optional error message
+
+#### Return Value
+
+**true** if falsy.
+
+#### Examples
+
+```sh
+# valid conditions
+assert_false
+assert_false false
+assert_false 0
+assert_false false "This is my error message"
+
+# error conditions (each one will break the execution)
+assert_false ok
+assert_false true
+assert_false yes
+
+value = set "some text"
+assert_false ${value}
+```
+
+
+#### Aliases:
+assert_false
 
 <a name="std__thread__Sleep"></a>
 ## std::thread::Sleep

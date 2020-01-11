@@ -49,7 +49,7 @@ fn create_alias_command(
             all_arguments.append(&mut self.arguments.clone());
             all_arguments.append(&mut arguments.clone());
 
-            eval::eval(&all_arguments, state, variables, commands)
+            eval::eval_with_error(&all_arguments, state, variables, commands)
         }
     }
 

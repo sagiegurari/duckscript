@@ -1,0 +1,26 @@
+
+function test_array_with_data
+    arr = array 1 2 3
+    
+    len = array_length ${arr}
+    assert_eq ${len} 3
+    
+    isempty = not array_is_empty ${arr}
+    assert ${isempty}
+
+    released = release ${arr}
+    assert ${released}
+end_function
+
+function test_array_no_data
+    arr = array
+    
+    len = array_length ${arr}
+    assert_eq ${len} 0
+    
+    isempty = array_is_empty ${arr}
+    assert ${isempty}
+
+    released = release ${arr}
+    assert ${released}
+end_function

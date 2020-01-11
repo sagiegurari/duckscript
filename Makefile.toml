@@ -28,6 +28,11 @@ sed -i 's,https://github.com/sagiegurari/duckscript/blob/master/.github,.github,
 '''
 ]
 
+[tasks.test-scripts]
+workspace = false
+command = "cargo"
+args = [ "run", "--bin", "duckscript", "--", "./test.ds" ]
+
 [tasks.workspace-docs]
 dependencies = [
     "generate-sdk-docs",

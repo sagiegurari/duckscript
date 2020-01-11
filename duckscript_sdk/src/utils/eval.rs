@@ -13,9 +13,9 @@ pub(crate) fn eval(
     state: &mut HashMap<String, StateValue>,
     variables: &mut HashMap<String, String>,
     commands: &mut Commands,
-) -> CommandResult {
+) -> Result<CommandResult, String> {
     if arguments.is_empty() {
-        CommandResult::Continue(None)
+        Ok(CommandResult::Continue(None))
     } else {
         let mut line_buffer = String::new();
         for argument in arguments {
@@ -42,9 +42,21 @@ pub(crate) fn eval(
                     0,
                 );
 
-                command_result
+                Ok(command_result)
             }
-            Err(error) => CommandResult::Error(error.to_string()),
+            Err(error) => Err(error.to_string()),
         }
+    }
+}
+
+pub(crate) fn eval_with_error(
+    arguments: &Vec<String>,
+    state: &mut HashMap<String, StateValue>,
+    variables: &mut HashMap<String, String>,
+    commands: &mut Commands,
+) -> CommandResult {
+    match eval(arguments, state, variables, commands) {
+        Ok(command_result) => command_result,
+        Err(error) => CommandResult::Error(error.to_string()),
     }
 }

@@ -2,10 +2,10 @@ use super::*;
 use crate::test::SetCommand;
 
 #[test]
-fn eval_empty_arguments() {
+fn eval_with_error_empty_arguments() {
     let mut commands = Commands::new();
 
-    let result = eval(
+    let result = eval_with_error(
         &vec![],
         &mut HashMap::new(),
         &mut HashMap::new(),
@@ -19,10 +19,10 @@ fn eval_empty_arguments() {
 }
 
 #[test]
-fn eval_label_only() {
+fn eval_with_error_label_only() {
     let mut commands = Commands::new();
 
-    let result = eval(
+    let result = eval_with_error(
         &vec![":label".to_string()],
         &mut HashMap::new(),
         &mut HashMap::new(),
@@ -36,14 +36,14 @@ fn eval_label_only() {
 }
 
 #[test]
-fn eval_command_no_output() {
+fn eval_with_error_command_no_output() {
     let mut commands = Commands::new();
     match commands.set(Box::new(SetCommand {})) {
         Err(error) => panic!("{}", error),
         _ => (),
     };
 
-    let result = eval(
+    let result = eval_with_error(
         &vec!["test_set".to_string()],
         &mut HashMap::new(),
         &mut HashMap::new(),
@@ -57,14 +57,14 @@ fn eval_command_no_output() {
 }
 
 #[test]
-fn eval_command_with_output() {
+fn eval_with_error_command_with_output() {
     let mut commands = Commands::new();
     match commands.set(Box::new(SetCommand {})) {
         Err(error) => panic!("{}", error),
         _ => (),
     };
 
-    let result = eval(
+    let result = eval_with_error(
         &vec!["test_set".to_string(), "test".to_string()],
         &mut HashMap::new(),
         &mut HashMap::new(),
@@ -78,14 +78,14 @@ fn eval_command_with_output() {
 }
 
 #[test]
-fn eval_command_with_output_with_spaces() {
+fn eval_with_error_command_with_output_with_spaces() {
     let mut commands = Commands::new();
     match commands.set(Box::new(SetCommand {})) {
         Err(error) => panic!("{}", error),
         _ => (),
     };
 
-    let result = eval(
+    let result = eval_with_error(
         &vec!["test_set".to_string(), "test 1 2 3".to_string()],
         &mut HashMap::new(),
         &mut HashMap::new(),
@@ -99,14 +99,14 @@ fn eval_command_with_output_with_spaces() {
 }
 
 #[test]
-fn eval_command_with_output_with_spaces_and_all_line_types() {
+fn eval_with_error_command_with_output_with_spaces_and_all_line_types() {
     let mut commands = Commands::new();
     match commands.set(Box::new(SetCommand {})) {
         Err(error) => panic!("{}", error),
         _ => (),
     };
 
-    let result = eval(
+    let result = eval_with_error(
         &vec![
             ":label".to_string(),
             "out".to_string(),
@@ -128,10 +128,10 @@ fn eval_command_with_output_with_spaces_and_all_line_types() {
 }
 
 #[test]
-fn eval_parse_error() {
+fn eval_with_error_parse_error() {
     let mut commands = Commands::new();
 
-    let result = eval(
+    let result = eval_with_error(
         &vec![":label".to_string(), ":label".to_string()],
         &mut HashMap::new(),
         &mut HashMap::new(),

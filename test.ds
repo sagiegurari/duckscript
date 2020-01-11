@@ -1,0 +1,5 @@
+
+echo Current Directory:
+pwd
+
+test_directory ./test

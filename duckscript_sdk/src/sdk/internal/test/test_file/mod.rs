@@ -14,7 +14,7 @@ fn create_test_script(file: &str, test_name: &str) -> String {
     format!(
         r#"
 !include_files {}
-test_function {}
+{}
 "#,
         file, test_name
     )
@@ -75,7 +75,9 @@ impl Command for CommandImpl {
                                             if !current_arguments.is_empty()
                                                 && command_names.contains(&current_command)
                                             {
-                                                test_names.push(current_arguments[0].clone());
+                                                if current_arguments[0].starts_with("test_") {
+                                                    test_names.push(current_arguments[0].clone());
+                                                }
                                             }
                                         }
                                         _ => (),
@@ -92,6 +94,8 @@ impl Command for CommandImpl {
                             match load(&mut context.commands) {
                                 Ok(_) => match runner::run_script(&script, context) {
                                     Err(error) => {
+                                        println!("test: [{}][{}] ... failed", &file, &test_name);
+
                                         return CommandResult::Crash(
                                             format!(
                                                 "Error while running test: {}\n{}",
@@ -101,7 +105,7 @@ impl Command for CommandImpl {
                                             .to_string(),
                                         );
                                     }
-                                    _ => (),
+                                    _ => println!("test: [{}][{}] ... ok", &file, &test_name),
                                 },
                                 Err(error) => {
                                     return CommandResult::Crash(

@@ -39,7 +39,7 @@ impl Command for CommandImpl {
         commands: &mut Commands,
         _line: usize,
     ) -> CommandResult {
-        eval::eval(&arguments, state, variables, commands)
+        eval::eval_with_error(&arguments, state, variables, commands)
     }
 }
 

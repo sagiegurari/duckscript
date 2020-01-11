@@ -1,0 +1,26 @@
+
+function test_range_with_data
+    arr = range 0 10
+
+    len = array_length ${arr}
+    assert_eq ${len} 10
+
+    isempty = array_is_empty ${arr}
+    assert_false ${isempty}
+
+    released = release ${arr}
+    assert ${released}
+end_function
+
+function test_range_no_data
+    arr = range 0 0
+    
+    len = array_length ${arr}
+    assert_eq ${len} 0
+    
+    isempty = array_is_empty ${arr}
+    assert ${isempty}
+
+    released = release ${arr}
+    assert ${released}
+end_function

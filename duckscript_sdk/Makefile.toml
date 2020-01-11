@@ -18,7 +18,7 @@ clear = true
 dependencies = [
     "clean-target"
 ]
-run_task = { name = ["test-thread-safe", "test-single-threaded"] }
+run_task = { name = ["test-thread-safe", "test-single-threaded", "test-scripts"] }
 
 [tasks.test-thread-safe]
 private = true
@@ -31,6 +31,14 @@ private = true
 env = { RUST_TEST_THREADS = "1" }
 command = "cargo"
 args = ["test", "--", "--ignored"]
+
+[tasks.test-scripts]
+cwd = ".."
+command = "cargo"
+args = [
+    "make",
+    "test-scripts"
+]
 
 [tasks.pre-coverage]
 alias = "clean-target"

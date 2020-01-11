@@ -44,7 +44,7 @@ fn run_text_only_end() {
     test::run_script_and_validate(
         vec![create("")],
         "out = substring text -1",
-        CommandValidation::Match("out".to_string(), "tex".to_string()),
+        CommandValidation::Match("out".to_string(), "t".to_string()),
     );
 }
 

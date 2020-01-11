@@ -1,0 +1,8 @@
+
+function test_goto_with_valid_label
+    goto :test_goto_with_valid_label
+    
+    assert_fail
+    
+    :test_goto_with_valid_label
+end_function

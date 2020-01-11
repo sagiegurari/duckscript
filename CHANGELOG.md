@@ -2,6 +2,7 @@
 
 ### v0.1.6
 
+* Unit test framework for internal SDK commands and full test suite #51
 * New exit_on_error command #49
 * Ability to write standard SDK commands with duckscript #50
 * New array_is_empty command.
