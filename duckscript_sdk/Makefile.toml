@@ -13,6 +13,9 @@ script = [
     "rm -Rf ./target"
 ]
 
+[tasks.test-verbose]
+alias = "test"
+
 [tasks.test]
 clear = true
 dependencies = [
