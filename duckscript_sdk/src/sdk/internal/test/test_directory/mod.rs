@@ -57,7 +57,7 @@ impl Command for CommandImpl {
             for entry in walker {
                 let entry = entry.unwrap();
                 if is_test_file(&entry) {
-                    let file = entry.path().display();
+                    let file = entry.path().display().to_string().replace("\\", "/");
 
                     let test_script = format!(
                         r#"
