@@ -1,6 +1,6 @@
-use crate::utils::instruction_query;
-use crate::utils::pckg;
+use crate::sdk::std::flowcontrol::{end, function, ifelse};
 use crate::utils::state::{get_core_sub_state_for_command, get_handle, get_list, get_sub_state};
+use crate::utils::{instruction_query, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
@@ -116,6 +116,22 @@ fn create_forin_meta_info_for_line(
     };
     let mut end_names = end_forin_command.aliases();
     end_names.push(end_forin_command.name());
+    end_names.push(end::END_COMMAND_NAME.to_string());
+
+    let if_command = ifelse::IfCommand::new(&package);
+    let mut start_blocks = if_command.aliases();
+    start_blocks.push(if_command.name());
+    let function_command = function::FunctionCommand::new(&package);
+    start_blocks.append(&mut function_command.aliases());
+    start_blocks.push(function_command.name());
+
+    let end_if_command = ifelse::EndIfCommand::new(&package);
+    let mut end_blocks = end_if_command.aliases();
+    end_blocks.push(end_if_command.name());
+    let end_function_command = function::EndFunctionCommand::new(&package);
+    end_blocks.append(&mut end_function_command.aliases());
+    end_blocks.push(end_function_command.name());
+    end_blocks.push(end::END_COMMAND_NAME.to_string());
 
     let positions_options = instruction_query::find_commands(
         instructions,
@@ -125,6 +141,8 @@ fn create_forin_meta_info_for_line(
         Some(line + 1),
         None,
         true,
+        &start_blocks,
+        &end_blocks,
     )?;
 
     match positions_options {
@@ -148,16 +166,28 @@ fn get_or_create_forin_meta_info_for_line(
     let key = line.to_string();
     let mut forin_state_for_line = get_sub_state(key.clone(), forin_meta_info_state);
 
-    match deserialize_forin_meta_info(&mut forin_state_for_line) {
+    let result = match deserialize_forin_meta_info(&mut forin_state_for_line) {
         Some(if_else_info) => Ok(if_else_info),
-        None => match create_forin_meta_info_for_line(line, instructions, package) {
+        None => match create_forin_meta_info_for_line(line, instructions, package.clone()) {
             Ok(if_else_info) => {
                 serialize_forin_meta_info(&if_else_info, forin_state_for_line);
                 Ok(if_else_info)
             }
             Err(error) => Err(error),
         },
-    }
+    };
+
+    match result {
+        Ok(ref info) => {
+            let end_forin_command = EndForInCommand {
+                package: package.clone(),
+            };
+            end::set_command(info.end, state, end_forin_command.name());
+        }
+        _ => (),
+    };
+
+    result
 }
 
 fn pop_call_info_for_line(
@@ -231,8 +261,17 @@ fn get_next_iteration(
     }
 }
 
-struct ForInCommand {
+pub(crate) struct ForInCommand {
     package: String,
+}
+
+impl ForInCommand {
+    /// Creates and returns a new instance.
+    pub(crate) fn new(package: &str) -> ForInCommand {
+        ForInCommand {
+            package: package.to_string(),
+        }
+    }
 }
 
 impl Command for ForInCommand {
@@ -311,8 +350,17 @@ impl Command for ForInCommand {
     }
 }
 
-struct EndForInCommand {
+pub(crate) struct EndForInCommand {
     package: String,
+}
+
+impl EndForInCommand {
+    /// Creates and returns a new instance.
+    pub(crate) fn new(package: &str) -> EndForInCommand {
+        EndForInCommand {
+            package: package.to_string(),
+        }
+    }
 }
 
 impl Command for EndForInCommand {

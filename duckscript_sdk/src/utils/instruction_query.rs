@@ -25,44 +25,6 @@ fn get_end(end: Option<usize>, instructions: &Vec<Instruction>) -> usize {
     }
 }
 
-pub(crate) fn find_command(
-    instructions: &Vec<Instruction>,
-    name_or_alias: &Vec<String>,
-    start: Option<usize>,
-    end: Option<usize>,
-    error_on_command: &Vec<String>,
-) -> Result<Option<usize>, String> {
-    if name_or_alias.is_empty() {
-        Err("No command names/aliases provided for search.".to_string())
-    } else {
-        let start_index = get_start(start);
-        let end_index = get_end(end, instructions);
-
-        for line in start_index..end_index {
-            let instruction = &instructions[line];
-
-            match instruction.instruction_type {
-                InstructionType::Script(ref script_instruction) => match script_instruction.command
-                {
-                    Some(ref command) => {
-                        if name_or_alias.contains(command) {
-                            return Ok(Some(line));
-                        } else if error_on_command.contains(command) {
-                            return Err(command.to_string());
-                        }
-
-                        ()
-                    }
-                    None => (),
-                },
-                _ => (),
-            }
-        }
-
-        Ok(None)
-    }
-}
-
 pub(crate) fn find_commands(
     instructions: &Vec<Instruction>,
     start_names: &Vec<String>,
@@ -71,6 +33,8 @@ pub(crate) fn find_commands(
     start: Option<usize>,
     end: Option<usize>,
     allow_recursive: bool,
+    start_blocks: &Vec<String>,
+    end_blocks: &Vec<String>,
 ) -> Result<Option<Positions>, String> {
     if start_names.is_empty() || end_names.is_empty() {
         Err("No command names/aliases provided for search.".to_string())
@@ -83,6 +47,7 @@ pub(crate) fn find_commands(
             end: 0,
         };
         let mut skip_to = start_index;
+        let mut block_delta = 0;
         for line in start_index..end_index {
             if line >= skip_to {
                 let instruction = &instructions[line];
@@ -91,8 +56,12 @@ pub(crate) fn find_commands(
                     InstructionType::Script(ref script_instruction) => {
                         match script_instruction.command {
                             Some(ref command) => {
-                                if middle_names.contains(command) {
+                                if start_blocks.contains(command) {
+                                    block_delta = block_delta + 1;
+                                } else if middle_names.contains(command) {
                                     positions.middle.push(line);
+                                } else if end_blocks.contains(command) && block_delta > 0 {
+                                    block_delta = block_delta - 1;
                                 } else if end_names.contains(command) {
                                     positions.end = line;
                                     return Ok(Some(positions));
@@ -106,6 +75,8 @@ pub(crate) fn find_commands(
                                             Some(line + 1),
                                             Some(end_index),
                                             allow_recursive,
+                                            start_blocks,
+                                            end_blocks,
                                         ) {
                                             Ok(positions_options) => match positions_options {
                                                 Some(sub_positions) => {

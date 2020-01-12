@@ -3,11 +3,9 @@ pub(crate) mod collections;
 mod echo;
 mod env;
 mod eval;
-mod forin;
+mod flowcontrol;
 mod fs;
-mod function;
 mod goto;
-mod ifelse;
 mod is_defined;
 mod man;
 mod math;
@@ -45,10 +43,8 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
 
     collections::load(commands, PACKAGE)?;
     env::load(commands, PACKAGE)?;
-    forin::load(commands, PACKAGE)?;
+    flowcontrol::load(commands, PACKAGE)?;
     fs::load(commands, PACKAGE)?;
-    function::load(commands, PACKAGE)?;
-    ifelse::load(commands, PACKAGE)?;
     math::load(commands, PACKAGE)?;
     net::load(commands, PACKAGE)?;
     on_error::load(commands, PACKAGE)?;

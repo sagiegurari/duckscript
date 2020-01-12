@@ -8,4 +8,4 @@ function test_set_get_unset
     assert ${value}
     value = get_env TEST_SET_GET_UNSET
     assert_eq ${value} "test value"
-end_function
+end

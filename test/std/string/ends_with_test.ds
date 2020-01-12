@@ -3,34 +3,34 @@ function test_prefix
     output = ends_with "1 2 3 4 5" "1 2"
 
     assert_false ${output}
-end_function
+end
 
 function test_suffix
     output = ends_with "1 2 3 4 5" "4 5"
 
     assert ${output}
-end_function
+end
 
 function test_middle
     output = ends_with "1 2 3 4 5" "2 3"
 
     assert_false ${output}
-end_function
+end
 
 function test_all
     output = ends_with "1 2 3 4 5" "1 2 3 4 5"
 
     assert ${output}
-end_function
+end
 
 function test_empty
     output = ends_with "1 2 3 4 5" ""
 
     assert ${output}
-end_function
+end
 
 function test_not_contained
     output = ends_with "1 2 3 4 5" "4 5 6"
 
     assert_false ${output}
-end_function
+end

@@ -2,6 +2,7 @@
 
 ### v0.1.6
 
+* function, forin and ifelse blocks to support generic end command #53
 * duckscript cli now accepts inline script #40
 * Unit test framework for internal SDK commands and full test suite #51
 * New exit_on_error command #49

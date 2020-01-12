@@ -3,16 +3,16 @@ function test_not_found
     output = last_indexof "1 2 3 4 5" "4 5 6"
 
     assert_eq ${output} ""
-end_function
+end
 
 function test_prefix
     output = last_indexof "1 2 3 4 5 1 2 3 4 5" "1 2"
 
     assert_eq ${output} 10
-end_function
+end
 
 function test_suffix
     output = last_indexof "1 2 3 4 5 1 2 3 4 5" "4 5"
 
     assert_eq ${output} 16
-end_function
+end

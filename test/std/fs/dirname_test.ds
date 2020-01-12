@@ -7,15 +7,15 @@ function test_relative_path
         value = dirname .\\test.txt
     else
         value = dirname ./test.txt
-    end_if
+    end
 
     assert_eq ${value} .
-end_function
+end
 
 function test_full_path
     if not ${windows}
         value = dirname /dir/test.txt
         
         assert_eq ${value} /dir
-    end_if
-end_function
+    end
+end

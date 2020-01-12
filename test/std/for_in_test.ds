@@ -5,11 +5,11 @@ function test_array
 
     for arg in ${args}
         counter = calc ${counter} + 1
-    end_for
+    end
 
     assert_eq ${counter} 3
     released = release ${args}
-end_function
+end
 
 function test_nested
     counter = set 0
@@ -18,12 +18,12 @@ function test_nested
     for i in ${values}
         for j in ${values}
             counter = calc ${counter} + 1
-        end_for
-    end_for
+        end
+    end
 
     assert_eq ${counter} 9
     released = release ${args}
-end_function
+end
 
 function test_range
     counter = set 0
@@ -32,9 +32,9 @@ function test_range
     for i in ${args}
         for j in ${args}
             counter = calc ${counter} + 1
-        end_for
-    end_for
+        end
+    end
 
     assert_eq ${counter} 100
     released = release ${args}
-end_function
+end

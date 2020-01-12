@@ -3,10 +3,10 @@ function test_not_true
     value = not true
 
     assert_false ${value}
-end_function
+end
 
 function test_not_false
     value = not false
 
     assert ${value}
-end_function
+end

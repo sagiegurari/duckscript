@@ -4,36 +4,36 @@ function test_if_hardcoded_true
 
     if true
         valid = set true
-    end_if
+    end
 
     assert ${valid}
-end_function
+end
 
 function test_if_hardcoded_false
     if false
         assert_fail
-    end_if
-end_function
+    end
+end
 
 function test_if_hardcoded_not_false
     valid = set false
 
     if not false
         valid = set true
-    end_if
+    end
 
     assert ${valid}
-end_function
+end
 
 function test_if_command_returns_true
     valid = set false
 
     if set true
         valid = set true
-    end_if
+    end
 
     assert ${valid}
-end_function
+end
 
 function test_simple_else
     valid = set false
@@ -42,10 +42,10 @@ function test_simple_else
         assert_fail
     else
         valid = set true
-    end_if
+    end
 
     assert ${valid}
-end_function
+end
 
 function test_simple_elseif
     valid = set false
@@ -56,10 +56,10 @@ function test_simple_elseif
         valid = set true
     else
         assert_fail
-    end_if
+    end
 
     assert ${valid}
-end_function
+end
 
 function test_nested_if
     valid = set false
@@ -69,13 +69,13 @@ function test_nested_if
     elseif set true
         if set true
             valid = set true
-        end_if
+        end
     else
         assert_fail
-    end_if
+    end
 
     assert ${valid}
-end_function
+end
 
 function test_nested_if2
     valid = set false
@@ -93,11 +93,11 @@ function test_nested_if2
                 valid = set true
             else
                 assert_fail
-            end_if
-        end_if
+            end
+        end
     else
         assert_fail
-    end_if
+    end
 
     assert ${valid}
-end_function
+end

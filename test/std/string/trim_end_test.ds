@@ -3,28 +3,28 @@ function test_empty
     output = trim_end ""
 
     assert_eq ${output} ""
-end_function
+end
 
 function test_trimmed
     output = trim_end "test test"
 
     assert_eq ${output} "test test"
-end_function
+end
 
 function test_start_untrimmed
     output = trim_end "    test test"
 
     assert_eq ${output} "    test test"
-end_function
+end
 
 function test_end_untrimmed
     output = trim_end "test test    "
 
     assert_eq ${output} "test test"
-end_function
+end
 
 function test_both_untrimmed
     output = trim_end "    test test    "
 
     assert_eq ${output} "    test test"
-end_function
+end
