@@ -35,7 +35,12 @@
 <span id="35">35</span>
 <span id="36">36</span>
 <span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">exit_on_error</span>;
 <span class="kw">mod</span> <span class="ident">get_last_error</span>;
 <span class="kw">mod</span> <span class="ident">get_last_error_line</span>;
 <span class="kw">mod</span> <span class="ident">get_last_error_source</span>;
@@ -50,6 +55,7 @@
 
 <span class="kw">static</span> <span class="ident">PACKAGE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;error&quot;</span>;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">static</span> <span class="ident">STATE_KEY</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;on_error&quot;</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">static</span> <span class="ident">EXIT_ON_ERROR_KEY</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;exit_on_error&quot;</span>;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">get_value</span>(<span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">StateValue</span><span class="op">&gt;</span>, <span class="ident">key</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">sub_state</span> <span class="op">=</span> <span class="ident">get_core_sub_state_for_command</span>(<span class="ident">state</span>, <span class="ident">STATE_KEY</span>.<span class="ident">to_string</span>());
@@ -57,6 +63,7 @@
     <span class="kw">match</span> <span class="ident">sub_state</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>) {
         <span class="prelude-val">Some</span>(<span class="ident">state_value</span>) <span class="op">=&gt;</span> <span class="kw">match</span> <span class="ident">state_value</span> {
             <span class="ident">StateValue</span>::<span class="ident">String</span>(<span class="ident">value</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>.<span class="ident">clone</span>()),
+            <span class="ident">StateValue</span>::<span class="ident">Boolean</span>(<span class="ident">value</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>.<span class="ident">to_string</span>()),
             <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
         },
         <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
@@ -66,6 +73,7 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">load</span>(<span class="ident">commands</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Commands</span>, <span class="ident">parent</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ScriptError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">package</span> <span class="op">=</span> <span class="ident">pckg</span>::<span class="ident">concat</span>(<span class="ident">parent</span>, <span class="ident">PACKAGE</span>);
 
+    <span class="ident">commands</span>.<span class="ident">set</span>(<span class="ident">exit_on_error</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">package</span>))<span class="question-mark">?</span>;
     <span class="ident">commands</span>.<span class="ident">set</span>(<span class="ident">get_last_error</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">package</span>))<span class="question-mark">?</span>;
     <span class="ident">commands</span>.<span class="ident">set</span>(<span class="ident">get_last_error_line</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">package</span>))<span class="question-mark">?</span>;
     <span class="ident">commands</span>.<span class="ident">set</span>(<span class="ident">get_last_error_source</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">package</span>))<span class="question-mark">?</span>;

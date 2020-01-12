@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.1.6
+### v0.1.6 (2020-01-12)
 
 * \[Breaking Change\] Changed CLI executable from duckscript to duck
 * function, forin and ifelse blocks to support generic end command #53

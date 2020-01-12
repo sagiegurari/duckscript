@@ -55,33 +55,27 @@
 <span id="55">55</span>
 <span id="56">56</span>
 <span id="57">57</span>
-<span id="58">58</span>
-<span id="59">59</span>
-<span id="60">60</span>
-<span id="61">61</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">alias</span>;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">collections</span>;
 <span class="kw">mod</span> <span class="ident">echo</span>;
 <span class="kw">mod</span> <span class="ident">env</span>;
 <span class="kw">mod</span> <span class="ident">eval</span>;
-<span class="kw">mod</span> <span class="ident">forin</span>;
+<span class="kw">mod</span> <span class="ident">flowcontrol</span>;
 <span class="kw">mod</span> <span class="ident">fs</span>;
-<span class="kw">mod</span> <span class="ident">function</span>;
 <span class="kw">mod</span> <span class="ident">goto</span>;
-<span class="kw">mod</span> <span class="ident">ifelse</span>;
 <span class="kw">mod</span> <span class="ident">is_defined</span>;
 <span class="kw">mod</span> <span class="ident">man</span>;
 <span class="kw">mod</span> <span class="ident">math</span>;
 <span class="kw">mod</span> <span class="ident">net</span>;
 <span class="kw">mod</span> <span class="ident">not</span>;
-<span class="kw">mod</span> <span class="ident">on_error</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">on_error</span>;
 <span class="kw">mod</span> <span class="ident">os_family</span>;
 <span class="kw">mod</span> <span class="ident">process</span>;
 <span class="kw">mod</span> <span class="ident">read</span>;
 <span class="kw">mod</span> <span class="ident">release</span>;
 <span class="kw">mod</span> <span class="ident">set</span>;
-<span class="kw">mod</span> <span class="ident">string</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">string</span>;
 <span class="kw">mod</span> <span class="ident">test</span>;
 <span class="kw">mod</span> <span class="ident">thread</span>;
 <span class="kw">mod</span> <span class="ident">unalias</span>;
@@ -107,10 +101,8 @@
 
     <span class="ident">collections</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">env</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
-    <span class="ident">forin</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
+    <span class="ident">flowcontrol</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">fs</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
-    <span class="ident">function</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
-    <span class="ident">ifelse</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">math</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">net</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">on_error</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;

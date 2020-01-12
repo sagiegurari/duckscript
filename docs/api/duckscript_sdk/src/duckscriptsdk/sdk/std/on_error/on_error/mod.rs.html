@@ -73,10 +73,18 @@
 <span id="73">73</span>
 <span id="74">74</span>
 <span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sdk</span>::<span class="ident">std</span>::<span class="ident">on_error</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="ident">pckg</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sdk</span>::<span class="ident">std</span>::<span class="ident">on_error</span>::{<span class="ident">get_value</span>, <span class="ident">EXIT_ON_ERROR_KEY</span>, <span class="ident">STATE_KEY</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="ident">state</span>::<span class="ident">get_core_sub_state_for_command</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::{<span class="ident">condition</span>, <span class="ident">pckg</span>};
 <span class="kw">use</span> <span class="ident">duckscript</span>::<span class="ident">types</span>::<span class="ident">command</span>::{<span class="ident">Command</span>, <span class="ident">CommandResult</span>, <span class="ident">Commands</span>};
 <span class="kw">use</span> <span class="ident">duckscript</span>::<span class="ident">types</span>::<span class="ident">instruction</span>::<span class="ident">Instruction</span>;
 <span class="kw">use</span> <span class="ident">duckscript</span>::<span class="ident">types</span>::<span class="ident">runtime</span>::<span class="ident">StateValue</span>;
@@ -119,25 +127,33 @@
     ) <span class="op">-&gt;</span> <span class="ident">CommandResult</span> {
         <span class="kw">if</span> <span class="op">!</span><span class="ident">arguments</span>.<span class="ident">is_empty</span>() {
             <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">arguments</span>[<span class="number">0</span>].<span class="ident">clone</span>();
-            <span class="kw">let</span> (<span class="ident">line</span>, <span class="ident">source</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">arguments</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="number">1</span> {
-                <span class="kw">let</span> <span class="ident">line</span> <span class="op">=</span> <span class="ident">arguments</span>[<span class="number">1</span>].<span class="ident">clone</span>();
-                <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">arguments</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="number">2</span> {
-                    <span class="ident">arguments</span>[<span class="number">2</span>].<span class="ident">clone</span>()
+
+            <span class="kw">let</span> <span class="ident">exit_on_error</span> <span class="op">=</span> <span class="ident">get_value</span>(<span class="ident">state</span>, <span class="ident">EXIT_ON_ERROR_KEY</span>.<span class="ident">to_string</span>());
+            <span class="kw">let</span> <span class="ident">should_crash</span> <span class="op">=</span> <span class="ident">condition</span>::<span class="ident">is_true</span>(<span class="ident">exit_on_error</span>);
+
+            <span class="kw">if</span> <span class="ident">should_crash</span> {
+                <span class="ident">CommandResult</span>::<span class="ident">Crash</span>(<span class="ident">error</span>)
+            } <span class="kw">else</span> {
+                <span class="kw">let</span> (<span class="ident">line</span>, <span class="ident">source</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">arguments</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="number">1</span> {
+                    <span class="kw">let</span> <span class="ident">line</span> <span class="op">=</span> <span class="ident">arguments</span>[<span class="number">1</span>].<span class="ident">clone</span>();
+                    <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">arguments</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="number">2</span> {
+                        <span class="ident">arguments</span>[<span class="number">2</span>].<span class="ident">clone</span>()
+                    } <span class="kw">else</span> {
+                        <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>()
+                    };
+
+                    (<span class="ident">line</span>, <span class="ident">source</span>)
                 } <span class="kw">else</span> {
-                    <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>()
+                    (<span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>(), <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>())
                 };
 
-                (<span class="ident">line</span>, <span class="ident">source</span>)
-            } <span class="kw">else</span> {
-                (<span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>(), <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>())
-            };
+                <span class="kw">let</span> <span class="ident">sub_state</span> <span class="op">=</span> <span class="ident">get_core_sub_state_for_command</span>(<span class="ident">state</span>, <span class="ident">STATE_KEY</span>.<span class="ident">to_string</span>());
+                <span class="ident">sub_state</span>.<span class="ident">insert</span>(<span class="string">&quot;error&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">StateValue</span>::<span class="ident">String</span>(<span class="ident">error</span>));
+                <span class="ident">sub_state</span>.<span class="ident">insert</span>(<span class="string">&quot;line&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">StateValue</span>::<span class="ident">String</span>(<span class="ident">line</span>));
+                <span class="ident">sub_state</span>.<span class="ident">insert</span>(<span class="string">&quot;source&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">StateValue</span>::<span class="ident">String</span>(<span class="ident">source</span>));
 
-            <span class="kw">let</span> <span class="ident">sub_state</span> <span class="op">=</span> <span class="ident">get_core_sub_state_for_command</span>(<span class="ident">state</span>, <span class="ident">on_error</span>::<span class="ident">STATE_KEY</span>.<span class="ident">to_string</span>());
-            <span class="ident">sub_state</span>.<span class="ident">insert</span>(<span class="string">&quot;error&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">StateValue</span>::<span class="ident">String</span>(<span class="ident">error</span>));
-            <span class="ident">sub_state</span>.<span class="ident">insert</span>(<span class="string">&quot;line&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">StateValue</span>::<span class="ident">String</span>(<span class="ident">line</span>));
-            <span class="ident">sub_state</span>.<span class="ident">insert</span>(<span class="string">&quot;source&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">StateValue</span>::<span class="ident">String</span>(<span class="ident">source</span>));
-
-            <span class="ident">CommandResult</span>::<span class="ident">Continue</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;false&quot;</span>.<span class="ident">to_string</span>()))
+                <span class="ident">CommandResult</span>::<span class="ident">Continue</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;false&quot;</span>.<span class="ident">to_string</span>()))
+            }
         } <span class="kw">else</span> {
             <span class="ident">CommandResult</span>::<span class="ident">Crash</span>(<span class="string">&quot;Invalid input provided.&quot;</span>.<span class="ident">to_string</span>())
         }

@@ -1,6 +1,6 @@
 [package]
 name = "duckscriptsdk"
-version = "0.1.5"
+version = "0.1.6"
 authors = ["Sagie Gur-Ari <sagiegurari@gmail.com>"]
 description = "The duckscript SDK."
 license = "Apache-2.0"
@@ -23,7 +23,7 @@ include = [
 ]
 
 [dependencies]
-duckscript = { version = "^0.1.4", path = "../duckscript" }
+duckscript = { version = "^0.1.5", path = "../duckscript" }
 fs_extra = "^1"
 home = "^0.5"
 hostname = "^0.3"

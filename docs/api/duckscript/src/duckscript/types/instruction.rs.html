@@ -119,6 +119,7 @@
 <span id="119">119</span>
 <span id="120">120</span>
 <span id="121">121</span>
+<span id="122">122</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # instruction</span>
 <span class="doccomment">//!</span>
@@ -129,7 +130,8 @@
 <span class="attribute">#[<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;./instruction_test.rs&quot;</span>]</span>
 <span class="kw">mod</span> <span class="ident">instruction_test</span>;
 
-<span class="kw">trait</span> <span class="ident">InstructionOperations</span> {
+<span class="doccomment">/// Defines common instruction capabilities</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">InstructionOperations</span> {
     <span class="doccomment">/// Returns true if this instruction has some actionable command to run</span>
     <span class="kw">fn</span> <span class="ident">is_actionable</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>;
 }
