@@ -63,3 +63,14 @@ script = [
   "cp README.md LICENSE* ${OUTPUT_NAME}/",
   "zip -r ${OUTPUT_NAME}.zip ${OUTPUT_NAME}",
 ]
+
+[tasks.zip-release-binary-for-target.windows]
+script = [
+  "mkdir ${OUTPUT_NAME}",
+  "dir target",
+  "powershell copy-item -path target/${CARGO_MAKE_RELEASE_FLOW_TARGET}/release/${CARGO_MAKE_BINARY_EXECUTABLE_NAME}.exe -destination ${OUTPUT_NAME}",
+  "powershell copy-item -path README.md -destination ${OUTPUT_NAME}",
+  "powershell copy-item -path LICENSE -destination ${OUTPUT_NAME}",
+  "dir ${OUTPUT_NAME}",
+  "powershell Compress-Archive -Path ${OUTPUT_NAME}/* -DestinationPath ${OUTPUT_NAME}.zip",
+]
