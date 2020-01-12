@@ -304,12 +304,12 @@ This is an example of the [function command](https://github.com/sagiegurari/duck
 function print_first_and_second_argument
     echo ${1} ${2}
     return printed
-end_function
+end
 
 function run_flow
     status = print_first_and_second_argument Hello World
     echo The printout status is: ${status}
-end_function
+end
 
 run_flow
 ```
@@ -325,8 +325,8 @@ values = range 1 10
 for i in ${values}
     for j in ${values}
         echo i: ${i} j: ${j}
-    end_for
-end_for
+    end
+end
 
 release ${values}
 ```
@@ -341,7 +341,7 @@ if is_empty ${name}
     echo You didn't enter any value
 else
     echo Your name is: ${name}
-end_if
+end
 
 value = set false
 if ${value}
@@ -360,11 +360,11 @@ elseif true
             echo after command
         else
             echo should not be here
-        end_if
-    end_if
+        end
+    end
 else
     echo should not be here
-end_if
+end
 ```
 
 <a name="tutorial-standard-api-full-sdk-docs"></a>
