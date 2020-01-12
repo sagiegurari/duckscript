@@ -23,7 +23,7 @@ include = [
 ]
 
 [[bin]]
-name = "duckscript"
+name = "duck"
 path = "src/main.rs"
 
 [dependencies]

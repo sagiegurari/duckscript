@@ -16,7 +16,12 @@ additional_profiles = [
 [tasks.generate-sdk-docs]
 workspace = false
 command = "cargo"
-args = [ "run", "--bin", "duckscript", "--", "--eval", "internal::SDKDocsGen std ./docs/sdk.md" ]
+args = [
+    "run",
+    "--",
+    "--eval",
+    "internal::SDKDocsGen std ./docs/sdk.md"
+]
 
 [tasks.generate-readme]
 script = [
@@ -33,8 +38,6 @@ workspace = false
 command = "cargo"
 args = [
     "run",
-    "--bin",
-    "duckscript",
     "--",
     "--eval",
     "internal::test::TestDirectory ./test"
