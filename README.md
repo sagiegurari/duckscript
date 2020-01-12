@@ -90,10 +90,10 @@ Let's take a really simple example (all examples are located in the [examples](h
 echo Hello World
 ```
 
-Running this script is done using the **duckscript** executable as follows:
+Running this script is done using the **duck** executable as follows:
 
 ```sh
-duckscript ./examples/hello_world.ds
+duck ./examples/hello_world.ds
 ```
 
 We will understand more and breakdown this down in the following sections.
@@ -338,7 +338,7 @@ echo Enter Full Name:
 name = read
 
 if is_empty ${name}
-    echo You didn't enter any value
+    echo You did not enter any value
 else
     echo Your name is: ${name}
 end
