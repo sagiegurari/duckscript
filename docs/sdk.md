@@ -558,7 +558,7 @@ if is_empty ${name}
     echo You didn't enter any value
 else
     echo Your name is: ${name}
-end_if
+end
 ```
 
 
