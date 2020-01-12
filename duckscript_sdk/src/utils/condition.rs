@@ -38,7 +38,7 @@ pub(crate) fn eval_condition(
         };
 
         if eval_statement {
-            match eval::eval(&arguments, state, variables, commands) {
+            match eval::eval_with_error(&arguments, state, variables, commands) {
                 CommandResult::Continue(value) => {
                     let passed = is_true(value);
 

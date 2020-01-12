@@ -1,0 +1,36 @@
+
+function test_prefix
+    output = starts_with "1 2 3 4 5" "1 2"
+
+    assert ${output}
+end
+
+function test_suffix
+    output = starts_with "1 2 3 4 5" "4 5"
+
+    assert_false ${output}
+end
+
+function test_middle
+    output = starts_with "1 2 3 4 5" "2 3"
+
+    assert_false ${output}
+end
+
+function test_all
+    output = starts_with "1 2 3 4 5" "1 2 3 4 5"
+
+    assert ${output}
+end
+
+function test_empty
+    output = starts_with "1 2 3 4 5" ""
+
+    assert ${output}
+end
+
+function test_not_contained
+    output = starts_with "1 2 3 4 5" "4 5 6"
+
+    assert_false ${output}
+end

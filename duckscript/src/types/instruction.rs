@@ -7,7 +7,8 @@
 #[path = "./instruction_test.rs"]
 mod instruction_test;
 
-trait InstructionOperations {
+/// Defines common instruction capabilities
+pub trait InstructionOperations {
     /// Returns true if this instruction has some actionable command to run
     fn is_actionable(&self) -> bool;
 }

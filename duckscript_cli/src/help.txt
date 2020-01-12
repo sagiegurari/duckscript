@@ -3,6 +3,7 @@ USAGE:
 
 FLAGS:
     -h, --help      Prints help information
+    -e, --eval      Evaluate script
 
 ARGS:
     <FILE>          The script file to execute

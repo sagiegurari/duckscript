@@ -1,0 +1,18 @@
+
+function test_empty
+    output = is_empty ""
+
+    assert ${output}
+end
+
+function test_not_empty
+    output = is_empty "test"
+
+    assert_false ${output}
+end
+
+function test_undefined
+    output = is_empty ${test_undefined}
+
+    assert ${output}
+end

@@ -15,6 +15,7 @@
 * [std::ShowCommandDocumentation (man)](#std__ShowCommandDocumentation)
 * [std::Unalias (unalias)](#std__Unalias)
 * [std::collections::Array (array)](#std__collections__Array)
+* [std::collections::ArrayIsEmpty (array_is_empty)](#std__collections__ArrayIsEmpty)
 * [std::collections::ArrayLength (array_length, arrlen)](#std__collections__ArrayLength)
 * [std::collections::Range (range)](#std__collections__Range)
 * [std::env::GetVar (get_env)](#std__env__GetVar)
@@ -25,6 +26,7 @@
 * [std::error::GetLastError (get_last_error)](#std__error__GetLastError)
 * [std::error::GetLastErrorLine (get_last_error_line)](#std__error__GetLastErrorLine)
 * [std::error::GetLastErrorSource (get_last_error_source)](#std__error__GetLastErrorSource)
+* [std::error::SetExitOnError (exit_on_error, set_exit_on_error)](#std__error__SetExitOnError)
 * [std::fs::CopyPath (cp)](#std__fs__CopyPath)
 * [std::fs::CreateDirectory (mkdir)](#std__fs__CreateDirectory)
 * [std::fs::CreateEmptyFile (touch)](#std__fs__CreateEmptyFile)
@@ -56,7 +58,9 @@
 * [std::string::TrimStart (trim_start)](#std__string__TrimStart)
 * [std::test::Assert (assert)](#std__test__Assert)
 * [std::test::AssertEquals (assert_eq)](#std__test__AssertEquals)
+* [std::test::AssertError (assert_error)](#std__test__AssertError)
 * [std::test::AssertFail (assert_fail)](#std__test__AssertFail)
+* [std::test::AssertFalse (assert_false)](#std__test__AssertFalse)
 * [std::thread::Sleep (sleep)](#std__thread__Sleep)
 
 
@@ -156,7 +160,7 @@ eval
 args = array a b c
 for arg in ${args}
     # commands
-end_for
+end
 release args
 ```
 
@@ -170,7 +174,7 @@ Once all values have been read, it will exit the loop.
   * The variable name which will hold the current iteration value
   * The string "in"
   * The handle to the array of values to iterate
-* end_for - no parameters
+* end - no parameters
 
 #### Return Value
 
@@ -184,7 +188,7 @@ args = array a b c
 
 for arg in ${args}
     echo current arg is: ${arg}
-end_for
+end
 
 release args
 
@@ -193,8 +197,8 @@ args = array 1 2 3
 for i in ${args}
     for j in ${args}
         echo i: ${i} j: ${j}
-    end_for
-end_for
+    end
+end
 ```
 
 
@@ -205,19 +209,19 @@ for
 ## std::Function
 ```sh
 function my_function
-# function content
-return output
-end_function
+    # function content
+    return output
+end
 ```
 
 This command provides the function language feature as a set of commands:
 
 * function - Defines a function start block
-* end_function - Defines the end of the function block
+* end - Defines the end of the function block
 * return - Allows to exist a function at any point and return an output
 * *function name* - Dynamically created commands based on the function name which are used to invoke the function code.
 
-When a function command is detected, it will search for the end_function command that comes after.<br>
+When a function command is detected, it will search for the end command that comes after.<br>
 That entire block is considered the function code block (functions cannot be nested in outer functions)<br>
 
 In order to invoke the function, simply call the function name with any amount of paramters.<br>
@@ -227,12 +231,12 @@ Since variables are global, it will overwrite any older values stored in those v
 To exist a function and return a value, simply use the **return** command with the value you want to return.<br>
 The variable that was used when the function was originally called, will now store that value.<br>
 The return command can be used to exist early without any value.<br>
-In case the code reached the **end_function** call, the function will exist but will return not value.
+In case the code reached the **end** call, the function will exist but will return not value.
 
 #### Parameters
 
 * function - The function name used later on to invoke the function
-* end_function - no parameters
+* end - no parameters
 * return - optional single paramter to return as an output of the function call
 * *function name* - Any number of arguments which will automatically be set as global variables: $1, $2, ... as so on.
 
@@ -248,7 +252,7 @@ The function invocation returns the output provided by the return command.
 # function start
 function hello_world
     echo hello world
-end_function
+end
 
 # function invocation
 hello_world
@@ -256,7 +260,7 @@ hello_world
 # Example of calling a function and returning a value
 function get_hello_world
     return "hello world"
-end_function
+end
 
 # function invocation
 text = get_hello_world
@@ -269,19 +273,19 @@ function print_input
     # $1 is set with the value 'hello'
     # $2 is set with the value 'world'
     echo ${1} ${2}
-end_function
+end
 
 print_input hello world
 
 # Functions can call other functions
 function get_one
     return 1
-end_function
+end
 
 function get_number
     number = get_one
     return ${number}
-end_function
+end
 
 output = get_number
 
@@ -358,7 +362,7 @@ elseif command|value
     # commands
 else
     # commands
-end_if
+end
 ```
 
 This command provides the if/elseif/else condition language feature as a set of commands:
@@ -366,7 +370,7 @@ This command provides the if/elseif/else condition language feature as a set of 
 * if - Defines an if condition
 * elseif - Defines optional secondary condition blocks
 * else - Optinoal fallback block
-* end_if - Defines the end of the entire if/else block
+* end - Defines the end of the entire if/else block
 
 if and elseif commands accept either:
 
@@ -390,7 +394,7 @@ if blocks can be nested in other if blocks (see examples).
 #### Parameters
 
 * if/elseif - A command and its arguments to invoke and evaluate its output, if a single value is provided an no such command exists, it is evaluated as a value.
-* else/end_if - no parameters
+* else/end - no parameters
 
 #### Return Value
 
@@ -402,24 +406,24 @@ None
 # Simple example of an if statement that evaluates the argument value as true and echos "in if"
 if true
     echo in if
-end_if
+end
 
 # Example of using **not** command to reverse the output value
 if not false
     echo in if
-end_if
+end
 
 # Example of an if statement that evaluates the command as true and echos "in if"
 if set true
     echo in if
-end_if
+end
 
 # Example of if condition returning a falsy result and navigation goes to the else block which echos "in else"
 if set false
     echo should not be here
 else
     echo in else
-end_if
+end
 
 # Example of if condition returning a falsy result and navigation goes to the elseif block has a truthy condition
 if set false
@@ -428,7 +432,7 @@ elseif set true
     echo in else if
 else
     echo should not be here
-end_if
+end
 
 # Nested if example:
 if set false
@@ -438,10 +442,10 @@ elseif set true
 
     if set true
         echo nested if
-    end_if
+    end
 else
     echo should not be here
-end_if
+end
 ```
 
 
@@ -554,7 +558,7 @@ if is_empty ${name}
     echo You didn't enter any value
 else
     echo Your name is: ${name}
-end_if
+end
 ```
 
 
@@ -712,6 +716,20 @@ release ${handle}
 
 #### Aliases:
 array
+
+<a name="std__collections__ArrayIsEmpty"></a>
+## std::collections::ArrayIsEmpty
+
+Alias for:
+
+```sh
+__length = array_length ${argument1}
+equals 0 ${__length}
+```
+
+
+#### Aliases:
+array_is_empty
 
 <a name="std__collections__ArrayLength"></a>
 ## std::collections::ArrayLength
@@ -1011,6 +1029,41 @@ echo Error Source File: ${source}
 
 #### Aliases:
 get_last_error_source
+
+<a name="std__error__SetExitOnError"></a>
+## std::error::SetExitOnError
+```sh
+var = exit_on_error value
+```
+
+Enables to cause the script execution to stop in case of any error.<br>
+By default all errors simply trigger the on_error command which the default SDK stores and provides access to.<br>
+However, with this command you can change the on_error command to instead stop the script execution.
+
+#### Parameters
+
+If no argument is provided, it will return the current state.<br>
+If an argument is provided, it will modify the state and return it as true/false.
+
+#### Return Value
+
+The current/updated state as true/false value
+
+#### Examples
+
+```sh
+# Get current state
+will_exit = exit_on_error
+echo Current state: ${will_exit}
+
+# Update the current state
+will_exit = exit_on_error true
+echo Current state: ${will_exit}
+```
+
+
+#### Aliases:
+exit_on_error, set_exit_on_error
 
 <a name="std__fs__CopyPath"></a>
 ## std::fs::CopyPath
@@ -1955,7 +2008,7 @@ assert yes
 value = set "some text"
 assert ${value}
 
-# error conditions
+# error conditions (each one will break the execution)
 assert
 assert false
 assert 0
@@ -1994,7 +2047,7 @@ assert_eq false false
 value = set "some text"
 assert_eq ${value} "some text"
 
-# error conditions
+# error conditions (each one will break the execution)
 assert_eq 1 2
 assert_eq 1 2 "This is my error message"
 ```
@@ -2002,6 +2055,35 @@ assert_eq 1 2 "This is my error message"
 
 #### Aliases:
 assert_eq
+
+<a name="std__test__AssertError"></a>
+## std::test::AssertError
+```sh
+assert_error [error message]
+```
+
+This command will cause a runtime error which will not stop the script execution.<br>
+If error message is provided, it will be used as part of the error output.
+
+#### Parameters
+
+Optional error message.
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+assert_error
+
+assert_error "This is my error message"
+```
+
+
+#### Aliases:
+assert_error
 
 <a name="std__test__AssertFail"></a>
 ## std::test::AssertFail
@@ -2031,6 +2113,54 @@ assert_fail "This is my error message"
 
 #### Aliases:
 assert_fail
+
+<a name="std__test__AssertFalse"></a>
+## std::test::AssertFalse
+```sh
+assert_false value [error message]
+```
+
+Used to validate the input is falsy.<br>
+If the value is one of the following:
+
+* No output
+* false (case insensitive)
+* 0
+* no (case insensitive)
+* Empty value
+
+It is considered falsy.
+
+#### Parameters
+
+* The value to evaluate
+* Optional error message
+
+#### Return Value
+
+**true** if falsy.
+
+#### Examples
+
+```sh
+# valid conditions
+assert_false
+assert_false false
+assert_false 0
+assert_false false "This is my error message"
+
+# error conditions (each one will break the execution)
+assert_false ok
+assert_false true
+assert_false yes
+
+value = set "some text"
+assert_false ${value}
+```
+
+
+#### Aliases:
+assert_false
 
 <a name="std__thread__Sleep"></a>
 ## std::thread::Sleep

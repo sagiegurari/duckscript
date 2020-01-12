@@ -1,6 +1,8 @@
 mod assert;
 mod assert_eq;
+mod assert_error;
 mod assert_fail;
+mod assert_false;
 
 use crate::utils::pckg;
 use duckscript::types::command::Commands;
@@ -13,7 +15,9 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
 
     commands.set(assert::create(&package))?;
     commands.set(assert_eq::create(&package))?;
+    commands.set(assert_error::create(&package))?;
     commands.set(assert_fail::create(&package))?;
+    commands.set(assert_false::create(&package))?;
 
     Ok(())
 }

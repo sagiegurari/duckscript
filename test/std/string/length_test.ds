@@ -1,0 +1,18 @@
+
+function test_empty
+    output = length ""
+
+    assert_eq ${output} 0
+end
+
+function test_not_empty
+    output = length "test"
+
+    assert_eq ${output} 4
+end
+
+function test_undefined
+    output = length ${test_undefined}
+
+    assert_eq ${output} 0
+end

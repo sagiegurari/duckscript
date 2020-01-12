@@ -1,6 +1,6 @@
-use crate::utils::instruction_query;
-use crate::utils::pckg;
+use crate::sdk::std::flowcontrol::{end, forin, ifelse};
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
+use crate::utils::{instruction_query, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
@@ -207,8 +207,17 @@ fn run_call(
     }
 }
 
-struct FunctionCommand {
+pub(crate) struct FunctionCommand {
     package: String,
+}
+
+impl FunctionCommand {
+    /// Creates and returns a new instance.
+    pub(crate) fn new(package: &str) -> FunctionCommand {
+        FunctionCommand {
+            package: package.to_string(),
+        }
+    }
 }
 
 impl Command for FunctionCommand {
@@ -264,21 +273,45 @@ impl Command for FunctionCommand {
                     };
                     let mut end_names = end_command.aliases();
                     end_names.push(end_command.name());
+                    end_names.push(end::END_COMMAND_NAME.to_string());
 
-                    match instruction_query::find_command(
-                        &instructions,
+                    let if_command = ifelse::IfCommand::new(&self.package);
+                    let mut start_blocks = if_command.aliases();
+                    start_blocks.push(if_command.name());
+                    let forin_command = forin::ForInCommand::new(&self.package);
+                    start_blocks.append(&mut forin_command.aliases());
+                    start_blocks.push(forin_command.name());
+
+                    let end_if_command = ifelse::EndIfCommand::new(&self.package);
+                    let mut end_blocks = end_if_command.aliases();
+                    end_blocks.push(end_if_command.name());
+                    let end_forin_command = forin::EndForInCommand::new(&self.package);
+                    end_blocks.append(&mut end_forin_command.aliases());
+                    end_blocks.push(end_forin_command.name());
+                    end_blocks.push(end::END_COMMAND_NAME.to_string());
+
+                    match instruction_query::find_commands(
+                        instructions,
+                        &start_names,
+                        &vec![],
                         &end_names,
                         Some(line + 1),
                         None,
-                        &start_names,
+                        false,
+                        &start_blocks,
+                        &end_blocks,
                     ) {
-                        Ok(fn_end_line_option) => match fn_end_line_option {
-                            Some(fn_end_line) => {
+                        Ok(positions_options) => match positions_options {
+                            Some(positions) => {
+                                let fn_end_line = positions.end;
+
                                 let fn_info = FunctionMetaInfo {
                                     name: function_name.clone(),
                                     start: line,
                                     end: fn_end_line,
                                 };
+
+                                end::set_command(fn_end_line, state, end_command.name());
 
                                 match store_fn_info_in_state(state, &fn_info) {
                                     Ok(_) => {
@@ -346,8 +379,17 @@ impl Command for FunctionCommand {
     }
 }
 
-struct EndFunctionCommand {
+pub(crate) struct EndFunctionCommand {
     package: String,
+}
+
+impl EndFunctionCommand {
+    /// Creates and returns a new instance.
+    pub(crate) fn new(package: &str) -> EndFunctionCommand {
+        EndFunctionCommand {
+            package: package.to_string(),
+        }
+    }
 }
 
 impl Command for EndFunctionCommand {

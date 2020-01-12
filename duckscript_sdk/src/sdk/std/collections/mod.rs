@@ -1,5 +1,6 @@
 pub(crate) mod array;
-mod array_length;
+mod array_is_empty;
+pub(crate) mod array_length;
 mod range;
 
 use crate::utils::pckg;
@@ -12,6 +13,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     let package = pckg::concat(parent, PACKAGE);
 
     commands.set(array::create(&package))?;
+    commands.set(array_is_empty::create(&package))?;
     commands.set(array_length::create(&package))?;
     commands.set(range::create(&package))?;
 

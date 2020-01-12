@@ -29,7 +29,7 @@ impl Command for CommandImpl {
             arguments[0].clone()
         };
 
-        CommandResult::Error(error_message)
+        CommandResult::Crash(error_message)
     }
 }
 

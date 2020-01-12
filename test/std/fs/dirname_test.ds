@@ -1,0 +1,21 @@
+
+os = os_family
+windows = equals os "windows"
+
+function test_relative_path
+    if ${windows}
+        value = dirname .\\test.txt
+    else
+        value = dirname ./test.txt
+    end
+
+    assert_eq ${value} .
+end
+
+function test_full_path
+    if not ${windows}
+        value = dirname /dir/test.txt
+        
+        assert_eq ${value} /dir
+    end
+end

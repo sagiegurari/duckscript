@@ -5,7 +5,7 @@ elseif command|value
     # commands
 else
     # commands
-end_if
+end
 ```
 
 This command provides the if/elseif/else condition language feature as a set of commands:
@@ -13,7 +13,7 @@ This command provides the if/elseif/else condition language feature as a set of 
 * if - Defines an if condition
 * elseif - Defines optional secondary condition blocks
 * else - Optinoal fallback block
-* end_if - Defines the end of the entire if/else block
+* end - Defines the end of the entire if/else block
 
 if and elseif commands accept either:
 
@@ -37,7 +37,7 @@ if blocks can be nested in other if blocks (see examples).
 #### Parameters
 
 * if/elseif - A command and its arguments to invoke and evaluate its output, if a single value is provided an no such command exists, it is evaluated as a value.
-* else/end_if - no parameters
+* else/end - no parameters
 
 #### Return Value
 
@@ -49,24 +49,24 @@ None
 # Simple example of an if statement that evaluates the argument value as true and echos "in if"
 if true
     echo in if
-end_if
+end
 
 # Example of using **not** command to reverse the output value
 if not false
     echo in if
-end_if
+end
 
 # Example of an if statement that evaluates the command as true and echos "in if"
 if set true
     echo in if
-end_if
+end
 
 # Example of if condition returning a falsy result and navigation goes to the else block which echos "in else"
 if set false
     echo should not be here
 else
     echo in else
-end_if
+end
 
 # Example of if condition returning a falsy result and navigation goes to the elseif block has a truthy condition
 if set false
@@ -75,7 +75,7 @@ elseif set true
     echo in else if
 else
     echo should not be here
-end_if
+end
 
 # Nested if example:
 if set false
@@ -85,8 +85,8 @@ elseif set true
 
     if set true
         echo nested if
-    end_if
+    end
 else
     echo should not be here
-end_if
+end
 ```

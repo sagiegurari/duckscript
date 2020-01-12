@@ -33,7 +33,7 @@ assert yes
 value = set "some text"
 assert ${value}
 
-# error conditions
+# error conditions (each one will break the execution)
 assert
 assert false
 assert 0

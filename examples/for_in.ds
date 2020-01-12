@@ -4,7 +4,7 @@ args = array a b c
 
 for arg in ${args}
     echo current arg is: ${arg}
-end_for
+end
 
 released = release ${args}
 echo Array released: ${released}
@@ -14,8 +14,8 @@ values = array 1 2 3
 for i in ${values}
     for j in ${values}
         echo i: ${i} j: ${j}
-    end_for
-end_for
+    end
+end
 
 released = release ${values}
 echo Array released: ${released}
@@ -25,8 +25,8 @@ values = range 1 10
 for i in ${values}
     for j in ${values}
         echo i: ${i} j: ${j}
-    end_for
-end_for
+    end
+end
 
 released = release ${values}
 echo Array released: ${released}

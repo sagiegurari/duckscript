@@ -2,7 +2,7 @@
 args = array a b c
 for arg in ${args}
     # commands
-end_for
+end
 release args
 ```
 
@@ -16,7 +16,7 @@ Once all values have been read, it will exit the loop.
   * The variable name which will hold the current iteration value
   * The string "in"
   * The handle to the array of values to iterate
-* end_for - no parameters
+* end - no parameters
 
 #### Return Value
 
@@ -30,7 +30,7 @@ args = array a b c
 
 for arg in ${args}
     echo current arg is: ${arg}
-end_for
+end
 
 release args
 
@@ -39,6 +39,6 @@ args = array 1 2 3
 for i in ${args}
     for j in ${args}
         echo i: ${i} j: ${j}
-    end_for
-end_for
+    end
+end
 ```

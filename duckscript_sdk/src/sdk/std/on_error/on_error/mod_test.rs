@@ -1,4 +1,5 @@
 use super::*;
+use crate::sdk::std::on_error::exit_on_error;
 use crate::test;
 use crate::test::CommandValidation;
 
@@ -38,4 +39,15 @@ fn run_valid() {
         }
         _ => panic!("Invalid sub state type."),
     }
+}
+
+#[test]
+fn run_valid_and_crash() {
+    test::run_script_and_crash(
+        vec![create(""), exit_on_error::create("")],
+        r#"
+        exit_on_error true
+        out = on_error 1 2 3
+        "#,
+    );
 }

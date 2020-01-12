@@ -1,0 +1,18 @@
+
+function test_not_found
+    output = indexof "1 2 3 4 5" "4 5 6"
+
+    assert_eq ${output} ""
+end
+
+function test_prefix
+    output = indexof "1 2 3 4 5 1 2 3 4 5" "1 2"
+
+    assert_eq ${output} 0
+end
+
+function test_suffix
+    output = indexof "1 2 3 4 5 1 2 3 4 5" "4 5"
+
+    assert_eq ${output} 6
+end

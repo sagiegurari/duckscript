@@ -16,7 +16,12 @@ additional_profiles = [
 [tasks.generate-sdk-docs]
 workspace = false
 command = "cargo"
-args = [ "run", "--bin", "duckscript", "--", "./sdkdocs.ds" ]
+args = [
+    "run",
+    "--",
+    "--eval",
+    "internal::SDKDocsGen std ./docs/sdk.md"
+]
 
 [tasks.generate-readme]
 script = [
@@ -26,6 +31,16 @@ rm -f ./README.md
 cat ./docs/_includes/README.md ./docs/_includes/nav.md ./docs/_includes/content.md >> README.md
 sed -i 's,https://github.com/sagiegurari/duckscript/blob/master/.github,.github,g' ./README.md
 '''
+]
+
+[tasks.test-scripts]
+workspace = false
+command = "cargo"
+args = [
+    "run",
+    "--",
+    "--eval",
+    "internal::test::TestDirectory ./test"
 ]
 
 [tasks.workspace-docs]
@@ -39,3 +54,23 @@ workspace = false
 cwd = "./duckscript_cli"
 command = "cargo"
 args = [ "install", "--force", "--path", "." ]
+
+[tasks.zip-release-binary-for-target]
+env = { "OUTPUT_NAME" = "${CARGO_MAKE_PROJECT_NAME}-v${CARGO_MAKE_PROJECT_VERSION}-${CARGO_MAKE_RELEASE_FLOW_TARGET}", "CARGO_MAKE_BINARY_EXECUTABLE_NAME" = "duck" }
+script = [
+  "mkdir ${OUTPUT_NAME}",
+  "cp target/$CARGO_MAKE_RELEASE_FLOW_TARGET/release/${CARGO_MAKE_BINARY_EXECUTABLE_NAME} ${OUTPUT_NAME}/",
+  "cp README.md LICENSE* ${OUTPUT_NAME}/",
+  "zip -r ${OUTPUT_NAME}.zip ${OUTPUT_NAME}",
+]
+
+[tasks.zip-release-binary-for-target.windows]
+script = [
+  "mkdir ${OUTPUT_NAME}",
+  "dir target",
+  "powershell copy-item -path target/${CARGO_MAKE_RELEASE_FLOW_TARGET}/release/${CARGO_MAKE_BINARY_EXECUTABLE_NAME}.exe -destination ${OUTPUT_NAME}",
+  "powershell copy-item -path README.md -destination ${OUTPUT_NAME}",
+  "powershell copy-item -path LICENSE -destination ${OUTPUT_NAME}",
+  "dir ${OUTPUT_NAME}",
+  "powershell Compress-Archive -Path ${OUTPUT_NAME}/* -DestinationPath ${OUTPUT_NAME}.zip",
+]

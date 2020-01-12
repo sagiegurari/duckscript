@@ -1,25 +1,25 @@
 
 if true
     echo in if as value
-end_if
+end
 
 if false
     echo should not be here
-end_if
+end
 
 if not false
     echo in if as value with not condition
-end_if
+end
 
 if set true
     echo in if as command
-end_if
+end
 
 if set false
     echo should not be here
 else
     echo in else
-end_if
+end
 
 if set false
     echo should not be here
@@ -27,7 +27,7 @@ elseif set true
     echo in else if
 else
     echo should not be here
-end_if
+end
 
 if set false
     echo should not be here
@@ -36,10 +36,10 @@ elseif set true
 
     if set true
         echo nested if
-    end_if
+    end
 else
     echo should not be here
-end_if
+end
 
 value = set false
 if ${value}
@@ -58,8 +58,8 @@ elseif true
             echo after command
         else
             echo should not be here
-        end_if
-    end_if
+        end
+    end
 else
     echo should not be here
-end_if
+end

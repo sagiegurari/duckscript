@@ -24,7 +24,7 @@ impl Command for CommandImpl {
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {
         if arguments.is_empty() {
-            CommandResult::Error("Assert failed, empty value.".to_string())
+            CommandResult::Crash("Assert failed, empty value.".to_string())
         } else {
             let passed = condition::is_true(Some(arguments[0].clone()));
 
@@ -37,7 +37,7 @@ impl Command for CommandImpl {
                     arguments[1].clone()
                 };
 
-                CommandResult::Error(error_message)
+                CommandResult::Crash(error_message)
             }
         }
     }

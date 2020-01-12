@@ -24,7 +24,7 @@ impl Command for CommandImpl {
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {
         if arguments.len() < 2 {
-            CommandResult::Error("Assert failed, two arguments are required.".to_string())
+            CommandResult::Crash("Assert failed, two arguments are required.".to_string())
         } else {
             let passed = arguments[0] == arguments[1];
 
@@ -41,7 +41,7 @@ impl Command for CommandImpl {
                     arguments[2].clone()
                 };
 
-                CommandResult::Error(error_message)
+                CommandResult::Crash(error_message)
             }
         }
     }

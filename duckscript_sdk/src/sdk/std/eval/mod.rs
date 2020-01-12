@@ -37,9 +37,9 @@ impl Command for CommandImpl {
         _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
         commands: &mut Commands,
-        _test_setline: usize,
+        _line: usize,
     ) -> CommandResult {
-        eval::eval(&arguments, state, variables, commands)
+        eval::eval_with_error(&arguments, state, variables, commands)
     }
 }
 

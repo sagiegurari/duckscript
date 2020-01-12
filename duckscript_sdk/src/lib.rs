@@ -121,6 +121,7 @@
 //!
 
 pub(crate) mod sdk;
+mod types;
 mod utils;
 
 #[cfg(test)]

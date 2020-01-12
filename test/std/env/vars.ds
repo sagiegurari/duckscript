@@ -1,0 +1,11 @@
+
+function test_set_get_unset
+    unset_env TEST_SET_GET_UNSET
+    value = get_env TEST_SET_GET_UNSET
+    assert_false ${value}
+
+    value = set_env TEST_SET_GET_UNSET "test value"
+    assert ${value}
+    value = get_env TEST_SET_GET_UNSET
+    assert_eq ${value} "test value"
+end

@@ -1,0 +1,40 @@
+
+function test_array
+    counter = set 0
+    args = array a b c
+
+    for arg in ${args}
+        counter = calc ${counter} + 1
+    end
+
+    assert_eq ${counter} 3
+    released = release ${args}
+end
+
+function test_nested
+    counter = set 0
+    values = array 1 2 3
+
+    for i in ${values}
+        for j in ${values}
+            counter = calc ${counter} + 1
+        end
+    end
+
+    assert_eq ${counter} 9
+    released = release ${args}
+end
+
+function test_range
+    counter = set 0
+    args = range 0 10
+
+    for i in ${args}
+        for j in ${args}
+            counter = calc ${counter} + 1
+        end
+    end
+
+    assert_eq ${counter} 100
+    released = release ${args}
+end

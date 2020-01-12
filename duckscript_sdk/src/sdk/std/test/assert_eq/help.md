@@ -24,7 +24,7 @@ assert_eq false false
 value = set "some text"
 assert_eq ${value} "some text"
 
-# error conditions
+# error conditions (each one will break the execution)
 assert_eq 1 2
 assert_eq 1 2 "This is my error message"
 ```
