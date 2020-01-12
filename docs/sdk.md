@@ -164,7 +164,7 @@ end
 release args
 ```
 
-The for/in command enables to iterate over an array (see [array command](#std__Array)).<br>
+The for/in command enables to iterate over an array (see [array command](#std__collections__Array)).<br>
 The first argument will contain the current iteration value from the array.<br>
 Once all values have been read, it will exit the loop.
 
