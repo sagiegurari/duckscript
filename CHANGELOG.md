@@ -2,6 +2,7 @@
 
 ### v0.1.7
 
+* Fixed runner to return an error if on_error requested crash or exit and not just end the script.
 * Unalias can remove aliases not created from the alias command.
 
 ### v0.1.6 (2020-01-12)

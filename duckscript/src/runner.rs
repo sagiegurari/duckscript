@@ -107,18 +107,19 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
 
                 let post_error_line = line + 1;
 
-                let should_continue = run_on_error_instruction(
+                match run_on_error_instruction(
                     &mut runtime.context.commands,
                     &mut runtime.context.variables,
                     &mut state,
                     &instructions,
                     error,
-                    meta_info,
-                );
-
-                if !should_continue {
-                    break;
-                }
+                    meta_info.clone(),
+                ) {
+                    Err(error) => return Err(ScriptError {
+                        info: ErrorInfo::Runtime(error, Some(meta_info.clone())),
+                    }),
+                    _ => ()
+                };
 
                 line = post_error_line;
 
@@ -182,7 +183,7 @@ fn run_on_error_instruction(
     instructions: &Vec<Instruction>,
     error: String,
     meta_info: InstructionMetaInfo,
-) -> bool {
+) -> Result<(), String> {
     if commands.exists("on_error") {
         let mut script_instruction = ScriptInstruction::new();
         script_instruction.command = Some("on_error".to_string());
@@ -203,13 +204,13 @@ fn run_on_error_instruction(
             CommandResult::Exit(output) => {
                 update_output(variables, output_variable, output);
 
-                false
+                Err("Exiting Script.".to_string())
             }
-            CommandResult::Crash(_) => false,
-            _ => true,
+            CommandResult::Crash(error) => Err(error),
+            _ => Ok(()),
         }
     } else {
-        true
+        Ok(())
     }
 }
 
