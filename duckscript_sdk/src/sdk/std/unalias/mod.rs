@@ -46,10 +46,16 @@ impl Command for CommandImpl {
         } else {
             let sub_state = get_sub_state(alias::ALIAS_STATE_KEY.to_string(), state);
 
-            let removed = if sub_state.contains_key(&arguments[0]) {
-                commands.remove(&arguments[0]);
-                sub_state.remove(&arguments[0]);
-
+            let key = &arguments[0];
+            let removed = if sub_state.contains_key(key) {
+                if commands.remove(key) {
+                    sub_state.remove(key);
+                    true
+                } else {
+                    false
+                }
+            } else if commands.aliases.contains_key(key) {
+                commands.aliases.remove(key);
                 true
             } else {
                 false

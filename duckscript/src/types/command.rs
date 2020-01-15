@@ -191,7 +191,10 @@ impl Commands {
     }
 
     /// Removes the requested command.
-    pub fn remove(&mut self, name: &str) {
-        self.get_for_use(name);
+    pub fn remove(&mut self, name: &str) -> bool {
+        match self.get_for_use(name) {
+            Some(_) => true,
+            None => false,
+        }
     }
 }

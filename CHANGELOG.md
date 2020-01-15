@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.1.7
+
+* Unalias can remove aliases not created from the alias command.
+
 ### v0.1.6 (2020-01-12)
 
 * \[Breaking Change\] Changed CLI executable from duckscript to duck
