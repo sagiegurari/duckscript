@@ -996,7 +996,7 @@ fn run_on_error_instruction_no_command() {
     let mut variables = HashMap::new();
     let mut state = HashMap::new();
 
-    let should_continue = run_on_error_instruction(
+    let result = run_on_error_instruction(
         &mut commands,
         &mut variables,
         &mut state,
@@ -1005,7 +1005,7 @@ fn run_on_error_instruction_no_command() {
         InstructionMetaInfo::new(),
     );
 
-    assert!(should_continue);
+    assert!(result.is_ok());
 }
 
 #[test]
@@ -1018,7 +1018,7 @@ fn run_on_error_instruction_unknown_command() {
         .aliases
         .insert("on_error".to_string(), "badcommand".to_string());
 
-    let should_continue = run_on_error_instruction(
+    let result = run_on_error_instruction(
         &mut commands,
         &mut variables,
         &mut state,
@@ -1027,7 +1027,7 @@ fn run_on_error_instruction_unknown_command() {
         InstructionMetaInfo::new(),
     );
 
-    assert!(should_continue);
+    assert!(result.is_ok());
 }
 
 #[test]
@@ -1036,13 +1036,13 @@ fn run_on_error_instruction_exit_response() {
     let mut variables = HashMap::new();
     let mut state = HashMap::new();
 
-    let result = commands.set(Box::new(ExitCommand {}));
-    assert!(result.is_ok());
+    let set_result = commands.set(Box::new(ExitCommand {}));
+    assert!(set_result.is_ok());
     commands
         .aliases
         .insert("on_error".to_string(), "exit".to_string());
 
-    let should_continue = run_on_error_instruction(
+    let result = run_on_error_instruction(
         &mut commands,
         &mut variables,
         &mut state,
@@ -1051,7 +1051,7 @@ fn run_on_error_instruction_exit_response() {
         InstructionMetaInfo::new(),
     );
 
-    assert!(!should_continue);
+    assert!(result.is_err());
 }
 
 #[test]
@@ -1060,13 +1060,13 @@ fn run_on_error_instruction_crash_response() {
     let mut variables = HashMap::new();
     let mut state = HashMap::new();
 
-    let result = commands.set(Box::new(CrashCommand {}));
-    assert!(result.is_ok());
+    let set_result = commands.set(Box::new(CrashCommand {}));
+    assert!(set_result.is_ok());
     commands
         .aliases
         .insert("on_error".to_string(), "crash".to_string());
 
-    let should_continue = run_on_error_instruction(
+    let result = run_on_error_instruction(
         &mut commands,
         &mut variables,
         &mut state,
@@ -1075,7 +1075,7 @@ fn run_on_error_instruction_crash_response() {
         InstructionMetaInfo::new(),
     );
 
-    assert!(!should_continue);
+    assert!(result.is_err());
 }
 
 #[test]
@@ -1084,13 +1084,13 @@ fn run_on_error_instruction_continue_response() {
     let mut variables = HashMap::new();
     let mut state = HashMap::new();
 
-    let result = commands.set(Box::new(SetCommand {}));
-    assert!(result.is_ok());
+    let set_result = commands.set(Box::new(SetCommand {}));
+    assert!(set_result.is_ok());
     commands
         .aliases
         .insert("on_error".to_string(), "set".to_string());
 
-    let should_continue = run_on_error_instruction(
+    let result = run_on_error_instruction(
         &mut commands,
         &mut variables,
         &mut state,
@@ -1099,7 +1099,7 @@ fn run_on_error_instruction_continue_response() {
         InstructionMetaInfo::new(),
     );
 
-    assert!(should_continue);
+    assert!(result.is_ok());
 }
 
 #[test]
@@ -1108,13 +1108,13 @@ fn run_on_error_instruction_error_response() {
     let mut variables = HashMap::new();
     let mut state = HashMap::new();
 
-    let result = commands.set(Box::new(ErrorCommand {}));
-    assert!(result.is_ok());
+    let set_result = commands.set(Box::new(ErrorCommand {}));
+    assert!(set_result.is_ok());
     commands
         .aliases
         .insert("on_error".to_string(), "error".to_string());
 
-    let should_continue = run_on_error_instruction(
+    let result = run_on_error_instruction(
         &mut commands,
         &mut variables,
         &mut state,
@@ -1123,5 +1123,5 @@ fn run_on_error_instruction_error_response() {
         InstructionMetaInfo::new(),
     );
 
-    assert!(should_continue);
+    assert!(result.is_ok());
 }

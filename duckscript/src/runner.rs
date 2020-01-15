@@ -115,10 +115,12 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
                     error,
                     meta_info.clone(),
                 ) {
-                    Err(error) => return Err(ScriptError {
-                        info: ErrorInfo::Runtime(error, Some(meta_info.clone())),
-                    }),
-                    _ => ()
+                    Err(error) => {
+                        return Err(ScriptError {
+                            info: ErrorInfo::Runtime(error, Some(meta_info.clone())),
+                        });
+                    }
+                    _ => (),
                 };
 
                 line = post_error_line;
