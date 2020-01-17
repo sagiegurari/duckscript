@@ -18,6 +18,8 @@
 * [std::collections::ArrayIsEmpty (array_is_empty)](#std__collections__ArrayIsEmpty)
 * [std::collections::ArrayLength (array_length, arrlen)](#std__collections__ArrayLength)
 * [std::collections::Range (range)](#std__collections__Range)
+* [std::collections::ReadProperties (read_properties)](#std__collections__ReadProperties)
+* [std::collections::WriteProperties (write_properties)](#std__collections__WriteProperties)
 * [std::env::GetVar (get_env)](#std__env__GetVar)
 * [std::env::PrintCurrentDirectory (pwd)](#std__env__PrintCurrentDirectory)
 * [std::env::SetCurrentDirectory (cd, set_current_dir)](#std__env__SetCurrentDirectory)
@@ -796,6 +798,72 @@ release ${handle}
 
 #### Aliases:
 range
+
+<a name="std__collections__ReadProperties"></a>
+## std::collections::ReadProperties
+```sh
+count = read_properties text
+```
+
+Parses the properties (based on java properties format) text and sets them as variables.<br>
+This command will also return the count of properties read.
+
+#### Parameters
+
+The text to parse.
+
+#### Return Value
+
+The properties count.
+
+#### Examples
+
+```sh
+count = read_properties "a=1\nb=2\na.b.c=3"
+assert_eq ${count} 3
+
+assert_eq ${a} 1
+assert_eq ${b} 2
+assert_eq ${a.b.c} 3
+```
+
+
+#### Aliases:
+read_properties
+
+<a name="std__collections__WriteProperties"></a>
+## std::collections::WriteProperties
+```sh
+text = write_properties [names]
+```
+
+Creates a properties string from the provided list of variable names (not values).
+
+#### Parameters
+
+A list of variable names.
+
+#### Return Value
+
+The properties text value.
+
+#### Examples
+
+```sh
+a = set 1
+b = set 2
+a.b.c = set 3
+
+# text will be equal to:
+# a=1
+# b=2
+# a.b.c=3
+text = write_properties a b a.b.c
+```
+
+
+#### Aliases:
+write_properties
 
 <a name="std__env__GetVar"></a>
 ## std::env::GetVar
