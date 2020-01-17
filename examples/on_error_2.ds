@@ -1,0 +1,7 @@
+
+created = alias on_error echo
+
+echo Going to cause an error
+assert_error
+
+echo End

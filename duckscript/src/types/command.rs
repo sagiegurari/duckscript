@@ -135,6 +135,7 @@ impl Commands {
         }
 
         self.commands.insert(name.clone(), command);
+        self.aliases.remove(&name);
 
         for alias in &aliases {
             self.aliases.insert(alias.to_string(), name.clone());
