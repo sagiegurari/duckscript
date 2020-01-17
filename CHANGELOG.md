@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.1.7
+### v0.1.7 (2020-01-17)
 
 * Fixed runner to return an error if on_error requested crash or exit and not just end the script.
 * \[Breaking Change\] Unalias can remove aliases not created from the alias command.

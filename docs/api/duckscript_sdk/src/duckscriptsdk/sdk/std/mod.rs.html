@@ -55,9 +55,12 @@
 <span id="55">55</span>
 <span id="56">56</span>
 <span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">alias</span>;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">collections</span>;
+<span class="kw">mod</span> <span class="ident">debug</span>;
 <span class="kw">mod</span> <span class="ident">echo</span>;
 <span class="kw">mod</span> <span class="ident">env</span>;
 <span class="kw">mod</span> <span class="ident">eval</span>;
@@ -100,6 +103,7 @@
     <span class="ident">commands</span>.<span class="ident">set</span>(<span class="ident">unalias</span>::<span class="ident">create</span>(<span class="ident">PACKAGE</span>))<span class="question-mark">?</span>;
 
     <span class="ident">collections</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
+    <span class="ident">debug</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">env</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">flowcontrol</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">fs</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;

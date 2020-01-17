@@ -60,6 +60,9 @@
 <span id="60">60</span>
 <span id="61">61</span>
 <span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">duckscript</span>::<span class="ident">parser</span>;
 <span class="kw">use</span> <span class="ident">duckscript</span>::<span class="ident">runner</span>;
@@ -119,7 +122,10 @@
     <span class="ident">commands</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Commands</span>,
 ) <span class="op">-&gt;</span> <span class="ident">CommandResult</span> {
     <span class="kw">match</span> <span class="ident">eval</span>(<span class="ident">arguments</span>, <span class="ident">state</span>, <span class="ident">variables</span>, <span class="ident">commands</span>) {
-        <span class="prelude-val">Ok</span>(<span class="ident">command_result</span>) <span class="op">=&gt;</span> <span class="ident">command_result</span>,
+        <span class="prelude-val">Ok</span>(<span class="ident">command_result</span>) <span class="op">=&gt;</span> <span class="kw">match</span> <span class="ident">command_result</span>.<span class="ident">clone</span>() {
+            <span class="ident">CommandResult</span>::<span class="ident">Crash</span>(<span class="ident">error</span>) <span class="op">=&gt;</span> <span class="ident">CommandResult</span>::<span class="ident">Error</span>(<span class="ident">error</span>),
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="ident">command_result</span>,
+        },
         <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=&gt;</span> <span class="ident">CommandResult</span>::<span class="ident">Error</span>(<span class="ident">error</span>.<span class="ident">to_string</span>()),
     }
 }

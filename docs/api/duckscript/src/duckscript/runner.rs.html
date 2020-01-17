@@ -292,6 +292,64 @@
 <span id="292">292</span>
 <span id="293">293</span>
 <span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # runner</span>
 <span class="doccomment">//!</span>
@@ -311,6 +369,13 @@
 };
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::<span class="ident">runtime</span>::{<span class="ident">Context</span>, <span class="ident">Runtime</span>, <span class="ident">StateValue</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">stdin</span>;
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="kw">enum</span> <span class="ident">EndReason</span> {
+    <span class="ident">ExitCalled</span>,
+    <span class="ident">ReachedEnd</span>,
+}
 
 <span class="doccomment">/// Executes the provided script with the given context</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run_script</span>(<span class="ident">text</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">context</span>: <span class="ident">Context</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Context</span>, <span class="ident">ScriptError</span><span class="op">&gt;</span> {
@@ -328,10 +393,53 @@
     }
 }
 
+<span class="doccomment">/// Provides the REPL entry point</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">repl</span>(<span class="kw-2">mut</span> <span class="ident">context</span>: <span class="ident">Context</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Context</span>, <span class="ident">ScriptError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">text</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">instructions</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
+
+    <span class="kw">loop</span> {
+        <span class="ident">text</span>.<span class="ident">clear</span>();
+
+        <span class="kw">match</span> <span class="ident">stdin</span>().<span class="ident">read_line</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">text</span>) {
+            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> {
+                <span class="kw">match</span> <span class="ident">parser</span>::<span class="ident">parse_text</span>(<span class="kw-2">&amp;</span><span class="ident">text</span>) {
+                    <span class="prelude-val">Ok</span>(<span class="kw-2">mut</span> <span class="ident">new_instructions</span>) <span class="op">=&gt;</span> {
+                        <span class="comment">// get start line</span>
+                        <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">instructions</span>.<span class="ident">len</span>();
+
+                        <span class="comment">// add new instructions</span>
+                        <span class="ident">instructions</span>.<span class="ident">append</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">new_instructions</span>);
+                        <span class="kw">let</span> <span class="ident">runtime</span> <span class="op">=</span> <span class="ident">create_runtime</span>(<span class="ident">instructions</span>.<span class="ident">clone</span>(), <span class="ident">context</span>);
+
+                        <span class="kw">let</span> (<span class="ident">updated_context</span>, <span class="ident">end_reason</span>) <span class="op">=</span> <span class="ident">run_instructions</span>(<span class="ident">runtime</span>, <span class="ident">start</span>)<span class="question-mark">?</span>;
+
+                        <span class="ident">context</span> <span class="op">=</span> <span class="ident">updated_context</span>;
+
+                        <span class="kw">match</span> <span class="ident">end_reason</span> {
+                            <span class="ident">EndReason</span>::<span class="ident">ExitCalled</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">context</span>),
+                            <span class="kw">_</span> <span class="op">=&gt;</span> (),
+                        };
+                    }
+                    <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">error</span>),
+                }
+            }
+            <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=&gt;</span> {
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ScriptError</span> {
+                    <span class="ident">info</span>: <span class="ident">ErrorInfo</span>::<span class="ident">Runtime</span>(<span class="ident">error</span>.<span class="ident">to_string</span>(), <span class="prelude-val">Some</span>(<span class="ident">InstructionMetaInfo</span>::<span class="ident">new</span>())),
+                });
+            }
+        };
+    }
+}
+
 <span class="kw">fn</span> <span class="ident">run</span>(<span class="ident">instructions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Instruction</span><span class="op">&gt;</span>, <span class="ident">context</span>: <span class="ident">Context</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Context</span>, <span class="ident">ScriptError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">runtime</span> <span class="op">=</span> <span class="ident">create_runtime</span>(<span class="ident">instructions</span>, <span class="ident">context</span>);
 
-    <span class="ident">run_instructions</span>(<span class="ident">runtime</span>, <span class="number">0</span>)
+    <span class="kw">match</span> <span class="ident">run_instructions</span>(<span class="ident">runtime</span>, <span class="number">0</span>) {
+        <span class="prelude-val">Ok</span>((<span class="ident">context</span>, <span class="kw">_</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">context</span>),
+        <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">error</span>),
+    }
 }
 
 <span class="kw">fn</span> <span class="ident">create_runtime</span>(<span class="ident">instructions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Instruction</span><span class="op">&gt;</span>, <span class="ident">context</span>: <span class="ident">Context</span>) <span class="op">-&gt;</span> <span class="ident">Runtime</span> {
@@ -360,15 +468,19 @@
     <span class="ident">runtime</span>
 }
 
-<span class="kw">fn</span> <span class="ident">run_instructions</span>(<span class="kw-2">mut</span> <span class="ident">runtime</span>: <span class="ident">Runtime</span>, <span class="ident">start_at</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Context</span>, <span class="ident">ScriptError</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">run_instructions</span>(
+    <span class="kw-2">mut</span> <span class="ident">runtime</span>: <span class="ident">Runtime</span>,
+    <span class="ident">start_at</span>: <span class="ident">usize</span>,
+) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Context</span>, <span class="ident">EndReason</span>), <span class="ident">ScriptError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">line</span> <span class="op">=</span> <span class="ident">start_at</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">runtime</span>.<span class="ident">context</span>.<span class="ident">state</span>.<span class="ident">clone</span>();
 
     <span class="kw">let</span> <span class="ident">instructions</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">runtime</span>.<span class="ident">instructions</span> {
         <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">instructions</span>) <span class="op">=&gt;</span> <span class="ident">instructions</span>,
-        <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">runtime</span>.<span class="ident">context</span>),
+        <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>((<span class="ident">runtime</span>.<span class="ident">context</span>, <span class="ident">EndReason</span>::<span class="ident">ReachedEnd</span>)),
     };
 
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">end_reason</span> <span class="op">=</span> <span class="ident">EndReason</span>::<span class="ident">ReachedEnd</span>;
     <span class="kw">loop</span> {
         <span class="kw">let</span> (<span class="ident">instruction</span>, <span class="ident">meta_info</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">instructions</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="ident">line</span> {
             <span class="kw">let</span> <span class="ident">instruction</span> <span class="op">=</span> <span class="ident">instructions</span>[<span class="ident">line</span>].<span class="ident">clone</span>();
@@ -390,6 +502,7 @@
         <span class="kw">match</span> <span class="ident">command_result</span> {
             <span class="ident">CommandResult</span>::<span class="ident">Exit</span>(<span class="ident">output</span>) <span class="op">=&gt;</span> {
                 <span class="ident">update_output</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">runtime</span>.<span class="ident">context</span>.<span class="ident">variables</span>, <span class="ident">output_variable</span>, <span class="ident">output</span>);
+                <span class="ident">end_reason</span> <span class="op">=</span> <span class="ident">EndReason</span>::<span class="ident">ExitCalled</span>;
 
                 <span class="kw">break</span>;
             }
@@ -402,18 +515,21 @@
 
                 <span class="kw">let</span> <span class="ident">post_error_line</span> <span class="op">=</span> <span class="ident">line</span> <span class="op">+</span> <span class="number">1</span>;
 
-                <span class="kw">let</span> <span class="ident">should_continue</span> <span class="op">=</span> <span class="ident">run_on_error_instruction</span>(
+                <span class="kw">match</span> <span class="ident">run_on_error_instruction</span>(
                     <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">runtime</span>.<span class="ident">context</span>.<span class="ident">commands</span>,
                     <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">runtime</span>.<span class="ident">context</span>.<span class="ident">variables</span>,
                     <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">state</span>,
                     <span class="kw-2">&amp;</span><span class="ident">instructions</span>,
                     <span class="ident">error</span>,
-                    <span class="ident">meta_info</span>,
-                );
-
-                <span class="kw">if</span> <span class="op">!</span><span class="ident">should_continue</span> {
-                    <span class="kw">break</span>;
-                }
+                    <span class="ident">meta_info</span>.<span class="ident">clone</span>(),
+                ) {
+                    <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=&gt;</span> {
+                        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ScriptError</span> {
+                            <span class="ident">info</span>: <span class="ident">ErrorInfo</span>::<span class="ident">Runtime</span>(<span class="ident">error</span>, <span class="prelude-val">Some</span>(<span class="ident">meta_info</span>.<span class="ident">clone</span>())),
+                        });
+                    }
+                    <span class="kw">_</span> <span class="op">=&gt;</span> (),
+                };
 
                 <span class="ident">line</span> <span class="op">=</span> <span class="ident">post_error_line</span>;
 
@@ -454,7 +570,7 @@
 
     <span class="ident">runtime</span>.<span class="ident">context</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">state</span>;
 
-    <span class="prelude-val">Ok</span>(<span class="ident">runtime</span>.<span class="ident">context</span>)
+    <span class="prelude-val">Ok</span>((<span class="ident">runtime</span>.<span class="ident">context</span>, <span class="ident">end_reason</span>))
 }
 
 <span class="kw">fn</span> <span class="ident">update_output</span>(
@@ -477,7 +593,7 @@
     <span class="ident">instructions</span>: <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Instruction</span><span class="op">&gt;</span>,
     <span class="ident">error</span>: <span class="ident">String</span>,
     <span class="ident">meta_info</span>: <span class="ident">InstructionMetaInfo</span>,
-) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">String</span><span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="ident">commands</span>.<span class="ident">exists</span>(<span class="string">&quot;on_error&quot;</span>) {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">script_instruction</span> <span class="op">=</span> <span class="ident">ScriptInstruction</span>::<span class="ident">new</span>();
         <span class="ident">script_instruction</span>.<span class="ident">command</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="string">&quot;on_error&quot;</span>.<span class="ident">to_string</span>());
@@ -498,13 +614,13 @@
             <span class="ident">CommandResult</span>::<span class="ident">Exit</span>(<span class="ident">output</span>) <span class="op">=&gt;</span> {
                 <span class="ident">update_output</span>(<span class="ident">variables</span>, <span class="ident">output_variable</span>, <span class="ident">output</span>);
 
-                <span class="bool-val">false</span>
+                <span class="prelude-val">Err</span>(<span class="string">&quot;Exiting Script.&quot;</span>.<span class="ident">to_string</span>())
             }
-            <span class="ident">CommandResult</span>::<span class="ident">Crash</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="bool-val">false</span>,
-            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="bool-val">true</span>,
+            <span class="ident">CommandResult</span>::<span class="ident">Crash</span>(<span class="ident">error</span>) <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">error</span>),
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(()),
         }
     } <span class="kw">else</span> {
-        <span class="bool-val">true</span>
+        <span class="prelude-val">Ok</span>(())
     }
 }
 
@@ -551,7 +667,7 @@
 
                         <span class="ident">command_result</span>
                     }
-                    <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">CommandResult</span>::<span class="ident">Error</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Command: {} not found.&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">command</span>)),
+                    <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">CommandResult</span>::<span class="ident">Crash</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Command: {} not found.&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">command</span>)),
                 },
                 <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">CommandResult</span>::<span class="ident">Continue</span>(<span class="prelude-val">None</span>),
             }
