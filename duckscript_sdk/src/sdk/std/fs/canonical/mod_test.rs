@@ -15,7 +15,7 @@ fn run_no_path_provided() {
 #[test]
 fn run_path_provided() {
     let output = if cfg!(windows) {
-        "\\target\\_duckscript".to_string()
+        "_duckscript".to_string()
     } else {
         "/target/_duckscript".to_string()
     };
