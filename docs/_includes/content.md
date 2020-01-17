@@ -54,6 +54,8 @@ duck ./examples/hello_world.ds
 
 We will understand more and breakdown this down in the following sections.
 
+*Running the duck command without any arguments will open up the repl mode.*
+
 <a name="tutorial-commands"></a>
 ### Commands
 Commands are the basis of everything in duckscript.<br>
