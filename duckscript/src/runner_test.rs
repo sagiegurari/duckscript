@@ -230,7 +230,9 @@ fn run_instructions_exit_result_no_output() {
     let context_result = run_instructions(runtime, 0);
 
     assert!(context_result.is_ok());
-    assert!(context_result.unwrap().variables.is_empty());
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert!(updated_context.variables.is_empty());
+    assert_eq!(end_reason, EndReason::ExitCalled);
 }
 
 #[test]
@@ -261,8 +263,10 @@ fn run_instructions_exit_result_with_output() {
     let context_result = run_instructions(runtime, 0);
 
     assert!(context_result.is_ok());
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_eq!(end_reason, EndReason::ExitCalled);
     assert_eq!(
-        context_result.unwrap().variables.get("out"),
+        updated_context.variables.get("out"),
         Some(&"value".to_string())
     );
 }
@@ -288,7 +292,9 @@ fn run_instructions_error_result() {
     let context_result = run_instructions(runtime, 0);
 
     assert!(context_result.is_ok());
-    let variables = context_result.unwrap().variables;
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_eq!(end_reason, EndReason::ReachedEnd);
+    let variables = updated_context.variables;
     assert!(!variables.is_empty());
     assert_eq!(variables.get("out").unwrap(), "false");
 }
@@ -328,7 +334,9 @@ fn run_instructions_error_result_with_on_error() {
 
     assert!(context_result.is_ok());
 
-    let variables = context_result.unwrap().variables;
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_eq!(end_reason, EndReason::ReachedEnd);
+    let variables = updated_context.variables;
     assert!(!variables.is_empty());
     assert_eq!(variables.get("1").unwrap(), "test");
     assert_eq!(variables.get("2").unwrap(), "2");
@@ -375,7 +383,9 @@ fn run_instructions_continue_result_no_output() {
     let context_result = run_instructions(runtime, 0);
 
     assert!(context_result.is_ok());
-    assert!(context_result.unwrap().variables.is_empty());
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert!(updated_context.variables.is_empty());
 }
 
 #[test]
@@ -409,9 +419,16 @@ fn run_instructions_continue_result_with_output() {
 
     assert!(context_result.is_ok());
 
-    context = context_result.unwrap();
-    assert_eq!(context.variables.get("out1"), Some(&"value1".to_string()));
-    assert_eq!(context.variables.get("out2"), Some(&"value2".to_string()));
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert_eq!(
+        updated_context.variables.get("out1"),
+        Some(&"value1".to_string())
+    );
+    assert_eq!(
+        updated_context.variables.get("out2"),
+        Some(&"value2".to_string())
+    );
 }
 
 #[test]
@@ -455,8 +472,12 @@ fn run_instructions_goto_label_result_no_output() {
 
     assert!(context_result.is_ok());
 
-    context = context_result.unwrap();
-    assert_eq!(context.variables.get("out2"), Some(&"value2".to_string()));
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert_eq!(
+        updated_context.variables.get("out2"),
+        Some(&"value2".to_string())
+    );
 }
 
 #[test]
@@ -501,9 +522,16 @@ fn run_instructions_goto_label_result_with_output() {
 
     assert!(context_result.is_ok());
 
-    context = context_result.unwrap();
-    assert_eq!(context.variables.get("out1"), Some(&"my_label".to_string()));
-    assert_eq!(context.variables.get("out2"), Some(&"value2".to_string()));
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert_eq!(
+        updated_context.variables.get("out1"),
+        Some(&"my_label".to_string())
+    );
+    assert_eq!(
+        updated_context.variables.get("out2"),
+        Some(&"value2".to_string())
+    );
 }
 
 #[test]
@@ -547,8 +575,12 @@ fn run_instructions_goto_line_result_no_output() {
 
     assert!(context_result.is_ok());
 
-    context = context_result.unwrap();
-    assert_eq!(context.variables.get("out2"), Some(&"value2".to_string()));
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert_eq!(
+        updated_context.variables.get("out2"),
+        Some(&"value2".to_string())
+    );
 }
 
 #[test]
@@ -593,9 +625,16 @@ fn run_instructions_goto_line_result_with_output() {
 
     assert!(context_result.is_ok());
 
-    context = context_result.unwrap();
-    assert_eq!(context.variables.get("out1"), Some(&"2".to_string()));
-    assert_eq!(context.variables.get("out2"), Some(&"value2".to_string()));
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert_eq!(
+        updated_context.variables.get("out1"),
+        Some(&"2".to_string())
+    );
+    assert_eq!(
+        updated_context.variables.get("out2"),
+        Some(&"value2".to_string())
+    );
 }
 
 #[test]

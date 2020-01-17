@@ -116,9 +116,6 @@
 //! [Apache 2](https://github.com/sagiegurari/duckscript/blob/master/LICENSE) open source license.
 //!
 
-mod error;
-
-use crate::error::{CliError, ErrorInfo};
 use duckscript::runner;
 use duckscript::types::error::ScriptError;
 use duckscript::types::runtime::Context;
@@ -136,13 +133,11 @@ fn main() {
     };
 }
 
-fn run_cli() -> Result<(), CliError> {
+fn run_cli() -> Result<(), ScriptError> {
     let args: Vec<String> = env::args().collect();
 
     if args.len() < 2 {
-        Err(CliError {
-            info: ErrorInfo::Cli("script file path not provided."),
-        })
+        run_repl()
     } else if args[1] == "--help" || args[1] == "-h" {
         let usage = include_str!("help.txt");
         println!(
@@ -162,24 +157,33 @@ fn run_cli() -> Result<(), CliError> {
             }
         };
 
-        match run_script(&value, is_file) {
-            Err(error) => Err(CliError {
-                info: ErrorInfo::Script(error),
-            }),
-            _ => Ok(()),
-        }
+        run_script(&value, is_file)
     }
 }
 
-fn run_script(value: &str, is_file: bool) -> Result<(), ScriptError> {
+fn create_context() -> Result<Context, ScriptError> {
     let mut context = Context::new();
     duckscriptsdk::load(&mut context.commands)?;
+
+    Ok(context)
+}
+
+fn run_script(value: &str, is_file: bool) -> Result<(), ScriptError> {
+    let context = create_context()?;
 
     if is_file {
         runner::run_script_file(value, context)?;
     } else {
         runner::run_script(value, context)?;
     }
+
+    Ok(())
+}
+
+fn run_repl() -> Result<(), ScriptError> {
+    let context = create_context()?;
+
+    runner::repl(context)?;
 
     Ok(())
 }
