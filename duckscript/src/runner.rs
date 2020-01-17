@@ -259,7 +259,7 @@ pub fn run_instruction(
 
                         command_result
                     }
-                    None => CommandResult::Error(format!("Command: {} not found.", &command)),
+                    None => CommandResult::Crash(format!("Command: {} not found.", &command)),
                 },
                 None => CommandResult::Continue(None),
             }

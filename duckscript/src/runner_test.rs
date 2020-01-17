@@ -155,7 +155,7 @@ fn run_instructions_unknown_command() {
 
     let context_result = run_instructions(runtime, 0);
 
-    assert!(context_result.is_ok());
+    assert!(context_result.is_err());
 }
 
 #[test]
@@ -175,24 +175,26 @@ fn run_instructions_start_bigger_then_script() {
 }
 
 #[test]
-fn run_instructions_start_after_exit() {
+fn run_instructions_start_after_bad_command() {
     let mut instructions = vec![];
 
     let mut script_instruction = ScriptInstruction::new();
-    script_instruction.command = Some("exit".to_string());
+    script_instruction.command = Some("bad".to_string());
     instructions.push(Instruction {
         meta_info: InstructionMetaInfo::new(),
         instruction_type: InstructionType::Script(script_instruction),
     });
     script_instruction = ScriptInstruction::new();
-    script_instruction.command = Some("bad".to_string());
+    script_instruction.command = Some("set".to_string());
     instructions.push(Instruction {
         meta_info: InstructionMetaInfo::new(),
         instruction_type: InstructionType::Script(script_instruction),
     });
 
     let mut context = Context::new();
-    let result = context.commands.set(Box::new(ExitCommand {}));
+    let mut result = context.commands.set(Box::new(ExitCommand {}));
+    assert!(result.is_ok());
+    result = context.commands.set(Box::new(SetCommand {}));
     assert!(result.is_ok());
 
     let runtime = create_runtime(instructions, context);
@@ -724,7 +726,7 @@ fn run_instruction_script_instruction_unknown_command() {
     );
 
     assert!(output_variable.is_none());
-    assert!(test::validate_error_result(&command_result));
+    assert!(test::validate_crash_result(&command_result));
 }
 
 #[test]

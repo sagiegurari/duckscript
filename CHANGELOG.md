@@ -3,8 +3,10 @@
 ### v0.1.7
 
 * Fixed runner to return an error if on_error requested crash or exit and not just end the script.
-* Unalias can remove aliases not created from the alias command.
+* \[Breaking Change\] Unalias can remove aliases not created from the alias command.
 * New properties read/write commands #61
+* Default command run implementation should crash and not error #63
+* \[Breaking Change\] Invoking a command that does not exist should crash and not error
 
 ### v0.1.6 (2020-01-12)
 

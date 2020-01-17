@@ -282,3 +282,10 @@ pub(crate) fn validate_error_result(result: &CommandResult) -> bool {
         _ => false,
     }
 }
+
+pub(crate) fn validate_crash_result(result: &CommandResult) -> bool {
+    match result {
+        CommandResult::Crash(_) => true,
+        _ => false,
+    }
+}

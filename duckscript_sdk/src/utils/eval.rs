@@ -56,7 +56,10 @@ pub(crate) fn eval_with_error(
     commands: &mut Commands,
 ) -> CommandResult {
     match eval(arguments, state, variables, commands) {
-        Ok(command_result) => command_result,
+        Ok(command_result) => match command_result.clone() {
+            CommandResult::Crash(error) => CommandResult::Error(error),
+            _ => command_result,
+        },
         Err(error) => CommandResult::Error(error.to_string()),
     }
 }
