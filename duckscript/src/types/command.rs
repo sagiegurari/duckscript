@@ -58,7 +58,7 @@ pub trait Command {
 
     /// Runs the given instruction
     fn run(&self, _arguments: Vec<String>) -> CommandResult {
-        CommandResult::Error(format!("Not implemented for command: {}", &self.name()).to_string())
+        CommandResult::Crash(format!("Not implemented for command: {}", &self.name()).to_string())
     }
 
     /// Run the instruction with access to the runtime context.
@@ -82,7 +82,7 @@ pub trait Command {
         _commands: &mut Commands,
         _line: usize,
     ) -> CommandResult {
-        CommandResult::Error(format!("Not implemented for command: {}", &self.name()).to_string())
+        CommandResult::Crash(format!("Not implemented for command: {}", &self.name()).to_string())
     }
 }
 
