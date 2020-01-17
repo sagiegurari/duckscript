@@ -26,16 +26,18 @@ impl Command for CommandImpl {
         if arguments.is_empty() {
             CommandResult::Error("File name not provided.".to_string())
         } else {
-            let result = io::read_text_file(&arguments[0]);
+            let mut all_text = String::new();
+            for argument in &arguments {
+                let result = io::read_text_file(&argument);
 
-            match result {
-                Ok(text) => {
-                    println!("{}", &text);
-
-                    CommandResult::Continue(Some(text))
+                match result {
+                    Ok(text) => all_text.push_str(&text),
+                    Err(error) => return CommandResult::Error(error.to_string()),
                 }
-                Err(error) => CommandResult::Error(error.to_string()),
             }
+
+            println!("{}", &all_text);
+            CommandResult::Continue(Some(all_text))
         }
     }
 }

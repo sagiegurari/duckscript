@@ -7,6 +7,7 @@
 * New properties read/write commands #61
 * Default command run implementation should crash and not error #63
 * \[Breaking Change\] Invoking a command that does not exist should crash and not error
+* cat command to support multiple files #62
 
 ### v0.1.6 (2020-01-12)
 

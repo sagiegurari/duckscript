@@ -13,10 +13,19 @@ fn run_no_file_provided() {
 }
 
 #[test]
-fn run_valid() {
+fn run_single_file() {
     test::run_script_and_validate(
         vec![create("")],
         "out = cat ./Cargo.toml",
+        CommandValidation::Contains("out".to_string(), "duckscript".to_string()),
+    );
+}
+
+#[test]
+fn run_multiple_files() {
+    test::run_script_and_validate(
+        vec![create("")],
+        "out = cat ./Cargo.toml ./Cargo.toml",
         CommandValidation::Contains("out".to_string(), "duckscript".to_string()),
     );
 }

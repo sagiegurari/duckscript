@@ -1,13 +1,13 @@
 ```sh
-var = cat file
+var = cat [file]+
 ```
 
-The cat command will print out the requested file.<br>
+The cat command will print out the requested file/s.<br>
 In addition it will also return the value to the output variable.
 
 #### Parameters
 
-A single parameter holding the file path.
+Multiple file paths.
 
 #### Return Value
 
