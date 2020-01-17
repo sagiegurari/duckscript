@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### v0.1.8
+
+* Reduce binary executable size.
+* Fix CLI help documentation.
+
 ### v0.1.7 (2020-01-17)
 
 * Fixed runner to return an error if on_error requested crash or exit and not just end the script.
