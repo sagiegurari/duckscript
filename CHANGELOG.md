@@ -8,6 +8,7 @@
 * Default command run implementation should crash and not error #63
 * \[Breaking Change\] Invoking a command that does not exist should crash and not error
 * cat command to support multiple files #62
+* New debug commands (dump_instructions, dump_state, dump_variables) #58 #59 #60
 
 ### v0.1.6 (2020-01-12)
 

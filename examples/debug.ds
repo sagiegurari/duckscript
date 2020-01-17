@@ -1,0 +1,29 @@
+
+one = set 1
+two = set 2
+values = array 1 2 yes true
+numbers = range -5 15
+
+text = dump_instructions
+found = contains ${text} -5
+assert found
+echo Script Instructions:
+echo ${text}
+
+text = dump_variables
+found = contains ${text} two
+assert found
+found = contains ${text} 2
+assert found
+found = contains ${text} handle
+assert found
+echo Script Variables:
+echo ${text}
+
+text = dump_state
+found = contains ${text} yes
+assert found
+found = contains ${text} 7
+assert found
+echo Script State:
+echo ${text}

@@ -20,6 +20,9 @@
 * [std::collections::Range (range)](#std__collections__Range)
 * [std::collections::ReadProperties (read_properties)](#std__collections__ReadProperties)
 * [std::collections::WriteProperties (write_properties)](#std__collections__WriteProperties)
+* [std::debug::DumpInstructions (dump_instructions)](#std__debug__DumpInstructions)
+* [std::debug::DumpState (dump_state)](#std__debug__DumpState)
+* [std::debug::DumpVariables (dump_variables)](#std__debug__DumpVariables)
 * [std::env::GetVar (get_env)](#std__env__GetVar)
 * [std::env::PrintCurrentDirectory (pwd)](#std__env__PrintCurrentDirectory)
 * [std::env::SetCurrentDirectory (cd, set_current_dir)](#std__env__SetCurrentDirectory)
@@ -865,6 +868,101 @@ text = write_properties a b a.b.c
 #### Aliases:
 write_properties
 
+<a name="std__debug__DumpInstructions"></a>
+## std::debug::DumpInstructions
+```sh
+value = dump_instructions
+```
+
+Returns all script instructions structure (not script text) in textual form.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The script instructions.
+
+#### Examples
+
+```sh
+value = dump_instructions
+found = contains ${value} dump_instructions
+assert found
+```
+
+
+#### Aliases:
+dump_instructions
+
+<a name="std__debug__DumpState"></a>
+## std::debug::DumpState
+```sh
+value = dump_state
+```
+
+Returns all script state in textual form.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The script state.
+
+#### Examples
+
+```sh
+numbers = range -5 15
+
+text = dump_instructions
+found = contains ${text} -5
+assert found
+```
+
+
+#### Aliases:
+dump_state
+
+<a name="std__debug__DumpVariables"></a>
+## std::debug::DumpVariables
+```sh
+value = dump_variables
+```
+
+Returns all script variables in textual form.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The script variables.
+
+#### Examples
+
+```sh
+one = set 1
+two = set 2
+values = array 1 2 yes true
+numbers = range -5 15
+
+text = dump_variables
+found = contains ${text} two
+assert found
+found = contains ${text} 2
+assert found
+found = contains ${text} handle
+assert found
+```
+
+
+#### Aliases:
+dump_variables
+
 <a name="std__env__GetVar"></a>
 ## std::env::GetVar
 ```sh
@@ -1451,15 +1549,15 @@ mv
 <a name="std__fs__Print"></a>
 ## std::fs::Print
 ```sh
-var = cat file
+var = cat [file]+
 ```
 
-The cat command will print out the requested file.<br>
+The cat command will print out the requested file/s.<br>
 In addition it will also return the value to the output variable.
 
 #### Parameters
 
-A single parameter holding the file path.
+Multiple file paths.
 
 #### Return Value
 
