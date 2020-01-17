@@ -14,9 +14,15 @@ fn run_no_path_provided() {
 
 #[test]
 fn run_path_provided() {
+    let output = if cfg!(windows) {
+        "_duckscript".to_string()
+    } else {
+        "/target/_duckscript".to_string()
+    };
+
     test::run_script_and_validate(
         vec![create("")],
         "out = canonicalize ./target/_duckscript",
-        CommandValidation::Contains("out".to_string(), "/target/_duckscript".to_string()),
+        CommandValidation::Contains("out".to_string(), output),
     );
 }

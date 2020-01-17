@@ -1,5 +1,16 @@
 ## CHANGELOG
 
+### v0.1.7
+
+* Fixed runner to return an error if on_error requested crash or exit and not just end the script.
+* \[Breaking Change\] Unalias can remove aliases not created from the alias command.
+* New properties read/write commands #61
+* Default command run implementation should crash and not error #63
+* \[Breaking Change\] Invoking a command that does not exist should crash and not error
+* cat command to support multiple files #62
+* New debug commands (dump_instructions, dump_state, dump_variables) #58 #59 #60
+* Running **duck** cli without arguments, stars up the repl mode #41 #42
+
 ### v0.1.6 (2020-01-12)
 
 * \[Breaking Change\] Changed CLI executable from duckscript to duck

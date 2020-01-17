@@ -200,6 +200,7 @@ fn commands_remove() {
     commands.set(Box::new(command)).unwrap();
 
     assert_eq!(commands.get("test11").unwrap().name(), "test1");
-    commands.remove("test11");
+    assert!(commands.remove("test11"));
     assert!(commands.get("test11").is_none());
+    assert!(!commands.remove("test11"));
 }

@@ -39,7 +39,7 @@ fn run_valid_alias_defined() {
 
 #[test]
 fn run_after_unalias() {
-    test::run_script_and_error(
+    test::run_script_and_crash(
         vec![create(""), alias::create(""), Box::new(SetCommand {})],
         r#"
     alias set test_set
@@ -47,6 +47,5 @@ fn run_after_unalias() {
     out = unalias set
     out = set test
     "#,
-        "out",
     );
 }

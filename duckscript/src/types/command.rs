@@ -58,7 +58,7 @@ pub trait Command {
 
     /// Runs the given instruction
     fn run(&self, _arguments: Vec<String>) -> CommandResult {
-        CommandResult::Error(format!("Not implemented for command: {}", &self.name()).to_string())
+        CommandResult::Crash(format!("Not implemented for command: {}", &self.name()).to_string())
     }
 
     /// Run the instruction with access to the runtime context.
@@ -82,7 +82,7 @@ pub trait Command {
         _commands: &mut Commands,
         _line: usize,
     ) -> CommandResult {
-        CommandResult::Error(format!("Not implemented for command: {}", &self.name()).to_string())
+        CommandResult::Crash(format!("Not implemented for command: {}", &self.name()).to_string())
     }
 }
 
@@ -135,6 +135,7 @@ impl Commands {
         }
 
         self.commands.insert(name.clone(), command);
+        self.aliases.remove(&name);
 
         for alias in &aliases {
             self.aliases.insert(alias.to_string(), name.clone());
@@ -191,7 +192,10 @@ impl Commands {
     }
 
     /// Removes the requested command.
-    pub fn remove(&mut self, name: &str) {
-        self.get_for_use(name);
+    pub fn remove(&mut self, name: &str) -> bool {
+        match self.get_for_use(name) {
+            Some(_) => true,
+            None => false,
+        }
     }
 }

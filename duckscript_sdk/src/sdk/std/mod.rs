@@ -1,5 +1,6 @@
 pub(crate) mod alias;
 pub(crate) mod collections;
+mod debug;
 mod echo;
 mod env;
 mod eval;
@@ -42,6 +43,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     commands.set(unalias::create(PACKAGE))?;
 
     collections::load(commands, PACKAGE)?;
+    debug::load(commands, PACKAGE)?;
     env::load(commands, PACKAGE)?;
     flowcontrol::load(commands, PACKAGE)?;
     fs::load(commands, PACKAGE)?;

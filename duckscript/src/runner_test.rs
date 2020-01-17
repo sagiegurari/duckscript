@@ -155,7 +155,7 @@ fn run_instructions_unknown_command() {
 
     let context_result = run_instructions(runtime, 0);
 
-    assert!(context_result.is_ok());
+    assert!(context_result.is_err());
 }
 
 #[test]
@@ -175,24 +175,26 @@ fn run_instructions_start_bigger_then_script() {
 }
 
 #[test]
-fn run_instructions_start_after_exit() {
+fn run_instructions_start_after_bad_command() {
     let mut instructions = vec![];
 
     let mut script_instruction = ScriptInstruction::new();
-    script_instruction.command = Some("exit".to_string());
+    script_instruction.command = Some("bad".to_string());
     instructions.push(Instruction {
         meta_info: InstructionMetaInfo::new(),
         instruction_type: InstructionType::Script(script_instruction),
     });
     script_instruction = ScriptInstruction::new();
-    script_instruction.command = Some("bad".to_string());
+    script_instruction.command = Some("set".to_string());
     instructions.push(Instruction {
         meta_info: InstructionMetaInfo::new(),
         instruction_type: InstructionType::Script(script_instruction),
     });
 
     let mut context = Context::new();
-    let result = context.commands.set(Box::new(ExitCommand {}));
+    let mut result = context.commands.set(Box::new(ExitCommand {}));
+    assert!(result.is_ok());
+    result = context.commands.set(Box::new(SetCommand {}));
     assert!(result.is_ok());
 
     let runtime = create_runtime(instructions, context);
@@ -228,7 +230,9 @@ fn run_instructions_exit_result_no_output() {
     let context_result = run_instructions(runtime, 0);
 
     assert!(context_result.is_ok());
-    assert!(context_result.unwrap().variables.is_empty());
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert!(updated_context.variables.is_empty());
+    assert_eq!(end_reason, EndReason::ExitCalled);
 }
 
 #[test]
@@ -259,8 +263,10 @@ fn run_instructions_exit_result_with_output() {
     let context_result = run_instructions(runtime, 0);
 
     assert!(context_result.is_ok());
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_eq!(end_reason, EndReason::ExitCalled);
     assert_eq!(
-        context_result.unwrap().variables.get("out"),
+        updated_context.variables.get("out"),
         Some(&"value".to_string())
     );
 }
@@ -286,7 +292,9 @@ fn run_instructions_error_result() {
     let context_result = run_instructions(runtime, 0);
 
     assert!(context_result.is_ok());
-    let variables = context_result.unwrap().variables;
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_eq!(end_reason, EndReason::ReachedEnd);
+    let variables = updated_context.variables;
     assert!(!variables.is_empty());
     assert_eq!(variables.get("out").unwrap(), "false");
 }
@@ -326,7 +334,9 @@ fn run_instructions_error_result_with_on_error() {
 
     assert!(context_result.is_ok());
 
-    let variables = context_result.unwrap().variables;
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_eq!(end_reason, EndReason::ReachedEnd);
+    let variables = updated_context.variables;
     assert!(!variables.is_empty());
     assert_eq!(variables.get("1").unwrap(), "test");
     assert_eq!(variables.get("2").unwrap(), "2");
@@ -373,7 +383,9 @@ fn run_instructions_continue_result_no_output() {
     let context_result = run_instructions(runtime, 0);
 
     assert!(context_result.is_ok());
-    assert!(context_result.unwrap().variables.is_empty());
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert!(updated_context.variables.is_empty());
 }
 
 #[test]
@@ -407,9 +419,16 @@ fn run_instructions_continue_result_with_output() {
 
     assert!(context_result.is_ok());
 
-    context = context_result.unwrap();
-    assert_eq!(context.variables.get("out1"), Some(&"value1".to_string()));
-    assert_eq!(context.variables.get("out2"), Some(&"value2".to_string()));
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert_eq!(
+        updated_context.variables.get("out1"),
+        Some(&"value1".to_string())
+    );
+    assert_eq!(
+        updated_context.variables.get("out2"),
+        Some(&"value2".to_string())
+    );
 }
 
 #[test]
@@ -453,8 +472,12 @@ fn run_instructions_goto_label_result_no_output() {
 
     assert!(context_result.is_ok());
 
-    context = context_result.unwrap();
-    assert_eq!(context.variables.get("out2"), Some(&"value2".to_string()));
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert_eq!(
+        updated_context.variables.get("out2"),
+        Some(&"value2".to_string())
+    );
 }
 
 #[test]
@@ -499,9 +522,16 @@ fn run_instructions_goto_label_result_with_output() {
 
     assert!(context_result.is_ok());
 
-    context = context_result.unwrap();
-    assert_eq!(context.variables.get("out1"), Some(&"my_label".to_string()));
-    assert_eq!(context.variables.get("out2"), Some(&"value2".to_string()));
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert_eq!(
+        updated_context.variables.get("out1"),
+        Some(&"my_label".to_string())
+    );
+    assert_eq!(
+        updated_context.variables.get("out2"),
+        Some(&"value2".to_string())
+    );
 }
 
 #[test]
@@ -545,8 +575,12 @@ fn run_instructions_goto_line_result_no_output() {
 
     assert!(context_result.is_ok());
 
-    context = context_result.unwrap();
-    assert_eq!(context.variables.get("out2"), Some(&"value2".to_string()));
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert_eq!(
+        updated_context.variables.get("out2"),
+        Some(&"value2".to_string())
+    );
 }
 
 #[test]
@@ -591,9 +625,16 @@ fn run_instructions_goto_line_result_with_output() {
 
     assert!(context_result.is_ok());
 
-    context = context_result.unwrap();
-    assert_eq!(context.variables.get("out1"), Some(&"2".to_string()));
-    assert_eq!(context.variables.get("out2"), Some(&"value2".to_string()));
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert_eq!(
+        updated_context.variables.get("out1"),
+        Some(&"2".to_string())
+    );
+    assert_eq!(
+        updated_context.variables.get("out2"),
+        Some(&"value2".to_string())
+    );
 }
 
 #[test]
@@ -724,7 +765,7 @@ fn run_instruction_script_instruction_unknown_command() {
     );
 
     assert!(output_variable.is_none());
-    assert!(test::validate_error_result(&command_result));
+    assert!(test::validate_crash_result(&command_result));
 }
 
 #[test]
@@ -996,7 +1037,7 @@ fn run_on_error_instruction_no_command() {
     let mut variables = HashMap::new();
     let mut state = HashMap::new();
 
-    let should_continue = run_on_error_instruction(
+    let result = run_on_error_instruction(
         &mut commands,
         &mut variables,
         &mut state,
@@ -1005,7 +1046,7 @@ fn run_on_error_instruction_no_command() {
         InstructionMetaInfo::new(),
     );
 
-    assert!(should_continue);
+    assert!(result.is_ok());
 }
 
 #[test]
@@ -1018,7 +1059,7 @@ fn run_on_error_instruction_unknown_command() {
         .aliases
         .insert("on_error".to_string(), "badcommand".to_string());
 
-    let should_continue = run_on_error_instruction(
+    let result = run_on_error_instruction(
         &mut commands,
         &mut variables,
         &mut state,
@@ -1027,7 +1068,7 @@ fn run_on_error_instruction_unknown_command() {
         InstructionMetaInfo::new(),
     );
 
-    assert!(should_continue);
+    assert!(result.is_ok());
 }
 
 #[test]
@@ -1036,13 +1077,13 @@ fn run_on_error_instruction_exit_response() {
     let mut variables = HashMap::new();
     let mut state = HashMap::new();
 
-    let result = commands.set(Box::new(ExitCommand {}));
-    assert!(result.is_ok());
+    let set_result = commands.set(Box::new(ExitCommand {}));
+    assert!(set_result.is_ok());
     commands
         .aliases
         .insert("on_error".to_string(), "exit".to_string());
 
-    let should_continue = run_on_error_instruction(
+    let result = run_on_error_instruction(
         &mut commands,
         &mut variables,
         &mut state,
@@ -1051,7 +1092,7 @@ fn run_on_error_instruction_exit_response() {
         InstructionMetaInfo::new(),
     );
 
-    assert!(!should_continue);
+    assert!(result.is_err());
 }
 
 #[test]
@@ -1060,13 +1101,13 @@ fn run_on_error_instruction_crash_response() {
     let mut variables = HashMap::new();
     let mut state = HashMap::new();
 
-    let result = commands.set(Box::new(CrashCommand {}));
-    assert!(result.is_ok());
+    let set_result = commands.set(Box::new(CrashCommand {}));
+    assert!(set_result.is_ok());
     commands
         .aliases
         .insert("on_error".to_string(), "crash".to_string());
 
-    let should_continue = run_on_error_instruction(
+    let result = run_on_error_instruction(
         &mut commands,
         &mut variables,
         &mut state,
@@ -1075,7 +1116,7 @@ fn run_on_error_instruction_crash_response() {
         InstructionMetaInfo::new(),
     );
 
-    assert!(!should_continue);
+    assert!(result.is_err());
 }
 
 #[test]
@@ -1084,13 +1125,13 @@ fn run_on_error_instruction_continue_response() {
     let mut variables = HashMap::new();
     let mut state = HashMap::new();
 
-    let result = commands.set(Box::new(SetCommand {}));
-    assert!(result.is_ok());
+    let set_result = commands.set(Box::new(SetCommand {}));
+    assert!(set_result.is_ok());
     commands
         .aliases
         .insert("on_error".to_string(), "set".to_string());
 
-    let should_continue = run_on_error_instruction(
+    let result = run_on_error_instruction(
         &mut commands,
         &mut variables,
         &mut state,
@@ -1099,7 +1140,7 @@ fn run_on_error_instruction_continue_response() {
         InstructionMetaInfo::new(),
     );
 
-    assert!(should_continue);
+    assert!(result.is_ok());
 }
 
 #[test]
@@ -1108,13 +1149,13 @@ fn run_on_error_instruction_error_response() {
     let mut variables = HashMap::new();
     let mut state = HashMap::new();
 
-    let result = commands.set(Box::new(ErrorCommand {}));
-    assert!(result.is_ok());
+    let set_result = commands.set(Box::new(ErrorCommand {}));
+    assert!(set_result.is_ok());
     commands
         .aliases
         .insert("on_error".to_string(), "error".to_string());
 
-    let should_continue = run_on_error_instruction(
+    let result = run_on_error_instruction(
         &mut commands,
         &mut variables,
         &mut state,
@@ -1123,5 +1164,5 @@ fn run_on_error_instruction_error_response() {
         InstructionMetaInfo::new(),
     );
 
-    assert!(should_continue);
+    assert!(result.is_ok());
 }

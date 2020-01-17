@@ -16,6 +16,13 @@ use crate::types::instruction::{
 };
 use crate::types::runtime::{Context, Runtime, StateValue};
 use std::collections::HashMap;
+use std::io::stdin;
+
+#[derive(Debug, PartialEq)]
+enum EndReason {
+    ExitCalled,
+    ReachedEnd,
+}
 
 /// Executes the provided script with the given context
 pub fn run_script(text: &str, context: Context) -> Result<Context, ScriptError> {
@@ -33,10 +40,53 @@ pub fn run_script_file(file: &str, context: Context) -> Result<Context, ScriptEr
     }
 }
 
+/// Provides the REPL entry point
+pub fn repl(mut context: Context) -> Result<Context, ScriptError> {
+    let mut text = String::new();
+    let mut instructions = vec![];
+
+    loop {
+        text.clear();
+
+        match stdin().read_line(&mut text) {
+            Ok(_) => {
+                match parser::parse_text(&text) {
+                    Ok(mut new_instructions) => {
+                        // get start line
+                        let start = instructions.len();
+
+                        // add new instructions
+                        instructions.append(&mut new_instructions);
+                        let runtime = create_runtime(instructions.clone(), context);
+
+                        let (updated_context, end_reason) = run_instructions(runtime, start)?;
+
+                        context = updated_context;
+
+                        match end_reason {
+                            EndReason::ExitCalled => return Ok(context),
+                            _ => (),
+                        };
+                    }
+                    Err(error) => return Err(error),
+                }
+            }
+            Err(error) => {
+                return Err(ScriptError {
+                    info: ErrorInfo::Runtime(error.to_string(), Some(InstructionMetaInfo::new())),
+                });
+            }
+        };
+    }
+}
+
 fn run(instructions: Vec<Instruction>, context: Context) -> Result<Context, ScriptError> {
     let runtime = create_runtime(instructions, context);
 
-    run_instructions(runtime, 0)
+    match run_instructions(runtime, 0) {
+        Ok((context, _)) => Ok(context),
+        Err(error) => Err(error),
+    }
 }
 
 fn create_runtime(instructions: Vec<Instruction>, context: Context) -> Runtime {
@@ -65,15 +115,19 @@ fn create_runtime(instructions: Vec<Instruction>, context: Context) -> Runtime {
     runtime
 }
 
-fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, ScriptError> {
+fn run_instructions(
+    mut runtime: Runtime,
+    start_at: usize,
+) -> Result<(Context, EndReason), ScriptError> {
     let mut line = start_at;
     let mut state = runtime.context.state.clone();
 
     let instructions = match runtime.instructions {
         Some(ref instructions) => instructions,
-        None => return Ok(runtime.context),
+        None => return Ok((runtime.context, EndReason::ReachedEnd)),
     };
 
+    let mut end_reason = EndReason::ReachedEnd;
     loop {
         let (instruction, meta_info) = if instructions.len() > line {
             let instruction = instructions[line].clone();
@@ -95,6 +149,7 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
         match command_result {
             CommandResult::Exit(output) => {
                 update_output(&mut runtime.context.variables, output_variable, output);
+                end_reason = EndReason::ExitCalled;
 
                 break;
             }
@@ -107,18 +162,21 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
 
                 let post_error_line = line + 1;
 
-                let should_continue = run_on_error_instruction(
+                match run_on_error_instruction(
                     &mut runtime.context.commands,
                     &mut runtime.context.variables,
                     &mut state,
                     &instructions,
                     error,
-                    meta_info,
-                );
-
-                if !should_continue {
-                    break;
-                }
+                    meta_info.clone(),
+                ) {
+                    Err(error) => {
+                        return Err(ScriptError {
+                            info: ErrorInfo::Runtime(error, Some(meta_info.clone())),
+                        });
+                    }
+                    _ => (),
+                };
 
                 line = post_error_line;
 
@@ -159,7 +217,7 @@ fn run_instructions(mut runtime: Runtime, start_at: usize) -> Result<Context, Sc
 
     runtime.context.state = state;
 
-    Ok(runtime.context)
+    Ok((runtime.context, end_reason))
 }
 
 fn update_output(
@@ -182,7 +240,7 @@ fn run_on_error_instruction(
     instructions: &Vec<Instruction>,
     error: String,
     meta_info: InstructionMetaInfo,
-) -> bool {
+) -> Result<(), String> {
     if commands.exists("on_error") {
         let mut script_instruction = ScriptInstruction::new();
         script_instruction.command = Some("on_error".to_string());
@@ -203,13 +261,13 @@ fn run_on_error_instruction(
             CommandResult::Exit(output) => {
                 update_output(variables, output_variable, output);
 
-                false
+                Err("Exiting Script.".to_string())
             }
-            CommandResult::Crash(_) => false,
-            _ => true,
+            CommandResult::Crash(error) => Err(error),
+            _ => Ok(()),
         }
     } else {
-        true
+        Ok(())
     }
 }
 
@@ -256,7 +314,7 @@ pub fn run_instruction(
 
                         command_result
                     }
-                    None => CommandResult::Error(format!("Command: {} not found.", &command)),
+                    None => CommandResult::Crash(format!("Command: {} not found.", &command)),
                 },
                 None => CommandResult::Continue(None),
             }

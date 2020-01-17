@@ -1,6 +1,4 @@
-use crate::sdk::std::alias;
 use crate::utils::pckg;
-use crate::utils::state::get_sub_state;
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -16,11 +14,11 @@ struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "Unalias")
+        pckg::concat(&self.package, "DumpState")
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["unalias".to_string()]
+        vec!["dump_state".to_string()]
     }
 
     fn help(&self) -> String {
@@ -33,36 +31,17 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        _arguments: Vec<String>,
         state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
-        commands: &mut Commands,
+        _commands: &mut Commands,
         _line: usize,
     ) -> CommandResult {
-        if arguments.len() != 1 {
-            CommandResult::Error("Invalid alias name provided.".to_string())
-        } else {
-            let sub_state = get_sub_state(alias::ALIAS_STATE_KEY.to_string(), state);
+        let string_value = format!("{:#?}", state).to_string();
 
-            let key = &arguments[0];
-            let removed = if sub_state.contains_key(key) {
-                if commands.remove(key) {
-                    sub_state.remove(key);
-                    true
-                } else {
-                    false
-                }
-            } else if commands.aliases.contains_key(key) {
-                commands.aliases.remove(key);
-                true
-            } else {
-                false
-            };
-
-            CommandResult::Continue(Some(removed.to_string()))
-        }
+        CommandResult::Continue(Some(string_value))
     }
 }
 
