@@ -18,6 +18,11 @@ fn run_single_arg() {
 }
 
 #[test]
+fn run_not_numbers() {
+    test::run_script_and_error(vec![create("")], "out = less_than a b", "out");
+}
+
+#[test]
 fn run_equal() {
     test::run_script_and_validate(
         vec![create("")],
