@@ -1,4 +1,6 @@
 mod calc;
+mod greater_than;
+mod less_than;
 
 use crate::utils::pckg;
 use duckscript::types::command::Commands;
@@ -10,6 +12,8 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     let package = pckg::concat(parent, PACKAGE);
 
     commands.set(calc::create(&package))?;
+    commands.set(greater_than::create(&package))?;
+    commands.set(less_than::create(&package))?;
 
     Ok(())
 }

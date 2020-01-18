@@ -46,6 +46,8 @@
 * [std::fs::Read (readfile)](#std__fs__Read)
 * [std::fs::Write (writefile)](#std__fs__Write)
 * [std::math::Calc (calc)](#std__math__Calc)
+* [std::math::GreaterThan (greater_than)](#std__math__GreaterThan)
+* [std::math::LessThan (less_than)](#std__math__LessThan)
 * [std::net::Hostname (hostname)](#std__net__Hostname)
 * [std::net::HttpClient (http_client, wget)](#std__net__HttpClient)
 * [std::process::Execute (exec)](#std__process__Execute)
@@ -1655,6 +1657,58 @@ result = calc 1 + 5 * 7
 
 #### Aliases:
 calc
+
+<a name="std__math__GreaterThan"></a>
+## std::math::GreaterThan
+```sh
+var = greater_than left right
+```
+
+This command returns true/false based on left > right calculation.
+
+#### Parameters
+
+Two numeric values to compare.
+
+#### Return Value
+
+True if first argument is bigger than second argument.
+
+#### Examples
+
+```sh
+result = greater_than 2 1.5
+```
+
+
+#### Aliases:
+greater_than
+
+<a name="std__math__LessThan"></a>
+## std::math::LessThan
+```sh
+var = less_than left right
+```
+
+This command returns true/false based on left < right calculation.
+
+#### Parameters
+
+Two numeric values to compare.
+
+#### Return Value
+
+True if first argument is smaller than second argument.
+
+#### Examples
+
+```sh
+result = less_than 1 1.5
+```
+
+
+#### Aliases:
+less_than
 
 <a name="std__net__Hostname"></a>
 ## std::net::Hostname

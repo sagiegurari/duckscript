@@ -2,7 +2,8 @@
 
 ### v0.1.8
 
-* wget (http_client) command #20
+* New greater_than and less_than commands.
+* New wget (http_client) command #20
 * Reduce binary executable size.
 * Fix CLI help documentation.
 
