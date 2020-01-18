@@ -2,6 +2,7 @@
 
 ### v0.1.8
 
+* New replace command.
 * New current_time command.
 * New greater_than and less_than commands.
 * New wget (http_client) command #20

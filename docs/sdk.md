@@ -59,6 +59,7 @@
 * [std::string::IsEmpty (is_empty)](#std__string__IsEmpty)
 * [std::string::LastIndexOf (last_indexof)](#std__string__LastIndexOf)
 * [std::string::Length (length, strlen)](#std__string__Length)
+* [std::string::Replace (replace)](#std__string__Replace)
 * [std::string::StartsWith (starts_with)](#std__string__StartsWith)
 * [std::string::SubString (substring)](#std__string__SubString)
 * [std::string::Trim (trim)](#std__string__Trim)
@@ -2092,6 +2093,37 @@ len = length "Hello World"
 
 #### Aliases:
 length, strlen
+
+<a name="std__string__Replace"></a>
+## std::string::Replace
+```sh
+var = replace text from to
+```
+
+Returns new value of text after replacing all from values to the provided to values.
+
+#### Parameters
+
+* The full text
+* The from text
+* The to text
+
+#### Return Value
+
+The updated text.
+
+#### Examples
+
+```sh
+text = set "my large text value with lots of text"
+updated = replace ${text} text stuff
+
+assert_eq ${updated} "my large stuff value with lots of stuff"
+```
+
+
+#### Aliases:
+replace
 
 <a name="std__string__StartsWith"></a>
 ## std::string::StartsWith
