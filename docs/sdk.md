@@ -47,6 +47,7 @@
 * [std::fs::Write (writefile)](#std__fs__Write)
 * [std::math::Calc (calc)](#std__math__Calc)
 * [std::net::Hostname (hostname)](#std__net__Hostname)
+* [std::net::HttpClient (http_client, wget)](#std__net__HttpClient)
 * [std::process::Execute (exec)](#std__process__Execute)
 * [std::process::Exit (exit, quit, q)](#std__process__Exit)
 * [std::string::Contains (contains)](#std__string__Contains)
@@ -1680,6 +1681,70 @@ name = hostname
 
 #### Aliases:
 hostname
+
+<a name="std__net__HttpClient"></a>
+## std::net::HttpClient
+```sh
+var = http_client [--method=HTTP-method] [--post-data=payload] [-O file] URL
+```
+
+Invokes a HTTP request.<br>
+The request method by default is GET but can be modified by the ```--method``` parameter.<br>
+The ```-O``` parameter will redirect a valid response output to the provided file, otherwise all response text will be set to the
+output variable.<br>
+When redirecting to file, the output would be the response size.<br>
+The ```--post-data``` parameter enables to pass a payload to POST http requests.<br>
+In case of errors or error HTTP response codes, false will be returned.
+
+#### Parameters
+
+* Optional HTTP Method, for example --method=HTTP-GET or --method=HTTP-POST (currently only GET and POST are supported).
+* Optional post payload via ```--post-data``` parameter.
+* Optional redirection of output to file via ```-O``` parameter.
+* The target URL
+
+#### Return Value
+
+The response text or in case of output redirection to file, the response size.<br>
+In case of errors, it will return false.
+
+#### Examples
+
+```sh
+function test_get
+    response = http_client https://www.rust-lang.org/
+
+    found = contains ${response} Rust
+
+    assert ${found}
+end
+
+function test_get_to_file
+    file = set ./target/_duckscript_test/http_client/page.html
+    rm ${file}
+
+    response_size = http_client -O ${file} https://www.rust-lang.org/
+
+    response = readfile ${file}
+    found = contains ${response} Rust
+
+    assert ${found}
+    assert ${response_size}
+end
+
+function test_post
+    payload = set {\"login\":\"login\",\"password\":\"password\"}
+    response = http_client --method=HTTP-POST --post-data=${payload} https://reqbin.com/echo/post/json
+
+    found = contains ${response} success
+
+    assert ${found}
+end
+```
+
+
+#### Aliases:
+http_client, wget
 
 <a name="std__process__Execute"></a>
 ## std::process::Execute

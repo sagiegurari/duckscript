@@ -23,6 +23,7 @@ include = [
 ]
 
 [dependencies]
+attohttpc = "^0.10"
 duckscript = { version = "^0.1.6", path = "../duckscript" }
 fs_extra = "^1"
 home = "^0.5"

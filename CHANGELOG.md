@@ -2,6 +2,7 @@
 
 ### v0.1.8
 
+* wget (http_client) command #20
 * Reduce binary executable size.
 * Fix CLI help documentation.
 

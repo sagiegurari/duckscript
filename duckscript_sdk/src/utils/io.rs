@@ -1,5 +1,5 @@
 use duckscript::types::error::{ErrorInfo, ScriptError};
-use std::fs::{create_dir_all, File};
+use std::fs::{create_dir_all, remove_file, File};
 use std::io::{Read, Write};
 use std::path::Path;
 
@@ -148,5 +148,23 @@ pub(crate) fn create_empty_file(file: &str) -> Result<(), String> {
             Ok(_) => Ok(()),
             _ => Err(format!("Unable to create file: {}", file).to_string()),
         }
+    }
+}
+
+pub(crate) fn delete_file(file: &str) -> Result<(), String> {
+    let file_path = Path::new(file);
+
+    if file_path.exists() {
+        match remove_file(file) {
+            Ok(_) => Ok(()),
+            Err(error) => Err(format!(
+                "Unable to delete file: {} error: {}",
+                file,
+                error.to_string()
+            )
+            .to_string()),
+        }
+    } else {
+        Ok(())
     }
 }

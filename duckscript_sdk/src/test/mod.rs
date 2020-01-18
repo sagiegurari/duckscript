@@ -139,6 +139,7 @@ impl Command for OnErrorCommand {
 
 pub(crate) enum CommandValidation {
     None,
+    Ignore,
     Match(String, String),
     Contains(String, String),
     Any(String, Vec<String>),
@@ -236,6 +237,7 @@ pub(crate) fn run_script_and_validate(
                         &values
                     )
                 }
+                CommandValidation::Ignore => (),
             };
 
             context

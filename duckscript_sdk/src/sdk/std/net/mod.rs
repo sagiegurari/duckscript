@@ -1,4 +1,5 @@
 mod hostname;
+mod http_client;
 
 use crate::utils::pckg;
 use duckscript::types::command::Commands;
@@ -10,6 +11,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     let package = pckg::concat(parent, PACKAGE);
 
     commands.set(hostname::create(&package))?;
+    commands.set(http_client::create(&package))?;
 
     Ok(())
 }
