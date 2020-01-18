@@ -1,6 +1,7 @@
 
 [env]
 CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = "true"
+CARGO_MAKE_BINARY_EXECUTABLE_NAME = "duck"
 
 [env.sdk]
 CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = "duckscript_sdk;duckscript_cli"
