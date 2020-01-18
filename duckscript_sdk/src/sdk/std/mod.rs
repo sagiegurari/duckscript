@@ -21,6 +21,7 @@ mod set;
 pub(crate) mod string;
 mod test;
 mod thread;
+mod time;
 mod unalias;
 
 use duckscript::types::command::Commands;
@@ -54,6 +55,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     string::load(commands, PACKAGE)?;
     test::load(commands, PACKAGE)?;
     thread::load(commands, PACKAGE)?;
+    time::load(commands, PACKAGE)?;
 
     Ok(())
 }

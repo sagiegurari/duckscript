@@ -30,7 +30,7 @@ fn run_get_to_file() {
     test::run_script_and_validate(
         vec![create("")],
         "out = http_client -O ./target/_duckscript/http_client/page.html https://www.rust-lang.org/",
-        CommandValidation::Ignore
+        CommandValidation::PositiveNumber("out".to_string())
     );
 
     let read_result = io::read_text_file(file);

@@ -70,6 +70,7 @@
 * [std::test::AssertFail (assert_fail)](#std__test__AssertFail)
 * [std::test::AssertFalse (assert_false)](#std__test__AssertFalse)
 * [std::thread::Sleep (sleep)](#std__thread__Sleep)
+* [std::time::CurrentTimeMillies (current_time)](#std__time__CurrentTimeMillies)
 
 
 <a name="std__Alias"></a>
@@ -2475,6 +2476,33 @@ echo Waited for ${time} milliseconds.
 
 #### Aliases:
 sleep
+
+<a name="std__time__CurrentTimeMillies"></a>
+## std::time::CurrentTimeMillies
+```sh
+var = current_time
+```
+
+Returns the current time in milliseconds (from January 1, 1970 UTC).
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The current time in milliseconds.
+
+#### Examples
+
+```sh
+result = current_time
+echo ${result}
+```
+
+
+#### Aliases:
+current_time
 
 ### License
 Developed by Sagie Gur-Ari and licensed under the
