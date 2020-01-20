@@ -132,3 +132,14 @@ pub mod types;
 
 #[cfg(test)]
 mod test;
+
+#[cfg(test)]
+#[path = "./lib_test.rs"]
+mod lib_test;
+
+static VERSION: &str = env!("CARGO_PKG_VERSION");
+
+/// Returns the library version.
+pub fn version() -> String {
+    VERSION.to_string()
+}

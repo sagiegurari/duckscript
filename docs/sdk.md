@@ -20,6 +20,8 @@
 * [std::collections::Range (range)](#std__collections__Range)
 * [std::collections::ReadProperties (read_properties)](#std__collections__ReadProperties)
 * [std::collections::WriteProperties (write_properties)](#std__collections__WriteProperties)
+* [std::debug::DuckscriptSDKVersion (duckscript_sdk_version)](#std__debug__DuckscriptSDKVersion)
+* [std::debug::DuckscriptVersion (duckscript_version)](#std__debug__DuckscriptVersion)
 * [std::debug::DumpInstructions (dump_instructions)](#std__debug__DumpInstructions)
 * [std::debug::DumpState (dump_state)](#std__debug__DumpState)
 * [std::debug::DumpVariables (dump_variables)](#std__debug__DumpVariables)
@@ -872,6 +874,58 @@ text = write_properties a b a.b.c
 
 #### Aliases:
 write_properties
+
+<a name="std__debug__DuckscriptSDKVersion"></a>
+## std::debug::DuckscriptSDKVersion
+```sh
+var = duckscript_sdk_version
+```
+
+Returns the duckscript SDK version.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The duckscript SDK version.
+
+#### Examples
+
+```sh
+version = duckscript_sdk_version 
+```
+
+
+#### Aliases:
+duckscript_sdk_version
+
+<a name="std__debug__DuckscriptVersion"></a>
+## std::debug::DuckscriptVersion
+```sh
+var = duckscript_version
+```
+
+Returns the duckscript runtime version.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The duckscript runtime version.
+
+#### Examples
+
+```sh
+version = duckscript_version 
+```
+
+
+#### Aliases:
+duckscript_version
 
 <a name="std__debug__DumpInstructions"></a>
 ## std::debug::DumpInstructions

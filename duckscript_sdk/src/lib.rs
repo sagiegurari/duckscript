@@ -135,6 +135,13 @@ use duckscript::types::error::ScriptError;
 #[path = "./lib_test.rs"]
 mod lib_test;
 
+static VERSION: &str = env!("CARGO_PKG_VERSION");
+
+/// Returns the library version.
+pub fn version() -> String {
+    VERSION.to_string()
+}
+
 /// Loads all core commands
 pub fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     sdk::load(commands)

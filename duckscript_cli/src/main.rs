@@ -139,6 +139,15 @@ fn run_cli() -> Result<(), ScriptError> {
 
     if args.len() < 2 {
         run_repl()
+    } else if args[1] == "--version" {
+        println!(
+            "Duckscript Runtime: {}\nDuckscript SDK: {}\nDuckscript CLI: {}",
+            duckscript::version(),
+            duckscriptsdk::version(),
+            VERSION
+        );
+
+        Ok(())
     } else if args[1] == "--help" || args[1] == "-h" {
         let usage = include_str!("help.txt");
         println!(

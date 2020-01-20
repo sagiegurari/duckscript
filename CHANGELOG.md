@@ -2,6 +2,8 @@
 
 ### v0.1.8
 
+* New --version cli option.
+* New version functions and commands for duckscript and duckscript SDK.
 * New replace command.
 * New current_time command.
 * New greater_than and less_than commands.
