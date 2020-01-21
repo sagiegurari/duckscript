@@ -2,6 +2,7 @@
 
 ### v0.1.8
 
+* Test errors in duckscript based tests will break build flow.
 * New --version cli option.
 * New version functions and commands for duckscript and duckscript SDK.
 * New replace command.

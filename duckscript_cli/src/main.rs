@@ -129,7 +129,7 @@ static DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
 
 fn main() {
     match run_cli() {
-        Err(error) => println!("Error: {}", error),
+        Err(error) => panic!("Error: {}", error),
         _ => (),
     };
 }
