@@ -34,6 +34,7 @@
 * [std::error::GetLastError (get_last_error)](#std__error__GetLastError)
 * [std::error::GetLastErrorLine (get_last_error_line)](#std__error__GetLastErrorLine)
 * [std::error::GetLastErrorSource (get_last_error_source)](#std__error__GetLastErrorSource)
+* [std::error::SetError (set_error)](#std__error__SetError)
 * [std::error::SetExitOnError (exit_on_error, set_exit_on_error)](#std__error__SetExitOnError)
 * [std::fs::CopyPath (cp)](#std__fs__CopyPath)
 * [std::fs::CreateDirectory (mkdir)](#std__fs__CreateDirectory)
@@ -1289,6 +1290,37 @@ echo Error Source File: ${source}
 
 #### Aliases:
 get_last_error_source
+
+<a name="std__error__SetError"></a>
+## std::error::SetError
+```sh
+set_error message
+```
+
+Sets the last error which is accessible via get_last_error.<br>
+This command will not trigger the on_error command flow.
+
+#### Parameters
+
+The error message.
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+set_error "my error message"
+
+error = get_last_error
+
+assert_eq ${error} "my error message"
+```
+
+
+#### Aliases:
+set_error
 
 <a name="std__error__SetExitOnError"></a>
 ## std::error::SetExitOnError

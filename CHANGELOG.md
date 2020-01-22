@@ -2,6 +2,7 @@
 
 ### v0.1.8
 
+* New set_error command #68
 * New is_array command #70
 * Test errors in duckscript based tests will break build flow.
 * New --version cli option.
