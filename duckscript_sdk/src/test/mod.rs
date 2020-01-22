@@ -251,3 +251,12 @@ pub(crate) fn run_script_and_validate(
         Err(error) => panic!(error.to_string()),
     }
 }
+
+pub(crate) fn is_handles_empty(state: &HashMap<String, StateValue>) {
+    let handles_state = state.get("handles").unwrap();
+
+    match handles_state {
+        StateValue::SubState(state) => assert!(state.is_empty()),
+        _ => panic!("Invalid state type."),
+    }
+}

@@ -12,6 +12,7 @@ pub(crate) fn create(package: &str) -> Box<dyn Command> {
         name,
         vec!["array_is_empty".to_string()],
         include_str!("help.md").to_string(),
+        "array_is_empty".to_string(),
         include_str!("script.ds").to_string(),
         1,
     ))

@@ -760,7 +760,7 @@ out = array_is_empty ${values}
 #### Source:
 
 ```sh
-scope::array_is_empty::length = array_length ${argument1}
+scope::array_is_empty::length = array_length ${scope::array_is_empty::argument::1}
 equals 0 ${scope::array_is_empty::length}
 ```
 

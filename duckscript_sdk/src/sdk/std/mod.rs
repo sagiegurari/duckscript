@@ -16,7 +16,7 @@ pub(crate) mod on_error;
 mod os_family;
 mod process;
 mod read;
-mod release;
+pub(crate) mod release;
 pub(crate) mod scope;
 mod set;
 pub(crate) mod string;

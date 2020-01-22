@@ -1,4 +1,5 @@
 use crate::types::scope::clear;
+use crate::utils::state::{get_handles_sub_state, put_handle};
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::{Instruction, InstructionType};
 use duckscript::types::runtime::StateValue;
@@ -9,6 +10,7 @@ pub(crate) struct AliasCommand {
     name: String,
     aliases: Vec<String>,
     help: String,
+    scope_name: String,
     raw_command: String,
     arguments_amount: usize,
 }
@@ -55,16 +57,32 @@ impl Command for AliasCommand {
         if arguments.len() != self.arguments_amount {
             CommandResult::Error("Invalid arguments provided.".to_string())
         } else {
+            let mut scope_name = "scope::".to_string();
+            scope_name.push_str(&self.scope_name);
+
             // define script arguments
+            let mut handle_option = None;
             if !arguments.is_empty() {
                 let mut index = 0;
+                let mut array = vec![];
                 for argument in arguments {
                     index = index + 1;
-                    let mut key = "argument".to_string();
+                    let mut key = scope_name.clone();
+                    key.push_str("::argument::");
                     key.push_str(&index.to_string());
 
-                    variables.insert(key, argument);
+                    variables.insert(key, argument.clone());
+
+                    array.push(StateValue::String(argument.clone()));
                 }
+
+                let handle = put_handle(state, StateValue::List(array));
+
+                let mut key = scope_name.clone();
+                key.push_str("::arguments");
+
+                variables.insert(key, handle.clone());
+                handle_option = Some(handle);
             }
 
             match parser::parse_text(&self.raw_command) {
@@ -121,7 +139,16 @@ impl Command for AliasCommand {
                         };
                     }
 
-                    clear(&self.name, variables);
+                    match handle_option {
+                        Some(handle) => {
+                            let handle_state = get_handles_sub_state(state);
+                            match handle_state.remove(&handle) {
+                                _ => (),
+                            }
+                        }
+                        None => (),
+                    }
+                    clear(&scope_name, variables);
 
                     CommandResult::Continue(flow_output)
                 }
@@ -135,6 +162,7 @@ pub(crate) fn create_alias_command(
     name: String,
     aliases: Vec<String>,
     help: String,
+    scope_name: String,
     script: String,
     arguments_amount: usize,
 ) -> AliasCommand {
@@ -144,6 +172,7 @@ pub(crate) fn create_alias_command(
         name,
         aliases,
         help,
+        scope_name,
         raw_command,
         arguments_amount,
     }
