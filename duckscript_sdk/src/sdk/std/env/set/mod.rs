@@ -31,7 +31,7 @@ impl Command for CommandImpl {
         } else {
             env::set_var(&arguments[0], &arguments[1]);
 
-            CommandResult::Continue(None)
+            CommandResult::Continue(Some("true".to_string()))
         }
     }
 }

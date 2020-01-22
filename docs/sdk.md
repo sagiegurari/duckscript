@@ -1113,7 +1113,7 @@ cd, set_current_dir
 <a name="std__env__SetVar"></a>
 ## std::env::SetVar
 ```sh
-set_env key value
+var = set_env key value
 ```
 
 Sets the environment variable defined by the provided key to the provided value.
@@ -1127,7 +1127,7 @@ Two arguments are required:
 
 #### Return Value
 
-None
+true if successful
 
 #### Examples
 

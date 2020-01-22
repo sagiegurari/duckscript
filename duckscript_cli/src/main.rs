@@ -122,6 +122,7 @@ use duckscript::types::error::ScriptError;
 use duckscript::types::runtime::Context;
 use duckscriptsdk;
 use std::env;
+use std::process::exit;
 
 static VERSION: &str = env!("CARGO_PKG_VERSION");
 static AUTHOR: &str = env!("CARGO_PKG_AUTHORS");
@@ -129,7 +130,10 @@ static DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
 
 fn main() {
     match run_cli() {
-        Err(error) => panic!("Error: {}", error),
+        Err(error) => {
+            println!("Error: {}", error);
+            exit(1);
+        }
         _ => (),
     };
 }
