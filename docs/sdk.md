@@ -56,6 +56,7 @@
 * [std::net::HttpClient (http_client, wget)](#std__net__HttpClient)
 * [std::process::Execute (exec)](#std__process__Execute)
 * [std::process::Exit (exit, quit, q)](#std__process__Exit)
+* [std::scope::Clear (clear_scope)](#std__scope__Clear)
 * [std::string::Contains (contains)](#std__string__Contains)
 * [std::string::EndsWith (ends_with)](#std__string__EndsWith)
 * [std::string::Equals (equals, eq)](#std__string__Equals)
@@ -2002,6 +2003,52 @@ code = exit 1
 
 #### Aliases:
 exit, quit, q
+
+<a name="std__scope__Clear"></a>
+## std::scope::Clear
+```sh
+clear_scope name
+```
+
+Clears all variables which are prefixed with the provided name + ::.<br>
+For example, if the value provided is **my_scope** all variables that start with **my_scope::** will be removed.
+
+#### Parameters
+
+The scope name.
+
+#### Return Value
+
+None.
+
+#### Examples
+
+```sh
+testscope = set true
+testscope::1 = set 1
+testscope::subscope::1 = set 1
+
+assert_eq ${testscope} true
+defined = is_defined testscope::1
+assert ${defined}
+assert_eq ${testscope::1} 1
+defined = is_defined testscope::subscope::1
+assert ${defined}
+assert_eq ${testscope::subscope::1} 1
+
+clear_scope testscope
+
+assert_eq ${testscope} true
+
+defined = is_defined testscope::1
+assert_false ${defined}
+defined = is_defined testscope::subscope::1
+assert_false ${defined}
+```
+
+
+#### Aliases:
+clear_scope
 
 <a name="std__string__Contains"></a>
 ## std::string::Contains

@@ -1,0 +1,29 @@
+
+function test_clear
+    testscope = set true
+    testscope::1 = set 1
+    testscope::2 = set 2
+    testscope::subscope::1 = set 1
+
+    assert_eq ${testscope} true
+    defined = is_defined testscope::1
+    assert ${defined}
+    assert_eq ${testscope::1} 1
+    defined = is_defined testscope::2
+    assert ${defined}
+    assert_eq ${testscope::2} 2
+    defined = is_defined testscope::subscope::1
+    assert ${defined}
+    assert_eq ${testscope::subscope::1} 1
+
+    clear_scope testscope
+
+    assert_eq ${testscope} true
+
+    defined = is_defined testscope::1
+    assert_false ${defined}
+    defined = is_defined testscope::2
+    assert_false ${defined}
+    defined = is_defined testscope::subscope::1
+    assert_false ${defined}
+end
