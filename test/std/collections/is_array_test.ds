@@ -1,0 +1,22 @@
+
+function test_array_found
+    arr = array 1 2 3
+
+    value = is_array ${arr}
+    assert ${value}
+
+    released = release ${arr}
+    assert ${released}
+end
+
+function test_not_array
+    arr = set true
+
+    value = is_array ${arr}
+    assert_false ${value}
+end
+
+function test_not_found
+    value = is_array ${arr}
+    assert_false ${value}
+end

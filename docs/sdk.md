@@ -17,6 +17,7 @@
 * [std::collections::Array (array)](#std__collections__Array)
 * [std::collections::ArrayIsEmpty (array_is_empty)](#std__collections__ArrayIsEmpty)
 * [std::collections::ArrayLength (array_length, arrlen)](#std__collections__ArrayLength)
+* [std::collections::IsArray (is_array)](#std__collections__IsArray)
 * [std::collections::Range (range)](#std__collections__Range)
 * [std::collections::ReadProperties (read_properties)](#std__collections__ReadProperties)
 * [std::collections::WriteProperties (write_properties)](#std__collections__WriteProperties)
@@ -776,6 +777,40 @@ echo Array length: ${len} released: ${released}
 
 #### Aliases:
 array_length, arrlen
+
+<a name="std__collections__IsArray"></a>
+## std::collections::IsArray
+```sh
+var = array_length handle
+```
+
+Returns the array length based on the provided array handle.
+
+#### Parameters
+
+The array handle.
+
+#### Return Value
+
+The array length.
+
+#### Examples
+
+```sh
+handle = array a b c "d e"
+len = array_length ${handle}
+released = release ${handle}
+echo Array length: ${len} released: ${released}
+
+handle = range 0 10
+len = array_length ${handle}
+released = release ${handle}
+echo Array length: ${len} released: ${released}
+```
+
+
+#### Aliases:
+is_array
 
 <a name="std__collections__Range"></a>
 ## std::collections::Range

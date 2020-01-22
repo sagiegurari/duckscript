@@ -2,6 +2,7 @@
 
 ### v0.1.8
 
+* New is_array command #70
 * Test errors in duckscript based tests will break build flow.
 * New --version cli option.
 * New version functions and commands for duckscript and duckscript SDK.
