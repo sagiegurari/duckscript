@@ -1,3 +1,4 @@
+use crate::types::scope::clear;
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::{Instruction, InstructionType};
 use duckscript::types::runtime::StateValue;
@@ -7,6 +8,7 @@ use std::collections::HashMap;
 pub(crate) struct AliasCommand {
     name: String,
     aliases: Vec<String>,
+    help: String,
     raw_command: String,
     arguments_amount: usize,
 }
@@ -23,13 +25,15 @@ impl Command for AliasCommand {
     fn help(&self) -> String {
         format!(
             r#"
-Alias for:
+{}
+
+#### Source:
 
 ```sh
 {}
 ```
 "#,
-            &self.raw_command
+            &self.help, &self.raw_command
         )
         .to_string()
     }
@@ -51,7 +55,7 @@ Alias for:
         if arguments.len() != self.arguments_amount {
             CommandResult::Error("Invalid arguments provided.".to_string())
         } else {
-            // define function arguments
+            // define script arguments
             if !arguments.is_empty() {
                 let mut index = 0;
                 for argument in arguments {
@@ -117,6 +121,8 @@ Alias for:
                         };
                     }
 
+                    clear(&self.name, variables);
+
                     CommandResult::Continue(flow_output)
                 }
                 Err(error) => CommandResult::Error(error.to_string()),
@@ -128,6 +134,7 @@ Alias for:
 pub(crate) fn create_alias_command(
     name: String,
     aliases: Vec<String>,
+    help: String,
     script: String,
     arguments_amount: usize,
 ) -> AliasCommand {
@@ -136,6 +143,7 @@ pub(crate) fn create_alias_command(
     AliasCommand {
         name,
         aliases,
+        help,
         raw_command,
         arguments_amount,
     }

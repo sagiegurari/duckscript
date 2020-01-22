@@ -11,6 +11,7 @@ pub(crate) fn create(package: &str) -> Box<dyn Command> {
     Box::new(create_alias_command(
         name,
         vec!["array_is_empty".to_string()],
+        include_str!("help.md").to_string(),
         include_str!("script.ds").to_string(),
         1,
     ))

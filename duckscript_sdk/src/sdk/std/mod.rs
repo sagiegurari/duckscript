@@ -17,7 +17,7 @@ mod os_family;
 mod process;
 mod read;
 mod release;
-mod scope;
+pub(crate) mod scope;
 mod set;
 pub(crate) mod string;
 mod test;

@@ -735,11 +735,33 @@ array
 <a name="std__collections__ArrayIsEmpty"></a>
 ## std::collections::ArrayIsEmpty
 
-Alias for:
+```sh
+var = array_is_empty handle
+```
+
+Returns true if the provided array handle is an empty array.
+
+#### Parameters
+
+The array handle.
+
+#### Return Value
+
+True if the provided handle belongs to an empty array.
+
+#### Examples
 
 ```sh
-__length = array_length ${argument1}
-equals 0 ${__length}
+values = array
+out = array_is_empty ${values}
+```
+
+
+#### Source:
+
+```sh
+scope::array_is_empty::length = array_length ${argument1}
+equals 0 ${scope::array_is_empty::length}
 ```
 
 

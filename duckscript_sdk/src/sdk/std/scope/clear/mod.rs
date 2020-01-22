@@ -1,3 +1,4 @@
+use crate::types::scope::clear;
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
@@ -42,10 +43,7 @@ impl Command for CommandImpl {
         if arguments.is_empty() {
             CommandResult::Error("Scope name not provided.".to_string())
         } else {
-            let mut scope_name = arguments[0].clone();
-            scope_name.push_str("::");
-
-            variables.retain(|key, _| !key.starts_with(&scope_name));
+            clear(&arguments[0], variables);
 
             CommandResult::Continue(None)
         }

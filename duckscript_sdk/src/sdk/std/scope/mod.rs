@@ -1,4 +1,4 @@
-mod clear;
+pub(crate) mod clear;
 
 use crate::utils::pckg;
 use duckscript::types::command::Commands;

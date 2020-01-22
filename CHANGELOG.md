@@ -2,6 +2,8 @@
 
 ### v0.1.8
 
+* Commands created from duckscript now support help text and automatic scope clearing #69
+* New clear_scope command #71
 * New set_error command #68
 * New is_array command #70
 * Test errors in duckscript based tests will break build flow.

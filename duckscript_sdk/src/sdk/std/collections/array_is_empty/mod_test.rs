@@ -1,5 +1,6 @@
 use super::*;
 use crate::sdk::std::collections::{array, array_length};
+use crate::sdk::std::scope::clear;
 use crate::sdk::std::string::equals;
 use crate::test;
 use crate::test::CommandValidation;
@@ -14,6 +15,7 @@ fn run_not_empty() {
     test::run_script_and_validate(
         vec![
             create(""),
+            clear::create(""),
             array::create(""),
             array_length::create(""),
             equals::create(""),
@@ -31,6 +33,7 @@ fn run_empty() {
     test::run_script_and_validate(
         vec![
             create(""),
+            clear::create(""),
             array::create(""),
             array_length::create(""),
             equals::create(""),
