@@ -17,6 +17,7 @@
 * [std::collections::Array (array)](#std__collections__Array)
 * [std::collections::ArrayIsEmpty (array_is_empty)](#std__collections__ArrayIsEmpty)
 * [std::collections::ArrayLength (array_length, arrlen)](#std__collections__ArrayLength)
+* [std::collections::ArrayPop (array_pop)](#std__collections__ArrayPop)
 * [std::collections::IsArray (is_array)](#std__collections__IsArray)
 * [std::collections::Range (range)](#std__collections__Range)
 * [std::collections::ReadProperties (read_properties)](#std__collections__ReadProperties)
@@ -801,6 +802,34 @@ echo Array length: ${len} released: ${released}
 
 #### Aliases:
 array_length, arrlen
+
+<a name="std__collections__ArrayPop"></a>
+## std::collections::ArrayPop
+```sh
+var = array_pop handle
+```
+
+Returns the last element of the array or none if the array is empty.
+
+#### Parameters
+
+The array handle.
+
+#### Return Value
+
+The last element of the array or none if the array is empty.
+
+#### Examples
+
+```sh
+handle = array 1 2 3
+last_element = array_pop ${handle}
+assert_eq ${last_element} 3
+```
+
+
+#### Aliases:
+array_pop
 
 <a name="std__collections__IsArray"></a>
 ## std::collections::IsArray

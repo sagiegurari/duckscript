@@ -2,6 +2,7 @@
 
 ### v0.1.8
 
+* New array_pop command
 * Commands created from duckscript now support help text and automatic scope clearing #69
 * New clear_scope command #71
 * New set_error command #68
