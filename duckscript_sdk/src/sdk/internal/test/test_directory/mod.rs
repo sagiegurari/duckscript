@@ -53,6 +53,12 @@ impl Command for CommandImpl {
         } else {
             let mut script = String::new();
 
+            let test_name = if arguments.len() > 1 {
+                arguments[1].clone()
+            } else {
+                "".to_string()
+            };
+
             let walker = WalkDir::new(&arguments[0]).into_iter();
             for entry in walker {
                 let entry = entry.unwrap();
@@ -61,10 +67,10 @@ impl Command for CommandImpl {
 
                     let test_script = format!(
                         r#"
-result = internal::test::TestFile {}
+result = internal::test::TestFile {} {}
 assert result
 "#,
-                        &file
+                        &file, &test_name
                     );
                     script.push_str(&test_script);
                 }

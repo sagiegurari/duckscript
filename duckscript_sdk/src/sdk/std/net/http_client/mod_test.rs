@@ -29,7 +29,7 @@ fn run_get_to_file() {
 
     test::run_script_and_validate(
         vec![create("")],
-        "out = http_client -O ./target/_duckscript/http_client/page.html https://www.rust-lang.org/",
+        "out = http_client --output-file ./target/_duckscript/http_client/page.html https://www.rust-lang.org/",
         CommandValidation::PositiveNumber("out".to_string())
     );
 
@@ -46,7 +46,7 @@ fn run_post() {
         vec![create(""), Box::new(SetCommand {})],
         r#"
         payload = test_set {\"login\":\"login\",\"password\":\"password\"}
-        out = http_client --method=HTTP-POST --post-data=${payload} https://reqbin.com/echo/post/json
+        out = http_client --method POST --payload {payload} https://reqbin.com/echo/post/json
         "#,
         CommandValidation::Contains("out".to_string(), "success".to_string()),
     );

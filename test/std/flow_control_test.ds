@@ -1,0 +1,50 @@
+
+function test_flow_control_empty_loop
+    arguments = array
+
+    index = set 0
+    for arg in ${arguments}
+        if equals arg a
+            if starts_with ${arg} a
+                assert_eq ${index} 0
+            elif starts_with ${arg} b
+                assert_fail
+            elif starts_with ${arg} c
+                assert_fail
+            end
+        elif equals arg b
+            assert_eq ${index} 1
+        end
+
+        index = calc ${index} + 1
+    end
+
+    assert_eq ${index} 0
+
+    release ${arguments}
+end
+
+function test_flow_control_loop
+    arguments = array a b c
+
+    index = set 0
+    for arg in ${arguments}
+        if equals arg a
+            if starts_with ${arg} a
+                assert_eq ${index} 0
+            elif starts_with ${arg} b
+                assert_fail
+            elif starts_with ${arg} c
+                assert_fail
+            end
+        elif equals arg b
+            assert_eq ${index} 1
+        end
+
+        index = calc ${index} + 1
+    end
+
+    assert_eq ${index} 3
+
+    release ${arguments}
+end

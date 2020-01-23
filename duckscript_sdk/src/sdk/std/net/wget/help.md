@@ -1,20 +1,20 @@
 ```sh
-var = http_client [--method method] [--payload payload] [--output-file file] URL
+var = wget [--method=HTTP-method] [--post-data=payload] [-O file] URL
 ```
 
 Invokes a HTTP request.<br>
 The request method by default is GET but can be modified by the ```--method``` parameter.<br>
-The ```--output-file``` parameter will redirect a valid response output to the provided file, otherwise all response text will be set to the
+The ```-O``` parameter will redirect a valid response output to the provided file, otherwise all response text will be set to the
 output variable.<br>
 When redirecting to file, the output would be the response size.<br>
-The ```--payload``` parameter enables to pass a payload to POST http requests.<br>
+The ```--post-data``` parameter enables to pass a payload to POST http requests.<br>
 In case of errors or error HTTP response codes, false will be returned.
 
 #### Parameters
 
-* Optional HTTP Method, for example ```--method GET``` or ```--method POST``` (currently only GET and POST are supported).
-* Optional post payload via ```--payload``` parameter.
-* Optional redirection of output to file via ```--output-file``` parameter.
+* Optional HTTP Method, for example --method=HTTP-GET or --method=HTTP-POST (currently only GET and POST are supported).
+* Optional post payload via ```--post-data``` parameter.
+* Optional redirection of output to file via ```-O``` parameter.
 * The target URL
 
 #### Return Value
@@ -26,7 +26,7 @@ In case of errors, it will return false.
 
 ```sh
 function test_get
-    response = http_client https://www.rust-lang.org/
+    response = wget https://www.rust-lang.org/
 
     found = contains ${response} Rust
 
@@ -34,10 +34,10 @@ function test_get
 end
 
 function test_get_to_file
-    file = set ./target/_duckscript_test/http_client/page.html
+    file = set ./target/_duckscript_test/wget/page.html
     rm ${file}
 
-    response_size = http_client --output-file ${file} https://www.rust-lang.org/
+    response_size = wget -O ${file} https://www.rust-lang.org/
 
     response = readfile ${file}
     found = contains ${response} Rust
@@ -48,7 +48,7 @@ end
 
 function test_post
     payload = set {\"login\":\"login\",\"password\":\"password\"}
-    response = http_client --method POST --payload ${payload} https://reqbin.com/echo/post/json
+    response = wget --method=HTTP-POST --post-data=${payload} https://reqbin.com/echo/post/json
 
     found = contains ${response} success
 

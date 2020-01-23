@@ -7,9 +7,6 @@ use std::fs::File;
 #[path = "./mod_test.rs"]
 mod mod_test;
 
-static HTTP_METHOD_PREFIX: &str = "--method=HTTP-";
-static POST_DATA_PREFIX: &str = "--post-data=";
-
 enum Method {
     Get,
     Post,
@@ -34,6 +31,8 @@ impl Options {
 enum LookingFor {
     Flag,
     OutputFile,
+    Method,
+    Payload,
 }
 
 fn parse_options(arguments: &Vec<String>) -> Result<Options, String> {
@@ -43,30 +42,36 @@ fn parse_options(arguments: &Vec<String>) -> Result<Options, String> {
     for argument in arguments {
         match looking_for {
             LookingFor::Flag => match argument.as_str() {
-                "-O" => looking_for = LookingFor::OutputFile,
-                _ => {
-                    if argument.starts_with(HTTP_METHOD_PREFIX) {
-                        let method = argument[HTTP_METHOD_PREFIX.len()..].to_lowercase();
-
-                        match method.as_str() {
-                            "get" => options.method = Method::Get,
-                            "post" => options.method = Method::Post,
-                            _ => {
-                                return Err(
-                                    format!("Unsupported HTTP method: {}", method).to_string()
-                                );
-                            }
-                        }
-                    } else if argument.starts_with(POST_DATA_PREFIX) {
-                        let payload = argument[POST_DATA_PREFIX.len()..].to_string();
-
-                        options.payload = Some(payload);
-                    }
-
-                    looking_for = LookingFor::Flag
-                }
+                "--output-file" => looking_for = LookingFor::OutputFile,
+                "--method" => looking_for = LookingFor::Method,
+                "--payload" => looking_for = LookingFor::Payload,
+                _ => (),
             },
-            LookingFor::OutputFile => options.output_file = Some(argument.to_string()),
+            LookingFor::OutputFile => {
+                if !argument.is_empty() {
+                    options.output_file = Some(argument.to_string());
+                }
+                looking_for = LookingFor::Flag;
+            }
+            LookingFor::Method => {
+                if !argument.is_empty() {
+                    match argument.to_lowercase().as_str() {
+                        "get" => options.method = Method::Get,
+                        "post" => options.method = Method::Post,
+                        _ => {
+                            return Err(format!("Unsupported HTTP method: {}", argument).to_string());
+                        }
+                    };
+                }
+
+                looking_for = LookingFor::Flag;
+            }
+            LookingFor::Payload => {
+                if !argument.is_empty() {
+                    options.payload = Some(argument.to_string());
+                }
+                looking_for = LookingFor::Flag;
+            }
         }
     }
 
@@ -129,7 +134,7 @@ impl Command for CommandImpl {
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["http_client".to_string(), "wget".to_string()]
+        vec!["http_client".to_string()]
     }
 
     fn help(&self) -> String {

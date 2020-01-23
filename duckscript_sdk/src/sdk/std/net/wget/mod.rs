@@ -8,12 +8,12 @@ use duckscript::types::error::ScriptError;
 mod mod_test;
 
 pub(crate) fn create(package: &str) -> Result<Box<dyn Command>, ScriptError> {
-    let name = pckg::concat(package, "ArrayIsEmpty");
+    let name = pckg::concat(package, "WGet");
     let command = create_alias_command(
         name,
-        vec!["array_is_empty".to_string()],
+        vec!["wget".to_string()],
         include_str!("help.md").to_string(),
-        "array_is_empty".to_string(),
+        "wget".to_string(),
         include_str!("script.ds").to_string(),
         1,
     )?;

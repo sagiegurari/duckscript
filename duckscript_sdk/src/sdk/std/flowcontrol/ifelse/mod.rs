@@ -429,7 +429,7 @@ impl Command for ElseIfCommand {
                     match condition::eval_condition(arguments, state, variables, commands) {
                         Ok(passed) => {
                             if passed {
-                                let next_line = if call_info.else_line_index < if_else_info.else_lines.len() {
+                                let next_line = if call_info.else_line_index + 1 < if_else_info.else_lines.len() {
                                     if_else_info.else_lines[call_info.else_line_index + 1]
                                 } else {
                                     if_else_info.else_lines[0]
@@ -445,7 +445,7 @@ impl Command for ElseIfCommand {
                                 store_call_info(&else_call_info, state);
 
                                 CommandResult::Continue(None)
-                            } else if call_info.else_line_index < if_else_info.else_lines.len() {
+                            } else if call_info.else_line_index + 1 < if_else_info.else_lines.len() {
                                 let next_index = call_info.else_line_index + 1;
                                 let next_line = if_else_info.else_lines[next_index];
 

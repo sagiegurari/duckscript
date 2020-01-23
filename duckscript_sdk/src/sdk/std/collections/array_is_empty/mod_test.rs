@@ -8,14 +8,14 @@ use crate::test::CommandValidation;
 
 #[test]
 fn common_functions() {
-    test::test_common_command_functions(create(""));
+    test::test_common_command_functions(create("").unwrap());
 }
 
 #[test]
 fn run_not_empty() {
     let context = test::run_script_and_validate(
         vec![
-            create(""),
+            create("").unwrap(),
             clear::create(""),
             release::create(""),
             array::create(""),
@@ -38,7 +38,7 @@ fn run_not_empty() {
 fn run_empty() {
     let context = test::run_script_and_validate(
         vec![
-            create(""),
+            create("").unwrap(),
             clear::create(""),
             release::create(""),
             array::create(""),

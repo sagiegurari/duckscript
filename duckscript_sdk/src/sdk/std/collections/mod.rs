@@ -17,7 +17,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     let package = pckg::concat(parent, PACKAGE);
 
     commands.set(array::create(&package))?;
-    commands.set(array_is_empty::create(&package))?;
+    commands.set(array_is_empty::create(&package)?)?;
     commands.set(array_length::create(&package))?;
     commands.set(array_pop::create(&package))?;
     commands.set(is_array::create(&package))?;

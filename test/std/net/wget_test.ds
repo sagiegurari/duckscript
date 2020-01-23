@@ -1,6 +1,6 @@
 
 function test_get
-    response = http_client https://www.rust-lang.org/
+    response = wget https://www.rust-lang.org/
 
     found = contains ${response} Rust
 
@@ -8,10 +8,10 @@ function test_get
 end
 
 function test_get_to_file
-    file = set ./target/_duckscript_test/http_client/page.html
+    file = set ./target/_duckscript_test/wget/page.html
     rm ${file}
 
-    response_size = http_client --output-file ${file} https://www.rust-lang.org/
+    response_size = wget -O ${file} https://www.rust-lang.org/
 
     response = readfile ${file}
     found = contains ${response} Rust
@@ -22,7 +22,7 @@ end
 
 function test_post
     payload = set {\"login\":\"login\",\"password\":\"password\"}
-    response = http_client --method POST --payload ${payload} https://reqbin.com/echo/post/json
+    response = wget --method=HTTP-POST --post-data=${payload} https://reqbin.com/echo/post/json
 
     found = contains ${response} success
 

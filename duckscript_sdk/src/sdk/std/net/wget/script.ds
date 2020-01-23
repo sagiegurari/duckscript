@@ -1,0 +1,24 @@
+
+scope::wget::url = array_pop ${scope::wget::arguments}
+
+scope::wget::method = set GET
+
+scope::wget::lookingfor = set flag
+for scope::wget::arg in ${scope::wget::arguments}
+    if equals ${scope::wget::lookingfor} flag
+        if starts_with ${scope::wget::arg} --method=HTTP-
+            scope::wget::len = strlen --method=HTTP-
+            scope::wget::method = substring ${scope::wget::arg} ${scope::wget::len}
+        elif starts_with ${scope::wget::arg} --post-data=
+            scope::wget::len = strlen --post-data=
+            scope::wget::payload = substring ${scope::wget::arg} ${scope::wget::len}
+        elif starts_with ${scope::wget::arg} -O
+            scope::wget::lookingfor = set file
+        end
+    elif equals ${scope::wget::lookingfor} file
+        scope::wget::file = set ${scope::wget::arg}
+        scope::wget::lookingfor = set flag
+    end
+end
+
+http_client --method "${scope::wget::method}" --output-file "${scope::wget::file}" --payload "${scope::wget::payload}" ${scope::wget::url}

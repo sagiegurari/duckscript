@@ -52,6 +52,11 @@ impl Command for CommandImpl {
             CommandResult::Crash("File name not provided.".to_string())
         } else {
             let file = arguments[0].clone();
+            let requested_test_name = if arguments.len() > 1 {
+                arguments[1].clone()
+            } else {
+                "".to_string()
+            };
 
             match parser::parse_file(&arguments[0]) {
                 Ok(instructions) => match commands.get("function") {
@@ -83,35 +88,42 @@ impl Command for CommandImpl {
                             };
                         }
 
+                        let file_included = file.contains(&requested_test_name);
+
                         for test_name in test_names {
-                            let script = create_test_script(&file, &test_name);
+                            if file_included || test_name.contains(&requested_test_name) {
+                                let script = create_test_script(&file, &test_name);
 
-                            let mut context = Context::new();
-                            match load(&mut context.commands) {
-                                Ok(_) => match runner::run_script(&script, context) {
+                                let mut context = Context::new();
+                                match load(&mut context.commands) {
+                                    Ok(_) => match runner::run_script(&script, context) {
+                                        Err(error) => {
+                                            println!(
+                                                "test: [{}][{}] ... failed",
+                                                &file, &test_name
+                                            );
+
+                                            return CommandResult::Crash(
+                                                format!(
+                                                    "Error while running test: {}\n{}",
+                                                    &test_name,
+                                                    &error.to_string()
+                                                )
+                                                .to_string(),
+                                            );
+                                        }
+                                        _ => println!("test: [{}][{}] ... ok", &file, &test_name),
+                                    },
                                     Err(error) => {
-                                        println!("test: [{}][{}] ... failed", &file, &test_name);
-
                                         return CommandResult::Crash(
                                             format!(
-                                                "Error while running test: {}\n{}",
+                                                "Error while setting up test: {}\n{}",
                                                 &test_name,
                                                 &error.to_string()
                                             )
                                             .to_string(),
                                         );
                                     }
-                                    _ => println!("test: [{}][{}] ... ok", &file, &test_name),
-                                },
-                                Err(error) => {
-                                    return CommandResult::Crash(
-                                        format!(
-                                            "Error while setting up test: {}\n{}",
-                                            &test_name,
-                                            &error.to_string()
-                                        )
-                                        .to_string(),
-                                    );
                                 }
                             }
                         }
