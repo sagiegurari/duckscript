@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.1.9
+
+* Improve wget input parsing
+
 ### v0.1.8 (2020-01-24)
 
 * Move test directory command to public std namespace to enable duckscript unit testing
