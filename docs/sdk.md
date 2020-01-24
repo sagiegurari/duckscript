@@ -38,6 +38,7 @@
 * [std::error::GetLastErrorSource (get_last_error_source)](#std__error__GetLastErrorSource)
 * [std::error::SetError (set_error)](#std__error__SetError)
 * [std::error::SetExitOnError (exit_on_error, set_exit_on_error)](#std__error__SetExitOnError)
+* [std::error::TriggerError (trigger_error)](#std__error__TriggerError)
 * [std::fs::CopyPath (cp)](#std__fs__CopyPath)
 * [std::fs::CreateDirectory (mkdir)](#std__fs__CreateDirectory)
 * [std::fs::CreateEmptyFile (touch)](#std__fs__CreateEmptyFile)
@@ -1441,6 +1442,34 @@ echo Current state: ${will_exit}
 
 #### Aliases:
 exit_on_error, set_exit_on_error
+
+<a name="std__error__TriggerError"></a>
+## std::error::TriggerError
+```sh
+trigger_error [message]
+```
+
+Triggers an error that will trigger the on_error flow.
+
+#### Parameters
+
+Optional error message.
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+trigger_error "my error message"
+error = get_last_error
+assert_eq ${error} "my error message"
+```
+
+
+#### Aliases:
+trigger_error
 
 <a name="std__fs__CopyPath"></a>
 ## std::fs::CopyPath
