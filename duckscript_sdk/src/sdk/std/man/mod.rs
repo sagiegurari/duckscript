@@ -18,7 +18,8 @@ fn print_help(help_doc: String, name: &str) -> CommandResult {
     }
 }
 
-struct CommandImpl {
+#[derive(Clone)]
+pub(crate) struct CommandImpl {
     package: String,
 }
 
@@ -33,6 +34,10 @@ impl Command for CommandImpl {
 
     fn help(&self) -> String {
         include_str!("help.md").to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn requires_context(&self) -> bool {

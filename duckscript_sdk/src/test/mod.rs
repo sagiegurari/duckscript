@@ -6,6 +6,7 @@ use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::{Context, StateValue};
 use std::collections::HashMap;
 
+#[derive(Clone)]
 pub(crate) struct ErrorCommand {}
 
 impl Command for ErrorCommand {
@@ -13,11 +14,16 @@ impl Command for ErrorCommand {
         "test_error".to_string()
     }
 
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
+    }
+
     fn run(&self, _arguments: Vec<String>) -> CommandResult {
         CommandResult::Error("test".to_string())
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct SetCommand {}
 
 impl Command for SetCommand {
@@ -29,6 +35,10 @@ impl Command for SetCommand {
         "".to_string()
     }
 
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
+    }
+
     fn run(&self, arguments: Vec<String>) -> CommandResult {
         if arguments.is_empty() {
             CommandResult::Continue(None)
@@ -38,11 +48,16 @@ impl Command for SetCommand {
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct SetHandleCommand {}
 
 impl Command for SetHandleCommand {
     fn name(&self) -> String {
         "test_set_handle".to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn requires_context(&self) -> bool {
@@ -69,11 +84,16 @@ impl Command for SetHandleCommand {
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct ArrayCommand {}
 
 impl Command for ArrayCommand {
     fn name(&self) -> String {
         "test_array".to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn requires_context(&self) -> bool {
@@ -102,11 +122,16 @@ impl Command for ArrayCommand {
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct OnErrorCommand {}
 
 impl Command for OnErrorCommand {
     fn name(&self) -> String {
         "on_error".to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn requires_context(&self) -> bool {

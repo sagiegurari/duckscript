@@ -1,4 +1,3 @@
-use crate::load;
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::{Instruction, InstructionType};
@@ -21,7 +20,8 @@ fn create_test_script(file: &str, test_name: &str) -> String {
     .to_string()
 }
 
-struct CommandImpl {
+#[derive(Clone)]
+pub(crate) struct CommandImpl {
     package: String,
 }
 
@@ -32,6 +32,10 @@ impl Command for CommandImpl {
 
     fn help(&self) -> String {
         "".to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn requires_context(&self) -> bool {
@@ -95,35 +99,22 @@ impl Command for CommandImpl {
                                 let script = create_test_script(&file, &test_name);
 
                                 let mut context = Context::new();
-                                match load(&mut context.commands) {
-                                    Ok(_) => match runner::run_script(&script, context) {
-                                        Err(error) => {
-                                            println!(
-                                                "test: [{}][{}] ... failed",
-                                                &file, &test_name
-                                            );
+                                context.commands = commands.clone();
 
-                                            return CommandResult::Crash(
-                                                format!(
-                                                    "Error while running test: {}\n{}",
-                                                    &test_name,
-                                                    &error.to_string()
-                                                )
-                                                .to_string(),
-                                            );
-                                        }
-                                        _ => println!("test: [{}][{}] ... ok", &file, &test_name),
-                                    },
+                                match runner::run_script(&script, context) {
                                     Err(error) => {
+                                        println!("test: [{}][{}] ... failed", &file, &test_name);
+
                                         return CommandResult::Crash(
                                             format!(
-                                                "Error while setting up test: {}\n{}",
+                                                "Error while running test: {}\n{}",
                                                 &test_name,
                                                 &error.to_string()
                                             )
                                             .to_string(),
                                         );
                                     }
+                                    _ => println!("test: [{}][{}] ... ok", &file, &test_name),
                                 }
                             }
                         }

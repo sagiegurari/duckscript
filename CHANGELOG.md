@@ -2,6 +2,8 @@
 
 ### v0.1.8
 
+* Move test directory command to public std namespace to enable duckscript unit testing
+* Enable to clone commands
 * Split wget and http_client command #66
 * New array_pop command
 * Commands created from duckscript now support help text and automatic scope clearing #69

@@ -7,6 +7,7 @@ use duckscript::types::runtime::StateValue;
 use duckscript::{parser, runner};
 use std::collections::HashMap;
 
+#[derive(Clone)]
 pub(crate) struct AliasCommand {
     name: String,
     aliases: Vec<String>,
@@ -63,6 +64,10 @@ impl Command for AliasCommand {
             &self.help, &self.raw_command
         )
         .to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn requires_context(&self) -> bool {

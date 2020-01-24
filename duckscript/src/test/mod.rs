@@ -5,11 +5,16 @@ use crate::types::instruction::{
 use crate::types::runtime::StateValue;
 use std::collections::HashMap;
 
+#[derive(Clone)]
 pub(crate) struct SetCommand {}
 
 impl Command for SetCommand {
     fn name(&self) -> String {
         "set".to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {
@@ -23,11 +28,16 @@ impl Command for SetCommand {
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct ExitCommand {}
 
 impl Command for ExitCommand {
     fn name(&self) -> String {
         "exit".to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {
@@ -41,11 +51,16 @@ impl Command for ExitCommand {
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct OnErrorCommand {}
 
 impl Command for OnErrorCommand {
     fn name(&self) -> String {
         "on_error".to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn requires_context(&self) -> bool {
@@ -72,6 +87,7 @@ impl Command for OnErrorCommand {
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct ErrorCommand {}
 
 impl Command for ErrorCommand {
@@ -79,11 +95,16 @@ impl Command for ErrorCommand {
         "error".to_string()
     }
 
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
+    }
+
     fn run(&self, _arguments: Vec<String>) -> CommandResult {
         CommandResult::Error("test".to_string())
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct CrashCommand {}
 
 impl Command for CrashCommand {
@@ -91,16 +112,25 @@ impl Command for CrashCommand {
         "crash".to_string()
     }
 
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
+    }
+
     fn run(&self, _arguments: Vec<String>) -> CommandResult {
         CommandResult::Crash("test".to_string())
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct GoToLabelCommand {}
 
 impl Command for GoToLabelCommand {
     fn name(&self) -> String {
         "goto".to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {
@@ -114,11 +144,16 @@ impl Command for GoToLabelCommand {
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct GoToLineCommand {}
 
 impl Command for GoToLineCommand {
     fn name(&self) -> String {
         "goto".to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {
@@ -135,6 +170,7 @@ impl Command for GoToLineCommand {
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct TestCommand1 {}
 
 impl Command for TestCommand1 {
@@ -146,11 +182,16 @@ impl Command for TestCommand1 {
         vec!["test11".to_string(), "test12".to_string()]
     }
 
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
+    }
+
     fn run(&self, _arguments: Vec<String>) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct TestCommand2 {}
 
 impl Command for TestCommand2 {
@@ -162,11 +203,16 @@ impl Command for TestCommand2 {
         vec!["test21".to_string(), "test22".to_string()]
     }
 
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
+    }
+
     fn run(&self, _arguments: Vec<String>) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct TestCommand3 {}
 
 impl Command for TestCommand3 {
@@ -178,11 +224,16 @@ impl Command for TestCommand3 {
         vec!["test3".to_string()]
     }
 
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
+    }
+
     fn run(&self, _arguments: Vec<String>) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct TestCommand4 {}
 
 impl Command for TestCommand4 {
@@ -192,6 +243,10 @@ impl Command for TestCommand4 {
 
     fn aliases(&self) -> Vec<String> {
         vec!["test11".to_string()]
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn run(&self, _arguments: Vec<String>) -> CommandResult {

@@ -5,7 +5,8 @@ use duckscript::types::command::{Command, CommandResult, GoToValue};
 #[path = "./mod_test.rs"]
 mod mod_test;
 
-struct CommandImpl {
+#[derive(Clone)]
+pub(crate) struct CommandImpl {
     package: String,
 }
 
@@ -20,6 +21,10 @@ impl Command for CommandImpl {
 
     fn help(&self) -> String {
         include_str!("help.md").to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {

@@ -17,6 +17,7 @@ fn create_alias_command(
     commands: &mut Commands,
     sub_state: &mut HashMap<String, StateValue>,
 ) -> Result<(), String> {
+    #[derive(Clone)]
     struct AliasCommand {
         name: String,
         arguments: Vec<String>,
@@ -29,6 +30,10 @@ fn create_alias_command(
 
         fn help(&self) -> String {
             "".to_string()
+        }
+
+        fn clone_and_box(&self) -> Box<dyn Command> {
+            Box::new((*self).clone())
         }
 
         fn requires_context(&self) -> bool {
@@ -67,7 +72,8 @@ fn create_alias_command(
     }
 }
 
-struct CommandImpl {
+#[derive(Clone)]
+pub(crate) struct CommandImpl {
     package: String,
 }
 
@@ -82,6 +88,10 @@ impl Command for CommandImpl {
 
     fn help(&self) -> String {
         include_str!("help.md").to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn requires_context(&self) -> bool {

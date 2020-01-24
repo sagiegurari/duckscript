@@ -207,6 +207,7 @@ fn run_call(
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct FunctionCommand {
     package: String,
 }
@@ -231,6 +232,10 @@ impl Command for FunctionCommand {
 
     fn help(&self) -> String {
         include_str!("help.md").to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn requires_context(&self) -> bool {
@@ -315,6 +320,7 @@ impl Command for FunctionCommand {
 
                                 match store_fn_info_in_state(state, &fn_info) {
                                     Ok(_) => {
+                                        #[derive(Clone)]
                                         pub(crate) struct CallFunctionCommand {
                                             name: String,
                                         }
@@ -326,6 +332,10 @@ impl Command for FunctionCommand {
 
                                             fn help(&self) -> String {
                                                 "".to_string()
+                                            }
+
+                                            fn clone_and_box(&self) -> Box<dyn Command> {
+                                                Box::new((*self).clone())
                                             }
 
                                             fn requires_context(&self) -> bool {
@@ -379,6 +389,7 @@ impl Command for FunctionCommand {
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct EndFunctionCommand {
     package: String,
 }
@@ -403,6 +414,10 @@ impl Command for EndFunctionCommand {
 
     fn help(&self) -> String {
         "".to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn requires_context(&self) -> bool {
@@ -434,6 +449,7 @@ impl Command for EndFunctionCommand {
     }
 }
 
+#[derive(Clone)]
 struct ReturnCommand {
     package: String,
 }
@@ -449,6 +465,10 @@ impl Command for ReturnCommand {
 
     fn help(&self) -> String {
         "".to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn requires_context(&self) -> bool {

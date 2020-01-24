@@ -41,7 +41,7 @@ args = [
     "run",
     "--",
     "--eval",
-    "internal::test::TestDirectory ./test"
+    "test_directory ./test"
 ]
 
 [tasks.workspace-docs]
