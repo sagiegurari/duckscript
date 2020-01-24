@@ -16,11 +16,11 @@ pub(crate) struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "ArrayPop")
+        pckg::concat(&self.package, "ArrayPush")
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["array_pop".to_string()]
+        vec!["array_push".to_string()]
     }
 
     fn help(&self) -> String {
@@ -55,43 +55,18 @@ impl Command for CommandImpl {
             match state.remove(key) {
                 Some(state_value) => match state_value {
                     StateValue::List(mut list) => {
-                        let list_item = list.pop();
+                        let mut skip = true;
+                        for argument in &arguments {
+                            if skip {
+                                skip = false;
+                            } else {
+                                list.push(StateValue::String(argument.to_string()))
+                            }
+                        }
 
                         state.insert(key.to_string(), StateValue::List(list));
 
-                        match list_item {
-                            Some(list_item_value) => match list_item_value {
-                                StateValue::Boolean(value) => {
-                                    CommandResult::Continue(Some(value.to_string()))
-                                }
-                                StateValue::Number(value) => {
-                                    CommandResult::Continue(Some(value.to_string()))
-                                }
-                                StateValue::UnsignedNumber(value) => {
-                                    CommandResult::Continue(Some(value.to_string()))
-                                }
-                                StateValue::Number32Bit(value) => {
-                                    CommandResult::Continue(Some(value.to_string()))
-                                }
-                                StateValue::UnsignedNumber32Bit(value) => {
-                                    CommandResult::Continue(Some(value.to_string()))
-                                }
-                                StateValue::Number64Bit(value) => {
-                                    CommandResult::Continue(Some(value.to_string()))
-                                }
-                                StateValue::UnsignedNumber64Bit(value) => {
-                                    CommandResult::Continue(Some(value.to_string()))
-                                }
-                                StateValue::String(value) => CommandResult::Continue(Some(value)),
-                                StateValue::List(_) => {
-                                    CommandResult::Error("Unsupported array element.".to_string())
-                                }
-                                StateValue::SubState(_) => {
-                                    CommandResult::Error("Unsupported array element.".to_string())
-                                }
-                            },
-                            None => CommandResult::Continue(None),
-                        }
+                        CommandResult::Continue(Some("true".to_string()))
                     }
                     StateValue::Boolean(value) => {
                         state.insert(key.to_string(), StateValue::Boolean(value));

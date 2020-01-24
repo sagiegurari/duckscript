@@ -1,0 +1,51 @@
+
+function test_array_with_data
+    arr = array a
+    counter = range 1 4
+    for index in ${counter}
+        array_push ${arr} ${index}
+    end
+
+    last_element = array_pop ${arr}
+    assert_eq ${last_element} 3
+
+    last_element = array_pop ${arr}
+    assert_eq ${last_element} 2
+
+    last_element = array_pop ${arr}
+    assert_eq ${last_element} 1
+
+    last_element = array_pop ${arr}
+    assert_eq ${last_element} a
+
+    last_element = array_pop ${arr}
+    defined = is_defined last_element
+    assert_false ${defined}
+
+    released = release ${arr}
+    assert ${released}
+end
+
+function test_array_empty
+    arr = array
+    counter = range 1 4
+    for index in ${counter}
+        array_push ${arr} ${index}
+    end
+
+    last_element = array_pop ${arr}
+    assert_eq ${last_element} 3
+
+    last_element = array_pop ${arr}
+    assert_eq ${last_element} 2
+
+    last_element = array_pop ${arr}
+    assert_eq ${last_element} 1
+
+    last_element = array_pop ${arr}
+    defined = is_defined last_element
+    assert_false ${defined}
+
+    released = release ${arr}
+    assert ${released}
+end

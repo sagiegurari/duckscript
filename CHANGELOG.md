@@ -2,6 +2,7 @@
 
 ### v0.1.9
 
+* New array_push command.
 * New concat command.
 * Improve wget input parsing
 
