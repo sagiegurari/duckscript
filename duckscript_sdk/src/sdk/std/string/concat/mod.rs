@@ -15,7 +15,7 @@ pub(crate) fn create(package: &str) -> Result<Box<dyn Command>, ScriptError> {
         include_str!("help.md").to_string(),
         "concat".to_string(),
         include_str!("script.ds").to_string(),
-        2,
+        0,
     )?;
 
     Ok(Box::new(command))

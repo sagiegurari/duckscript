@@ -1,4 +1,20 @@
 
+function test_no_args
+    output = concat
+    empty = is_empty ${output}
+
+    assert_eq ${output} ""
+    assert ${empty}
+end
+
+function test_single_arg
+    output = concat 1
+    empty = is_empty ${output}
+
+    assert_eq ${output} 1
+    assert_false ${empty}
+end
+
 function test_empty
     output = concat "" ""
     empty = is_empty ${output}
