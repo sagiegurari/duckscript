@@ -17,9 +17,13 @@
 * [std::collections::Array (array)](#std__collections__Array)
 * [std::collections::ArrayIsEmpty (array_is_empty)](#std__collections__ArrayIsEmpty)
 * [std::collections::ArrayLength (array_length, arrlen)](#std__collections__ArrayLength)
+* [std::collections::ArrayPop (array_pop)](#std__collections__ArrayPop)
+* [std::collections::IsArray (is_array)](#std__collections__IsArray)
 * [std::collections::Range (range)](#std__collections__Range)
 * [std::collections::ReadProperties (read_properties)](#std__collections__ReadProperties)
 * [std::collections::WriteProperties (write_properties)](#std__collections__WriteProperties)
+* [std::debug::DuckscriptSDKVersion (duckscript_sdk_version)](#std__debug__DuckscriptSDKVersion)
+* [std::debug::DuckscriptVersion (duckscript_version)](#std__debug__DuckscriptVersion)
 * [std::debug::DumpInstructions (dump_instructions)](#std__debug__DumpInstructions)
 * [std::debug::DumpState (dump_state)](#std__debug__DumpState)
 * [std::debug::DumpVariables (dump_variables)](#std__debug__DumpVariables)
@@ -31,6 +35,7 @@
 * [std::error::GetLastError (get_last_error)](#std__error__GetLastError)
 * [std::error::GetLastErrorLine (get_last_error_line)](#std__error__GetLastErrorLine)
 * [std::error::GetLastErrorSource (get_last_error_source)](#std__error__GetLastErrorSource)
+* [std::error::SetError (set_error)](#std__error__SetError)
 * [std::error::SetExitOnError (exit_on_error, set_exit_on_error)](#std__error__SetExitOnError)
 * [std::fs::CopyPath (cp)](#std__fs__CopyPath)
 * [std::fs::CreateDirectory (mkdir)](#std__fs__CreateDirectory)
@@ -46,9 +51,14 @@
 * [std::fs::Read (readfile)](#std__fs__Read)
 * [std::fs::Write (writefile)](#std__fs__Write)
 * [std::math::Calc (calc)](#std__math__Calc)
+* [std::math::GreaterThan (greater_than)](#std__math__GreaterThan)
+* [std::math::LessThan (less_than)](#std__math__LessThan)
 * [std::net::Hostname (hostname)](#std__net__Hostname)
+* [std::net::HttpClient (http_client)](#std__net__HttpClient)
+* [std::net::WGet (wget)](#std__net__WGet)
 * [std::process::Execute (exec)](#std__process__Execute)
 * [std::process::Exit (exit, quit, q)](#std__process__Exit)
+* [std::scope::Clear (clear_scope)](#std__scope__Clear)
 * [std::string::Contains (contains)](#std__string__Contains)
 * [std::string::EndsWith (ends_with)](#std__string__EndsWith)
 * [std::string::Equals (equals, eq)](#std__string__Equals)
@@ -56,6 +66,7 @@
 * [std::string::IsEmpty (is_empty)](#std__string__IsEmpty)
 * [std::string::LastIndexOf (last_indexof)](#std__string__LastIndexOf)
 * [std::string::Length (length, strlen)](#std__string__Length)
+* [std::string::Replace (replace)](#std__string__Replace)
 * [std::string::StartsWith (starts_with)](#std__string__StartsWith)
 * [std::string::SubString (substring)](#std__string__SubString)
 * [std::string::Trim (trim)](#std__string__Trim)
@@ -66,7 +77,9 @@
 * [std::test::AssertError (assert_error)](#std__test__AssertError)
 * [std::test::AssertFail (assert_fail)](#std__test__AssertFail)
 * [std::test::AssertFalse (assert_false)](#std__test__AssertFalse)
+* [std::test::TestDirectory (test_directory)](#std__test__TestDirectory)
 * [std::thread::Sleep (sleep)](#std__thread__Sleep)
+* [std::time::CurrentTimeMillies (current_time)](#std__time__CurrentTimeMillies)
 
 
 <a name="std__Alias"></a>
@@ -725,11 +738,33 @@ array
 <a name="std__collections__ArrayIsEmpty"></a>
 ## std::collections::ArrayIsEmpty
 
-Alias for:
+```sh
+var = array_is_empty handle
+```
+
+Returns true if the provided array handle is an empty array.
+
+#### Parameters
+
+The array handle.
+
+#### Return Value
+
+True if the provided handle belongs to an empty array.
+
+#### Examples
 
 ```sh
-__length = array_length ${argument1}
-equals 0 ${__length}
+values = array
+out = array_is_empty ${values}
+```
+
+
+#### Source:
+
+```sh
+scope::array_is_empty::length = array_length ${scope::array_is_empty::argument::1}
+equals 0 ${scope::array_is_empty::length}
 ```
 
 
@@ -769,6 +804,68 @@ echo Array length: ${len} released: ${released}
 
 #### Aliases:
 array_length, arrlen
+
+<a name="std__collections__ArrayPop"></a>
+## std::collections::ArrayPop
+```sh
+var = array_pop handle
+```
+
+Returns the last element of the array or none if the array is empty.
+
+#### Parameters
+
+The array handle.
+
+#### Return Value
+
+The last element of the array or none if the array is empty.
+
+#### Examples
+
+```sh
+handle = array 1 2 3
+last_element = array_pop ${handle}
+assert_eq ${last_element} 3
+```
+
+
+#### Aliases:
+array_pop
+
+<a name="std__collections__IsArray"></a>
+## std::collections::IsArray
+```sh
+var = array_length handle
+```
+
+Returns the array length based on the provided array handle.
+
+#### Parameters
+
+The array handle.
+
+#### Return Value
+
+The array length.
+
+#### Examples
+
+```sh
+handle = array a b c "d e"
+len = array_length ${handle}
+released = release ${handle}
+echo Array length: ${len} released: ${released}
+
+handle = range 0 10
+len = array_length ${handle}
+released = release ${handle}
+echo Array length: ${len} released: ${released}
+```
+
+
+#### Aliases:
+is_array
 
 <a name="std__collections__Range"></a>
 ## std::collections::Range
@@ -867,6 +964,58 @@ text = write_properties a b a.b.c
 
 #### Aliases:
 write_properties
+
+<a name="std__debug__DuckscriptSDKVersion"></a>
+## std::debug::DuckscriptSDKVersion
+```sh
+var = duckscript_sdk_version
+```
+
+Returns the duckscript SDK version.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The duckscript SDK version.
+
+#### Examples
+
+```sh
+version = duckscript_sdk_version 
+```
+
+
+#### Aliases:
+duckscript_sdk_version
+
+<a name="std__debug__DuckscriptVersion"></a>
+## std::debug::DuckscriptVersion
+```sh
+var = duckscript_version
+```
+
+Returns the duckscript runtime version.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The duckscript runtime version.
+
+#### Examples
+
+```sh
+version = duckscript_version 
+```
+
+
+#### Aliases:
+duckscript_version
 
 <a name="std__debug__DumpInstructions"></a>
 ## std::debug::DumpInstructions
@@ -1054,7 +1203,7 @@ cd, set_current_dir
 <a name="std__env__SetVar"></a>
 ## std::env::SetVar
 ```sh
-set_env key value
+var = set_env key value
 ```
 
 Sets the environment variable defined by the provided key to the provided value.
@@ -1068,7 +1217,7 @@ Two arguments are required:
 
 #### Return Value
 
-None
+true if successful
 
 #### Examples
 
@@ -1195,6 +1344,37 @@ echo Error Source File: ${source}
 
 #### Aliases:
 get_last_error_source
+
+<a name="std__error__SetError"></a>
+## std::error::SetError
+```sh
+set_error message
+```
+
+Sets the last error which is accessible via get_last_error.<br>
+This command will not trigger the on_error command flow.
+
+#### Parameters
+
+The error message.
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+set_error "my error message"
+
+error = get_last_error
+
+assert_eq ${error} "my error message"
+```
+
+
+#### Aliases:
+set_error
 
 <a name="std__error__SetExitOnError"></a>
 ## std::error::SetExitOnError
@@ -1655,6 +1835,58 @@ result = calc 1 + 5 * 7
 #### Aliases:
 calc
 
+<a name="std__math__GreaterThan"></a>
+## std::math::GreaterThan
+```sh
+var = greater_than left right
+```
+
+This command returns true/false based on left > right calculation.
+
+#### Parameters
+
+Two numeric values to compare.
+
+#### Return Value
+
+True if first argument is bigger than second argument.
+
+#### Examples
+
+```sh
+result = greater_than 2 1.5
+```
+
+
+#### Aliases:
+greater_than
+
+<a name="std__math__LessThan"></a>
+## std::math::LessThan
+```sh
+var = less_than left right
+```
+
+This command returns true/false based on left < right calculation.
+
+#### Parameters
+
+Two numeric values to compare.
+
+#### Return Value
+
+True if first argument is smaller than second argument.
+
+#### Examples
+
+```sh
+result = less_than 1 1.5
+```
+
+
+#### Aliases:
+less_than
+
 <a name="std__net__Hostname"></a>
 ## std::net::Hostname
 ```sh
@@ -1680,6 +1912,164 @@ name = hostname
 
 #### Aliases:
 hostname
+
+<a name="std__net__HttpClient"></a>
+## std::net::HttpClient
+```sh
+var = http_client [--method method] [--payload payload] [--output-file file] URL
+```
+
+Invokes a HTTP request.<br>
+The request method by default is GET but can be modified by the ```--method``` parameter.<br>
+The ```--output-file``` parameter will redirect a valid response output to the provided file, otherwise all response text will be set to the
+output variable.<br>
+When redirecting to file, the output would be the response size.<br>
+The ```--payload``` parameter enables to pass a payload to POST http requests.<br>
+In case of errors or error HTTP response codes, false will be returned.
+
+#### Parameters
+
+* Optional HTTP Method, for example ```--method GET``` or ```--method POST``` (currently only GET and POST are supported).
+* Optional post payload via ```--payload``` parameter.
+* Optional redirection of output to file via ```--output-file``` parameter.
+* The target URL
+
+#### Return Value
+
+The response text or in case of output redirection to file, the response size.<br>
+In case of errors, it will return false.
+
+#### Examples
+
+```sh
+function test_get
+    response = http_client https://www.rust-lang.org/
+
+    found = contains ${response} Rust
+
+    assert ${found}
+end
+
+function test_get_to_file
+    file = set ./target/_duckscript_test/http_client/page.html
+    rm ${file}
+
+    response_size = http_client --output-file ${file} https://www.rust-lang.org/
+
+    response = readfile ${file}
+    found = contains ${response} Rust
+
+    assert ${found}
+    assert ${response_size}
+end
+
+function test_post
+    payload = set {\"login\":\"login\",\"password\":\"password\"}
+    response = http_client --method POST --payload ${payload} https://reqbin.com/echo/post/json
+
+    found = contains ${response} success
+
+    assert ${found}
+end
+```
+
+
+#### Aliases:
+http_client
+
+<a name="std__net__WGet"></a>
+## std::net::WGet
+
+```sh
+var = wget [--method=HTTP-method] [--post-data=payload] [-O file] URL
+```
+
+Invokes a HTTP request.<br>
+The request method by default is GET but can be modified by the ```--method``` parameter.<br>
+The ```-O``` parameter will redirect a valid response output to the provided file, otherwise all response text will be set to the
+output variable.<br>
+When redirecting to file, the output would be the response size.<br>
+The ```--post-data``` parameter enables to pass a payload to POST http requests.<br>
+In case of errors or error HTTP response codes, false will be returned.
+
+#### Parameters
+
+* Optional HTTP Method, for example --method=HTTP-GET or --method=HTTP-POST (currently only GET and POST are supported).
+* Optional post payload via ```--post-data``` parameter.
+* Optional redirection of output to file via ```-O``` parameter.
+* The target URL
+
+#### Return Value
+
+The response text or in case of output redirection to file, the response size.<br>
+In case of errors, it will return false.
+
+#### Examples
+
+```sh
+function test_get
+    response = wget https://www.rust-lang.org/
+
+    found = contains ${response} Rust
+
+    assert ${found}
+end
+
+function test_get_to_file
+    file = set ./target/_duckscript_test/wget/page.html
+    rm ${file}
+
+    response_size = wget -O ${file} https://www.rust-lang.org/
+
+    response = readfile ${file}
+    found = contains ${response} Rust
+
+    assert ${found}
+    assert ${response_size}
+end
+
+function test_post
+    payload = set {\"login\":\"login\",\"password\":\"password\"}
+    response = wget --method=HTTP-POST --post-data=${payload} https://reqbin.com/echo/post/json
+
+    found = contains ${response} success
+
+    assert ${found}
+end
+```
+
+
+#### Source:
+
+```sh
+scope::wget::url = array_pop ${scope::wget::arguments}
+
+scope::wget::method = set GET
+
+scope::wget::lookingfor = set flag
+for scope::wget::arg in ${scope::wget::arguments}
+    if equals ${scope::wget::lookingfor} flag
+        if starts_with ${scope::wget::arg} --method=HTTP-
+            scope::wget::len = strlen --method=HTTP-
+            scope::wget::method = substring ${scope::wget::arg} ${scope::wget::len}
+        elif starts_with ${scope::wget::arg} --post-data=
+            scope::wget::len = strlen --post-data=
+            scope::wget::payload = substring ${scope::wget::arg} ${scope::wget::len}
+        elif starts_with ${scope::wget::arg} -O
+            scope::wget::lookingfor = set file
+        end
+    elif equals ${scope::wget::lookingfor} file
+        scope::wget::file = set ${scope::wget::arg}
+        scope::wget::lookingfor = set flag
+    end
+end
+
+http_client --method "${scope::wget::method}" --output-file "${scope::wget::file}" --payload "${scope::wget::payload}" ${scope::wget::url}
+```
+
+
+#### Aliases:
+wget
 
 <a name="std__process__Execute"></a>
 ## std::process::Execute
@@ -1760,6 +2150,52 @@ code = exit 1
 
 #### Aliases:
 exit, quit, q
+
+<a name="std__scope__Clear"></a>
+## std::scope::Clear
+```sh
+clear_scope name
+```
+
+Clears all variables which are prefixed with the provided name + ::.<br>
+For example, if the value provided is **my_scope** all variables that start with **my_scope::** will be removed.
+
+#### Parameters
+
+The scope name.
+
+#### Return Value
+
+None.
+
+#### Examples
+
+```sh
+testscope = set true
+testscope::1 = set 1
+testscope::subscope::1 = set 1
+
+assert_eq ${testscope} true
+defined = is_defined testscope::1
+assert ${defined}
+assert_eq ${testscope::1} 1
+defined = is_defined testscope::subscope::1
+assert ${defined}
+assert_eq ${testscope::subscope::1} 1
+
+clear_scope testscope
+
+assert_eq ${testscope} true
+
+defined = is_defined testscope::1
+assert_false ${defined}
+defined = is_defined testscope::subscope::1
+assert_false ${defined}
+```
+
+
+#### Aliases:
+clear_scope
 
 <a name="std__string__Contains"></a>
 ## std::string::Contains
@@ -1972,6 +2408,37 @@ len = length "Hello World"
 
 #### Aliases:
 length, strlen
+
+<a name="std__string__Replace"></a>
+## std::string::Replace
+```sh
+var = replace text from to
+```
+
+Returns new value of text after replacing all from values to the provided to values.
+
+#### Parameters
+
+* The full text
+* The from text
+* The to text
+
+#### Return Value
+
+The updated text.
+
+#### Examples
+
+```sh
+text = set "my large text value with lots of text"
+updated = replace ${text} text stuff
+
+assert_eq ${updated} "my large stuff value with lots of stuff"
+```
+
+
+#### Aliases:
+replace
 
 <a name="std__string__StartsWith"></a>
 ## std::string::StartsWith
@@ -2328,6 +2795,47 @@ assert_false ${value}
 #### Aliases:
 assert_false
 
+<a name="std__test__TestDirectory"></a>
+## std::test::TestDirectory
+```sh
+test_directory directory [pattern]
+```
+
+This command can be used to run unit tests written in duckscript.<br>
+It will run all duckscript files in the directory tree ending with **test.ds** and for each file, it will run
+all functions that start with **test_**.<br>
+Each such function is considered as a test and can run any type of code and check itself using assert commands.
+
+#### Parameters
+
+* The root directory of all test files (all files ending with **test.ds** in the directory tree will be checked)
+* Optional pattern for the file name or test function to limit invocation of only those tests.
+
+#### Return Value
+
+**true** if successful.
+
+#### Examples
+
+This is an example of a test function:
+
+```sh
+function test_set_get_unset
+    unset_env TEST_SET_GET_UNSET
+    value = get_env TEST_SET_GET_UNSET
+    assert_false ${value}
+
+    value = set_env TEST_SET_GET_UNSET "test value"
+    assert ${value}
+    value = get_env TEST_SET_GET_UNSET
+    assert_eq ${value} "test value"
+end
+```
+
+
+#### Aliases:
+test_directory
+
 <a name="std__thread__Sleep"></a>
 ## std::thread::Sleep
 ```sh
@@ -2356,6 +2864,33 @@ echo Waited for ${time} milliseconds.
 
 #### Aliases:
 sleep
+
+<a name="std__time__CurrentTimeMillies"></a>
+## std::time::CurrentTimeMillies
+```sh
+var = current_time
+```
+
+Returns the current time in milliseconds (from January 1, 1970 UTC).
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The current time in milliseconds.
+
+#### Examples
+
+```sh
+result = current_time
+echo ${result}
+```
+
+
+#### Aliases:
+current_time
 
 ### License
 Developed by Sagie Gur-Ari and licensed under the

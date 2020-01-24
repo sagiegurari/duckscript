@@ -1,0 +1,30 @@
+
+function test_get
+    response = wget https://www.rust-lang.org/
+
+    found = contains ${response} Rust
+
+    assert ${found}
+end
+
+function test_get_to_file
+    file = set ./target/_duckscript_test/wget/page.html
+    rm ${file}
+
+    response_size = wget -O ${file} https://www.rust-lang.org/
+
+    response = readfile ${file}
+    found = contains ${response} Rust
+
+    assert ${found}
+    assert ${response_size}
+end
+
+function test_post
+    payload = set {\"login\":\"login\",\"password\":\"password\"}
+    response = wget --method=HTTP-POST --post-data=${payload} https://reqbin.com/echo/post/json
+
+    found = contains ${response} success
+
+    assert ${found}
+end

@@ -6,11 +6,16 @@ use std::collections::HashMap;
 
 #[test]
 fn command_default_aliases() {
+    #[derive(Clone)]
     struct InnerCommand {}
 
     impl Command for InnerCommand {
         fn name(&self) -> String {
             "".to_string()
+        }
+
+        fn clone_and_box(&self) -> Box<dyn Command> {
+            Box::new((*self).clone())
         }
     }
 
@@ -22,11 +27,16 @@ fn command_default_aliases() {
 
 #[test]
 fn command_default_help() {
+    #[derive(Clone)]
     struct InnerCommand {}
 
     impl Command for InnerCommand {
         fn name(&self) -> String {
             "".to_string()
+        }
+
+        fn clone_and_box(&self) -> Box<dyn Command> {
+            Box::new((*self).clone())
         }
     }
 
@@ -38,11 +48,16 @@ fn command_default_help() {
 
 #[test]
 fn command_default_run() {
+    #[derive(Clone)]
     struct InnerCommand {}
 
     impl Command for InnerCommand {
         fn name(&self) -> String {
             "".to_string()
+        }
+
+        fn clone_and_box(&self) -> Box<dyn Command> {
+            Box::new((*self).clone())
         }
     }
 
@@ -54,11 +69,16 @@ fn command_default_run() {
 
 #[test]
 fn command_default_run_with_context() {
+    #[derive(Clone)]
     struct InnerCommand {}
 
     impl Command for InnerCommand {
         fn name(&self) -> String {
             "".to_string()
+        }
+
+        fn clone_and_box(&self) -> Box<dyn Command> {
+            Box::new((*self).clone())
         }
     }
 

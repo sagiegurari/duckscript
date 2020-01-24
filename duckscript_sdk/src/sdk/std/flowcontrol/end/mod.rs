@@ -38,7 +38,8 @@ pub(crate) fn set_command(line: usize, state: &mut HashMap<String, StateValue>, 
     sub_state.insert(line.to_string(), StateValue::String(command));
 }
 
-struct CommandImpl {}
+#[derive(Clone)]
+pub(crate) struct CommandImpl {}
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
@@ -47,6 +48,10 @@ impl Command for CommandImpl {
 
     fn help(&self) -> String {
         "".to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn requires_context(&self) -> bool {

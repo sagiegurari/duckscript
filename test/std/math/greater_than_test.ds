@@ -1,0 +1,18 @@
+
+function test_equals
+    result = greater_than 1 1
+
+    assert_false ${result}
+end
+
+function test_less_than
+    result = greater_than 1 1.5
+
+    assert_false ${result}
+end
+
+function test_greater_than
+    result = greater_than 2 1.5
+
+    assert ${result}
+end

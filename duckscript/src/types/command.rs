@@ -51,6 +51,9 @@ pub trait Command {
         format!("No documentation found for command: {}", self.name())
     }
 
+    /// Clones the command and returns a box reference.
+    fn clone_and_box(&self) -> Box<dyn Command>;
+
     /// If true the run with the context will be invoked.
     fn requires_context(&self) -> bool {
         false
@@ -86,10 +89,20 @@ pub trait Command {
     }
 }
 
+/// Defines a box reference for a command.
+pub type CommandBox = Box<dyn Command>;
+
+impl Clone for Box<dyn Command> {
+    fn clone(&self) -> Box<dyn Command> {
+        self.clone_and_box()
+    }
+}
+
 /// Holds and enables access to the runtime commands implementations
+#[derive(Clone)]
 pub struct Commands {
     /// mapping between command names to implementations
-    pub commands: HashMap<String, Box<dyn Command>>,
+    pub commands: HashMap<String, CommandBox>,
     /// mapping between aliases to command names
     pub aliases: HashMap<String, String>,
 }
@@ -105,7 +118,7 @@ impl Commands {
 
     /// Returns the command after it was being used.
     /// No validations will be made.
-    pub fn return_after_usage(&mut self, command: Box<dyn Command>) {
+    pub fn return_after_usage(&mut self, command: CommandBox) {
         let name = command.name();
 
         self.commands.insert(name.clone(), command);
@@ -113,7 +126,7 @@ impl Commands {
 
     /// Adds a new command definition.
     /// It will fail in case another command already defined the same name/aliases
-    pub fn set(&mut self, command: Box<dyn Command>) -> Result<(), ScriptError> {
+    pub fn set(&mut self, command: CommandBox) -> Result<(), ScriptError> {
         let name = command.name();
         let aliases = command.aliases();
 
@@ -145,7 +158,7 @@ impl Commands {
     }
 
     /// Return the command based on the given command name/alias
-    pub fn get(&self, name: &str) -> Option<&Box<dyn Command>> {
+    pub fn get(&self, name: &str) -> Option<&CommandBox> {
         let command_name = match self.aliases.get(name) {
             Some(ref value) => value,
             None => name,
@@ -166,7 +179,7 @@ impl Commands {
 
     /// Return the command based on the given command name/alias.
     /// It will also remove it in the process.
-    pub fn get_for_use(&mut self, name: &str) -> Option<Box<dyn Command>> {
+    pub fn get_for_use(&mut self, name: &str) -> Option<CommandBox> {
         let command_name = match self.aliases.get(name) {
             Some(ref value) => value,
             None => name,

@@ -6,7 +6,8 @@ use std::env;
 #[path = "./mod_test.rs"]
 mod mod_test;
 
-struct CommandImpl {
+#[derive(Clone)]
+pub(crate) struct CommandImpl {
     package: String,
 }
 
@@ -23,6 +24,10 @@ impl Command for CommandImpl {
         include_str!("help.md").to_string()
     }
 
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
+    }
+
     fn run(&self, arguments: Vec<String>) -> CommandResult {
         if arguments.is_empty() {
             CommandResult::Error("Missing environment variable name and value.".to_string())
@@ -31,7 +36,7 @@ impl Command for CommandImpl {
         } else {
             env::set_var(&arguments[0], &arguments[1]);
 
-            CommandResult::Continue(None)
+            CommandResult::Continue(Some("true".to_string()))
         }
     }
 }

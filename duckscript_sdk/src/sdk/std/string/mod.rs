@@ -5,6 +5,7 @@ mod indexof;
 mod is_empty;
 mod last_indexof;
 mod length;
+mod replace;
 mod starts_with;
 mod substring;
 mod trim;
@@ -27,6 +28,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(is_empty::create(&package))?;
     commands.set(last_indexof::create(&package))?;
     commands.set(length::create(&package))?;
+    commands.set(replace::create(&package))?;
     commands.set(starts_with::create(&package))?;
     commands.set(substring::create(&package))?;
     commands.set(trim::create(&package))?;

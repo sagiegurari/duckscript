@@ -22,8 +22,8 @@ fn run_set() {
     env::remove_var("DUCKSCRIPT_SDK_SET_ENV");
     test::run_script_and_validate(
         vec![create("")],
-        "set_env DUCKSCRIPT_SDK_SET_ENV test",
-        CommandValidation::None,
+        "out = set_env DUCKSCRIPT_SDK_SET_ENV test",
+        CommandValidation::Match("out".to_string(), "true".to_string()),
     );
     assert_eq!(env::var("DUCKSCRIPT_SDK_SET_ENV").unwrap(), "test");
     env::remove_var("DUCKSCRIPT_SDK_SET_ENV");

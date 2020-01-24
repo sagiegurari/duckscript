@@ -16,11 +16,13 @@ pub(crate) mod on_error;
 mod os_family;
 mod process;
 mod read;
-mod release;
+pub(crate) mod release;
+pub(crate) mod scope;
 mod set;
 pub(crate) mod string;
 mod test;
 mod thread;
+mod time;
 mod unalias;
 
 use duckscript::types::command::Commands;
@@ -51,9 +53,11 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     net::load(commands, PACKAGE)?;
     on_error::load(commands, PACKAGE)?;
     process::load(commands, PACKAGE)?;
+    scope::load(commands, PACKAGE)?;
     string::load(commands, PACKAGE)?;
     test::load(commands, PACKAGE)?;
     thread::load(commands, PACKAGE)?;
+    time::load(commands, PACKAGE)?;
 
     Ok(())
 }

@@ -261,6 +261,7 @@ fn get_next_iteration(
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct ForInCommand {
     package: String,
 }
@@ -285,6 +286,10 @@ impl Command for ForInCommand {
 
     fn help(&self) -> String {
         include_str!("help.md").to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn requires_context(&self) -> bool {
@@ -350,6 +355,7 @@ impl Command for ForInCommand {
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct EndForInCommand {
     package: String,
 }
@@ -374,6 +380,10 @@ impl Command for EndForInCommand {
 
     fn help(&self) -> String {
         "".to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn requires_context(&self) -> bool {

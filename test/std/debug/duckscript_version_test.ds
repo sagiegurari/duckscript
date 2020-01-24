@@ -1,0 +1,7 @@
+
+function test_duckscript_version
+    version = duckscript_version
+    empty = is_empty version
+
+    assert_false ${empty}
+end

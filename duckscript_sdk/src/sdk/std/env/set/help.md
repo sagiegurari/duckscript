@@ -1,5 +1,5 @@
 ```sh
-set_env key value
+var = set_env key value
 ```
 
 Sets the environment variable defined by the provided key to the provided value.
@@ -13,7 +13,7 @@ Two arguments are required:
 
 #### Return Value
 
-None
+true if successful
 
 #### Examples
 

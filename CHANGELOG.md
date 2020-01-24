@@ -1,5 +1,25 @@
 ## CHANGELOG
 
+### v0.1.8
+
+* Move test directory command to public std namespace to enable duckscript unit testing
+* Enable to clone commands
+* Split wget and http_client command #66
+* New array_pop command
+* Commands created from duckscript now support help text and automatic scope clearing #69
+* New clear_scope command #71
+* New set_error command #68
+* New is_array command #70
+* Test errors in duckscript based tests will break build flow.
+* New --version cli option.
+* New version functions and commands for duckscript and duckscript SDK.
+* New replace command.
+* New current_time command.
+* New greater_than and less_than commands.
+* New wget (http_client) command #20
+* Reduce binary executable size.
+* Fix CLI help documentation.
+
 ### v0.1.7 (2020-01-17)
 
 * Fixed runner to return an error if on_error requested crash or exit and not just end the script.

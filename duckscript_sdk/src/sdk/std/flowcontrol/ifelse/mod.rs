@@ -289,6 +289,7 @@ fn store_call_info(call_info: &CallInfo, state: &mut HashMap<String, StateValue>
     call_info_stack.push(StateValue::SubState(call_info_state));
 }
 
+#[derive(Clone)]
 pub(crate) struct IfCommand {
     package: String,
 }
@@ -313,6 +314,10 @@ impl Command for IfCommand {
 
     fn help(&self) -> String {
         include_str!("help.md").to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn requires_context(&self) -> bool {
@@ -385,6 +390,7 @@ impl Command for IfCommand {
     }
 }
 
+#[derive(Clone)]
 struct ElseIfCommand {
     package: String,
 }
@@ -400,6 +406,10 @@ impl Command for ElseIfCommand {
 
     fn help(&self) -> String {
         "".to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn requires_context(&self) -> bool {
@@ -429,7 +439,7 @@ impl Command for ElseIfCommand {
                     match condition::eval_condition(arguments, state, variables, commands) {
                         Ok(passed) => {
                             if passed {
-                                let next_line = if call_info.else_line_index < if_else_info.else_lines.len() {
+                                let next_line = if call_info.else_line_index + 1 < if_else_info.else_lines.len() {
                                     if_else_info.else_lines[call_info.else_line_index + 1]
                                 } else {
                                     if_else_info.else_lines[0]
@@ -445,7 +455,7 @@ impl Command for ElseIfCommand {
                                 store_call_info(&else_call_info, state);
 
                                 CommandResult::Continue(None)
-                            } else if call_info.else_line_index < if_else_info.else_lines.len() {
+                            } else if call_info.else_line_index + 1 < if_else_info.else_lines.len() {
                                 let next_index = call_info.else_line_index + 1;
                                 let next_line = if_else_info.else_lines[next_index];
 
@@ -475,6 +485,7 @@ impl Command for ElseIfCommand {
     }
 }
 
+#[derive(Clone)]
 struct ElseCommand {
     package: String,
 }
@@ -490,6 +501,10 @@ impl Command for ElseCommand {
 
     fn help(&self) -> String {
         "".to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn requires_context(&self) -> bool {
@@ -523,6 +538,7 @@ impl Command for ElseCommand {
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct EndIfCommand {
     package: String,
 }
@@ -547,6 +563,10 @@ impl Command for EndIfCommand {
 
     fn help(&self) -> String {
         "".to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
     }
 
     fn run(&self, _arguments: Vec<String>) -> CommandResult {

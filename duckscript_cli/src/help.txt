@@ -1,5 +1,5 @@
 USAGE:
-    duckscript [FLAGS] [FILE]
+    duck [FLAGS] [FILE]
 
 FLAGS:
     -h, --help      Prints help information

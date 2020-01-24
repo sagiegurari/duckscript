@@ -106,6 +106,10 @@ pub(crate) fn find_commands(
             }
         }
 
-        Err("Missing end of structure.".to_string())
+        Err(format!(
+            "Missing end of structure for start names: {:?} start: {} end: {}",
+            &start_names, start_index, end_index
+        )
+        .to_string())
     }
 }
