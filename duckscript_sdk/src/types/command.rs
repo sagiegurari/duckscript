@@ -29,11 +29,14 @@ impl AliasCommand {
     ) -> Result<AliasCommand, ScriptError> {
         let instructions = parser::parse_text(&raw_command)?;
 
+        let mut scope_name_with_prefix = "scope::".to_string();
+        scope_name_with_prefix.push_str(&scope_name);
+
         Ok(AliasCommand {
             name,
             aliases,
             help,
-            scope_name,
+            scope_name: scope_name_with_prefix,
             raw_command,
             arguments_amount,
             instructions,
@@ -87,9 +90,6 @@ impl Command for AliasCommand {
         if arguments.len() < self.arguments_amount {
             CommandResult::Error("Invalid arguments provided.".to_string())
         } else {
-            let mut scope_name = "scope::".to_string();
-            scope_name.push_str(&self.scope_name);
-
             // define script arguments
             let mut handle_option = None;
             if !arguments.is_empty() {
@@ -97,7 +97,7 @@ impl Command for AliasCommand {
                 let mut array = vec![];
                 for argument in arguments {
                     index = index + 1;
-                    let mut key = scope_name.clone();
+                    let mut key = self.scope_name.clone();
                     key.push_str("::argument::");
                     key.push_str(&index.to_string());
 
@@ -108,7 +108,7 @@ impl Command for AliasCommand {
 
                 let handle = put_handle(state, StateValue::List(array));
 
-                let mut key = scope_name.clone();
+                let mut key = self.scope_name.clone();
                 key.push_str("::arguments");
 
                 variables.insert(key, handle.clone());
@@ -196,7 +196,7 @@ impl Command for AliasCommand {
                 }
                 None => (),
             }
-            clear(&scope_name, variables);
+            clear(&self.scope_name, variables);
 
             match flow_result {
                 Some(result) => result,
