@@ -2,6 +2,7 @@
 
 ### v0.1.9
 
+* New array_concat command.
 * New trigger_error command.
 * New array_push command.
 * New concat command.

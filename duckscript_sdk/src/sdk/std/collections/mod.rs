@@ -1,4 +1,5 @@
 pub(crate) mod array;
+mod array_concat;
 mod array_is_empty;
 pub(crate) mod array_length;
 pub(crate) mod array_pop;
@@ -18,6 +19,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     let package = pckg::concat(parent, PACKAGE);
 
     commands.set(array::create(&package))?;
+    commands.set(array_concat::create(&package)?)?;
     commands.set(array_push::create(&package))?;
     commands.set(array_is_empty::create(&package)?)?;
     commands.set(array_length::create(&package))?;

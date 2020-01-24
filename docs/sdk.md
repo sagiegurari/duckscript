@@ -15,6 +15,7 @@
 * [std::ShowCommandDocumentation (man)](#std__ShowCommandDocumentation)
 * [std::Unalias (unalias)](#std__Unalias)
 * [std::collections::Array (array)](#std__collections__Array)
+* [std::collections::ArrayConcat (array_concat)](#std__collections__ArrayConcat)
 * [std::collections::ArrayIsEmpty (array_is_empty)](#std__collections__ArrayIsEmpty)
 * [std::collections::ArrayLength (array_length, arrlen)](#std__collections__ArrayLength)
 * [std::collections::ArrayPop (array_pop)](#std__collections__ArrayPop)
@@ -737,6 +738,59 @@ release ${handle}
 
 #### Aliases:
 array
+
+<a name="std__collections__ArrayConcat"></a>
+## std::collections::ArrayConcat
+
+```sh
+handle = array_concat [handle]*
+```
+
+Concats all provided arrays and returns a handle to a new array with all items.
+
+#### Parameters
+
+Any number of array handles.
+
+#### Return Value
+
+A handle to the new array.
+
+#### Examples
+
+```sh
+input1 = range 1 4
+input2 = range 4 6
+input3 = range 6 8
+
+# new array will contain values from 1-7
+arr = array_concat ${input1} ${input2} ${input3}
+```
+
+
+#### Source:
+
+```sh
+for scope::array_concat::arg in ${scope::array_concat::arguments}
+    if not is_array ${scope::array_concat::arg}
+        trigger_error "Invalid input, non array handle or array not found."
+    end
+end
+
+scope::array_concat::array = array
+
+for scope::array_concat::arg in ${scope::array_concat::arguments}
+    for scope::array_concat::item in ${scope::array_concat::arg}
+        array_push ${scope::array_concat::array} ${scope::array_concat::item}
+    end
+end
+
+set ${scope::array_concat::array}
+```
+
+
+#### Aliases:
+array_concat
 
 <a name="std__collections__ArrayIsEmpty"></a>
 ## std::collections::ArrayIsEmpty
