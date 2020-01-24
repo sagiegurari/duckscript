@@ -1,3 +1,4 @@
+mod concat;
 mod contains;
 mod ends_with;
 pub(crate) mod equals;
@@ -21,6 +22,7 @@ static PACKAGE: &str = "string";
 pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptError> {
     let package = pckg::concat(parent, PACKAGE);
 
+    commands.set(concat::create(&package)?)?;
     commands.set(contains::create(&package))?;
     commands.set(ends_with::create(&package))?;
     commands.set(equals::create(&package))?;

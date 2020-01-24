@@ -2,6 +2,7 @@
 
 ### v0.1.9
 
+* New concat command.
 * Improve wget input parsing
 
 ### v0.1.8 (2020-01-24)

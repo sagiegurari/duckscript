@@ -1,0 +1,48 @@
+
+function test_empty
+    output = concat "" ""
+    empty = is_empty ${output}
+
+    assert_eq ${output} ""
+    assert ${empty}
+end
+
+function test_first_empty
+    output = concat "" test
+    empty = is_empty ${output}
+
+    assert_eq ${output} test
+    assert_false ${empty}
+end
+
+function test_second_empty
+    output = concat test ""
+    empty = is_empty ${output}
+
+    assert_eq ${output} test
+    assert_false ${empty}
+end
+
+function test_both_not_empty
+    output = concat 1 2
+    empty = is_empty ${output}
+
+    assert_eq ${output} 12
+    assert_false ${empty}
+end
+
+function test_multiple
+    output = concat 1 2 3 4
+    empty = is_empty ${output}
+
+    assert_eq ${output} 1234
+    assert_false ${empty}
+end
+
+function test_with_spaces
+    output = concat 1 "2 3" 4
+    empty = is_empty ${output}
+
+    assert_eq ${output} "12 34"
+    assert_false ${empty}
+end
