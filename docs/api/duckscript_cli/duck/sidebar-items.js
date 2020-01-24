@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"fn":[["create_context",""],["main",""],["run_cli",""],["run_repl",""],["run_script",""]],"static":[["AUTHOR",""],["DESCRIPTION",""],["VERSION",""]]});

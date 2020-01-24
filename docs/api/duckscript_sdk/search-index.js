@@ -1,5 +1,3 @@
-var N=null,E="",T="t",U="u",searchIndex={};
-var R=["scripterror"];
-
-searchIndex["duckscriptsdk"]={"doc":"duckscript_sdk","i":[[5,"load","duckscriptsdk","Loads all core commands",N,[[["commands"]],[["result",[R[0]]],[R[0]]]]]],"p":[]};
-initSearch(searchIndex);addSearchOptions(searchIndex);
+var searchIndex={};
+searchIndex["duckscriptsdk"] = {"doc":"duckscript_sdk","i":[[5,"version","duckscriptsdk","Returns the library version.",null,[[],["string"]]],[5,"load","","Loads all core commands",null,[[["commands"]],[["scripterror"],["result",["scripterror"]]]]]],"p":[]};
+addSearchOptions(searchIndex);initSearch(searchIndex);

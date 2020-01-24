@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `duckscript_cli/src/main.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>main.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../duck/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `duckscript_cli/src/main.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>main.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../duck/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -187,16 +187,31 @@
 <span id="187">187</span>
 <span id="188">188</span>
 <span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">deny</span>(
     <span class="ident">absolute_paths_not_starting_with_crate</span>,
     <span class="ident">ambiguous_associated_items</span>,
     <span class="ident">anonymous_parameters</span>,
+    <span class="ident">array_into_iter</span>,
+    <span class="ident">bindings_with_variant_name</span>,
     <span class="ident">const_err</span>,
     <span class="ident">dead_code</span>,
     <span class="ident">deprecated</span>,
     <span class="ident">deprecated_in_future</span>,
-    <span class="ident">duplicate_macro_exports</span>,
     <span class="ident">ellipsis_inclusive_range_patterns</span>,
     <span class="ident">exceeding_bitshifts</span>,
     <span class="ident">explicit_outlives_requirements</span>,
@@ -204,20 +219,20 @@
     <span class="ident">ill_formed_attribute_input</span>,
     <span class="ident">illegal_floating_point_literal_pattern</span>,
     <span class="ident">improper_ctypes</span>,
+    <span class="ident">incomplete_features</span>,
     <span class="ident">indirect_structural_match</span>,
     <span class="ident">invalid_type_param_default</span>,
+    <span class="ident">invalid_value</span>,
     <span class="ident">irrefutable_let_patterns</span>,
     <span class="ident">keyword_idents</span>,
     <span class="ident">late_bound_lifetime_arguments</span>,
-    <span class="ident">legacy_constructor_visibility</span>,
-    <span class="ident">legacy_directory_ownership</span>,
     <span class="ident">macro_expanded_macro_exports_accessed_by_absolute_paths</span>,
+    <span class="ident">meta_variable_misuse</span>,
     <span class="ident">missing_copy_implementations</span>,
     <span class="ident">missing_docs</span>,
     <span class="ident">missing_fragment_specifier</span>,
     <span class="ident">mutable_borrow_reservation_conflict</span>,
     <span class="ident">mutable_transmutes</span>,
-    <span class="ident">nested_impl_trait</span>,
     <span class="ident">no_mangle_const_items</span>,
     <span class="ident">no_mangle_generic_items</span>,
     <span class="ident">non_ascii_idents</span>,
@@ -227,24 +242,24 @@
     <span class="ident">non_upper_case_globals</span>,
     <span class="ident">order_dependent_trait_objects</span>,
     <span class="ident">overflowing_literals</span>,
-    <span class="ident">parenthesized_params_in_types_and_modules</span>,
+    <span class="ident">overlapping_patterns</span>,
     <span class="ident">path_statements</span>,
     <span class="ident">patterns_in_fns_without_body</span>,
-    <span class="ident">plugin_as_library</span>,
     <span class="ident">private_doc_tests</span>,
     <span class="ident">private_in_public</span>,
     <span class="ident">proc_macro_derive_resolution_fallback</span>,
     <span class="ident">pub_use_of_private_extern_crate</span>,
-    <span class="ident">safe_extern_statics</span>,
+    <span class="ident">redundant_semicolon</span>,
     <span class="ident">safe_packed_borrows</span>,
+    <span class="ident">soft_unstable</span>,
     <span class="ident">stable_features</span>,
     <span class="ident">trivial_bounds</span>,
     <span class="ident">trivial_casts</span>,
     <span class="ident">trivial_numeric_casts</span>,
     <span class="ident">type_alias_bounds</span>,
     <span class="ident">tyvar_behind_raw_pointer</span>,
+    <span class="ident">uncommon_codepoints</span>,
     <span class="ident">unconditional_recursion</span>,
-    <span class="ident">unions_with_drop_fields</span>,
     <span class="ident">unknown_crate_types</span>,
     <span class="ident">unnameable_test_items</span>,
     <span class="ident">unreachable_code</span>,
@@ -311,6 +326,7 @@
 <span class="kw">use</span> <span class="ident">duckscript</span>::<span class="ident">types</span>::<span class="ident">runtime</span>::<span class="ident">Context</span>;
 <span class="kw">use</span> <span class="ident">duckscriptsdk</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">env</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">process</span>::<span class="ident">exit</span>;
 
 <span class="kw">static</span> <span class="ident">VERSION</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>);
 <span class="kw">static</span> <span class="ident">AUTHOR</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_PKG_AUTHORS&quot;</span>);
@@ -318,17 +334,29 @@
 
 <span class="kw">fn</span> <span class="ident">main</span>() {
     <span class="kw">match</span> <span class="ident">run_cli</span>() {
-        <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Error: {}&quot;</span>, <span class="ident">error</span>),
-        <span class="kw">_</span> <span class="op">=&gt;</span> (),
+        <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Error: {}&quot;</span>, <span class="ident">error</span>);
+            <span class="ident">exit</span>(<span class="number">1</span>);
+        }
+        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> (),
     };
 }
 
-<span class="kw">fn</span> <span class="ident">run_cli</span>() <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ScriptError</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">run_cli</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ScriptError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">args</span>().<span class="ident">collect</span>();
 
     <span class="kw">if</span> <span class="ident">args</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="number">2</span> {
         <span class="ident">run_repl</span>()
-    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">args</span>[<span class="number">1</span>] <span class="op">==</span> <span class="string">&quot;--help&quot;</span> <span class="op">||</span> <span class="ident">args</span>[<span class="number">1</span>] <span class="op">==</span> <span class="string">&quot;-h&quot;</span> {
+    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">args</span>[<span class="number">1</span>] <span class="op">=</span><span class="op">=</span> <span class="string">&quot;--version&quot;</span> {
+        <span class="macro">println</span><span class="macro">!</span>(
+            <span class="string">&quot;Duckscript Runtime: {}\nDuckscript SDK: {}\nDuckscript CLI: {}&quot;</span>,
+            <span class="ident">duckscript</span>::<span class="ident">version</span>(),
+            <span class="ident">duckscriptsdk</span>::<span class="ident">version</span>(),
+            <span class="ident">VERSION</span>
+        );
+
+        <span class="prelude-val">Ok</span>(())
+    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">args</span>[<span class="number">1</span>] <span class="op">=</span><span class="op">=</span> <span class="string">&quot;--help&quot;</span> <span class="op">|</span><span class="op">|</span> <span class="ident">args</span>[<span class="number">1</span>] <span class="op">=</span><span class="op">=</span> <span class="string">&quot;-h&quot;</span> {
         <span class="kw">let</span> <span class="ident">usage</span> <span class="op">=</span> <span class="macro">include_str</span><span class="macro">!</span>(<span class="string">&quot;help.txt&quot;</span>);
         <span class="macro">println</span><span class="macro">!</span>(
             <span class="string">&quot;duckscript {}\n{}\n{}\n\n{}&quot;</span>,
@@ -337,10 +365,10 @@
 
         <span class="prelude-val">Ok</span>(())
     } <span class="kw">else</span> {
-        <span class="kw">let</span> (<span class="ident">value</span>, <span class="ident">is_file</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">args</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">2</span> {
+        <span class="kw">let</span> (<span class="ident">value</span>, <span class="ident">is_file</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">args</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">2</span> {
             (<span class="ident">args</span>[<span class="number">1</span>].<span class="ident">clone</span>(), <span class="bool-val">true</span>)
         } <span class="kw">else</span> {
-            <span class="kw">if</span> <span class="ident">args</span>[<span class="number">1</span>] <span class="op">==</span> <span class="string">&quot;-e&quot;</span> <span class="op">||</span> <span class="ident">args</span>[<span class="number">1</span>] <span class="op">==</span> <span class="string">&quot;--eval&quot;</span> {
+            <span class="kw">if</span> <span class="ident">args</span>[<span class="number">1</span>] <span class="op">=</span><span class="op">=</span> <span class="string">&quot;-e&quot;</span> <span class="op">|</span><span class="op">|</span> <span class="ident">args</span>[<span class="number">1</span>] <span class="op">=</span><span class="op">=</span> <span class="string">&quot;--eval&quot;</span> {
                 (<span class="ident">args</span>[<span class="number">2</span>].<span class="ident">clone</span>(), <span class="bool-val">false</span>)
             } <span class="kw">else</span> {
                 (<span class="ident">args</span>[<span class="number">1</span>].<span class="ident">clone</span>(), <span class="bool-val">true</span>)
@@ -351,14 +379,14 @@
     }
 }
 
-<span class="kw">fn</span> <span class="ident">create_context</span>() <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Context</span>, <span class="ident">ScriptError</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">create_context</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Context</span>, <span class="ident">ScriptError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">context</span> <span class="op">=</span> <span class="ident">Context</span>::<span class="ident">new</span>();
     <span class="ident">duckscriptsdk</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>.<span class="ident">commands</span>)<span class="question-mark">?</span>;
 
     <span class="prelude-val">Ok</span>(<span class="ident">context</span>)
 }
 
-<span class="kw">fn</span> <span class="ident">run_script</span>(<span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">is_file</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ScriptError</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">run_script</span>(<span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">is_file</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ScriptError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">context</span> <span class="op">=</span> <span class="ident">create_context</span>()<span class="question-mark">?</span>;
 
     <span class="kw">if</span> <span class="ident">is_file</span> {
@@ -370,7 +398,7 @@
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="kw">fn</span> <span class="ident">run_repl</span>() <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ScriptError</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">run_repl</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ScriptError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">context</span> <span class="op">=</span> <span class="ident">create_context</span>()<span class="question-mark">?</span>;
 
     <span class="ident">runner</span>::<span class="ident">repl</span>(<span class="ident">context</span>)<span class="question-mark">?</span>;
@@ -378,4 +406,4 @@
     <span class="prelude-val">Ok</span>(())
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g., <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g., <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g., <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../";window.currentCrate = "duck";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "duck";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

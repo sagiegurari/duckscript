@@ -1,4 +1,3 @@
-var N=null,E="",T="t",U="u",searchIndex={};
-
-searchIndex["duck"]={"doc":"duckscript_cli","i":[],"p":[]};
-initSearch(searchIndex);addSearchOptions(searchIndex);
+var searchIndex={};
+searchIndex["duck"] = {"doc":"duckscript_cli","i":[[5,"main","duck","",null,[[]]],[5,"run_cli","","",null,[[],[["scripterror"],["result",["scripterror"]]]]],[5,"create_context","","",null,[[],[["scripterror"],["result",["context","scripterror"]],["context"]]]],[5,"run_script","","",null,[[["str"],["bool"]],[["scripterror"],["result",["scripterror"]]]]],[5,"run_repl","","",null,[[],[["scripterror"],["result",["scripterror"]]]]],[7,"VERSION","","",null,null],[7,"AUTHOR","","",null,null],[7,"DESCRIPTION","","",null,null]],"p":[]};
+addSearchOptions(searchIndex);initSearch(searchIndex);

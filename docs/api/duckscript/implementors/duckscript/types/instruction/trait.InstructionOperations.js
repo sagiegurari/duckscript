@@ -6,5 +6,4 @@ implementors["duckscript"] = [];
             } else {
                 window.pending_implementors = implementors;
             }
-        
-})()
+        })()
