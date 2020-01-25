@@ -1,24 +1,45 @@
 ```sh
-handle = array_concat [handle]*
+var = array_join handle separator
 ```
 
-Concats all provided arrays and returns a handle to a new array with all items.
+Joins all values in the provided array with the provided separator in between each value.
 
 #### Parameters
 
-Any number of array handles.
+* An array handle
+* The separator to put between each item pair
 
 #### Return Value
 
-A handle to the new array.
+The joined string value
 
 #### Examples
 
 ```sh
-input1 = range 1 4
-input2 = range 4 6
-input3 = range 6 8
+function test_to_string
+    arr = array hello world
+    string = array_join ${arr} ", "
 
-# new array will contain values from 1-7
-arr = array_concat ${input1} ${input2} ${input3}
+    release ${arr}
+
+    assert_eq ${string} "hello, world"
+end
+
+function test_numbers
+    arr = range 1 5
+    string = array_join ${arr} ", "
+
+    release ${arr}
+
+    assert_eq ${string} "1, 2, 3, 4"
+end
+
+function test_empty_separator
+    arr = range 1 5
+    string = array_join ${arr} ""
+
+    release ${arr}
+
+    assert_eq ${string} "1234"
+end
 ```

@@ -26,7 +26,7 @@ function test_empty_array
     assert_eq ${string} ""
 end
 
-function test_separator_array
+function test_empty_separator
     arr = range 1 5
     string = array_join ${arr} ""
 

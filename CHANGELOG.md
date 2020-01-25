@@ -2,6 +2,7 @@
 
 ### v0.1.9
 
+* New get_home_dir command.
 * New array_join command.
 * The read_properties command now support **--prefix** flag.
 * New array_concat command.
