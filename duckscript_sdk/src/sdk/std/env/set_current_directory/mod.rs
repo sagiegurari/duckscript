@@ -19,7 +19,11 @@ impl Command for CommandImpl {
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["cd".to_string(), "set_current_dir".to_string()]
+        vec![
+            "cd".to_string(),
+            "set_current_dir".to_string(),
+            "set_current_directory".to_string(),
+        ]
     }
 
     fn help(&self) -> String {

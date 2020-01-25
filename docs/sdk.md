@@ -1,5 +1,4 @@
 # Table of Contents
-* [std::Alias (alias)](#std__Alias)
 * [std::Echo (echo)](#std__Echo)
 * [std::Eval (eval)](#std__Eval)
 * [std::ForIn (for)](#std__ForIn)
@@ -12,7 +11,8 @@
 * [std::Release (release)](#std__Release)
 * [std::Set (set)](#std__Set)
 * [std::ShowCommandDocumentation (man)](#std__ShowCommandDocumentation)
-* [std::Unalias (unalias)](#std__Unalias)
+* [std::alias::Set (alias)](#std__alias__Set)
+* [std::alias::Unset (unalias)](#std__alias__Unset)
 * [std::collections::Array (array)](#std__collections__Array)
 * [std::collections::ArrayConcat (array_concat)](#std__collections__ArrayConcat)
 * [std::collections::ArrayIsEmpty (array_is_empty)](#std__collections__ArrayIsEmpty)
@@ -31,8 +31,8 @@
 * [std::debug::DumpVariables (dump_variables)](#std__debug__DumpVariables)
 * [std::env::GetHomeDirectory (get_home_dir)](#std__env__GetHomeDirectory)
 * [std::env::GetVar (get_env)](#std__env__GetVar)
-* [std::env::PrintCurrentDirectory (pwd)](#std__env__PrintCurrentDirectory)
-* [std::env::SetCurrentDirectory (cd, set_current_dir)](#std__env__SetCurrentDirectory)
+* [std::env::PrintCurrentDirectory (pwd, print_current_directory)](#std__env__PrintCurrentDirectory)
+* [std::env::SetCurrentDirectory (cd, set_current_dir, set_current_directory)](#std__env__SetCurrentDirectory)
 * [std::env::SetVar (set_env)](#std__env__SetVar)
 * [std::env::UnsetVar (unset_env)](#std__env__UnsetVar)
 * [std::error::GetLastError (get_last_error)](#std__error__GetLastError)
@@ -86,37 +86,6 @@
 * [std::thread::Sleep (sleep)](#std__thread__Sleep)
 * [std::time::CurrentTimeMillies (current_time)](#std__time__CurrentTimeMillies)
 
-
-<a name="std__Alias"></a>
-## std::Alias
-```sh
-var = alias command arguments
-```
-
-This command enables to define new commands with default arguments.<br>
-The new alias can be invoked with additional arguments that will be appended to the default set.
-
-#### Parameters
-
-Any number of arguments which will be added to the already defined arguments set during the aliasing.
-
-#### Return Value
-
-**true** if the alias was created, else **false**.
-
-#### Examples
-
-```sh
-# This example creates a new **my_echo** alias that will print the prefix before the requested arguments.
-created = alias my_echo echo [ECHO]
-
-# This will print "[ECHO] hello world "
-created = my_echo hello world
-```
-
-
-#### Aliases:
-alias
 
 <a name="std__Echo"></a>
 ## std::Echo
@@ -648,8 +617,39 @@ man set
 #### Aliases:
 man
 
-<a name="std__Unalias"></a>
-## std::Unalias
+<a name="std__alias__Set"></a>
+## std::alias::Set
+```sh
+var = alias command arguments
+```
+
+This command enables to define new commands with default arguments.<br>
+The new alias can be invoked with additional arguments that will be appended to the default set.
+
+#### Parameters
+
+Any number of arguments which will be added to the already defined arguments set during the aliasing.
+
+#### Return Value
+
+**true** if the alias was created, else **false**.
+
+#### Examples
+
+```sh
+# This example creates a new **my_echo** alias that will print the prefix before the requested arguments.
+created = alias my_echo echo [ECHO]
+
+# This will print "[ECHO] hello world "
+created = my_echo hello world
+```
+
+
+#### Aliases:
+alias
+
+<a name="std__alias__Unset"></a>
+## std::alias::Unset
 ```sh
 unalias name
 ```
@@ -1340,7 +1340,7 @@ directory = pwd
 
 
 #### Aliases:
-pwd
+pwd, print_current_directory
 
 <a name="std__env__SetCurrentDirectory"></a>
 ## std::env::SetCurrentDirectory
@@ -1372,7 +1372,7 @@ cd ./scripts
 
 
 #### Aliases:
-cd, set_current_dir
+cd, set_current_dir, set_current_directory
 
 <a name="std__env__SetVar"></a>
 ## std::env::SetVar

@@ -27,7 +27,7 @@ fn run_valid_no_alias_defined() {
 #[test]
 fn run_valid_alias_defined() {
     test::run_script_and_validate(
-        vec![create(""), alias::create(""), Box::new(SetCommand {})],
+        vec![create(""), alias::set::create(""), Box::new(SetCommand {})],
         r#"
     alias set test_set
     test = set test
@@ -40,7 +40,7 @@ fn run_valid_alias_defined() {
 #[test]
 fn run_after_unalias() {
     test::run_script_and_crash(
-        vec![create(""), alias::create(""), Box::new(SetCommand {})],
+        vec![create(""), alias::set::create(""), Box::new(SetCommand {})],
         r#"
     alias set test_set
     test = set test

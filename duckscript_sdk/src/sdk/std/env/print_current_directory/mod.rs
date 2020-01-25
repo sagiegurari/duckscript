@@ -17,7 +17,7 @@ impl Command for CommandImpl {
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["pwd".to_string()]
+        vec!["pwd".to_string(), "print_current_directory".to_string()]
     }
 
     fn help(&self) -> String {

@@ -11,7 +11,8 @@
 * New trigger_error command.
 * New array_push command.
 * New concat command.
-* Improve wget input parsing
+* Improve wget input parsing.
+* Modify full named commands.
 
 ### v0.1.8 (2020-01-24)
 

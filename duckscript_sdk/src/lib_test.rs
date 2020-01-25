@@ -13,6 +13,10 @@ fn load_valid() {
     let mut commands = Commands::new();
     let result = load(&mut commands);
 
-    assert!(result.is_ok());
+    match result {
+        Ok(_) => (),
+        Err(e) => panic!("{:#?}", e),
+    };
+    //  assert!(result.is_ok());
     assert!(!commands.get_all_command_names().is_empty());
 }

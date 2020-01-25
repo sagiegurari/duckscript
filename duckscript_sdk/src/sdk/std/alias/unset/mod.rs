@@ -1,4 +1,4 @@
-use crate::sdk::std::alias;
+use crate::sdk::std::alias::ALIAS_STATE_KEY;
 use crate::utils::pckg;
 use crate::utils::state::get_sub_state;
 use duckscript::types::command::{Command, CommandResult, Commands};
@@ -17,7 +17,7 @@ pub(crate) struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "Unalias")
+        pckg::concat(&self.package, "Unset")
     }
 
     fn aliases(&self) -> Vec<String> {
@@ -49,7 +49,7 @@ impl Command for CommandImpl {
         if arguments.len() != 1 {
             CommandResult::Error("Invalid alias name provided.".to_string())
         } else {
-            let sub_state = get_sub_state(alias::ALIAS_STATE_KEY.to_string(), state);
+            let sub_state = get_sub_state(ALIAS_STATE_KEY.to_string(), state);
 
             let key = &arguments[0];
             let removed = if sub_state.contains_key(key) {

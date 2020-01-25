@@ -17,7 +17,7 @@ impl Command for CommandImpl {
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["whoami".to_string(), "get_username".to_string()]
+        vec!["whoami".to_string(), "get_user_name".to_string()]
     }
 
     fn help(&self) -> String {

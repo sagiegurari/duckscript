@@ -6,7 +6,6 @@ mod env;
 mod eval;
 mod flowcontrol;
 mod fs;
-mod goto;
 mod is_defined;
 mod man;
 mod math;
@@ -22,7 +21,6 @@ pub(crate) mod string;
 mod test;
 mod thread;
 mod time;
-mod unalias;
 
 use duckscript::types::command::Commands;
 use duckscript::types::error::ScriptError;
@@ -30,18 +28,16 @@ use duckscript::types::error::ScriptError;
 static PACKAGE: &str = "std";
 
 pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
-    commands.set(alias::create(PACKAGE))?;
     commands.set(echo::create(PACKAGE))?;
     commands.set(eval::create(PACKAGE))?;
-    commands.set(goto::create(PACKAGE))?;
     commands.set(is_defined::create(PACKAGE))?;
     commands.set(man::create(PACKAGE))?;
     commands.set(not::create(PACKAGE))?;
     commands.set(read::create(PACKAGE))?;
     commands.set(release::create(PACKAGE))?;
     commands.set(set::create(PACKAGE))?;
-    commands.set(unalias::create(PACKAGE))?;
 
+    alias::load(commands, PACKAGE)?;
     collections::load(commands, PACKAGE)?;
     debug::load(commands, PACKAGE)?;
     env::load(commands, PACKAGE)?;
