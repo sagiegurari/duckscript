@@ -2,6 +2,7 @@
 
 ### v0.1.9
 
+* New whoami command.
 * Alias based command implementations are not checked for variable leaks.
 * New get_home_dir command.
 * New array_join command.

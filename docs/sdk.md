@@ -4,7 +4,6 @@
 * [std::Eval (eval)](#std__Eval)
 * [std::ForIn (for)](#std__ForIn)
 * [std::Function (function, fn)](#std__Function)
-* [std::GetOSFamily (os_family, uname)](#std__GetOSFamily)
 * [std::GoTo (goto)](#std__GoTo)
 * [std::If (if)](#std__If)
 * [std::IsDefined (is_defined)](#std__IsDefined)
@@ -320,32 +319,6 @@ echo ${output}
 
 #### Aliases:
 function, fn
-
-<a name="std__GetOSFamily"></a>
-## std::GetOSFamily
-```sh
-var = os_family
-```
-
-Returns the OS family (windows, linux, mac).
-
-#### Parameters
-
-None
-
-#### Return Value
-
-The OS family (windows, linux, mac).
-
-#### Examples
-
-```sh
-name = os_family
-```
-
-
-#### Aliases:
-os_family, uname
 
 <a name="std__GoTo"></a>
 ## std::GoTo
@@ -2122,7 +2095,7 @@ less_than
 var = hostname
 ```
 
-Returns the hostname or none if unable to extract it.
+Returns the hostname.
 
 #### Parameters
 
@@ -2130,7 +2103,7 @@ None
 
 #### Return Value
 
-The hostname or none in case of any error.
+The hostname
 
 #### Examples
 

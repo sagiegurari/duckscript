@@ -2,7 +2,7 @@
 var = hostname
 ```
 
-Returns the hostname or none if unable to extract it.
+Returns the hostname.
 
 #### Parameters
 
@@ -10,7 +10,7 @@ None
 
 #### Return Value
 
-The hostname or none in case of any error.
+The hostname
 
 #### Examples
 

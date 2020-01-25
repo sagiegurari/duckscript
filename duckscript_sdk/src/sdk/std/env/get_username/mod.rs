@@ -13,11 +13,11 @@ pub(crate) struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "Hostname")
+        pckg::concat(&self.package, "GetUserName")
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["hostname".to_string()]
+        vec!["whoami".to_string(), "get_username".to_string()]
     }
 
     fn help(&self) -> String {
@@ -29,7 +29,7 @@ impl Command for CommandImpl {
     }
 
     fn run(&self, _arguments: Vec<String>) -> CommandResult {
-        CommandResult::Continue(Some(whoami::hostname()))
+        CommandResult::Continue(Some(whoami::username()))
     }
 }
 

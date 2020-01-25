@@ -1,9 +1,13 @@
 
 function test_get
-    directory = get_home_dir
-    empty = is_empty ${directory}
-    not_false = not equals false ${directory}
-
-    assert_false ${empty}
-    assert ${not_false}
+    os = os_family
+    
+    if not equals ${os} windows
+        directory = get_home_dir
+        empty = is_empty ${directory}
+        not_false = not equals false ${directory}
+    
+        assert_false ${empty}
+        assert ${not_false}
+    end
 end
