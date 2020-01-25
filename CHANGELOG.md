@@ -2,6 +2,7 @@
 
 ### v0.1.9
 
+* Alias based command implementations are not checked for variable leaks.
 * New get_home_dir command.
 * New array_join command.
 * The read_properties command now support **--prefix** flag.
