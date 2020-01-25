@@ -2,6 +2,7 @@
 
 ### v0.1.9
 
+* The read_properties command now support **--prefix** flag.
 * New array_concat command.
 * New trigger_error command.
 * New array_push command.
