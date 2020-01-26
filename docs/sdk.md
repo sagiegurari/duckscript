@@ -41,6 +41,7 @@
 * [std::error::SetError (set_error)](#std__error__SetError)
 * [std::error::SetExitOnError (exit_on_error, set_exit_on_error)](#std__error__SetExitOnError)
 * [std::error::TriggerError (trigger_error)](#std__error__TriggerError)
+* [std::fs::Append (appendfile)](#std__fs__Append)
 * [std::fs::CopyPath (cp)](#std__fs__CopyPath)
 * [std::fs::CreateDirectory (mkdir)](#std__fs__CreateDirectory)
 * [std::fs::CreateEmptyFile (touch)](#std__fs__CreateEmptyFile)
@@ -1614,6 +1615,36 @@ assert_eq ${error} "my error message"
 
 #### Aliases:
 trigger_error
+
+<a name="std__fs__Append"></a>
+## std::fs::Append
+```sh
+result = appendfile file text
+```
+
+This command enables to write the provided text into the requested file.<br>
+It will return true/false value based if it was able to write the text to the file.<br>
+In case the file doesn't exist, it will create it.<br>
+If the file exists, it will append the text to it.
+
+#### Parameters
+
+* The target file
+* The text content to write
+
+#### Return Value
+
+true/false based if it was able to write the text to the file.
+
+#### Examples
+
+```sh
+out = appendfile ./target/tests/writefile.txt "line 1\nline 2"
+```
+
+
+#### Aliases:
+appendfile
 
 <a name="std__fs__CopyPath"></a>
 ## std::fs::CopyPath

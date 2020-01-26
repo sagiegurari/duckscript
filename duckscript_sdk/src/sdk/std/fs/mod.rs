@@ -1,3 +1,4 @@
+mod append;
 mod basename;
 mod canonical;
 mod cp;
@@ -21,6 +22,7 @@ static PACKAGE: &str = "fs";
 pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptError> {
     let package = pckg::concat(parent, PACKAGE);
 
+    commands.set(append::create(&package))?;
     commands.set(basename::create(&package))?;
     commands.set(canonical::create(&package))?;
     commands.set(cp::create(&package))?;

@@ -1,5 +1,5 @@
 use duckscript::types::error::{ErrorInfo, ScriptError};
-use std::fs::{create_dir_all, remove_file, File};
+use std::fs::{create_dir_all, remove_file, File, OpenOptions};
 use std::io::{Read, Write};
 use std::path::Path;
 
@@ -85,6 +85,10 @@ pub(crate) fn read_text_file(file: &str) -> Result<String, ScriptError> {
 }
 
 pub(crate) fn write_text_file(file: &str, text: &str) -> Result<(), ScriptError> {
+    write_to_text_file(file, text, false)
+}
+
+pub(crate) fn write_to_text_file(file: &str, text: &str, append: bool) -> Result<(), ScriptError> {
     let file_path = Path::new(file);
 
     // create parent directory
@@ -100,7 +104,13 @@ pub(crate) fn write_text_file(file: &str, text: &str) -> Result<(), ScriptError>
         }
     }
 
-    match File::create(&file_path) {
+    let result = if append && file_path.exists() {
+        OpenOptions::new().append(true).open(file)
+    } else {
+        File::create(&file_path)
+    };
+
+    match result {
         Ok(mut fd) => match fd.write_all(text.as_bytes()) {
             Err(_) => Err(ScriptError {
                 info: ErrorInfo::Runtime(
