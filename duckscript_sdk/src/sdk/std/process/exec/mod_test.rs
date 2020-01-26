@@ -8,7 +8,6 @@ fn common_functions() {
 }
 
 #[test]
-#[test]
 fn run_no_args() {
     test::run_script_and_error(vec![create("")], "out = exec", "out");
 }

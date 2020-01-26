@@ -2,6 +2,7 @@
 
 ### v0.1.9
 
+* New watchdog command.
 * New pid command #73
 * New whoami command.
 * Alias based command implementations are not checked for variable leaks.

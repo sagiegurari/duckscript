@@ -45,8 +45,9 @@ impl Command for CommandImpl {
         _line: usize,
     ) -> CommandResult {
         let allow_input = output_variable.is_some();
+        let print_output = !allow_input;
 
-        match exec::exec(&arguments, !allow_input, allow_input, 0) {
+        match exec::exec(&arguments, print_output, allow_input, 0) {
             Ok((stdout, stderr, exit_code)) => {
                 match output_variable {
                     Some(name) => {
