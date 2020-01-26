@@ -62,6 +62,7 @@
 * [std::net::WGet (wget)](#std__net__WGet)
 * [std::process::Execute (exec)](#std__process__Execute)
 * [std::process::Exit (exit, quit, q)](#std__process__Exit)
+* [std::process::ProcessID (pid, process_id)](#std__process__ProcessID)
 * [std::scope::Clear (clear_scope)](#std__scope__Clear)
 * [std::string::Concat (concat)](#std__string__Concat)
 * [std::string::Contains (contains)](#std__string__Contains)
@@ -2352,6 +2353,32 @@ code = exit 1
 
 #### Aliases:
 exit, quit, q
+
+<a name="std__process__ProcessID"></a>
+## std::process::ProcessID
+```sh
+var = pid
+```
+
+Returns the current process ID.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The current process ID.
+
+#### Examples
+
+```sh
+id = pid
+```
+
+
+#### Aliases:
+pid, process_id
 
 <a name="std__scope__Clear"></a>
 ## std::scope::Clear

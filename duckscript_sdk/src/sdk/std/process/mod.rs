@@ -1,5 +1,6 @@
 mod exec;
 mod exit;
+mod process_id;
 
 use crate::utils::pckg;
 use duckscript::types::command::Commands;
@@ -12,6 +13,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
 
     commands.set(exec::create(&package))?;
     commands.set(exit::create(&package))?;
+    commands.set(process_id::create(&package))?;
 
     Ok(())
 }
