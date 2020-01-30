@@ -17,6 +17,7 @@
 * New concat command.
 * Improve wget input parsing.
 * Modify full named commands.
+* Prevent panic for wget and http_client on invalid non http URL input.
 
 ### v0.1.8 (2020-01-24)
 

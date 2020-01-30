@@ -51,3 +51,8 @@ fn run_post() {
         CommandValidation::Contains("out".to_string(), "success".to_string()),
     );
 }
+
+#[test]
+fn run_invalid_url() {
+    test::run_script_and_error(vec![create("")], "out = http_client invalid_url", "out");
+}

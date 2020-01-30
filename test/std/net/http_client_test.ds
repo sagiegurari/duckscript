@@ -28,3 +28,17 @@ function test_post
 
     assert ${found}
 end
+
+function test_invalid_url
+    error = get_last_error
+    empty = is_empty ${error}
+    assert ${empty}
+
+    response = http_client invalid_url
+
+    error = get_last_error
+    empty = is_empty ${error}
+    assert_false ${empty}
+    
+    assert_false ${response}
+end

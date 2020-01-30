@@ -153,9 +153,14 @@ impl Command for CommandImpl {
             let len = arguments.len() - 1;
             let url = arguments[len].to_string();
 
-            match parse_options(&arguments[0..len].to_vec()) {
-                Ok(options) => do_request(url, options),
-                Err(error) => CommandResult::Error(error),
+            let url_lowercase = url.to_lowercase();
+            if !url_lowercase.starts_with("http://") && !url_lowercase.starts_with("https://") {
+                CommandResult::Error(format!("Invalid URL: {} provided.", &url).to_string())
+            } else {
+                match parse_options(&arguments[0..len].to_vec()) {
+                    Ok(options) => do_request(url, options),
+                    Err(error) => CommandResult::Error(error),
+                }
             }
         }
     }
