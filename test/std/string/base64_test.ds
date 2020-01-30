@@ -1,0 +1,23 @@
+
+function test_encode
+    handle = string_to_bytes "hello world"
+    text = base64_encode ${handle}
+
+    release ${handle}
+
+    assert_eq ${text} "aGVsbG8gd29ybGQ="
+end
+
+function test_encode_decode
+    handle = string_to_bytes "hello world"
+    text = base64_encode ${handle}
+    release ${handle}
+
+    assert_eq ${text} "aGVsbG8gd29ybGQ="
+
+    handle = base64_decode ${text}
+    text = bytes_to_string ${handle}
+    release ${handle}
+
+    assert_eq ${text} "hello world"
+end

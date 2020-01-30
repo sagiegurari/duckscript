@@ -2,6 +2,8 @@
 
 ### v0.1.9
 
+* New base64_decode command.
+* New base64_encode command.
 * New bytes_to_string command.
 * New string_to_bytes command.
 * Add prefix flag to write_properties command #77

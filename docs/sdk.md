@@ -66,6 +66,8 @@
 * [std::process::ProcessID (pid, process_id)](#std__process__ProcessID)
 * [std::process::Watchdog (watchdog)](#std__process__Watchdog)
 * [std::scope::Clear (clear_scope)](#std__scope__Clear)
+* [std::string::Base64Decode (base64_decode)](#std__string__Base64Decode)
+* [std::string::Base64Encode (base64_encode)](#std__string__Base64Encode)
 * [std::string::BytesToString (bytes_to_string)](#std__string__BytesToString)
 * [std::string::Concat (concat)](#std__string__Concat)
 * [std::string::Contains (contains)](#std__string__Contains)
@@ -2503,6 +2505,70 @@ assert_false ${defined}
 
 #### Aliases:
 clear_scope
+
+<a name="std__string__Base64Decode"></a>
+## std::string::Base64Decode
+```sh
+text = base64_encode handle
+```
+
+Encodes using base64 the provided binary data and returns the encoded text value.<br>
+The binary data is provided as a handle.
+
+#### Parameters
+
+The handle to the binary data to encode.
+
+#### Return Value
+
+The encoded textual value.
+
+#### Examples
+
+```sh
+handle = string_to_bytes "hello world"
+text = base64_encode ${handle}
+
+release ${handle}
+
+assert_eq ${text} "hello world"
+```
+
+
+#### Aliases:
+base64_decode
+
+<a name="std__string__Base64Encode"></a>
+## std::string::Base64Encode
+```sh
+text = base64_encode handle
+```
+
+Encodes using base64 the provided binary data and returns the encoded text value.<br>
+The binary data is provided as a handle.
+
+#### Parameters
+
+The handle to the binary data to encode.
+
+#### Return Value
+
+The encoded textual value.
+
+#### Examples
+
+```sh
+handle = string_to_bytes "hello world"
+text = base64_encode ${handle}
+
+release ${handle}
+
+assert_eq ${text} "hello world"
+```
+
+
+#### Aliases:
+base64_encode
 
 <a name="std__string__BytesToString"></a>
 ## std::string::BytesToString
