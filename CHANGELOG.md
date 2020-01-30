@@ -2,8 +2,9 @@
 
 ### v0.1.9
 
-* New base64_decode command.
-* New base64_encode command.
+* Rename read/write text file commands.
+* New base64_decode command #75
+* New base64_encode command #75
 * New bytes_to_string command.
 * New string_to_bytes command.
 * Add prefix flag to write_properties command #77

@@ -53,8 +53,8 @@
 * [std::fs::List (ls)](#std__fs__List)
 * [std::fs::MovePath (mv)](#std__fs__MovePath)
 * [std::fs::Print (cat)](#std__fs__Print)
-* [std::fs::Read (readfile)](#std__fs__Read)
-* [std::fs::Write (writefile)](#std__fs__Write)
+* [std::fs::ReadText (readfile, read_text_file)](#std__fs__ReadText)
+* [std::fs::WriteText (writefile, write_text_file)](#std__fs__WriteText)
 * [std::math::Calc (calc)](#std__math__Calc)
 * [std::math::GreaterThan (greater_than)](#std__math__GreaterThan)
 * [std::math::LessThan (less_than)](#std__math__LessThan)
@@ -2000,8 +2000,8 @@ cat ./docs/sdk.md
 #### Aliases:
 cat
 
-<a name="std__fs__Read"></a>
-## std::fs::Read
+<a name="std__fs__ReadText"></a>
+## std::fs::ReadText
 ```sh
 var = readfile file
 ```
@@ -2024,10 +2024,10 @@ text = readfile ./Cargo.toml
 
 
 #### Aliases:
-readfile
+readfile, read_text_file
 
-<a name="std__fs__Write"></a>
-## std::fs::Write
+<a name="std__fs__WriteText"></a>
+## std::fs::WriteText
 ```sh
 result = writefile file text
 ```
@@ -2052,7 +2052,7 @@ out = writefile ./target/tests/writefile.txt "line 1\nline 2"
 
 
 #### Aliases:
-writefile
+writefile, write_text_file
 
 <a name="std__math__Calc"></a>
 ## std::math::Calc

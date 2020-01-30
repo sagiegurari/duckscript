@@ -12,11 +12,11 @@ pub(crate) struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "Read")
+        pckg::concat(&self.package, "WriteText")
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["readfile".to_string()]
+        vec!["writefile".to_string(), "write_text_file".to_string()]
     }
 
     fn help(&self) -> String {
@@ -29,13 +29,15 @@ impl Command for CommandImpl {
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {
         if arguments.is_empty() {
-            CommandResult::Error("File name not provided.".to_string())
+            CommandResult::Error("File name and text not provided.".to_string())
+        } else if arguments.len() == 1 {
+            CommandResult::Error("Text not provided.".to_string())
         } else {
-            let result = io::read_text_file(&arguments[0]);
+            let result = io::write_text_file(&arguments[0], &arguments[1]);
 
             match result {
-                Ok(text) => CommandResult::Continue(Some(text)),
-                Err(error) => CommandResult::Error(error.to_string()),
+                Ok(_) => CommandResult::Continue(Some("true".to_string())),
+                Err(_) => CommandResult::Continue(Some("false".to_string())),
             }
         }
     }
