@@ -24,6 +24,7 @@ include = [
 
 [dependencies]
 attohttpc = "^0.10"
+base64 = "^0.11"
 duckscript = { version = "^0.1.7", path = "../duckscript" }
 fs_extra = "^1"
 home = "^0.5"

@@ -66,6 +66,7 @@
 * [std::process::ProcessID (pid, process_id)](#std__process__ProcessID)
 * [std::process::Watchdog (watchdog)](#std__process__Watchdog)
 * [std::scope::Clear (clear_scope)](#std__scope__Clear)
+* [std::string::BytesToString (bytes_to_string)](#std__string__BytesToString)
 * [std::string::Concat (concat)](#std__string__Concat)
 * [std::string::Contains (contains)](#std__string__Contains)
 * [std::string::EndsWith (ends_with)](#std__string__EndsWith)
@@ -77,6 +78,7 @@
 * [std::string::Replace (replace)](#std__string__Replace)
 * [std::string::Split (split)](#std__string__Split)
 * [std::string::StartsWith (starts_with)](#std__string__StartsWith)
+* [std::string::StringToBytes (string_to_bytes)](#std__string__StringToBytes)
 * [std::string::SubString (substring)](#std__string__SubString)
 * [std::string::Trim (trim)](#std__string__Trim)
 * [std::string::TrimEnd (trim_end)](#std__string__TrimEnd)
@@ -2502,6 +2504,37 @@ assert_false ${defined}
 #### Aliases:
 clear_scope
 
+<a name="std__string__BytesToString"></a>
+## std::string::BytesToString
+```sh
+text = bytes_to_string handle
+```
+
+Converts the provided UTF-8 binary array to string and returns it.
+
+#### Parameters
+
+A handle to a binary array holding UTF-8 text.
+
+#### Return Value
+
+The textual data.
+
+#### Examples
+
+```sh
+handle = string_to_bytes "hello world"
+text = bytes_to_string ${handle}
+
+release ${handle}
+
+assert_eq ${text} "hello world"
+```
+
+
+#### Aliases:
+bytes_to_string
+
 <a name="std__string__Concat"></a>
 ## std::string::Concat
 
@@ -2866,6 +2899,37 @@ result = starts_with abcd bcd
 
 #### Aliases:
 starts_with
+
+<a name="std__string__StringToBytes"></a>
+## std::string::StringToBytes
+```sh
+handle = string_to_bytes text
+```
+
+Converts the provided string into binary format and returns a handle to the binary data.
+
+#### Parameters
+
+The text to convert.
+
+#### Return Value
+
+A handle to the binary data.
+
+#### Examples
+
+```sh
+handle = string_to_bytes "hello world"
+text = bytes_to_string ${handle}
+
+release ${handle}
+
+assert_eq ${text} "hello world"
+```
+
+
+#### Aliases:
+string_to_bytes
 
 <a name="std__string__SubString"></a>
 ## std::string::SubString

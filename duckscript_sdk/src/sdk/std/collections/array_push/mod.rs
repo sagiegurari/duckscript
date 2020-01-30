@@ -95,6 +95,10 @@ impl Command for CommandImpl {
                         state.insert(key.to_string(), StateValue::String(value));
                         CommandResult::Error("Invalid handle provided.".to_string())
                     }
+                    StateValue::ByteArray(value) => {
+                        state.insert(key.to_string(), StateValue::ByteArray(value));
+                        CommandResult::Error("Invalid handle provided.".to_string())
+                    }
                     StateValue::SubState(value) => {
                         state.insert(key.to_string(), StateValue::SubState(value));
                         CommandResult::Error("Invalid handle provided.".to_string())

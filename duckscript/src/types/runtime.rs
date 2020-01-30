@@ -30,6 +30,8 @@ pub enum StateValue {
     UnsignedNumber64Bit(u64),
     /// textual value
     String(String),
+    /// byte (u8) array
+    ByteArray(Vec<u8>),
     /// list
     List(Vec<StateValue>),
     /// sub state value

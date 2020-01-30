@@ -2,6 +2,8 @@
 
 ### v0.1.9
 
+* New bytes_to_string command.
+* New string_to_bytes command.
 * Add prefix flag to write_properties command #77
 * New split command #76
 * New appendfile command.
@@ -19,6 +21,7 @@
 * Improve wget input parsing.
 * Modify full named commands.
 * Prevent panic for wget and http_client on invalid non http URL input.
+* Runtime - Supports byte array state storage
 
 ### v0.1.8 (2020-01-24)
 

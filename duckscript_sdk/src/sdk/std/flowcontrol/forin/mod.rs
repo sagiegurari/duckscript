@@ -248,6 +248,7 @@ fn get_next_iteration(
                         StateValue::Number64Bit(ref value) => Some(value.to_string()),
                         StateValue::UnsignedNumber64Bit(ref value) => Some(value.to_string()),
                         StateValue::String(ref value) => Some(value.to_string()),
+                        StateValue::ByteArray(_) => None,
                         StateValue::List(_) => None,
                         StateValue::SubState(_) => None,
                     }

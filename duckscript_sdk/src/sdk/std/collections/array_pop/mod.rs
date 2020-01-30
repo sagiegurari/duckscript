@@ -83,6 +83,9 @@ impl Command for CommandImpl {
                                     CommandResult::Continue(Some(value.to_string()))
                                 }
                                 StateValue::String(value) => CommandResult::Continue(Some(value)),
+                                StateValue::ByteArray(_) => {
+                                    CommandResult::Error("Unsupported array element.".to_string())
+                                }
                                 StateValue::List(_) => {
                                     CommandResult::Error("Unsupported array element.".to_string())
                                 }
@@ -123,6 +126,10 @@ impl Command for CommandImpl {
                     }
                     StateValue::String(value) => {
                         state.insert(key.to_string(), StateValue::String(value));
+                        CommandResult::Error("Invalid handle provided.".to_string())
+                    }
+                    StateValue::ByteArray(value) => {
+                        state.insert(key.to_string(), StateValue::ByteArray(value));
                         CommandResult::Error("Invalid handle provided.".to_string())
                     }
                     StateValue::SubState(value) => {
