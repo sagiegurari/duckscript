@@ -2,6 +2,7 @@
 
 ### v0.1.9
 
+* New split command #76
 * New appendfile command.
 * New watchdog command.
 * New pid command #73

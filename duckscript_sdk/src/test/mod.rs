@@ -168,6 +168,7 @@ pub(crate) enum CommandValidation {
     Match(String, String),
     Contains(String, String),
     Any(String, Vec<String>),
+    Ignore,
 }
 
 pub(crate) fn test_common_command_functions(command: Box<dyn Command>) {
@@ -268,6 +269,9 @@ pub(crate) fn run_script_and_validate(
                     let var_value = context.variables.get(&key).unwrap();
                     let numeric_value: u128 = var_value.parse().unwrap();
                     assert!(numeric_value > 0)
+                }
+                CommandValidation::Ignore => {
+                    assert!(!context.variables.is_empty());
                 }
             };
 

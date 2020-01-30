@@ -75,6 +75,7 @@
 * [std::string::LastIndexOf (last_indexof)](#std__string__LastIndexOf)
 * [std::string::Length (length, strlen)](#std__string__Length)
 * [std::string::Replace (replace)](#std__string__Replace)
+* [std::string::Split (split)](#std__string__Split)
 * [std::string::StartsWith (starts_with)](#std__string__StartsWith)
 * [std::string::SubString (substring)](#std__string__SubString)
 * [std::string::Trim (trim)](#std__string__Trim)
@@ -2779,6 +2780,51 @@ assert_eq ${updated} "my large stuff value with lots of stuff"
 
 #### Aliases:
 replace
+
+<a name="std__string__Split"></a>
+## std::string::Split
+```sh
+handle = split text pattern
+```
+
+Splits the provided text based on the provided pattern and return a handle the
+created array with all the splitted values.
+
+#### Parameters
+
+* The text to split
+* The pattern to split by
+
+#### Return Value
+
+A handle to the values array.
+
+#### Examples
+
+```sh
+handle = split a23b23c23d23e 23
+
+len = array_length ${handle}
+
+value = array_pop ${handle}
+assert_eq ${value} e
+value = array_pop ${handle}
+assert_eq ${value} d
+value = array_pop ${handle}
+assert_eq ${value} c
+value = array_pop ${handle}
+assert_eq ${value} b
+value = array_pop ${handle}
+assert_eq ${value} a
+
+release ${handle}
+
+assert_eq ${len} 5
+```
+
+
+#### Aliases:
+split
 
 <a name="std__string__StartsWith"></a>
 ## std::string::StartsWith

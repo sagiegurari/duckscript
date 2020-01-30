@@ -1,0 +1,72 @@
+
+function test_empty_string
+    handle = split "" \n
+
+    len = array_length ${handle}
+
+    value = array_pop ${handle}
+    assert_eq ${value} ""
+
+    release ${handle}
+
+    assert_eq ${len} 1
+end
+
+function test_not_found
+    handle = split 12345 6
+
+    len = array_length ${handle}
+
+    value = array_pop ${handle}
+    assert_eq ${value} 12345
+
+    release ${handle}
+
+    assert_eq ${len} 1
+end
+
+function test_found
+    handle = split a23b23c23d23e 23
+
+    len = array_length ${handle}
+
+    value = array_pop ${handle}
+    assert_eq ${value} e
+    value = array_pop ${handle}
+    assert_eq ${value} d
+    value = array_pop ${handle}
+    assert_eq ${value} c
+    value = array_pop ${handle}
+    assert_eq ${value} b
+    value = array_pop ${handle}
+    assert_eq ${value} a
+
+    release ${handle}
+
+    assert_eq ${len} 5
+end
+
+function test_found_at_start_and_end
+    handle = split 23a23b23c23d23e23 23
+
+    len = array_length ${handle}
+
+    value = array_pop ${handle}
+    assert_eq ${value} ""
+    value = array_pop ${handle}
+    assert_eq ${value} e
+    value = array_pop ${handle}
+    assert_eq ${value} d
+    value = array_pop ${handle}
+    assert_eq ${value} c
+    value = array_pop ${handle}
+    assert_eq ${value} b
+    value = array_pop ${handle}
+    assert_eq ${value} a
+    value = array_pop ${handle}
+    assert_eq ${value} ""
+
+    release ${handle}
+
+    assert_eq ${len} 7
+end
