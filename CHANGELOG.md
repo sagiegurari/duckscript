@@ -2,6 +2,7 @@
 
 ### v0.1.9
 
+* Add prefix flag to write_properties command #77
 * New split command #76
 * New appendfile command.
 * New watchdog command.
