@@ -55,13 +55,8 @@ impl Command for CommandImpl {
             match state.remove(key) {
                 Some(state_value) => match state_value {
                     StateValue::List(mut list) => {
-                        let mut skip = true;
-                        for argument in &arguments {
-                            if skip {
-                                skip = false;
-                            } else {
-                                list.push(StateValue::String(argument.to_string()))
-                            }
+                        for argument in &arguments[1..] {
+                            list.push(StateValue::String(argument.to_string()))
                         }
 
                         state.insert(key.to_string(), StateValue::List(list));
