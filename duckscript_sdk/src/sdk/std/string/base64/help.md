@@ -19,33 +19,13 @@ This command allows for a more similar cli command which wraps the base64_encode
 #### Examples
 
 ```sh
-function test_get
-    response = wget https://www.rust-lang.org/
+handle = string_to_bytes "hello world"
+text = base64 ${handle}
+release ${handle}
+assert_eq ${text} aGVsbG8gd29ybGQ=
 
-    found = contains ${response} Rust
-
-    assert ${found}
-end
-
-function test_get_to_file
-    file = set ./target/_duckscript_test/wget/page.html
-    rm ${file}
-
-    response_size = wget -O ${file} https://www.rust-lang.org/
-
-    response = readfile ${file}
-    found = contains ${response} Rust
-
-    assert ${found}
-    assert ${response_size}
-end
-
-function test_post
-    payload = set {\"login\":\"login\",\"password\":\"password\"}
-    response = wget --method=HTTP-POST --post-data=${payload} https://reqbin.com/echo/post/json
-
-    found = contains ${response} success
-
-    assert ${found}
-end
+handle = base64 -decode ${text}
+text = bytes_to_string ${handle}
+release ${handle}
+assert_eq ${text} "hello world"
 ```
