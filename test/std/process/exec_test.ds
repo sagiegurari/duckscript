@@ -1,5 +1,5 @@
 
-function test_echo
+fn test_echo
     output = exec echo hello world
 
     stdout = trim ${output.stdout}

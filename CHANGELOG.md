@@ -2,6 +2,7 @@
 
 ### v0.1.9
 
+* The set command now supports 'or' condition
 * New base64 command #79
 * New write_binary_file command #78
 * New read_binary_file command #78

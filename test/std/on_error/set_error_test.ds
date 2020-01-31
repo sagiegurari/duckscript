@@ -1,5 +1,5 @@
 
-function test_set_error
+fn test_set_error
     set_error "my error message"
     
     error = get_last_error

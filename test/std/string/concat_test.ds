@@ -1,5 +1,5 @@
 
-function test_no_args
+fn test_no_args
     output = concat
     empty = is_empty ${output}
 
@@ -7,7 +7,7 @@ function test_no_args
     assert ${empty}
 end
 
-function test_single_arg
+fn test_single_arg
     output = concat 1
     empty = is_empty ${output}
 
@@ -15,7 +15,7 @@ function test_single_arg
     assert_false ${empty}
 end
 
-function test_empty
+fn test_empty
     output = concat "" ""
     empty = is_empty ${output}
 
@@ -23,7 +23,7 @@ function test_empty
     assert ${empty}
 end
 
-function test_first_empty
+fn test_first_empty
     output = concat "" test
     empty = is_empty ${output}
 
@@ -31,7 +31,7 @@ function test_first_empty
     assert_false ${empty}
 end
 
-function test_second_empty
+fn test_second_empty
     output = concat test ""
     empty = is_empty ${output}
 
@@ -39,7 +39,7 @@ function test_second_empty
     assert_false ${empty}
 end
 
-function test_both_not_empty
+fn test_both_not_empty
     output = concat 1 2
     empty = is_empty ${output}
 
@@ -47,7 +47,7 @@ function test_both_not_empty
     assert_false ${empty}
 end
 
-function test_multiple
+fn test_multiple
     output = concat 1 2 3 4
     empty = is_empty ${output}
 
@@ -55,7 +55,7 @@ function test_multiple
     assert_false ${empty}
 end
 
-function test_with_spaces
+fn test_with_spaces
     output = concat 1 "2 3" 4
     empty = is_empty ${output}
 

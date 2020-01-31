@@ -1,12 +1,12 @@
 
-function test_found
+fn test_found
     text = set "my large text value with lots of text"
     updated = replace ${text} text stuff
     
     assert_eq ${updated} "my large stuff value with lots of stuff"
 end
 
-function test_not_found
+fn test_not_found
     text = set "my large text value with lots of text"
     updated = replace ${text} stuff other
     

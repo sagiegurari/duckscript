@@ -1,5 +1,5 @@
 
-function test_dump
+fn test_dump
     one = set 1
     two = set 2
     values = array 1 2 yes true

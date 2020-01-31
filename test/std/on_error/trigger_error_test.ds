@@ -1,5 +1,5 @@
 
-function test_trigger_error_with_message
+fn test_trigger_error_with_message
     trigger_error "my error message"
 
     error = get_last_error
@@ -7,7 +7,7 @@ function test_trigger_error_with_message
     assert_eq ${error} "my error message"
 end
 
-function test_trigger_error_no_message
+fn test_trigger_error_no_message
     trigger_error
 
     error = get_last_error

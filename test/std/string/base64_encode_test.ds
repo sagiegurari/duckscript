@@ -1,5 +1,5 @@
 
-function test_encode
+fn test_encode
     handle = string_to_bytes "hello world"
     text = base64_encode ${handle}
 
@@ -8,7 +8,7 @@ function test_encode
     assert_eq ${text} aGVsbG8gd29ybGQ=
 end
 
-function test_missing_input
+fn test_missing_input
     error = get_last_error
     empty = is_empty ${error}
     assert ${empty}

@@ -1,5 +1,5 @@
 
-function test_binary_string
+fn test_binary_string
     handle = string_to_bytes "hello world"
     text = bytes_to_string ${handle}
     

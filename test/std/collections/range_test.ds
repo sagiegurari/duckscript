@@ -1,5 +1,5 @@
 
-function test_range_with_data
+fn test_range_with_data
     arr = range 0 10
 
     len = array_length ${arr}
@@ -12,7 +12,7 @@ function test_range_with_data
     assert ${released}
 end
 
-function test_range_no_data
+fn test_range_no_data
     arr = range 0 0
     
     len = array_length ${arr}

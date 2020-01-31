@@ -1,5 +1,5 @@
 
-function test_encode_no_flags
+fn test_encode_no_flags
     handle = string_to_bytes "hello world"
     text = base64 ${handle}
 
@@ -8,7 +8,7 @@ function test_encode_no_flags
     assert_eq ${text} aGVsbG8gd29ybGQ=
 end
 
-function test_encode_e_flag
+fn test_encode_e_flag
     handle = string_to_bytes "hello world"
     text = base64 -d -e ${handle}
 
@@ -17,7 +17,7 @@ function test_encode_e_flag
     assert_eq ${text} aGVsbG8gd29ybGQ=
 end
 
-function test_encode_encode_flag
+fn test_encode_encode_flag
     handle = string_to_bytes "hello world"
     text = base64 -d -encode ${handle}
 
@@ -26,7 +26,7 @@ function test_encode_encode_flag
     assert_eq ${text} aGVsbG8gd29ybGQ=
 end
 
-function test_decode_d_flag
+fn test_decode_d_flag
     handle = base64 -d aGVsbG8gd29ybGQ=
     text = bytes_to_string ${handle}
 
@@ -35,7 +35,7 @@ function test_decode_d_flag
     assert_eq ${text} "hello world"
 end
 
-function test_decode_decode_flag
+fn test_decode_decode_flag
     handle = base64 -decode aGVsbG8gd29ybGQ=
     text = bytes_to_string ${handle}
 
@@ -44,7 +44,7 @@ function test_decode_decode_flag
     assert_eq ${text} "hello world"
 end
 
-function test_encode_decode
+fn test_encode_decode
     handle = string_to_bytes "hello world"
     text = base64 ${handle}
     release ${handle}
@@ -56,7 +56,7 @@ function test_encode_decode
     assert_eq ${text} "hello world"
 end
 
-function test_missing_input
+fn test_missing_input
     error = get_last_error
     empty = is_empty ${error}
     assert ${empty}

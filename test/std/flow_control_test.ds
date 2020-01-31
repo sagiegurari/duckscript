@@ -1,5 +1,5 @@
 
-function test_flow_control_empty_loop
+fn test_flow_control_empty_loop
     arguments = array
 
     index = set 0
@@ -24,7 +24,7 @@ function test_flow_control_empty_loop
     release ${arguments}
 end
 
-function test_flow_control_loop
+fn test_flow_control_loop
     arguments = array a b c
 
     index = set 0

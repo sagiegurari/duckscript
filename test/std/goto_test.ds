@@ -1,5 +1,5 @@
 
-function test_goto_with_valid_label
+fn test_goto_with_valid_label
     goto :test_goto_with_valid_label
     
     assert_fail

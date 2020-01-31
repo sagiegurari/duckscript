@@ -1,17 +1,17 @@
 
-function test_equals
+fn test_equals
     result = less_than 1 1
 
     assert_false ${result}
 end
 
-function test_less_than
+fn test_less_than
     result = less_than 1 1.5
 
     assert ${result}
 end
 
-function test_greater_than
+fn test_greater_than
     result = less_than 2 1.5
 
     assert_false ${result}

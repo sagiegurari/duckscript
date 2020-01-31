@@ -1,5 +1,5 @@
 
-function test_to_string
+fn test_to_string
     arr = array hello world
     string = array_join ${arr} ", "
 
@@ -8,7 +8,7 @@ function test_to_string
     assert_eq ${string} "hello, world"
 end
 
-function test_numbers
+fn test_numbers
     arr = range 1 5
     string = array_join ${arr} ", "
 
@@ -17,7 +17,7 @@ function test_numbers
     assert_eq ${string} "1, 2, 3, 4"
 end
 
-function test_empty_array
+fn test_empty_array
     arr = array
     string = array_join ${arr} ", "
 
@@ -26,7 +26,7 @@ function test_empty_array
     assert_eq ${string} ""
 end
 
-function test_empty_separator
+fn test_empty_separator
     arr = range 1 5
     string = array_join ${arr} ""
 
@@ -35,7 +35,7 @@ function test_empty_separator
     assert_eq ${string} "1234"
 end
 
-function test_missing_separator
+fn test_missing_separator
     arr = range 1 5
     string = array_join ${arr}
 
@@ -48,7 +48,7 @@ function test_missing_separator
     assert_eq ${string} false
 end
 
-function test_not_an_array
+fn test_not_an_array
     arr = set 1
     string = array_join ${arr} ", "
 

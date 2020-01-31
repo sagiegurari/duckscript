@@ -1,35 +1,35 @@
 
-function test_prefix
+fn test_prefix
     output = starts_with "1 2 3 4 5" "1 2"
 
     assert ${output}
 end
 
-function test_suffix
+fn test_suffix
     output = starts_with "1 2 3 4 5" "4 5"
 
     assert_false ${output}
 end
 
-function test_middle
+fn test_middle
     output = starts_with "1 2 3 4 5" "2 3"
 
     assert_false ${output}
 end
 
-function test_all
+fn test_all
     output = starts_with "1 2 3 4 5" "1 2 3 4 5"
 
     assert ${output}
 end
 
-function test_empty
+fn test_empty
     output = starts_with "1 2 3 4 5" ""
 
     assert ${output}
 end
 
-function test_not_contained
+fn test_not_contained
     output = starts_with "1 2 3 4 5" "4 5 6"
 
     assert_false ${output}

@@ -1,29 +1,29 @@
 
-function test_empty
+fn test_empty
     output = trim ""
 
     assert_eq ${output} ""
 end
 
-function test_trimmed
+fn test_trimmed
     output = trim "test test"
 
     assert_eq ${output} "test test"
 end
 
-function test_start_untrimmed
+fn test_start_untrimmed
     output = trim "    test test"
 
     assert_eq ${output} "test test"
 end
 
-function test_end_untrimmed
+fn test_end_untrimmed
     output = trim "test test    "
 
     assert_eq ${output} "test test"
 end
 
-function test_both_untrimmed
+fn test_both_untrimmed
     output = trim "    test test    "
 
     assert_eq ${output} "test test"

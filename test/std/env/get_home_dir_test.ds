@@ -1,5 +1,5 @@
 
-function test_get
+fn test_get
     os = os_family
     
     if not equals ${os} windows

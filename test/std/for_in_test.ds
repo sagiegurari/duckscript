@@ -1,5 +1,5 @@
 
-function test_array
+fn test_array
     counter = set 0
     args = array a b c
 
@@ -11,7 +11,7 @@ function test_array
     released = release ${args}
 end
 
-function test_nested
+fn test_nested
     counter = set 0
     values = array 1 2 3
 
@@ -25,7 +25,7 @@ function test_nested
     released = release ${args}
 end
 
-function test_range
+fn test_range
     counter = set 0
     args = range 0 10
 

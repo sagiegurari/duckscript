@@ -1,5 +1,5 @@
 
-function test_array_with_data
+fn test_array_with_data
     arr = array a
     counter = range 1 4
     for index in ${counter}
@@ -26,7 +26,7 @@ function test_array_with_data
     assert ${released}
 end
 
-function test_array_empty
+fn test_array_empty
     arr = array
     counter = range 1 4
     for index in ${counter}

@@ -1,5 +1,5 @@
 
-function test_write_properties
+fn test_write_properties
     count = read_properties a=1\nb=2\na.b.c=3
     assert_eq ${count} 3
 
@@ -21,7 +21,7 @@ function test_write_properties
     assert_eq ${a.b.c} 3
 end
 
-function test_write_properties_with_prefix
+fn test_write_properties_with_prefix
     count = read_properties a=1\nb=2\na.b.c=3
     assert_eq ${count} 3
 

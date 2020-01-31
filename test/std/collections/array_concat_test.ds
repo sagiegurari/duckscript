@@ -1,5 +1,5 @@
 
-function test_concat_no_input
+fn test_concat_no_input
     arr = array_concat
 
     is_arr = is_array ${arr}
@@ -8,7 +8,7 @@ function test_concat_no_input
     assert ${is_arr}
 end
 
-function test_concat_single_array
+fn test_concat_single_array
     input1 = range 1 4
 
     arr = array_concat ${input1}
@@ -34,7 +34,7 @@ function test_concat_single_array
     assert ${is_arr}
 end
 
-function test_concat_multiple_arrays
+fn test_concat_multiple_arrays
     input1 = range 1 4
     input2 = range 4 6
     input3 = range 6 8
@@ -76,7 +76,7 @@ function test_concat_multiple_arrays
     assert ${is_arr}
 end
 
-function test_concat_not_an_array
+fn test_concat_not_an_array
     error = get_last_error
     empty = is_empty ${error}
     assert ${empty}

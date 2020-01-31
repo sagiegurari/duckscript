@@ -1,5 +1,5 @@
 
-function test_empty_string
+fn test_empty_string
     handle = split "" \n
 
     len = array_length ${handle}
@@ -12,7 +12,7 @@ function test_empty_string
     assert_eq ${len} 1
 end
 
-function test_not_found
+fn test_not_found
     handle = split 12345 6
 
     len = array_length ${handle}
@@ -25,7 +25,7 @@ function test_not_found
     assert_eq ${len} 1
 end
 
-function test_found
+fn test_found
     handle = split a23b23c23d23e 23
 
     len = array_length ${handle}
@@ -46,7 +46,7 @@ function test_found
     assert_eq ${len} 5
 end
 
-function test_found_at_start_and_end
+fn test_found_at_start_and_end
     handle = split 23a23b23c23d23e23 23
 
     len = array_length ${handle}
