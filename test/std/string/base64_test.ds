@@ -44,6 +44,18 @@ function test_decode_decode_flag
     assert_eq ${text} "hello world"
 end
 
+function test_encode_decode
+    handle = string_to_bytes "hello world"
+    text = base64 ${handle}
+    release ${handle}
+    assert_eq ${text} aGVsbG8gd29ybGQ=
+
+    handle = base64 -decode ${text}
+    text = bytes_to_string ${handle}
+    release ${handle}
+    assert_eq ${text} "hello world"
+end
+
 function test_missing_input
     error = get_last_error
     empty = is_empty ${error}

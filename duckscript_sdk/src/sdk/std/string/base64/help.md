@@ -1,26 +1,20 @@
 ```sh
-var = wget [--method=HTTP-method] [--post-data=payload] [-O file] URL
+var = base64 [-e] [-encode] [-d] [-decode] value
 ```
 
-Invokes a HTTP request.<br>
-The request method by default is GET but can be modified by the ```--method``` parameter.<br>
-The ```-O``` parameter will redirect a valid response output to the provided file, otherwise all response text will be set to the
-output variable.<br>
-When redirecting to file, the output would be the response size.<br>
-The ```--post-data``` parameter enables to pass a payload to POST http requests.<br>
-In case of errors or error HTTP response codes, false will be returned.
+Invokes the base64 encode/decode command with the provided value.<br>
+This command allows for a more similar cli command which wraps the base64_encode and base64_decode commands.
 
 #### Parameters
 
-* Optional HTTP Method, for example --method=HTTP-GET or --method=HTTP-POST (currently only GET and POST are supported).
-* Optional post payload via ```--post-data``` parameter.
-* Optional redirection of output to file via ```-O``` parameter.
-* The target URL
+* Optional -e or -encode flags to set the mode to encode (default)
+* Optional -d or -decode flags to set the mode to decode
+* The value, in case of encoding this is the binary handle, in case of decoding this is the base64 textual value.
 
 #### Return Value
 
-The response text or in case of output redirection to file, the response size.<br>
-In case of errors, it will return false.
+* In case of encoding, the base64 textual value will be returned.
+* In case of decoding, a handle to the binary data will be returned.
 
 #### Examples
 
