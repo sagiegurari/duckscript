@@ -1,0 +1,23 @@
+
+scope::base64::input_data = array_pop ${scope::base64::arguments}
+scope::base64::encode = set true
+
+for scope::base64::arg in ${scope::base64::arguments}
+    if equals ${scope::base64::arg} -e
+         scope::base64::encode = set true
+    elif equals ${scope::base64::arg} -encode
+         scope::base64::encode = set true
+    elif equals ${scope::base64::arg} -d
+         scope::base64::encode = set false
+    elif equals ${scope::base64::arg} -decode
+         scope::base64::encode = set false
+    end
+end
+
+if ${scope::base64::encode}
+    scope::base64::output = base64_encode ${scope::base64::input_data}
+else
+    scope::base64::output = base64_decode ${scope::base64::input_data}
+end
+
+scope::base64::output = set ${scope::base64::output}

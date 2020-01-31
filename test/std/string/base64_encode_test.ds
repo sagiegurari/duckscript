@@ -1,0 +1,23 @@
+
+function test_encode
+    handle = string_to_bytes "hello world"
+    text = base64_encode ${handle}
+
+    release ${handle}
+
+    assert_eq ${text} aGVsbG8gd29ybGQ=
+end
+
+function test_missing_input
+    error = get_last_error
+    empty = is_empty ${error}
+    assert ${empty}
+
+    result = base64_encode
+
+    error = get_last_error
+    empty = is_empty ${error}
+    assert_false ${empty}
+
+    assert_false ${result}
+end

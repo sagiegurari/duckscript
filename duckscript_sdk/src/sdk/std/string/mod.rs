@@ -1,3 +1,4 @@
+mod base64;
 mod base64_decode;
 mod base64_encode;
 pub(crate) mod bytes_to_string;
@@ -27,6 +28,7 @@ static PACKAGE: &str = "string";
 pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptError> {
     let package = pckg::concat(parent, PACKAGE);
 
+    commands.set(base64::create(&package)?)?;
     commands.set(base64_decode::create(&package))?;
     commands.set(base64_encode::create(&package))?;
     commands.set(bytes_to_string::create(&package))?;

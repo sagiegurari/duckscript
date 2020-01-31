@@ -227,7 +227,7 @@ pub(crate) fn create_alias_command(
     script: String,
     arguments_amount: usize,
 ) -> Result<AliasCommand, ScriptError> {
-    let raw_command = script.trim().to_string();
+    let raw_command = script.to_string();
 
     let command = AliasCommand::new(
         name,

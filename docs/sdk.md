@@ -68,6 +68,7 @@
 * [std::process::ProcessID (pid, process_id)](#std__process__ProcessID)
 * [std::process::Watchdog (watchdog)](#std__process__Watchdog)
 * [std::scope::Clear (clear_scope)](#std__scope__Clear)
+* [std::string::Base64 (base64)](#std__string__Base64)
 * [std::string::Base64Decode (base64_decode)](#std__string__Base64Decode)
 * [std::string::Base64Encode (base64_encode)](#std__string__Base64Encode)
 * [std::string::BytesToString (bytes_to_string)](#std__string__BytesToString)
@@ -756,6 +757,7 @@ arr = array_concat ${input1} ${input2} ${input3}
 #### Source:
 
 ```sh
+
 for scope::array_concat::arg in ${scope::array_concat::arguments}
     if not is_array ${scope::array_concat::arg}
         trigger_error "Invalid input, non array handle or array not found."
@@ -771,6 +773,7 @@ for scope::array_concat::arg in ${scope::array_concat::arguments}
 end
 
 set ${scope::array_concat::array}
+
 ```
 
 
@@ -805,8 +808,10 @@ out = array_is_empty ${values}
 #### Source:
 
 ```sh
+
 scope::array_is_empty::length = array_length ${scope::array_is_empty::argument::1}
 equals 0 ${scope::array_is_empty::length}
+
 ```
 
 
@@ -866,6 +871,7 @@ end
 #### Source:
 
 ```sh
+
 if not is_array ${scope::array_join::argument::1}
     trigger_error "Invalid input, non array handle or array not found."
 end
@@ -884,6 +890,7 @@ if not array_is_empty ${scope::array_join::argument::1}
 end
 
 set ${scope::array_join::string}
+
 ```
 
 
@@ -2347,6 +2354,7 @@ end
 #### Source:
 
 ```sh
+
 scope::wget::url = array_pop ${scope::wget::arguments}
 
 scope::wget::method = set GET
@@ -2370,6 +2378,7 @@ for scope::wget::arg in ${scope::wget::arguments}
 end
 
 http_client --method "${scope::wget::method}" --output-file "${scope::wget::file}" --payload "${scope::wget::payload}" ${scope::wget::url}
+
 ```
 
 
@@ -2564,6 +2573,101 @@ assert_false ${defined}
 #### Aliases:
 clear_scope
 
+<a name="std__string__Base64"></a>
+## std::string::Base64
+
+```sh
+var = wget [--method=HTTP-method] [--post-data=payload] [-O file] URL
+```
+
+Invokes a HTTP request.<br>
+The request method by default is GET but can be modified by the ```--method``` parameter.<br>
+The ```-O``` parameter will redirect a valid response output to the provided file, otherwise all response text will be set to the
+output variable.<br>
+When redirecting to file, the output would be the response size.<br>
+The ```--post-data``` parameter enables to pass a payload to POST http requests.<br>
+In case of errors or error HTTP response codes, false will be returned.
+
+#### Parameters
+
+* Optional HTTP Method, for example --method=HTTP-GET or --method=HTTP-POST (currently only GET and POST are supported).
+* Optional post payload via ```--post-data``` parameter.
+* Optional redirection of output to file via ```-O``` parameter.
+* The target URL
+
+#### Return Value
+
+The response text or in case of output redirection to file, the response size.<br>
+In case of errors, it will return false.
+
+#### Examples
+
+```sh
+function test_get
+    response = wget https://www.rust-lang.org/
+
+    found = contains ${response} Rust
+
+    assert ${found}
+end
+
+function test_get_to_file
+    file = set ./target/_duckscript_test/wget/page.html
+    rm ${file}
+
+    response_size = wget -O ${file} https://www.rust-lang.org/
+
+    response = readfile ${file}
+    found = contains ${response} Rust
+
+    assert ${found}
+    assert ${response_size}
+end
+
+function test_post
+    payload = set {\"login\":\"login\",\"password\":\"password\"}
+    response = wget --method=HTTP-POST --post-data=${payload} https://reqbin.com/echo/post/json
+
+    found = contains ${response} success
+
+    assert ${found}
+end
+```
+
+
+#### Source:
+
+```sh
+
+scope::base64::input_data = array_pop ${scope::base64::arguments}
+scope::base64::encode = set true
+
+for scope::base64::arg in ${scope::base64::arguments}
+    if equals ${scope::base64::arg} -e
+         scope::base64::encode = set true
+    elif equals ${scope::base64::arg} -encode
+         scope::base64::encode = set true
+    elif equals ${scope::base64::arg} -d
+         scope::base64::encode = set false
+    elif equals ${scope::base64::arg} -decode
+         scope::base64::encode = set false
+    end
+end
+
+if ${scope::base64::encode}
+    scope::base64::output = base64_encode ${scope::base64::input_data}
+else
+    scope::base64::output = base64_decode ${scope::base64::input_data}
+end
+
+scope::base64::output = set ${scope::base64::output}
+
+```
+
+
+#### Aliases:
+base64
+
 <a name="std__string__Base64Decode"></a>
 ## std::string::Base64Decode
 ```sh
@@ -2690,12 +2794,14 @@ assert_eq ${output} "12 34"
 #### Source:
 
 ```sh
+
 scope::concat::output = set ""
 for scope::concat::arg in ${scope::concat::arguments}
     scope::concat::output = set "${scope::concat::output}${scope::concat::arg}"
 end
 
 set ${scope::concat::output}
+
 ```
 
 
