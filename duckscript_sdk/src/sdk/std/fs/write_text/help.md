@@ -17,5 +17,5 @@ true/false based if it was able to write the text to the file.
 #### Examples
 
 ```sh
-out = writefile ./target/tests/writefile.txt "line 1\nline 2"
+result = writefile ./target/tests/writefile.txt "line 1\nline 2"
 ```

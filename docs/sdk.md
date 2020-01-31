@@ -53,7 +53,9 @@
 * [std::fs::List (ls)](#std__fs__List)
 * [std::fs::MovePath (mv)](#std__fs__MovePath)
 * [std::fs::Print (cat)](#std__fs__Print)
+* [std::fs::ReadBytes (readbinfile, read_binary_file)](#std__fs__ReadBytes)
 * [std::fs::ReadText (readfile, read_text_file)](#std__fs__ReadText)
+* [std::fs::WriteBytes (writebinfile, write_binary_file)](#std__fs__WriteBytes)
 * [std::fs::WriteText (writefile, write_text_file)](#std__fs__WriteText)
 * [std::math::Calc (calc)](#std__math__Calc)
 * [std::math::GreaterThan (greater_than)](#std__math__GreaterThan)
@@ -2000,6 +2002,33 @@ cat ./docs/sdk.md
 #### Aliases:
 cat
 
+<a name="std__fs__ReadBytes"></a>
+## std::fs::ReadBytes
+```sh
+handle = read_binary_file file
+```
+
+Reads a raw file and returns a handle to the binary data.
+
+#### Parameters
+
+A single parameter holding the file path.
+
+#### Return Value
+
+The binary data handle.
+
+#### Examples
+
+```sh
+handle = read_binary_file ./Cargo.toml
+text = bytes_to_string ${handle}
+```
+
+
+#### Aliases:
+readbinfile, read_binary_file
+
 <a name="std__fs__ReadText"></a>
 ## std::fs::ReadText
 ```sh
@@ -2026,6 +2055,35 @@ text = readfile ./Cargo.toml
 #### Aliases:
 readfile, read_text_file
 
+<a name="std__fs__WriteBytes"></a>
+## std::fs::WriteBytes
+```sh
+result = write_binary_file file handle
+```
+
+This command enables to write binary data of the provided binary handle into the requested file.<br>
+It will return true/false value based if it was able to write the binary data to the file.
+
+#### Parameters
+
+* The target file
+* The binary data handle
+
+#### Return Value
+
+true/false based if it was able to write the binary data to the file.
+
+#### Examples
+
+```sh
+handle = string_to_bytes "some text"
+result = write_binary_file ./target/tests/data.bin ${handle}
+```
+
+
+#### Aliases:
+writebinfile, write_binary_file
+
 <a name="std__fs__WriteText"></a>
 ## std::fs::WriteText
 ```sh
@@ -2047,7 +2105,7 @@ true/false based if it was able to write the text to the file.
 #### Examples
 
 ```sh
-out = writefile ./target/tests/writefile.txt "line 1\nline 2"
+result = writefile ./target/tests/writefile.txt "line 1\nline 2"
 ```
 
 

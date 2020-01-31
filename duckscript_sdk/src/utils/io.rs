@@ -74,9 +74,31 @@ pub(crate) fn read_text_file(file: &str) -> Result<String, ScriptError> {
     match File::open(&file_path) {
         Ok(mut fd) => {
             let mut content = String::new();
-            fd.read_to_string(&mut content).unwrap();
+            match fd.read_to_string(&mut content) {
+                Ok(_) => Ok(content),
+                Err(error) => Err(ScriptError {
+                    info: ErrorInfo::ErrorReadingFile(file.to_string(), Some(error)),
+                }),
+            }
+        }
+        Err(error) => Err(ScriptError {
+            info: ErrorInfo::ErrorReadingFile(file.to_string(), Some(error)),
+        }),
+    }
+}
 
-            Ok(content)
+pub(crate) fn read_raw_file(file: &str) -> Result<Vec<u8>, ScriptError> {
+    let file_path = Path::new(file);
+
+    match File::open(&file_path) {
+        Ok(mut fd) => {
+            let mut content = vec![];
+            match fd.read_to_end(&mut content) {
+                Ok(_) => Ok(content),
+                Err(error) => Err(ScriptError {
+                    info: ErrorInfo::ErrorReadingFile(file.to_string(), Some(error)),
+                }),
+            }
         }
         Err(error) => Err(ScriptError {
             info: ErrorInfo::ErrorReadingFile(file.to_string(), Some(error)),
@@ -89,6 +111,10 @@ pub(crate) fn write_text_file(file: &str, text: &str) -> Result<(), ScriptError>
 }
 
 pub(crate) fn write_to_text_file(file: &str, text: &str, append: bool) -> Result<(), ScriptError> {
+    write_to_file(file, text.as_bytes(), append)
+}
+
+pub(crate) fn write_to_file(file: &str, data: &[u8], append: bool) -> Result<(), ScriptError> {
     let file_path = Path::new(file);
 
     // create parent directory
@@ -111,7 +137,7 @@ pub(crate) fn write_to_text_file(file: &str, text: &str, append: bool) -> Result
     };
 
     match result {
-        Ok(mut fd) => match fd.write_all(text.as_bytes()) {
+        Ok(mut fd) => match fd.write_all(data) {
             Err(_) => Err(ScriptError {
                 info: ErrorInfo::Runtime(
                     format!("Error writing to file: {}", file).to_string(),

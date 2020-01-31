@@ -2,6 +2,8 @@
 
 ### v0.1.9
 
+* New write_binary_file command #78
+* New read_binary_file command #78
 * Rename read/write text file commands.
 * New base64_decode command #75
 * New base64_encode command #75

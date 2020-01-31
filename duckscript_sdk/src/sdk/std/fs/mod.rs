@@ -7,10 +7,12 @@ mod list;
 mod mkdir;
 mod mv;
 mod print;
+mod read_bytes;
 mod read_text;
 mod rm;
 mod rmdir;
 mod touch;
+mod write_bytes;
 mod write_text;
 
 use crate::utils::pckg;
@@ -31,10 +33,12 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(mkdir::create(&package))?;
     commands.set(mv::create(&package))?;
     commands.set(print::create(&package))?;
+    commands.set(read_bytes::create(&package))?;
     commands.set(read_text::create(&package))?;
     commands.set(rm::create(&package))?;
     commands.set(rmdir::create(&package))?;
     commands.set(touch::create(&package))?;
+    commands.set(write_bytes::create(&package))?;
     commands.set(write_text::create(&package))?;
 
     Ok(())
