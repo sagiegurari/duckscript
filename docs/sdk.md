@@ -29,6 +29,7 @@
 * [std::collections::MapPut (map_put)](#std__collections__MapPut)
 * [std::collections::MapRemove (map_remove)](#std__collections__MapRemove)
 * [std::collections::MapSize (map_size)](#std__collections__MapSize)
+* [std::collections::MapToProperties (map_to_properties)](#std__collections__MapToProperties)
 * [std::collections::Range (range)](#std__collections__Range)
 * [std::collections::ReadProperties (read_properties)](#std__collections__ReadProperties)
 * [std::collections::WriteProperties (write_properties)](#std__collections__WriteProperties)
@@ -1320,6 +1321,39 @@ release ${handle}
 
 #### Aliases:
 map_size
+
+<a name="std__collections__MapToProperties"></a>
+## std::collections::MapToProperties
+```sh
+var = map_load_properties [--prefix prefix] handle text
+```
+
+Parsers and loads all properties to the provided map.
+
+#### Parameters
+
+* Optional --prefix and the prefix value
+* The map handle.
+* The properties text.
+
+#### Return Value
+
+True if successful.
+
+#### Examples
+
+```sh
+handle = map
+map_put ${handle} a 1
+map_put ${handle} b 2
+map_put ${handle} a.b.c 123
+
+text = map_to_properties ${handle}
+```
+
+
+#### Aliases:
+map_to_properties
 
 <a name="std__collections__Range"></a>
 ## std::collections::Range

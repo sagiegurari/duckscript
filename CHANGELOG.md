@@ -2,6 +2,7 @@
 
 ### v0.1.9
 
+* New map_to_properties command.
 * New map_load_properties command.
 * New map_is_empty command.
 * New map_size command.

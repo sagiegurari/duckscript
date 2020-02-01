@@ -14,6 +14,7 @@ mod map_load_properties;
 mod map_put;
 mod map_remove;
 mod map_size;
+mod map_to_properties;
 mod range;
 mod read_properties;
 mod write_properties;
@@ -43,6 +44,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(map_put::create(&package))?;
     commands.set(map_remove::create(&package))?;
     commands.set(map_size::create(&package))?;
+    commands.set(map_to_properties::create(&package))?;
     commands.set(range::create(&package))?;
     commands.set(read_properties::create(&package))?;
     commands.set(write_properties::create(&package))?;
