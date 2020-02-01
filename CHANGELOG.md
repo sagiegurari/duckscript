@@ -2,6 +2,7 @@
 
 ### v0.1.9
 
+* New map_is_empty command.
 * New map_size command.
 * New map_remove command.
 * New is_map command.

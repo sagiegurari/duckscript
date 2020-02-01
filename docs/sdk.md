@@ -24,6 +24,7 @@
 * [std::collections::IsMap (is_map)](#std__collections__IsMap)
 * [std::collections::Map (map)](#std__collections__Map)
 * [std::collections::MapGet (map_get)](#std__collections__MapGet)
+* [std::collections::MapIsEmpty (map_is_empty)](#std__collections__MapIsEmpty)
 * [std::collections::MapPut (map_put)](#std__collections__MapPut)
 * [std::collections::MapRemove (map_remove)](#std__collections__MapRemove)
 * [std::collections::MapSize (map_size)](#std__collections__MapSize)
@@ -1137,6 +1138,45 @@ release ${handle}
 
 #### Aliases:
 map_get
+
+<a name="std__collections__MapIsEmpty"></a>
+## std::collections::MapIsEmpty
+
+```sh
+var = map_is_empty handle
+```
+
+Returns true if the provided map handle is an empty map.
+
+#### Parameters
+
+The map handle.
+
+#### Return Value
+
+True if the provided handle belongs to an empty map.
+
+#### Examples
+
+```sh
+handle = map
+map_put ${handle} key value
+empty = map_is_empty ${handle}
+```
+
+
+#### Source:
+
+```sh
+
+scope::map_is_empty::length = map_size ${scope::map_is_empty::argument::1}
+equals 0 ${scope::map_is_empty::length}
+
+```
+
+
+#### Aliases:
+map_is_empty
 
 <a name="std__collections__MapPut"></a>
 ## std::collections::MapPut
