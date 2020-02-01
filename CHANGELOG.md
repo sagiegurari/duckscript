@@ -2,6 +2,8 @@
 
 ### v0.1.9
 
+* New map_get command.
+* New map_put command.
 * New map command.
 * The set command now supports 'or' condition.
 * New base64 command #79

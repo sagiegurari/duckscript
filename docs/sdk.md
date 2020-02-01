@@ -22,6 +22,8 @@
 * [std::collections::ArrayPush (array_push)](#std__collections__ArrayPush)
 * [std::collections::IsArray (is_array)](#std__collections__IsArray)
 * [std::collections::Map (map)](#std__collections__Map)
+* [std::collections::MapGet (map_get)](#std__collections__MapGet)
+* [std::collections::MapPut (map_put)](#std__collections__MapPut)
 * [std::collections::Range (range)](#std__collections__Range)
 * [std::collections::ReadProperties (read_properties)](#std__collections__ReadProperties)
 * [std::collections::WriteProperties (write_properties)](#std__collections__WriteProperties)
@@ -1067,6 +1069,77 @@ release ${handle}
 
 #### Aliases:
 map
+
+<a name="std__collections__MapGet"></a>
+## std::collections::MapGet
+```sh
+value = map_get handle key
+```
+
+Returns a the value corresponding to the key from the map.
+
+#### Parameters
+
+* The map handle.
+* The key.
+
+#### Return Value
+
+The value corresponding to the key from the map.
+
+#### Examples
+
+```sh
+handle = map
+
+result = map_put ${handle} key value
+assert_eq ${result} true
+
+value = map_get ${handle} key
+assert_eq ${value} value
+
+release ${handle}
+```
+
+
+#### Aliases:
+map_get
+
+<a name="std__collections__MapPut"></a>
+## std::collections::MapPut
+```sh
+var = map_put handle key value
+```
+
+Inserts a key-value pair into the map.
+
+#### Parameters
+
+* The map handle.
+* The key.
+* The new value.
+
+#### Return Value
+
+True if a new value was inserted.
+
+#### Examples
+
+```sh
+handle = map
+
+result = map_put ${handle} key value
+assert_eq ${result} true
+
+value = map_get ${handle} key
+assert_eq ${value} value
+
+release ${handle}
+```
+
+
+#### Aliases:
+map_put
 
 <a name="std__collections__Range"></a>
 ## std::collections::Range
