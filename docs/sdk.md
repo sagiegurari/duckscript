@@ -26,6 +26,7 @@
 * [std::collections::MapGet (map_get)](#std__collections__MapGet)
 * [std::collections::MapPut (map_put)](#std__collections__MapPut)
 * [std::collections::MapRemove (map_remove)](#std__collections__MapRemove)
+* [std::collections::MapSize (map_size)](#std__collections__MapSize)
 * [std::collections::Range (range)](#std__collections__Range)
 * [std::collections::ReadProperties (read_properties)](#std__collections__ReadProperties)
 * [std::collections::WriteProperties (write_properties)](#std__collections__WriteProperties)
@@ -1207,6 +1208,41 @@ release ${handle}
 
 #### Aliases:
 map_remove
+
+<a name="std__collections__MapSize"></a>
+## std::collections::MapSize
+```sh
+var = map_size handle
+```
+
+Returns the map size based on the provided map handle.
+
+#### Parameters
+
+The map handle.
+
+#### Return Value
+
+The map size.
+
+#### Examples
+
+```sh
+handle = map
+
+result = map_put ${handle} a 1
+result = map_put ${handle} b 2
+result = map_put ${handle} c 3
+
+result = map_size ${handle}
+assert_eq ${result} 3
+
+release ${handle}
+```
+
+
+#### Aliases:
+map_size
 
 <a name="std__collections__Range"></a>
 ## std::collections::Range
