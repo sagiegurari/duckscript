@@ -21,6 +21,7 @@
 * [std::collections::ArrayPop (array_pop)](#std__collections__ArrayPop)
 * [std::collections::ArrayPush (array_push)](#std__collections__ArrayPush)
 * [std::collections::IsArray (is_array)](#std__collections__IsArray)
+* [std::collections::IsMap (is_map)](#std__collections__IsMap)
 * [std::collections::Map (map)](#std__collections__Map)
 * [std::collections::MapGet (map_get)](#std__collections__MapGet)
 * [std::collections::MapPut (map_put)](#std__collections__MapPut)
@@ -1008,10 +1009,10 @@ array_push
 <a name="std__collections__IsArray"></a>
 ## std::collections::IsArray
 ```sh
-var = array_length handle
+var = is_array handle
 ```
 
-Returns the array length based on the provided array handle.
+Returns true if the provided value is an array handle.
 
 #### Parameters
 
@@ -1019,25 +1020,55 @@ The array handle.
 
 #### Return Value
 
-The array length.
+True if the provided value is an array handle.
 
 #### Examples
 
 ```sh
-handle = array a b c "d e"
-len = array_length ${handle}
-released = release ${handle}
-echo Array length: ${len} released: ${released}
+arr = array 1 2 3
 
-handle = range 0 10
-len = array_length ${handle}
-released = release ${handle}
-echo Array length: ${len} released: ${released}
+value = is_array ${arr}
+assert ${value}
+
+released = release ${arr}
+assert ${released}
 ```
 
 
 #### Aliases:
 is_array
+
+<a name="std__collections__IsMap"></a>
+## std::collections::IsMap
+```sh
+var = is_map handle
+```
+
+Returns true if the provided value is a map handle.
+
+#### Parameters
+
+The map handle.
+
+#### Return Value
+
+True if the provided value is a map handle.
+
+#### Examples
+
+```sh
+map_handle = map
+
+value = is_map ${map_handle}
+assert ${value}
+
+released = release ${map_handle}
+assert ${released}
+```
+
+
+#### Aliases:
+is_map
 
 <a name="std__collections__Map"></a>
 ## std::collections::Map

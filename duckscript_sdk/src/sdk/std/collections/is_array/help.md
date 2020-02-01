@@ -1,8 +1,8 @@
 ```sh
-var = array_length handle
+var = is_array handle
 ```
 
-Returns the array length based on the provided array handle.
+Returns true if the provided value is an array handle.
 
 #### Parameters
 
@@ -10,18 +10,16 @@ The array handle.
 
 #### Return Value
 
-The array length.
+True if the provided value is an array handle.
 
 #### Examples
 
 ```sh
-handle = array a b c "d e"
-len = array_length ${handle}
-released = release ${handle}
-echo Array length: ${len} released: ${released}
+arr = array 1 2 3
 
-handle = range 0 10
-len = array_length ${handle}
-released = release ${handle}
-echo Array length: ${len} released: ${released}
+value = is_array ${arr}
+assert ${value}
+
+released = release ${arr}
+assert ${released}
 ```
