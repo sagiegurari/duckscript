@@ -9,6 +9,41 @@ use std::collections::HashMap;
 #[path = "./mod_test.rs"]
 mod mod_test;
 
+fn remove(state: &mut HashMap<String, StateValue>, key: &str, recursive: bool) -> bool {
+    match state.remove(key) {
+        Some(state_value) => {
+            if recursive {
+                match state_value {
+                    StateValue::SubState(map) => {
+                        for (_, map_value) in map {
+                            match map_value {
+                                StateValue::String(value) => remove(state, &value, recursive),
+                                _ => true,
+                            };
+                        }
+
+                        true
+                    }
+                    StateValue::List(list) => {
+                        for value in list {
+                            match value {
+                                StateValue::String(value) => remove(state, &value, recursive),
+                                _ => true,
+                            };
+                        }
+
+                        true
+                    }
+                    _ => true,
+                }
+            } else {
+                true
+            }
+        }
+        None => false,
+    }
+}
+
 #[derive(Clone)]
 pub(crate) struct CommandImpl {
     package: String,
@@ -50,12 +85,16 @@ impl Command for CommandImpl {
         } else {
             let state = get_handles_sub_state(state);
 
-            let key = &arguments[0];
+            let (key, recursive) =
+                if arguments.len() > 1 && (arguments[0] == "-r" || arguments[0] == "--recursive") {
+                    (arguments[1].to_string(), true)
+                } else {
+                    (arguments[0].to_string(), false)
+                };
 
-            match state.remove(key) {
-                Some(_) => CommandResult::Continue(Some("true".to_string())),
-                None => CommandResult::Continue(Some("false".to_string())),
-            }
+            let removed = remove(state, &key, recursive);
+
+            CommandResult::Continue(Some(removed.to_string()))
         }
     }
 }

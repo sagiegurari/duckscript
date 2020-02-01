@@ -2,6 +2,7 @@
 
 ### v0.1.9
 
+* Release command now support recursive option.
 * New map_clear command.
 * New map_to_properties command.
 * New map_load_properties command.

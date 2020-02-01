@@ -1,0 +1,48 @@
+
+fn test_release_not_recursive
+    handle = array
+
+    exists = is_array ${handle}
+    assert ${exists}
+
+    release ${handle}
+
+    exists = is_array ${handle}
+    assert_false ${exists}
+end
+
+fn test_release_recursive
+    map_handle = map
+    map_put ${map_handle} a 1
+    sub_array_handle1 = array
+    map_put ${map_handle} sub_array_handle ${sub_array_handle1}
+
+    sub_array_handle2 = array
+    array_handle = array ${sub_array_handle2}
+
+    handle = array ${array_handle} ${map_handle}
+
+    exists = is_array ${handle}
+    assert ${exists}
+    exists = is_array ${array_handle}
+    assert ${exists}
+    exists = is_map ${map_handle}
+    assert ${exists}
+    exists = is_array ${sub_array_handle1}
+    assert ${exists}
+    exists = is_array ${sub_array_handle2}
+    assert ${exists}
+
+    release -r ${handle}
+
+    exists = is_array ${handle}
+    assert_false ${exists}
+    exists = is_array ${array_handle}
+    assert_false ${exists}
+    exists = is_map ${map_handle}
+    assert_false ${exists}
+    exists = is_array ${sub_array_handle1}
+    assert_false ${exists}
+    exists = is_array ${sub_array_handle2}
+    assert_false ${exists}
+end
