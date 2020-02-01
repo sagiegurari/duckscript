@@ -21,6 +21,7 @@
 * [std::collections::ArrayPop (array_pop)](#std__collections__ArrayPop)
 * [std::collections::ArrayPush (array_push)](#std__collections__ArrayPush)
 * [std::collections::IsArray (is_array)](#std__collections__IsArray)
+* [std::collections::Map (map)](#std__collections__Map)
 * [std::collections::Range (range)](#std__collections__Range)
 * [std::collections::ReadProperties (read_properties)](#std__collections__ReadProperties)
 * [std::collections::WriteProperties (write_properties)](#std__collections__WriteProperties)
@@ -1035,6 +1036,37 @@ echo Array length: ${len} released: ${released}
 
 #### Aliases:
 is_array
+
+<a name="std__collections__Map"></a>
+## std::collections::Map
+```sh
+handle = map
+```
+
+Creates an empty map and returns a handle to that array.<br>
+This handle can be passed to other commands which support maps using handles.<br>
+Once the map is no longer used, it should be released using the **release** command.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+A handle to the map.
+
+#### Examples
+
+```sh
+handle = map
+
+# once done we should release the handle
+release ${handle}
+```
+
+
+#### Aliases:
+map
 
 <a name="std__collections__Range"></a>
 ## std::collections::Range
