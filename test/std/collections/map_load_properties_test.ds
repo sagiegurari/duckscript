@@ -1,0 +1,30 @@
+
+fn test_no_prefix
+    handle = map
+    result = map_load_properties ${handle} a=1\nb=2\na.b.c=3
+    assert_eq ${result} true
+
+    value = map_get ${handle} a
+    assert_eq ${value} 1
+    value = map_get ${handle} b
+    assert_eq ${value} 2
+    value = map_get ${handle} a.b.c
+    assert_eq ${value} 3
+
+    release ${handle}
+end
+
+fn test_with_prefix
+    handle = map
+    result = map_load_properties --prefix config ${handle} a=1\nb=2\na.b.c=3
+    assert_eq ${result} true
+
+    value = map_get ${handle} config.a
+    assert_eq ${value} 1
+    value = map_get ${handle} config.b
+    assert_eq ${value} 2
+    value = map_get ${handle} config.a.b.c
+    assert_eq ${value} 3
+
+    release ${handle}
+end
