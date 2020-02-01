@@ -1,18 +1,17 @@
 ```sh
-var = map_load_properties [--prefix prefix] handle text
+text = map_to_properties [--prefix prefix] handle
 ```
 
-Parsers and loads all properties to the provided map.
+Converts the provided map to properties text.
 
 #### Parameters
 
 * Optional --prefix and the prefix value
 * The map handle.
-* The properties text.
 
 #### Return Value
 
-True if successful.
+The properties text.
 
 #### Examples
 

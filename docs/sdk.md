@@ -23,6 +23,7 @@
 * [std::collections::IsArray (is_array)](#std__collections__IsArray)
 * [std::collections::IsMap (is_map)](#std__collections__IsMap)
 * [std::collections::Map (map)](#std__collections__Map)
+* [std::collections::MapClear (map_clear)](#std__collections__MapClear)
 * [std::collections::MapGet (map_get)](#std__collections__MapGet)
 * [std::collections::MapIsEmpty (map_is_empty)](#std__collections__MapIsEmpty)
 * [std::collections::MapLoadProperties (map_load_properties)](#std__collections__MapLoadProperties)
@@ -1106,6 +1107,45 @@ release ${handle}
 #### Aliases:
 map
 
+<a name="std__collections__MapClear"></a>
+## std::collections::MapClear
+```sh
+result = map_clear handle
+```
+
+Clears the provided map.
+
+#### Parameters
+
+The map handle.
+
+#### Return Value
+
+True if successful.
+
+#### Examples
+
+```sh
+handle = map
+
+result = map_put ${handle} a 1
+
+result = map_is_empty ${handle}
+assert_false ${result}
+
+result map_clear ${handle}
+assert ${result}
+
+result = map_is_empty ${handle}
+assert ${result}
+
+release ${handle}
+```
+
+
+#### Aliases:
+map_clear
+
 <a name="std__collections__MapGet"></a>
 ## std::collections::MapGet
 ```sh
@@ -1325,20 +1365,19 @@ map_size
 <a name="std__collections__MapToProperties"></a>
 ## std::collections::MapToProperties
 ```sh
-var = map_load_properties [--prefix prefix] handle text
+text = map_to_properties [--prefix prefix] handle
 ```
 
-Parsers and loads all properties to the provided map.
+Converts the provided map to properties text.
 
 #### Parameters
 
 * Optional --prefix and the prefix value
 * The map handle.
-* The properties text.
 
 #### Return Value
 
-True if successful.
+The properties text.
 
 #### Examples
 

@@ -8,6 +8,7 @@ mod array_push;
 mod is_array;
 mod is_map;
 mod map;
+mod map_clear;
 mod map_get;
 mod map_is_empty;
 mod map_load_properties;
@@ -38,6 +39,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(is_array::create(&package))?;
     commands.set(is_map::create(&package))?;
     commands.set(map::create(&package))?;
+    commands.set(map_clear::create(&package))?;
     commands.set(map_get::create(&package))?;
     commands.set(map_is_empty::create(&package)?)?;
     commands.set(map_load_properties::create(&package))?;
