@@ -2,6 +2,7 @@
 
 ### v0.1.9
 
+* New map_remove command.
 * New is_map command.
 * New map_get command.
 * New map_put command.

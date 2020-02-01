@@ -25,6 +25,7 @@
 * [std::collections::Map (map)](#std__collections__Map)
 * [std::collections::MapGet (map_get)](#std__collections__MapGet)
 * [std::collections::MapPut (map_put)](#std__collections__MapPut)
+* [std::collections::MapRemove (map_remove)](#std__collections__MapRemove)
 * [std::collections::Range (range)](#std__collections__Range)
 * [std::collections::ReadProperties (read_properties)](#std__collections__ReadProperties)
 * [std::collections::WriteProperties (write_properties)](#std__collections__WriteProperties)
@@ -1171,6 +1172,41 @@ release ${handle}
 
 #### Aliases:
 map_put
+
+<a name="std__collections__MapRemove"></a>
+## std::collections::MapRemove
+```sh
+value = map_remove handle key
+```
+
+Removes a the value corresponding to the key from the map and returns it.
+
+#### Parameters
+
+* The map handle.
+* The key.
+
+#### Return Value
+
+The value corresponding to the key from the map.
+
+#### Examples
+
+```sh
+handle = map
+
+result = map_put ${handle} key value
+assert_eq ${result} true
+
+value = map_remove ${handle} key
+assert_eq ${value} value
+
+release ${handle}
+```
+
+
+#### Aliases:
+map_remove
 
 <a name="std__collections__Range"></a>
 ## std::collections::Range

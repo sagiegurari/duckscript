@@ -16,7 +16,7 @@ mod process;
 mod read;
 pub(crate) mod release;
 pub(crate) mod scope;
-mod set;
+pub(crate) mod set;
 pub(crate) mod string;
 mod test;
 mod thread;

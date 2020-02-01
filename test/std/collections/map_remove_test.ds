@@ -1,0 +1,27 @@
+
+fn test_remove
+    handle = map
+    
+    result = map_put ${handle} key value
+    assert_eq ${result} true
+    
+    value = map_remove ${handle} key
+    assert_eq ${value} value
+    
+    release ${handle}
+end
+
+fn test_remove_twice
+    handle = map
+    
+    result = map_put ${handle} key value
+    assert_eq ${result} true
+    
+    value = map_remove ${handle} key
+    assert_eq ${value} value
+    value = map_remove ${handle} key
+    defined = is_defined value
+    assert_false ${defined}
+    
+    release ${handle}
+end
