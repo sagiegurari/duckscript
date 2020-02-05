@@ -29,10 +29,7 @@ pub(crate) fn eval_condition(
         Ok(is_true(None))
     } else {
         let eval_statement = if arguments.len() == 1 {
-            match commands.get(&arguments[0]) {
-                Some(_) => true,
-                None => false,
-            }
+            commands.exists(&arguments[0])
         } else {
             true
         };
