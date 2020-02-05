@@ -1,10 +1,6 @@
 # Table of Contents
 * [std::Echo (echo)](#std__Echo)
 * [std::Eval (eval)](#std__Eval)
-* [std::ForIn (for)](#std__ForIn)
-* [std::Function (function, fn)](#std__Function)
-* [std::GoTo (goto)](#std__GoTo)
-* [std::If (if)](#std__If)
 * [std::IsDefined (is_defined)](#std__IsDefined)
 * [std::Not (not)](#std__Not)
 * [std::ReadUserInput (read)](#std__ReadUserInput)
@@ -51,6 +47,10 @@
 * [std::error::SetError (set_error)](#std__error__SetError)
 * [std::error::SetExitOnError (exit_on_error, set_exit_on_error)](#std__error__SetExitOnError)
 * [std::error::TriggerError (trigger_error)](#std__error__TriggerError)
+* [std::flowcontroll::ForIn (for)](#std__flowcontroll__ForIn)
+* [std::flowcontroll::Function (function, fn)](#std__flowcontroll__Function)
+* [std::flowcontroll::GoTo (goto)](#std__flowcontroll__GoTo)
+* [std::flowcontroll::If (if)](#std__flowcontroll__If)
 * [std::fs::Append (appendfile)](#std__fs__Append)
 * [std::fs::CopyPath (cp)](#std__fs__CopyPath)
 * [std::fs::CreateDirectory (mkdir)](#std__fs__CreateDirectory)
@@ -166,292 +166,6 @@ eval ${command} hello world
 
 #### Aliases:
 eval
-
-<a name="std__ForIn"></a>
-## std::ForIn
-```sh
-args = array a b c
-for arg in ${args}
-    # commands
-end
-release args
-```
-
-The for/in command enables to iterate over an array (see [array command](#std__collections__Array)).<br>
-The first argument will contain the current iteration value from the array.<br>
-Once all values have been read, it will exit the loop.
-
-#### Parameters
-
-* for
-  * The variable name which will hold the current iteration value
-  * The string "in"
-  * The handle to the array of values to iterate
-* end - no parameters
-
-#### Return Value
-
-None
-
-#### Examples
-
-```sh
-# Simple example iteration over the list of letters:
-args = array a b c
-
-for arg in ${args}
-    echo current arg is: ${arg}
-end
-
-release args
-
-# Example nested loops:
-args = array 1 2 3
-for i in ${args}
-    for j in ${args}
-        echo i: ${i} j: ${j}
-    end
-end
-```
-
-
-#### Aliases:
-for
-
-<a name="std__Function"></a>
-## std::Function
-```sh
-function my_function
-    # function content
-    return output
-end
-```
-
-This command provides the function language feature as a set of commands:
-
-* function - Defines a function start block
-* end - Defines the end of the function block
-* return - Allows to exist a function at any point and return an output
-* *function name* - Dynamically created commands based on the function name which are used to invoke the function code.
-
-When a function command is detected, it will search for the end command that comes after.<br>
-That entire block is considered the function code block (functions cannot be nested in outer functions)<br>
-
-In order to invoke the function, simply call the function name with any amount of paramters.<br>
-Those parameters will be set as $1, $2, ... and so on.<br>
-Since variables are global, it will overwrite any older values stored in those variables.<br>
-
-To exist a function and return a value, simply use the **return** command with the value you want to return.<br>
-The variable that was used when the function was originally called, will now store that value.<br>
-The return command can be used to exist early without any value.<br>
-In case the code reached the **end** call, the function will exist but will return not value.
-
-#### Parameters
-
-* function - The function name used later on to invoke the function
-* end - no parameters
-* return - optional single paramter to return as an output of the function call
-* *function name* - Any number of arguments which will automatically be set as global variables: $1, $2, ... as so on.
-
-#### Return Value
-
-The function invocation returns the output provided by the return command.
-
-#### Examples
-
-```sh
-# Simple example of a function definition which echo 'hello world' and exists.
-
-# function start
-function hello_world
-    echo hello world
-end
-
-# function invocation
-hello_world
-
-# Example of calling a function and returning a value
-function get_hello_world
-    return "hello world"
-end
-
-# function invocation
-text = get_hello_world
-
-# this will print "hello world"
-echo ${text}
-
-# Example of passing arguments
-function print_input
-    # $1 is set with the value 'hello'
-    # $2 is set with the value 'world'
-    echo ${1} ${2}
-end
-
-print_input hello world
-
-# Functions can call other functions
-function get_one
-    return 1
-end
-
-function get_number
-    number = get_one
-    return ${number}
-end
-
-output = get_number
-
-# this will print 1
-echo ${output}
-```
-
-
-#### Aliases:
-function, fn
-
-<a name="std__GoTo"></a>
-## std::GoTo
-```sh
-goto :label
-```
-
-The goto command enables you to jump to any position in the script, if that position has a label value.
-
-#### Parameters
-
-A single valid label value.
-
-#### Return Value
-
-None
-
-#### Examples
-
-```sh
-goto :good
-
-echo bad
-
-:good echo good
-```
-
-
-#### Aliases:
-goto
-
-<a name="std__If"></a>
-## std::If
-```sh
-if [command|value|condition]
-    # commands
-elseif command|value
-    # commands
-else
-    # commands
-end
-```
-
-This command provides the if/elseif/else condition language feature as a set of commands:
-
-* if - Defines an if condition
-* elseif - Defines optional secondary condition blocks
-* else - Optinoal fallback block
-* end - Defines the end of the entire if/else block
-
-if and elseif commands accept either:
-
-* A command with optional arguments and invokes it
-* A single value which doesn't match any known command
-* A condition statement
-
-If the result is one of the following:
-
-* No output
-* false (case insensitive)
-* 0
-* no (case insensitive)
-* Empty value
-
-It is considered falsy.<br>
-In case of falsy value, it will skip to the next elseif/else block.<br>
-If a truthy (non falsy) output is found, it will invoke the commands of that code block and ignore all other elseif/else blocks.<br>
-
-if blocks can be nested in other if blocks (see examples).
-
-A condition statement is made up of values, or/and keywords and '('/')' groups.<br>
-Each must be separated with a space character.
-
-#### Parameters
-
-* if/elseif - A command and its arguments to invoke and evaluate its output, if a single value is provided an no such command exists, it is evaluated as a value.
-* else/end - no parameters
-
-#### Return Value
-
-None
-
-#### Examples
-
-```sh
-# Simple example of an if statement that evaluates the argument value as true and echos "in if"
-if true
-    echo in if
-end
-
-# Example of using **not** command to reverse the output value
-if not false
-    echo in if
-end
-
-# Example of an if statement that evaluates the command as true and echos "in if"
-if set true
-    echo in if
-end
-
-# Example of if condition returning a falsy result and navigation goes to the else block which echos "in else"
-if set false
-    echo should not be here
-else
-    echo in else
-end
-
-# Example of if condition returning a falsy result and navigation goes to the elseif block has a truthy condition
-if set false
-    echo should not be here
-elseif set true
-    echo in else if
-else
-    echo should not be here
-end
-
-# Nested if example:
-if set false
-    echo should not be here
-elseif set true
-    echo in else if but not done yet
-
-    if set true
-        echo nested if
-    end
-else
-    echo should not be here
-end
-
-valid = set false
-if true and false or true and false or ( true and true or false )
-    valid = set true
-end
-assert ${valid}
-
-if true and false or true and false or ( true and true or false ) and false
-    assert_fail
-end
-```
-
-
-#### Aliases:
-if
 
 <a name="std__IsDefined"></a>
 ## std::IsDefined
@@ -2051,6 +1765,292 @@ assert_eq ${error} "my error message"
 
 #### Aliases:
 trigger_error
+
+<a name="std__flowcontroll__ForIn"></a>
+## std::flowcontroll::ForIn
+```sh
+args = array a b c
+for arg in ${args}
+    # commands
+end
+release args
+```
+
+The for/in command enables to iterate over an array (see [array command](#std__collections__Array)).<br>
+The first argument will contain the current iteration value from the array.<br>
+Once all values have been read, it will exit the loop.
+
+#### Parameters
+
+* for
+  * The variable name which will hold the current iteration value
+  * The string "in"
+  * The handle to the array of values to iterate
+* end - no parameters
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+# Simple example iteration over the list of letters:
+args = array a b c
+
+for arg in ${args}
+    echo current arg is: ${arg}
+end
+
+release args
+
+# Example nested loops:
+args = array 1 2 3
+for i in ${args}
+    for j in ${args}
+        echo i: ${i} j: ${j}
+    end
+end
+```
+
+
+#### Aliases:
+for
+
+<a name="std__flowcontroll__Function"></a>
+## std::flowcontroll::Function
+```sh
+function my_function
+    # function content
+    return output
+end
+```
+
+This command provides the function language feature as a set of commands:
+
+* function - Defines a function start block
+* end - Defines the end of the function block
+* return - Allows to exist a function at any point and return an output
+* *function name* - Dynamically created commands based on the function name which are used to invoke the function code.
+
+When a function command is detected, it will search for the end command that comes after.<br>
+That entire block is considered the function code block (functions cannot be nested in outer functions)<br>
+
+In order to invoke the function, simply call the function name with any amount of paramters.<br>
+Those parameters will be set as $1, $2, ... and so on.<br>
+Since variables are global, it will overwrite any older values stored in those variables.<br>
+
+To exist a function and return a value, simply use the **return** command with the value you want to return.<br>
+The variable that was used when the function was originally called, will now store that value.<br>
+The return command can be used to exist early without any value.<br>
+In case the code reached the **end** call, the function will exist but will return not value.
+
+#### Parameters
+
+* function - The function name used later on to invoke the function
+* end - no parameters
+* return - optional single paramter to return as an output of the function call
+* *function name* - Any number of arguments which will automatically be set as global variables: $1, $2, ... as so on.
+
+#### Return Value
+
+The function invocation returns the output provided by the return command.
+
+#### Examples
+
+```sh
+# Simple example of a function definition which echo 'hello world' and exists.
+
+# function start
+function hello_world
+    echo hello world
+end
+
+# function invocation
+hello_world
+
+# Example of calling a function and returning a value
+function get_hello_world
+    return "hello world"
+end
+
+# function invocation
+text = get_hello_world
+
+# this will print "hello world"
+echo ${text}
+
+# Example of passing arguments
+function print_input
+    # $1 is set with the value 'hello'
+    # $2 is set with the value 'world'
+    echo ${1} ${2}
+end
+
+print_input hello world
+
+# Functions can call other functions
+function get_one
+    return 1
+end
+
+function get_number
+    number = get_one
+    return ${number}
+end
+
+output = get_number
+
+# this will print 1
+echo ${output}
+```
+
+
+#### Aliases:
+function, fn
+
+<a name="std__flowcontroll__GoTo"></a>
+## std::flowcontroll::GoTo
+```sh
+goto :label
+```
+
+The goto command enables you to jump to any position in the script, if that position has a label value.
+
+#### Parameters
+
+A single valid label value.
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+goto :good
+
+echo bad
+
+:good echo good
+```
+
+
+#### Aliases:
+goto
+
+<a name="std__flowcontroll__If"></a>
+## std::flowcontroll::If
+```sh
+if [command|value|condition]
+    # commands
+elseif command|value
+    # commands
+else
+    # commands
+end
+```
+
+This command provides the if/elseif/else condition language feature as a set of commands:
+
+* if - Defines an if condition
+* elseif - Defines optional secondary condition blocks
+* else - Optinoal fallback block
+* end - Defines the end of the entire if/else block
+
+if and elseif commands accept either:
+
+* A command with optional arguments and invokes it
+* A single value which doesn't match any known command
+* A condition statement
+
+If the result is one of the following:
+
+* No output
+* false (case insensitive)
+* 0
+* no (case insensitive)
+* Empty value
+
+It is considered falsy.<br>
+In case of falsy value, it will skip to the next elseif/else block.<br>
+If a truthy (non falsy) output is found, it will invoke the commands of that code block and ignore all other elseif/else blocks.<br>
+
+if blocks can be nested in other if blocks (see examples).
+
+A condition statement is made up of values, or/and keywords and '('/')' groups.<br>
+Each must be separated with a space character.
+
+#### Parameters
+
+* if/elseif - A command and its arguments to invoke and evaluate its output, if a single value is provided an no such command exists, it is evaluated as a value.
+* else/end - no parameters
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+# Simple example of an if statement that evaluates the argument value as true and echos "in if"
+if true
+    echo in if
+end
+
+# Example of using **not** command to reverse the output value
+if not false
+    echo in if
+end
+
+# Example of an if statement that evaluates the command as true and echos "in if"
+if set true
+    echo in if
+end
+
+# Example of if condition returning a falsy result and navigation goes to the else block which echos "in else"
+if set false
+    echo should not be here
+else
+    echo in else
+end
+
+# Example of if condition returning a falsy result and navigation goes to the elseif block has a truthy condition
+if set false
+    echo should not be here
+elseif set true
+    echo in else if
+else
+    echo should not be here
+end
+
+# Nested if example:
+if set false
+    echo should not be here
+elseif set true
+    echo in else if but not done yet
+
+    if set true
+        echo nested if
+    end
+else
+    echo should not be here
+end
+
+valid = set false
+if true and false or true and false or ( true and true or false )
+    valid = set true
+end
+assert ${valid}
+
+if true and false or true and false or ( true and true or false ) and false
+    assert_fail
+end
+```
+
+
+#### Aliases:
+if
 
 <a name="std__fs__Append"></a>
 ## std::fs::Append
