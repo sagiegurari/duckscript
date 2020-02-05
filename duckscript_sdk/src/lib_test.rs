@@ -14,11 +14,18 @@ fn load_valid() {
     let mut context = Context::new();
     let result = load(&mut context.commands);
 
-    match result {
-        Ok(_) => (),
-        Err(e) => panic!("{:#?}", e),
-    };
-    //  assert!(result.is_ok());
+    assert!(result.is_ok());
+
+    assert!(!context.commands.get_all_command_names().is_empty());
+}
+
+#[test]
+fn test_scripts() {
+    let mut context = Context::new();
+    let result = load(&mut context.commands);
+
+    assert!(result.is_ok());
+
     assert!(!context.commands.get_all_command_names().is_empty());
 
     let result = runner::run_script("test_directory ../test", context);

@@ -35,6 +35,22 @@ fn test_if_command_returns_true
     assert ${valid}
 end
 
+fn test_if_condition_true
+    valid = set false
+
+    if true and false or true and false or ( true and true or false )
+        valid = set true
+    end
+
+    assert ${valid}
+end
+
+fn test_if_condition_false
+    if true and false or true and false or ( true and true or false ) and false
+        assert_fail
+    end
+end
+
 fn test_simple_else
     valid = set false
 

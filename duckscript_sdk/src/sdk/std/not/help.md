@@ -1,5 +1,5 @@
 ```sh
-output = not command|value
+output = not [command|value|condition]
 ```
 
 Enables to switch falsy to true and truthy to false.<br>
@@ -7,8 +7,9 @@ The **not** commands accept either:
 
 * A command with optional arguments and invokes it
 * A single value which doesn't match any known command
+* A condition statement
 
-If the value or the result of the command is one of the following:
+If the result is one of the following:
 
 * No output
 * false (case insensitive)
@@ -17,6 +18,9 @@ If the value or the result of the command is one of the following:
 * Empty value
 
 It will return true, otherwise it will return false.
+
+A condition statement is made up of values, or/and keywords and '('/')' groups.<br>
+Each must be separated with a space character.
 
 #### Parameters
 
@@ -29,17 +33,39 @@ The switched value of the input.
 #### Examples
 
 ```sh
-# Simple example of converting true/false values
-is_false = not true
-echo is false: ${is_false}
+fn test_not_true
+    value = not true
 
-is_true = not false
-echo is true: ${is_true}
+    assert_false ${value}
+end
 
-# Example of converting command output value
-is_false = not set true
-echo is false: ${is_false}
+fn test_not_false
+    value = not false
 
-is_true = not set false
-echo is true: ${is_true}
+    assert ${value}
+end
+
+fn test_not_command_true
+    value = not set true
+
+    assert_false ${value}
+end
+
+fn test_not_command_false
+    value = not set false
+
+    assert ${value}
+end
+
+fn test_not_condition_true
+    value = not true and false or true and false or ( true and true or false )
+
+    assert_false ${value}
+end
+
+fn test_not_condition_false
+    value = not true and false or true and false or ( true and true or false ) and false
+
+    assert ${value}
+end
 ```

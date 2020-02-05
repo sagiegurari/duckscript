@@ -10,3 +10,27 @@ fn test_not_false
 
     assert ${value}
 end
+
+fn test_not_command_true
+    value = not set true
+
+    assert_false ${value}
+end
+
+fn test_not_command_false
+    value = not set false
+
+    assert ${value}
+end
+
+fn test_not_condition_true
+    value = not true and false or true and false or ( true and true or false )
+
+    assert_false ${value}
+end
+
+fn test_not_condition_false
+    value = not true and false or true and false or ( true and true or false ) and false
+
+    assert ${value}
+end

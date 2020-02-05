@@ -304,12 +304,12 @@ end
 value = set false
 if ${value}
     echo should not be here
-elseif true
+elseif true or false
     echo in else if but not done yet
 
     value = set true
 
-    if not false
+    if not true and false
         echo nested if
 
         value = set "some text"
