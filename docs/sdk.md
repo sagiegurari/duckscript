@@ -47,10 +47,10 @@
 * [std::error::SetError (set_error)](#std__error__SetError)
 * [std::error::SetExitOnError (exit_on_error, set_exit_on_error)](#std__error__SetExitOnError)
 * [std::error::TriggerError (trigger_error)](#std__error__TriggerError)
-* [std::flowcontroll::ForIn (for)](#std__flowcontroll__ForIn)
-* [std::flowcontroll::Function (function, fn)](#std__flowcontroll__Function)
-* [std::flowcontroll::GoTo (goto)](#std__flowcontroll__GoTo)
-* [std::flowcontroll::If (if)](#std__flowcontroll__If)
+* [std::flowcontrol::ForIn (for)](#std__flowcontrol__ForIn)
+* [std::flowcontrol::Function (function, fn)](#std__flowcontrol__Function)
+* [std::flowcontrol::GoTo (goto)](#std__flowcontrol__GoTo)
+* [std::flowcontrol::If (if)](#std__flowcontrol__If)
 * [std::fs::Append (appendfile)](#std__fs__Append)
 * [std::fs::CopyPath (cp)](#std__fs__CopyPath)
 * [std::fs::CreateDirectory (mkdir)](#std__fs__CreateDirectory)
@@ -1766,8 +1766,8 @@ assert_eq ${error} "my error message"
 #### Aliases:
 trigger_error
 
-<a name="std__flowcontroll__ForIn"></a>
-## std::flowcontroll::ForIn
+<a name="std__flowcontrol__ForIn"></a>
+## std::flowcontrol::ForIn
 ```sh
 args = array a b c
 for arg in ${args}
@@ -1817,8 +1817,8 @@ end
 #### Aliases:
 for
 
-<a name="std__flowcontroll__Function"></a>
-## std::flowcontroll::Function
+<a name="std__flowcontrol__Function"></a>
+## std::flowcontrol::Function
 ```sh
 function my_function
     # function content
@@ -1909,8 +1909,8 @@ echo ${output}
 #### Aliases:
 function, fn
 
-<a name="std__flowcontroll__GoTo"></a>
-## std::flowcontroll::GoTo
+<a name="std__flowcontrol__GoTo"></a>
+## std::flowcontrol::GoTo
 ```sh
 goto :label
 ```
@@ -1939,8 +1939,8 @@ echo bad
 #### Aliases:
 goto
 
-<a name="std__flowcontroll__If"></a>
-## std::flowcontroll::If
+<a name="std__flowcontrol__If"></a>
+## std::flowcontrol::If
 ```sh
 if [command|value|condition]
     # commands
