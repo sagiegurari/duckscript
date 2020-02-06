@@ -1,5 +1,7 @@
 use crate::sdk::std::flowcontrol::{end, function, ifelse};
-use crate::utils::state::{get_core_sub_state_for_command, get_handle, get_list, get_sub_state};
+use crate::utils::state::{
+    get_as_string, get_core_sub_state_for_command, get_handle, get_list, get_sub_state,
+};
 use crate::utils::{instruction_query, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
 use duckscript::types::error::ScriptError;
@@ -239,18 +241,9 @@ fn get_next_iteration(
         Some(state_value) => match state_value {
             StateValue::List(list) => {
                 if list.len() > iteration {
-                    match list[iteration] {
-                        StateValue::Boolean(ref value) => Some(value.to_string()),
-                        StateValue::Number(ref value) => Some(value.to_string()),
-                        StateValue::UnsignedNumber(ref value) => Some(value.to_string()),
-                        StateValue::Number32Bit(ref value) => Some(value.to_string()),
-                        StateValue::UnsignedNumber32Bit(ref value) => Some(value.to_string()),
-                        StateValue::Number64Bit(ref value) => Some(value.to_string()),
-                        StateValue::UnsignedNumber64Bit(ref value) => Some(value.to_string()),
-                        StateValue::String(ref value) => Some(value.to_string()),
-                        StateValue::ByteArray(_) => None,
-                        StateValue::List(_) => None,
-                        StateValue::SubState(_) => None,
+                    match get_as_string(&list[iteration]) {
+                        Ok(value) => Some(value),
+                        Err(_) => None,
                     }
                 } else {
                     None
