@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use crate::utils::state::get_handles_sub_state;
+use crate::utils::state::{get_handles_sub_state, mutate_map};
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -67,76 +67,23 @@ impl Command for CommandImpl {
                 Ok(data) => {
                     let state = get_handles_sub_state(state);
 
-                    match state.remove(&key) {
-                        Some(state_value) => match state_value {
-                            StateValue::SubState(mut map) => {
-                                for (property_key, property_value) in &data {
-                                    let mut var_key = property_key.to_string();
-                                    if !prefix.is_empty() {
-                                        var_key.insert(0, '.');
-                                        var_key.insert_str(0, &prefix);
-                                    }
+                    let result = mutate_map(key, state, |map| {
+                        for (property_key, property_value) in &data {
+                            let mut var_key = property_key.to_string();
+                            if !prefix.is_empty() {
+                                var_key.insert(0, '.');
+                                var_key.insert_str(0, &prefix);
+                            }
 
-                                    map.insert(
-                                        var_key,
-                                        StateValue::String(property_value.to_string()),
-                                    );
-                                }
+                            map.insert(var_key, StateValue::String(property_value.to_string()));
+                        }
 
-                                state.insert(key.to_string(), StateValue::SubState(map));
+                        Ok(None)
+                    });
 
-                                CommandResult::Continue(Some("true".to_string()))
-                            }
-                            StateValue::Boolean(value) => {
-                                state.insert(key.to_string(), StateValue::Boolean(value));
-                                CommandResult::Error("Invalid handle provided.".to_string())
-                            }
-                            StateValue::Number(value) => {
-                                state.insert(key.to_string(), StateValue::Number(value));
-                                CommandResult::Error("Invalid handle provided.".to_string())
-                            }
-                            StateValue::UnsignedNumber(value) => {
-                                state.insert(key.to_string(), StateValue::UnsignedNumber(value));
-                                CommandResult::Error("Invalid handle provided.".to_string())
-                            }
-                            StateValue::Number32Bit(value) => {
-                                state.insert(key.to_string(), StateValue::Number32Bit(value));
-                                CommandResult::Error("Invalid handle provided.".to_string())
-                            }
-                            StateValue::UnsignedNumber32Bit(value) => {
-                                state.insert(
-                                    key.to_string(),
-                                    StateValue::UnsignedNumber32Bit(value),
-                                );
-                                CommandResult::Error("Invalid handle provided.".to_string())
-                            }
-                            StateValue::Number64Bit(value) => {
-                                state.insert(key.to_string(), StateValue::Number64Bit(value));
-                                CommandResult::Error("Invalid handle provided.".to_string())
-                            }
-                            StateValue::UnsignedNumber64Bit(value) => {
-                                state.insert(
-                                    key.to_string(),
-                                    StateValue::UnsignedNumber64Bit(value),
-                                );
-                                CommandResult::Error("Invalid handle provided.".to_string())
-                            }
-                            StateValue::String(value) => {
-                                state.insert(key.to_string(), StateValue::String(value));
-                                CommandResult::Error("Invalid handle provided.".to_string())
-                            }
-                            StateValue::ByteArray(value) => {
-                                state.insert(key.to_string(), StateValue::ByteArray(value));
-                                CommandResult::Error("Invalid handle provided.".to_string())
-                            }
-                            StateValue::List(value) => {
-                                state.insert(key.to_string(), StateValue::List(value));
-                                CommandResult::Error("Invalid handle provided.".to_string())
-                            }
-                        },
-                        None => CommandResult::Error(
-                            format!("Map for handle: {} not found.", key).to_string(),
-                        ),
+                    match result {
+                        Ok(_) => CommandResult::Continue(Some("true".to_string())),
+                        Err(error) => CommandResult::Error(error),
                     }
                 }
                 Err(error) => CommandResult::Error(error.to_string()),

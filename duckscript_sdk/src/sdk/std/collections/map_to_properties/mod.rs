@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use crate::utils::state::get_handles_sub_state;
+use crate::utils::state::{get_as_string, get_handles_sub_state};
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -70,30 +70,9 @@ impl Command for CommandImpl {
                                 var_key.insert_str(0, &prefix);
                             }
 
-                            let string_value = match property_value {
-                                StateValue::Boolean(value) => value.to_string(),
-                                StateValue::Number(value) => value.to_string(),
-                                StateValue::UnsignedNumber(value) => value.to_string(),
-                                StateValue::Number32Bit(value) => value.to_string(),
-                                StateValue::UnsignedNumber32Bit(value) => value.to_string(),
-                                StateValue::Number64Bit(value) => value.to_string(),
-                                StateValue::UnsignedNumber64Bit(value) => value.to_string(),
-                                StateValue::String(value) => value.to_string(),
-                                StateValue::ByteArray(_) => {
-                                    return CommandResult::Error(
-                                        "Unsupported array element.".to_string(),
-                                    );
-                                }
-                                StateValue::List(_) => {
-                                    return CommandResult::Error(
-                                        "Unsupported array element.".to_string(),
-                                    );
-                                }
-                                StateValue::SubState(_) => {
-                                    return CommandResult::Error(
-                                        "Unsupported array element.".to_string(),
-                                    );
-                                }
+                            let string_value = match get_as_string(property_value) {
+                                Ok(value) => value,
+                                Err(error) => return CommandResult::Error(error),
                             };
 
                             properties.insert(var_key, string_value);

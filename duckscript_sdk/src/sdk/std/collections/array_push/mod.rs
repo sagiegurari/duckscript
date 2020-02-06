@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use crate::utils::state::get_handles_sub_state;
+use crate::utils::state::{get_handles_sub_state, mutate_list};
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -50,63 +50,19 @@ impl Command for CommandImpl {
         } else {
             let state = get_handles_sub_state(state);
 
-            let key = &arguments[0];
+            let key = arguments[0].clone();
 
-            match state.remove(key) {
-                Some(state_value) => match state_value {
-                    StateValue::List(mut list) => {
-                        for argument in &arguments[1..] {
-                            list.push(StateValue::String(argument.to_string()))
-                        }
+            let result = mutate_list(key, state, |list| {
+                for argument in &arguments[1..] {
+                    list.push(StateValue::String(argument.to_string()))
+                }
 
-                        state.insert(key.to_string(), StateValue::List(list));
+                Ok(None)
+            });
 
-                        CommandResult::Continue(Some("true".to_string()))
-                    }
-                    StateValue::Boolean(value) => {
-                        state.insert(key.to_string(), StateValue::Boolean(value));
-                        CommandResult::Error("Invalid handle provided.".to_string())
-                    }
-                    StateValue::Number(value) => {
-                        state.insert(key.to_string(), StateValue::Number(value));
-                        CommandResult::Error("Invalid handle provided.".to_string())
-                    }
-                    StateValue::UnsignedNumber(value) => {
-                        state.insert(key.to_string(), StateValue::UnsignedNumber(value));
-                        CommandResult::Error("Invalid handle provided.".to_string())
-                    }
-                    StateValue::Number32Bit(value) => {
-                        state.insert(key.to_string(), StateValue::Number32Bit(value));
-                        CommandResult::Error("Invalid handle provided.".to_string())
-                    }
-                    StateValue::UnsignedNumber32Bit(value) => {
-                        state.insert(key.to_string(), StateValue::UnsignedNumber32Bit(value));
-                        CommandResult::Error("Invalid handle provided.".to_string())
-                    }
-                    StateValue::Number64Bit(value) => {
-                        state.insert(key.to_string(), StateValue::Number64Bit(value));
-                        CommandResult::Error("Invalid handle provided.".to_string())
-                    }
-                    StateValue::UnsignedNumber64Bit(value) => {
-                        state.insert(key.to_string(), StateValue::UnsignedNumber64Bit(value));
-                        CommandResult::Error("Invalid handle provided.".to_string())
-                    }
-                    StateValue::String(value) => {
-                        state.insert(key.to_string(), StateValue::String(value));
-                        CommandResult::Error("Invalid handle provided.".to_string())
-                    }
-                    StateValue::ByteArray(value) => {
-                        state.insert(key.to_string(), StateValue::ByteArray(value));
-                        CommandResult::Error("Invalid handle provided.".to_string())
-                    }
-                    StateValue::SubState(value) => {
-                        state.insert(key.to_string(), StateValue::SubState(value));
-                        CommandResult::Error("Invalid handle provided.".to_string())
-                    }
-                },
-                None => CommandResult::Error(
-                    format!("Array for handle: {} not found.", key).to_string(),
-                ),
+            match result {
+                Ok(_) => CommandResult::Continue(Some("true".to_string())),
+                Err(error) => CommandResult::Error(error),
             }
         }
     }

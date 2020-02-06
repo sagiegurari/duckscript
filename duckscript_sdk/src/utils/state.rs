@@ -118,3 +118,155 @@ pub(crate) fn get_list(
         None => panic!("Internal state corrupted, missing data."),
     }
 }
+
+pub(crate) fn get_optional_as_string(
+    state_value_option: Option<StateValue>,
+) -> Result<Option<String>, String> {
+    match state_value_option {
+        Some(ref state_value) => match get_as_string(state_value) {
+            Ok(value) => Ok(Some(value)),
+            Err(error) => Err(error),
+        },
+        None => Ok(None),
+    }
+}
+
+pub(crate) fn get_as_string(state_value: &StateValue) -> Result<String, String> {
+    match state_value {
+        StateValue::Boolean(value) => Ok(value.to_string()),
+        StateValue::Number(value) => Ok(value.to_string()),
+        StateValue::UnsignedNumber(value) => Ok(value.to_string()),
+        StateValue::Number32Bit(value) => Ok(value.to_string()),
+        StateValue::UnsignedNumber32Bit(value) => Ok(value.to_string()),
+        StateValue::Number64Bit(value) => Ok(value.to_string()),
+        StateValue::UnsignedNumber64Bit(value) => Ok(value.to_string()),
+        StateValue::String(value) => Ok(value.to_string()),
+        StateValue::ByteArray(_) => Err("Unsupported value type.".to_string()),
+        StateValue::List(_) => Err("Unsupported value type.".to_string()),
+        StateValue::SubState(_) => Err("Unsupported value type.".to_string()),
+    }
+}
+
+pub(crate) fn mutate_map<F>(
+    key: String,
+    state: &mut HashMap<String, StateValue>,
+    mut handler: F,
+) -> Result<Option<String>, String>
+where
+    F: FnMut(&mut HashMap<String, StateValue>) -> Result<Option<String>, String>,
+{
+    match state.remove(&key) {
+        Some(state_value) => match state_value {
+            StateValue::SubState(mut map) => {
+                let result = handler(&mut map);
+
+                state.insert(key, StateValue::SubState(map));
+
+                result
+            }
+            StateValue::Boolean(value) => {
+                state.insert(key, StateValue::Boolean(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::Number(value) => {
+                state.insert(key, StateValue::Number(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::UnsignedNumber(value) => {
+                state.insert(key, StateValue::UnsignedNumber(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::Number32Bit(value) => {
+                state.insert(key, StateValue::Number32Bit(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::UnsignedNumber32Bit(value) => {
+                state.insert(key, StateValue::UnsignedNumber32Bit(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::Number64Bit(value) => {
+                state.insert(key, StateValue::Number64Bit(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::UnsignedNumber64Bit(value) => {
+                state.insert(key, StateValue::UnsignedNumber64Bit(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::String(value) => {
+                state.insert(key, StateValue::String(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::ByteArray(value) => {
+                state.insert(key, StateValue::ByteArray(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::List(value) => {
+                state.insert(key, StateValue::List(value));
+                Err("Invalid handle provided.".to_string())
+            }
+        },
+        None => Err(format!("Handle: {} not found.", &key).to_string()),
+    }
+}
+
+pub(crate) fn mutate_list<F>(
+    key: String,
+    state: &mut HashMap<String, StateValue>,
+    mut handler: F,
+) -> Result<Option<String>, String>
+where
+    F: FnMut(&mut Vec<StateValue>) -> Result<Option<String>, String>,
+{
+    match state.remove(&key) {
+        Some(state_value) => match state_value {
+            StateValue::List(mut list) => {
+                let result = handler(&mut list);
+
+                state.insert(key, StateValue::List(list));
+
+                result
+            }
+            StateValue::Boolean(value) => {
+                state.insert(key, StateValue::Boolean(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::Number(value) => {
+                state.insert(key, StateValue::Number(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::UnsignedNumber(value) => {
+                state.insert(key, StateValue::UnsignedNumber(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::Number32Bit(value) => {
+                state.insert(key, StateValue::Number32Bit(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::UnsignedNumber32Bit(value) => {
+                state.insert(key, StateValue::UnsignedNumber32Bit(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::Number64Bit(value) => {
+                state.insert(key, StateValue::Number64Bit(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::UnsignedNumber64Bit(value) => {
+                state.insert(key, StateValue::UnsignedNumber64Bit(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::String(value) => {
+                state.insert(key, StateValue::String(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::ByteArray(value) => {
+                state.insert(key, StateValue::ByteArray(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::SubState(value) => {
+                state.insert(key, StateValue::SubState(value));
+                Err("Invalid handle provided.".to_string())
+            }
+        },
+        None => Err(format!("Handle: {} not found.", &key).to_string()),
+    }
+}
