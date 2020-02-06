@@ -67,7 +67,9 @@ impl Command for CommandImpl {
                 "".to_string()
             };
 
-            let walker = WalkDir::new(&arguments[0]).into_iter();
+            let walker = WalkDir::new(&arguments[0])
+                .sort_by(|entry1, entry2| entry1.file_name().cmp(entry2.file_name()))
+                .into_iter();
             for entry in walker {
                 let entry = entry.unwrap();
                 if is_test_file(&entry) {

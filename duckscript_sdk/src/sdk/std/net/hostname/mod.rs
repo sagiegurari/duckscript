@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
-use hostname;
+use whoami;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -29,10 +29,7 @@ impl Command for CommandImpl {
     }
 
     fn run(&self, _arguments: Vec<String>) -> CommandResult {
-        match hostname::get() {
-            Ok(value) => CommandResult::Continue(Some(value.to_string_lossy().into_owned())),
-            Err(_) => CommandResult::Continue(None),
-        }
+        CommandResult::Continue(Some(whoami::hostname()))
     }
 }
 

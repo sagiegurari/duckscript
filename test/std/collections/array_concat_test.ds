@@ -1,0 +1,93 @@
+
+fn test_concat_no_input
+    arr = array_concat
+
+    is_arr = is_array ${arr}
+
+    released = release ${arr}
+    assert ${is_arr}
+end
+
+fn test_concat_single_array
+    input1 = range 1 4
+
+    arr = array_concat ${input1}
+
+    released = release ${input1}
+
+    is_arr = is_array ${arr}
+
+    last_element = array_pop ${arr}
+    assert_eq ${last_element} 3
+
+    last_element = array_pop ${arr}
+    assert_eq ${last_element} 2
+
+    last_element = array_pop ${arr}
+    assert_eq ${last_element} 1
+
+    last_element = array_pop ${arr}
+    defined = is_defined last_element
+    assert_false ${defined}
+
+    released = release ${arr}
+    assert ${is_arr}
+end
+
+fn test_concat_multiple_arrays
+    input1 = range 1 4
+    input2 = range 4 6
+    input3 = range 6 8
+
+    arr = array_concat ${input1} ${input2} ${input3}
+
+    released = release ${input1}
+    released = release ${input2}
+    released = release ${input3}
+
+    is_arr = is_array ${arr}
+
+    last_element = array_pop ${arr}
+    assert_eq ${last_element} 7
+
+    last_element = array_pop ${arr}
+    assert_eq ${last_element} 6
+
+    last_element = array_pop ${arr}
+    assert_eq ${last_element} 5
+
+    last_element = array_pop ${arr}
+    assert_eq ${last_element} 4
+
+    last_element = array_pop ${arr}
+    assert_eq ${last_element} 3
+
+    last_element = array_pop ${arr}
+    assert_eq ${last_element} 2
+
+    last_element = array_pop ${arr}
+    assert_eq ${last_element} 1
+
+    last_element = array_pop ${arr}
+    defined = is_defined last_element
+    assert_false ${defined}
+
+    released = release ${arr}
+    assert ${is_arr}
+end
+
+fn test_concat_not_an_array
+    error = get_last_error
+    empty = is_empty ${error}
+    assert ${empty}
+
+    arr = array_concat test
+
+    error = get_last_error
+    empty = is_empty ${error}
+    assert_false ${empty}
+
+    is_arr = is_array ${arr}
+
+    assert_false ${is_arr}
+end

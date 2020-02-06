@@ -1,0 +1,12 @@
+
+fn test_echo
+    output = exec echo hello world
+
+    stdout = trim ${output.stdout}
+    stderr = trim ${output.stderr}
+    exit_code = set ${output.code}
+    
+    assert_eq ${stdout} "hello world"
+    assert_eq ${stderr} ""
+    assert_eq ${exit_code} 0
+end

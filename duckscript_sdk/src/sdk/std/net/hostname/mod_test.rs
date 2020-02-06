@@ -9,11 +9,11 @@ fn common_functions() {
 
 #[test]
 fn run_valid() {
-    let name = hostname::get().unwrap();
+    let name = whoami::hostname();
 
     test::run_script_and_validate(
         vec![create("")],
         "out = hostname",
-        CommandValidation::Match("out".to_string(), name.to_string_lossy().into_owned()),
+        CommandValidation::Match("out".to_string(), name),
     );
 }

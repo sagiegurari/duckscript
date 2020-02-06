@@ -1,5 +1,5 @@
 use duckscript::types::error::{ErrorInfo, ScriptError};
-use std::fs::{create_dir_all, remove_file, File};
+use std::fs::{create_dir_all, remove_file, File, OpenOptions};
 use std::io::{Read, Write};
 use std::path::Path;
 
@@ -74,9 +74,31 @@ pub(crate) fn read_text_file(file: &str) -> Result<String, ScriptError> {
     match File::open(&file_path) {
         Ok(mut fd) => {
             let mut content = String::new();
-            fd.read_to_string(&mut content).unwrap();
+            match fd.read_to_string(&mut content) {
+                Ok(_) => Ok(content),
+                Err(error) => Err(ScriptError {
+                    info: ErrorInfo::ErrorReadingFile(file.to_string(), Some(error)),
+                }),
+            }
+        }
+        Err(error) => Err(ScriptError {
+            info: ErrorInfo::ErrorReadingFile(file.to_string(), Some(error)),
+        }),
+    }
+}
 
-            Ok(content)
+pub(crate) fn read_raw_file(file: &str) -> Result<Vec<u8>, ScriptError> {
+    let file_path = Path::new(file);
+
+    match File::open(&file_path) {
+        Ok(mut fd) => {
+            let mut content = vec![];
+            match fd.read_to_end(&mut content) {
+                Ok(_) => Ok(content),
+                Err(error) => Err(ScriptError {
+                    info: ErrorInfo::ErrorReadingFile(file.to_string(), Some(error)),
+                }),
+            }
         }
         Err(error) => Err(ScriptError {
             info: ErrorInfo::ErrorReadingFile(file.to_string(), Some(error)),
@@ -85,6 +107,14 @@ pub(crate) fn read_text_file(file: &str) -> Result<String, ScriptError> {
 }
 
 pub(crate) fn write_text_file(file: &str, text: &str) -> Result<(), ScriptError> {
+    write_to_text_file(file, text, false)
+}
+
+pub(crate) fn write_to_text_file(file: &str, text: &str, append: bool) -> Result<(), ScriptError> {
+    write_to_file(file, text.as_bytes(), append)
+}
+
+pub(crate) fn write_to_file(file: &str, data: &[u8], append: bool) -> Result<(), ScriptError> {
     let file_path = Path::new(file);
 
     // create parent directory
@@ -100,8 +130,14 @@ pub(crate) fn write_text_file(file: &str, text: &str) -> Result<(), ScriptError>
         }
     }
 
-    match File::create(&file_path) {
-        Ok(mut fd) => match fd.write_all(text.as_bytes()) {
+    let result = if append && file_path.exists() {
+        OpenOptions::new().append(true).open(file)
+    } else {
+        File::create(&file_path)
+    };
+
+    match result {
+        Ok(mut fd) => match fd.write_all(data) {
             Err(_) => Err(ScriptError {
                 info: ErrorInfo::Runtime(
                     format!("Error writing to file: {}", file).to_string(),

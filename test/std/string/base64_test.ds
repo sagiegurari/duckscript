@@ -1,0 +1,71 @@
+
+fn test_encode_no_flags
+    handle = string_to_bytes "hello world"
+    text = base64 ${handle}
+
+    release ${handle}
+
+    assert_eq ${text} aGVsbG8gd29ybGQ=
+end
+
+fn test_encode_e_flag
+    handle = string_to_bytes "hello world"
+    text = base64 -d -e ${handle}
+
+    release ${handle}
+
+    assert_eq ${text} aGVsbG8gd29ybGQ=
+end
+
+fn test_encode_encode_flag
+    handle = string_to_bytes "hello world"
+    text = base64 -d -encode ${handle}
+
+    release ${handle}
+
+    assert_eq ${text} aGVsbG8gd29ybGQ=
+end
+
+fn test_decode_d_flag
+    handle = base64 -d aGVsbG8gd29ybGQ=
+    text = bytes_to_string ${handle}
+
+    release ${handle}
+
+    assert_eq ${text} "hello world"
+end
+
+fn test_decode_decode_flag
+    handle = base64 -decode aGVsbG8gd29ybGQ=
+    text = bytes_to_string ${handle}
+
+    release ${handle}
+
+    assert_eq ${text} "hello world"
+end
+
+fn test_encode_decode
+    handle = string_to_bytes "hello world"
+    text = base64 ${handle}
+    release ${handle}
+    assert_eq ${text} aGVsbG8gd29ybGQ=
+
+    handle = base64 -decode ${text}
+    text = bytes_to_string ${handle}
+    release ${handle}
+    assert_eq ${text} "hello world"
+end
+
+fn test_missing_input
+    error = get_last_error
+    empty = is_empty ${error}
+    assert ${empty}
+
+    result = base64
+
+    error = get_last_error
+    empty = is_empty ${error}
+    assert_false ${empty}
+
+    assert_false ${result}
+end

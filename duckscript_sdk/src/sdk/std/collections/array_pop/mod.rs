@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use crate::utils::state::get_handles_sub_state;
+use crate::utils::state::{get_handles_sub_state, get_optional_as_string, mutate_list};
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -50,54 +50,17 @@ impl Command for CommandImpl {
         } else {
             let state = get_handles_sub_state(state);
 
-            let key = &arguments[0];
+            let key = arguments[0].clone();
 
-            match state.remove(key) {
-                Some(state_value) => match state_value {
-                    StateValue::List(mut list) => {
-                        let list_item = list.pop();
+            let result = mutate_list(key, state, |list| {
+                let list_item = list.pop();
 
-                        state.insert(key.to_string(), StateValue::List(list));
+                get_optional_as_string(list_item)
+            });
 
-                        match list_item {
-                            Some(list_item_value) => match list_item_value {
-                                StateValue::Boolean(value) => {
-                                    CommandResult::Continue(Some(value.to_string()))
-                                }
-                                StateValue::Number(value) => {
-                                    CommandResult::Continue(Some(value.to_string()))
-                                }
-                                StateValue::UnsignedNumber(value) => {
-                                    CommandResult::Continue(Some(value.to_string()))
-                                }
-                                StateValue::Number32Bit(value) => {
-                                    CommandResult::Continue(Some(value.to_string()))
-                                }
-                                StateValue::UnsignedNumber32Bit(value) => {
-                                    CommandResult::Continue(Some(value.to_string()))
-                                }
-                                StateValue::Number64Bit(value) => {
-                                    CommandResult::Continue(Some(value.to_string()))
-                                }
-                                StateValue::UnsignedNumber64Bit(value) => {
-                                    CommandResult::Continue(Some(value.to_string()))
-                                }
-                                StateValue::String(value) => CommandResult::Continue(Some(value)),
-                                StateValue::List(_) => {
-                                    CommandResult::Error("Unsupported array element.".to_string())
-                                }
-                                StateValue::SubState(_) => {
-                                    CommandResult::Error("Unsupported array element.".to_string())
-                                }
-                            },
-                            None => CommandResult::Continue(None),
-                        }
-                    }
-                    _ => CommandResult::Error("Invalid handle provided.".to_string()),
-                },
-                None => CommandResult::Error(
-                    format!("Array for handle: {} not found.", key).to_string(),
-                ),
+            match result {
+                Ok(value) => CommandResult::Continue(value),
+                Err(error) => CommandResult::Error(error),
             }
         }
     }

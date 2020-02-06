@@ -1,24 +1,32 @@
 # Table of Contents
-* [std::Alias (alias)](#std__Alias)
 * [std::Echo (echo)](#std__Echo)
 * [std::Eval (eval)](#std__Eval)
-* [std::ForIn (for)](#std__ForIn)
-* [std::Function (function, fn)](#std__Function)
-* [std::GetOSFamily (os_family, uname)](#std__GetOSFamily)
-* [std::GoTo (goto)](#std__GoTo)
-* [std::If (if)](#std__If)
 * [std::IsDefined (is_defined)](#std__IsDefined)
 * [std::Not (not)](#std__Not)
 * [std::ReadUserInput (read)](#std__ReadUserInput)
 * [std::Release (release)](#std__Release)
 * [std::Set (set)](#std__Set)
 * [std::ShowCommandDocumentation (man)](#std__ShowCommandDocumentation)
-* [std::Unalias (unalias)](#std__Unalias)
+* [std::alias::Set (alias)](#std__alias__Set)
+* [std::alias::Unset (unalias)](#std__alias__Unset)
 * [std::collections::Array (array)](#std__collections__Array)
+* [std::collections::ArrayConcat (array_concat)](#std__collections__ArrayConcat)
 * [std::collections::ArrayIsEmpty (array_is_empty)](#std__collections__ArrayIsEmpty)
+* [std::collections::ArrayJoin (array_join)](#std__collections__ArrayJoin)
 * [std::collections::ArrayLength (array_length, arrlen)](#std__collections__ArrayLength)
 * [std::collections::ArrayPop (array_pop)](#std__collections__ArrayPop)
+* [std::collections::ArrayPush (array_push)](#std__collections__ArrayPush)
 * [std::collections::IsArray (is_array)](#std__collections__IsArray)
+* [std::collections::IsMap (is_map)](#std__collections__IsMap)
+* [std::collections::Map (map)](#std__collections__Map)
+* [std::collections::MapClear (map_clear)](#std__collections__MapClear)
+* [std::collections::MapGet (map_get)](#std__collections__MapGet)
+* [std::collections::MapIsEmpty (map_is_empty)](#std__collections__MapIsEmpty)
+* [std::collections::MapLoadProperties (map_load_properties)](#std__collections__MapLoadProperties)
+* [std::collections::MapPut (map_put)](#std__collections__MapPut)
+* [std::collections::MapRemove (map_remove)](#std__collections__MapRemove)
+* [std::collections::MapSize (map_size)](#std__collections__MapSize)
+* [std::collections::MapToProperties (map_to_properties)](#std__collections__MapToProperties)
 * [std::collections::Range (range)](#std__collections__Range)
 * [std::collections::ReadProperties (read_properties)](#std__collections__ReadProperties)
 * [std::collections::WriteProperties (write_properties)](#std__collections__WriteProperties)
@@ -27,9 +35,10 @@
 * [std::debug::DumpInstructions (dump_instructions)](#std__debug__DumpInstructions)
 * [std::debug::DumpState (dump_state)](#std__debug__DumpState)
 * [std::debug::DumpVariables (dump_variables)](#std__debug__DumpVariables)
+* [std::env::GetHomeDirectory (get_home_dir)](#std__env__GetHomeDirectory)
 * [std::env::GetVar (get_env)](#std__env__GetVar)
-* [std::env::PrintCurrentDirectory (pwd)](#std__env__PrintCurrentDirectory)
-* [std::env::SetCurrentDirectory (cd, set_current_dir)](#std__env__SetCurrentDirectory)
+* [std::env::PrintCurrentDirectory (pwd, print_current_directory)](#std__env__PrintCurrentDirectory)
+* [std::env::SetCurrentDirectory (cd, set_current_dir, set_current_directory)](#std__env__SetCurrentDirectory)
 * [std::env::SetVar (set_env)](#std__env__SetVar)
 * [std::env::UnsetVar (unset_env)](#std__env__UnsetVar)
 * [std::error::GetLastError (get_last_error)](#std__error__GetLastError)
@@ -37,6 +46,12 @@
 * [std::error::GetLastErrorSource (get_last_error_source)](#std__error__GetLastErrorSource)
 * [std::error::SetError (set_error)](#std__error__SetError)
 * [std::error::SetExitOnError (exit_on_error, set_exit_on_error)](#std__error__SetExitOnError)
+* [std::error::TriggerError (trigger_error)](#std__error__TriggerError)
+* [std::flowcontrol::ForIn (for)](#std__flowcontrol__ForIn)
+* [std::flowcontrol::Function (function, fn)](#std__flowcontrol__Function)
+* [std::flowcontrol::GoTo (goto)](#std__flowcontrol__GoTo)
+* [std::flowcontrol::If (if)](#std__flowcontrol__If)
+* [std::fs::Append (appendfile)](#std__fs__Append)
 * [std::fs::CopyPath (cp)](#std__fs__CopyPath)
 * [std::fs::CreateDirectory (mkdir)](#std__fs__CreateDirectory)
 * [std::fs::CreateEmptyFile (touch)](#std__fs__CreateEmptyFile)
@@ -48,8 +63,10 @@
 * [std::fs::List (ls)](#std__fs__List)
 * [std::fs::MovePath (mv)](#std__fs__MovePath)
 * [std::fs::Print (cat)](#std__fs__Print)
-* [std::fs::Read (readfile)](#std__fs__Read)
-* [std::fs::Write (writefile)](#std__fs__Write)
+* [std::fs::ReadBytes (readbinfile, read_binary_file)](#std__fs__ReadBytes)
+* [std::fs::ReadText (readfile, read_text_file)](#std__fs__ReadText)
+* [std::fs::WriteBytes (writebinfile, write_binary_file)](#std__fs__WriteBytes)
+* [std::fs::WriteText (writefile, write_text_file)](#std__fs__WriteText)
 * [std::math::Calc (calc)](#std__math__Calc)
 * [std::math::GreaterThan (greater_than)](#std__math__GreaterThan)
 * [std::math::LessThan (less_than)](#std__math__LessThan)
@@ -58,7 +75,14 @@
 * [std::net::WGet (wget)](#std__net__WGet)
 * [std::process::Execute (exec)](#std__process__Execute)
 * [std::process::Exit (exit, quit, q)](#std__process__Exit)
+* [std::process::ProcessID (pid, process_id)](#std__process__ProcessID)
+* [std::process::Watchdog (watchdog)](#std__process__Watchdog)
 * [std::scope::Clear (clear_scope)](#std__scope__Clear)
+* [std::string::Base64 (base64)](#std__string__Base64)
+* [std::string::Base64Decode (base64_decode)](#std__string__Base64Decode)
+* [std::string::Base64Encode (base64_encode)](#std__string__Base64Encode)
+* [std::string::BytesToString (bytes_to_string)](#std__string__BytesToString)
+* [std::string::Concat (concat)](#std__string__Concat)
 * [std::string::Contains (contains)](#std__string__Contains)
 * [std::string::EndsWith (ends_with)](#std__string__EndsWith)
 * [std::string::Equals (equals, eq)](#std__string__Equals)
@@ -67,7 +91,9 @@
 * [std::string::LastIndexOf (last_indexof)](#std__string__LastIndexOf)
 * [std::string::Length (length, strlen)](#std__string__Length)
 * [std::string::Replace (replace)](#std__string__Replace)
+* [std::string::Split (split)](#std__string__Split)
 * [std::string::StartsWith (starts_with)](#std__string__StartsWith)
+* [std::string::StringToBytes (string_to_bytes)](#std__string__StringToBytes)
 * [std::string::SubString (substring)](#std__string__SubString)
 * [std::string::Trim (trim)](#std__string__Trim)
 * [std::string::TrimEnd (trim_end)](#std__string__TrimEnd)
@@ -81,37 +107,6 @@
 * [std::thread::Sleep (sleep)](#std__thread__Sleep)
 * [std::time::CurrentTimeMillies (current_time)](#std__time__CurrentTimeMillies)
 
-
-<a name="std__Alias"></a>
-## std::Alias
-```sh
-var = alias command arguments
-```
-
-This command enables to define new commands with default arguments.<br>
-The new alias can be invoked with additional arguments that will be appended to the default set.
-
-#### Parameters
-
-Any number of arguments which will be added to the already defined arguments set during the aliasing.
-
-#### Return Value
-
-**true** if the alias was created, else **false**.
-
-#### Examples
-
-```sh
-# This example creates a new **my_echo** alias that will print the prefix before the requested arguments.
-created = alias my_echo echo [ECHO]
-
-# This will print "[ECHO] hello world "
-created = my_echo hello world
-```
-
-
-#### Aliases:
-alias
 
 <a name="std__Echo"></a>
 ## std::Echo
@@ -172,304 +167,6 @@ eval ${command} hello world
 #### Aliases:
 eval
 
-<a name="std__ForIn"></a>
-## std::ForIn
-```sh
-args = array a b c
-for arg in ${args}
-    # commands
-end
-release args
-```
-
-The for/in command enables to iterate over an array (see [array command](#std__collections__Array)).<br>
-The first argument will contain the current iteration value from the array.<br>
-Once all values have been read, it will exit the loop.
-
-#### Parameters
-
-* for
-  * The variable name which will hold the current iteration value
-  * The string "in"
-  * The handle to the array of values to iterate
-* end - no parameters
-
-#### Return Value
-
-None
-
-#### Examples
-
-```sh
-# Simple example iteration over the list of letters:
-args = array a b c
-
-for arg in ${args}
-    echo current arg is: ${arg}
-end
-
-release args
-
-# Example nested loops:
-args = array 1 2 3
-for i in ${args}
-    for j in ${args}
-        echo i: ${i} j: ${j}
-    end
-end
-```
-
-
-#### Aliases:
-for
-
-<a name="std__Function"></a>
-## std::Function
-```sh
-function my_function
-    # function content
-    return output
-end
-```
-
-This command provides the function language feature as a set of commands:
-
-* function - Defines a function start block
-* end - Defines the end of the function block
-* return - Allows to exist a function at any point and return an output
-* *function name* - Dynamically created commands based on the function name which are used to invoke the function code.
-
-When a function command is detected, it will search for the end command that comes after.<br>
-That entire block is considered the function code block (functions cannot be nested in outer functions)<br>
-
-In order to invoke the function, simply call the function name with any amount of paramters.<br>
-Those parameters will be set as $1, $2, ... and so on.<br>
-Since variables are global, it will overwrite any older values stored in those variables.<br>
-
-To exist a function and return a value, simply use the **return** command with the value you want to return.<br>
-The variable that was used when the function was originally called, will now store that value.<br>
-The return command can be used to exist early without any value.<br>
-In case the code reached the **end** call, the function will exist but will return not value.
-
-#### Parameters
-
-* function - The function name used later on to invoke the function
-* end - no parameters
-* return - optional single paramter to return as an output of the function call
-* *function name* - Any number of arguments which will automatically be set as global variables: $1, $2, ... as so on.
-
-#### Return Value
-
-The function invocation returns the output provided by the return command.
-
-#### Examples
-
-```sh
-# Simple example of a function definition which echo 'hello world' and exists.
-
-# function start
-function hello_world
-    echo hello world
-end
-
-# function invocation
-hello_world
-
-# Example of calling a function and returning a value
-function get_hello_world
-    return "hello world"
-end
-
-# function invocation
-text = get_hello_world
-
-# this will print "hello world"
-echo ${text}
-
-# Example of passing arguments
-function print_input
-    # $1 is set with the value 'hello'
-    # $2 is set with the value 'world'
-    echo ${1} ${2}
-end
-
-print_input hello world
-
-# Functions can call other functions
-function get_one
-    return 1
-end
-
-function get_number
-    number = get_one
-    return ${number}
-end
-
-output = get_number
-
-# this will print 1
-echo ${output}
-```
-
-
-#### Aliases:
-function, fn
-
-<a name="std__GetOSFamily"></a>
-## std::GetOSFamily
-```sh
-var = os_family
-```
-
-Returns the OS family (windows, linux, mac).
-
-#### Parameters
-
-None
-
-#### Return Value
-
-The OS family (windows, linux, mac).
-
-#### Examples
-
-```sh
-name = os_family
-```
-
-
-#### Aliases:
-os_family, uname
-
-<a name="std__GoTo"></a>
-## std::GoTo
-```sh
-goto :label
-```
-
-The goto command enables you to jump to any position in the script, if that position has a label value.
-
-#### Parameters
-
-A single valid label value.
-
-#### Return Value
-
-None
-
-#### Examples
-
-```sh
-goto :good
-
-echo bad
-
-:good echo good
-```
-
-
-#### Aliases:
-goto
-
-<a name="std__If"></a>
-## std::If
-```sh
-if command|value
-    # commands
-elseif command|value
-    # commands
-else
-    # commands
-end
-```
-
-This command provides the if/elseif/else condition language feature as a set of commands:
-
-* if - Defines an if condition
-* elseif - Defines optional secondary condition blocks
-* else - Optinoal fallback block
-* end - Defines the end of the entire if/else block
-
-if and elseif commands accept either:
-
-* A command with optional arguments and invokes it
-* A single value which doesn't match any known command
-
-If the value or the result of the command is one of the following:
-
-* No output
-* false (case insensitive)
-* 0
-* no (case insensitive)
-* Empty value
-
-It is considered falsy.<br>
-In case of falsy value, it will skip to the next elseif/else block.<br>
-If a truthy (non falsy) output is found, it will invoke the commands of that code block and ignore all other elseif/else blocks.<br>
-
-if blocks can be nested in other if blocks (see examples).
-
-#### Parameters
-
-* if/elseif - A command and its arguments to invoke and evaluate its output, if a single value is provided an no such command exists, it is evaluated as a value.
-* else/end - no parameters
-
-#### Return Value
-
-None
-
-#### Examples
-
-```sh
-# Simple example of an if statement that evaluates the argument value as true and echos "in if"
-if true
-    echo in if
-end
-
-# Example of using **not** command to reverse the output value
-if not false
-    echo in if
-end
-
-# Example of an if statement that evaluates the command as true and echos "in if"
-if set true
-    echo in if
-end
-
-# Example of if condition returning a falsy result and navigation goes to the else block which echos "in else"
-if set false
-    echo should not be here
-else
-    echo in else
-end
-
-# Example of if condition returning a falsy result and navigation goes to the elseif block has a truthy condition
-if set false
-    echo should not be here
-elseif set true
-    echo in else if
-else
-    echo should not be here
-end
-
-# Nested if example:
-if set false
-    echo should not be here
-elseif set true
-    echo in else if but not done yet
-
-    if set true
-        echo nested if
-    end
-else
-    echo should not be here
-end
-```
-
-
-#### Aliases:
-if
-
 <a name="std__IsDefined"></a>
 ## std::IsDefined
 ```sh
@@ -500,7 +197,7 @@ is_defined
 <a name="std__Not"></a>
 ## std::Not
 ```sh
-output = not command|value
+output = not [command|value|condition]
 ```
 
 Enables to switch falsy to true and truthy to false.<br>
@@ -508,8 +205,9 @@ The **not** commands accept either:
 
 * A command with optional arguments and invokes it
 * A single value which doesn't match any known command
+* A condition statement
 
-If the value or the result of the command is one of the following:
+If the result is one of the following:
 
 * No output
 * false (case insensitive)
@@ -518,6 +216,9 @@ If the value or the result of the command is one of the following:
 * Empty value
 
 It will return true, otherwise it will return false.
+
+A condition statement is made up of values, or/and keywords and '('/')' groups.<br>
+Each must be separated with a space character.
 
 #### Parameters
 
@@ -530,19 +231,41 @@ The switched value of the input.
 #### Examples
 
 ```sh
-# Simple example of converting true/false values
-is_false = not true
-echo is false: ${is_false}
+fn test_not_true
+    value = not true
 
-is_true = not false
-echo is true: ${is_true}
+    assert_false ${value}
+end
 
-# Example of converting command output value
-is_false = not set true
-echo is false: ${is_false}
+fn test_not_false
+    value = not false
 
-is_true = not set false
-echo is true: ${is_true}
+    assert ${value}
+end
+
+fn test_not_command_true
+    value = not set true
+
+    assert_false ${value}
+end
+
+fn test_not_command_false
+    value = not set false
+
+    assert ${value}
+end
+
+fn test_not_condition_true
+    value = not true and false or true and false or ( true and true or false )
+
+    assert_false ${value}
+end
+
+fn test_not_condition_false
+    value = not true and false or true and false or ( true and true or false ) and false
+
+    assert ${value}
+end
 ```
 
 
@@ -586,16 +309,19 @@ read
 <a name="std__Release"></a>
 ## std::Release
 ```sh
-release handle
+release [-r|--recursive] handle
 ```
 
 Releases an internal handle stored in the runtime memory.<br>
 Certain commands (such as **array**) will create a handle and the variable will only hold a reference to that handle.<br>
-In order to release those handles once they are no longer needed, the release command should be used.
+In order to release those handles once they are no longer needed, the release command should be used.<br>
+By providing the recursive flag, it will also go over the data values (array items, map values, ...) and release each one of them as well
+if they are handles to other arrays/maps/...
 
 #### Parameters
 
-The handle name.
+* Optional recursive flag (default false)
+* The handle name.
 
 #### Return Value
 
@@ -615,19 +341,27 @@ release
 <a name="std__Set"></a>
 ## std::Set
 ```sh
-var = set arg
+var = set arg [or arg]*
 ```
 
-The set command will simply return the provided argument and set it to the output variable.
+The set command will simply return the provided argument and set it to the output variable.<br>
+In case the argument is falsy it will attempt to provide another value if an 'or' keyword is set.
+
+A value is considered falsy if it is one of the following:
+
+* false (case insensitive)
+* 0
+* no (case insensitive)
+* Empty value
 
 #### Parameters
 
-Only the first argument will be returned.
+The argument to set or an 'or' conditional arguments.
 
 
 #### Return Value
 
-The first command argument.
+The first truthy value
 
 #### Examples
 
@@ -637,6 +371,12 @@ var = set hello
 
 # Return expanded value: 'home: ....'
 var = set "home: ${HOME}"
+
+value = set test or false
+assert_eq ${value} test
+
+value = set 0 or no or false or NO or FALSE
+assert_eq ${value} FALSE
 ```
 
 
@@ -669,8 +409,39 @@ man set
 #### Aliases:
 man
 
-<a name="std__Unalias"></a>
-## std::Unalias
+<a name="std__alias__Set"></a>
+## std::alias::Set
+```sh
+var = alias command arguments
+```
+
+This command enables to define new commands with default arguments.<br>
+The new alias can be invoked with additional arguments that will be appended to the default set.
+
+#### Parameters
+
+Any number of arguments which will be added to the already defined arguments set during the aliasing.
+
+#### Return Value
+
+**true** if the alias was created, else **false**.
+
+#### Examples
+
+```sh
+# This example creates a new **my_echo** alias that will print the prefix before the requested arguments.
+created = alias my_echo echo [ECHO]
+
+# This will print "[ECHO] hello world "
+created = my_echo hello world
+```
+
+
+#### Aliases:
+alias
+
+<a name="std__alias__Unset"></a>
+## std::alias::Unset
 ```sh
 unalias name
 ```
@@ -735,6 +506,61 @@ release ${handle}
 #### Aliases:
 array
 
+<a name="std__collections__ArrayConcat"></a>
+## std::collections::ArrayConcat
+
+```sh
+handle = array_concat [handle]*
+```
+
+Concats all provided arrays and returns a handle to a new array with all items.
+
+#### Parameters
+
+Any number of array handles.
+
+#### Return Value
+
+A handle to the new array.
+
+#### Examples
+
+```sh
+input1 = range 1 4
+input2 = range 4 6
+input3 = range 6 8
+
+# new array will contain values from 1-7
+arr = array_concat ${input1} ${input2} ${input3}
+```
+
+
+#### Source:
+
+```sh
+
+for scope::array_concat::arg in ${scope::array_concat::arguments}
+    if not is_array ${scope::array_concat::arg}
+        trigger_error "Invalid input, non array handle or array not found."
+    end
+end
+
+scope::array_concat::array = array
+
+for scope::array_concat::arg in ${scope::array_concat::arguments}
+    for scope::array_concat::item in ${scope::array_concat::arg}
+        array_push ${scope::array_concat::array} ${scope::array_concat::item}
+    end
+end
+
+set ${scope::array_concat::array}
+
+```
+
+
+#### Aliases:
+array_concat
+
 <a name="std__collections__ArrayIsEmpty"></a>
 ## std::collections::ArrayIsEmpty
 
@@ -763,13 +589,94 @@ out = array_is_empty ${values}
 #### Source:
 
 ```sh
+
 scope::array_is_empty::length = array_length ${scope::array_is_empty::argument::1}
 equals 0 ${scope::array_is_empty::length}
+
 ```
 
 
 #### Aliases:
 array_is_empty
+
+<a name="std__collections__ArrayJoin"></a>
+## std::collections::ArrayJoin
+
+```sh
+var = array_join handle separator
+```
+
+Joins all values in the provided array with the provided separator in between each value.
+
+#### Parameters
+
+* An array handle
+* The separator to put between each item pair
+
+#### Return Value
+
+The joined string value
+
+#### Examples
+
+```sh
+function test_to_string
+    arr = array hello world
+    string = array_join ${arr} ", "
+
+    release ${arr}
+
+    assert_eq ${string} "hello, world"
+end
+
+function test_numbers
+    arr = range 1 5
+    string = array_join ${arr} ", "
+
+    release ${arr}
+
+    assert_eq ${string} "1, 2, 3, 4"
+end
+
+function test_empty_separator
+    arr = range 1 5
+    string = array_join ${arr} ""
+
+    release ${arr}
+
+    assert_eq ${string} "1234"
+end
+```
+
+
+#### Source:
+
+```sh
+
+if not is_array ${scope::array_join::argument::1}
+    trigger_error "Invalid input, non array handle or array not found."
+end
+
+if not array_is_empty ${scope::array_join::argument::1}
+    for scope::array_join::item in ${scope::array_join::argument::1}
+        scope::array_join::string = set "${scope::array_join::string}${scope::array_join::item}${scope::array_join::argument::2}"
+    end
+
+    if not is_empty ${scope::array_join::argument::2}
+        scope::array_join::separatorlen = strlen ${scope::array_join::argument::2}
+        scope::array_join::stringlen = strlen ${scope::array_join::string}
+        scope::array_join::offset = calc ${scope::array_join::stringlen} - ${scope::array_join::separatorlen}
+        scope::array_join::string = substring ${scope::array_join::string} 0 ${scope::array_join::offset}
+    end
+end
+
+set ${scope::array_join::string}
+
+```
+
+
+#### Aliases:
+array_join
 
 <a name="std__collections__ArrayLength"></a>
 ## std::collections::ArrayLength
@@ -833,13 +740,13 @@ assert_eq ${last_element} 3
 #### Aliases:
 array_pop
 
-<a name="std__collections__IsArray"></a>
-## std::collections::IsArray
+<a name="std__collections__ArrayPush"></a>
+## std::collections::ArrayPush
 ```sh
-var = array_length handle
+var = array_push handle value
 ```
 
-Returns the array length based on the provided array handle.
+Pushes an additional value to an existing array.
 
 #### Parameters
 
@@ -847,25 +754,402 @@ The array handle.
 
 #### Return Value
 
-The array length.
+True if a new value was pushed.
 
 #### Examples
 
 ```sh
-handle = array a b c "d e"
-len = array_length ${handle}
-released = release ${handle}
-echo Array length: ${len} released: ${released}
+handle = array 1 2 3
+array_push ${handle} 4
+last_element = array_pop ${handle}
+assert_eq ${last_element} 4
+```
 
-handle = range 0 10
-len = array_length ${handle}
-released = release ${handle}
-echo Array length: ${len} released: ${released}
+
+#### Aliases:
+array_push
+
+<a name="std__collections__IsArray"></a>
+## std::collections::IsArray
+```sh
+var = is_array handle
+```
+
+Returns true if the provided value is an array handle.
+
+#### Parameters
+
+The array handle.
+
+#### Return Value
+
+True if the provided value is an array handle.
+
+#### Examples
+
+```sh
+arr = array 1 2 3
+
+value = is_array ${arr}
+assert ${value}
+
+released = release ${arr}
+assert ${released}
 ```
 
 
 #### Aliases:
 is_array
+
+<a name="std__collections__IsMap"></a>
+## std::collections::IsMap
+```sh
+var = is_map handle
+```
+
+Returns true if the provided value is a map handle.
+
+#### Parameters
+
+The map handle.
+
+#### Return Value
+
+True if the provided value is a map handle.
+
+#### Examples
+
+```sh
+map_handle = map
+
+value = is_map ${map_handle}
+assert ${value}
+
+released = release ${map_handle}
+assert ${released}
+```
+
+
+#### Aliases:
+is_map
+
+<a name="std__collections__Map"></a>
+## std::collections::Map
+```sh
+handle = map
+```
+
+Creates an empty map and returns a handle to that array.<br>
+This handle can be passed to other commands which support maps using handles.<br>
+Once the map is no longer used, it should be released using the **release** command.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+A handle to the map.
+
+#### Examples
+
+```sh
+handle = map
+
+# once done we should release the handle
+release ${handle}
+```
+
+
+#### Aliases:
+map
+
+<a name="std__collections__MapClear"></a>
+## std::collections::MapClear
+```sh
+result = map_clear handle
+```
+
+Clears the provided map.
+
+#### Parameters
+
+The map handle.
+
+#### Return Value
+
+True if successful.
+
+#### Examples
+
+```sh
+handle = map
+
+result = map_put ${handle} a 1
+
+result = map_is_empty ${handle}
+assert_false ${result}
+
+result map_clear ${handle}
+assert ${result}
+
+result = map_is_empty ${handle}
+assert ${result}
+
+release ${handle}
+```
+
+
+#### Aliases:
+map_clear
+
+<a name="std__collections__MapGet"></a>
+## std::collections::MapGet
+```sh
+value = map_get handle key
+```
+
+Returns a the value corresponding to the key from the map.
+
+#### Parameters
+
+* The map handle.
+* The key.
+
+#### Return Value
+
+The value corresponding to the key from the map.
+
+#### Examples
+
+```sh
+handle = map
+
+result = map_put ${handle} key value
+assert_eq ${result} true
+
+value = map_get ${handle} key
+assert_eq ${value} value
+
+release ${handle}
+```
+
+
+#### Aliases:
+map_get
+
+<a name="std__collections__MapIsEmpty"></a>
+## std::collections::MapIsEmpty
+
+```sh
+var = map_is_empty handle
+```
+
+Returns true if the provided map handle is an empty map.
+
+#### Parameters
+
+The map handle.
+
+#### Return Value
+
+True if the provided handle belongs to an empty map.
+
+#### Examples
+
+```sh
+handle = map
+map_put ${handle} key value
+empty = map_is_empty ${handle}
+```
+
+
+#### Source:
+
+```sh
+
+scope::map_is_empty::length = map_size ${scope::map_is_empty::argument::1}
+equals 0 ${scope::map_is_empty::length}
+
+```
+
+
+#### Aliases:
+map_is_empty
+
+<a name="std__collections__MapLoadProperties"></a>
+## std::collections::MapLoadProperties
+```sh
+var = map_load_properties [--prefix prefix] handle text
+```
+
+Parsers and loads all properties to the provided map.
+
+#### Parameters
+
+* Optional --prefix and the prefix value
+* The map handle.
+* The properties text.
+
+#### Return Value
+
+True if successful.
+
+#### Examples
+
+```sh
+handle = map
+
+result = map_put ${handle} key value
+assert_eq ${result} true
+
+value = map_get ${handle} key
+assert_eq ${value} value
+
+release ${handle}
+```
+
+
+#### Aliases:
+map_load_properties
+
+<a name="std__collections__MapPut"></a>
+## std::collections::MapPut
+```sh
+var = map_put handle key value
+```
+
+Inserts a key-value pair into the map.
+
+#### Parameters
+
+* The map handle.
+* The key.
+* The new value.
+
+#### Return Value
+
+True if a new value was inserted.
+
+#### Examples
+
+```sh
+handle = map
+
+result = map_put ${handle} key value
+assert_eq ${result} true
+
+value = map_get ${handle} key
+assert_eq ${value} value
+
+release ${handle}
+```
+
+
+#### Aliases:
+map_put
+
+<a name="std__collections__MapRemove"></a>
+## std::collections::MapRemove
+```sh
+value = map_remove handle key
+```
+
+Removes a the value corresponding to the key from the map and returns it.
+
+#### Parameters
+
+* The map handle.
+* The key.
+
+#### Return Value
+
+The value corresponding to the key from the map.
+
+#### Examples
+
+```sh
+handle = map
+
+result = map_put ${handle} key value
+assert_eq ${result} true
+
+value = map_remove ${handle} key
+assert_eq ${value} value
+
+release ${handle}
+```
+
+
+#### Aliases:
+map_remove
+
+<a name="std__collections__MapSize"></a>
+## std::collections::MapSize
+```sh
+var = map_size handle
+```
+
+Returns the map size based on the provided map handle.
+
+#### Parameters
+
+The map handle.
+
+#### Return Value
+
+The map size.
+
+#### Examples
+
+```sh
+handle = map
+
+result = map_put ${handle} a 1
+result = map_put ${handle} b 2
+result = map_put ${handle} c 3
+
+result = map_size ${handle}
+assert_eq ${result} 3
+
+release ${handle}
+```
+
+
+#### Aliases:
+map_size
+
+<a name="std__collections__MapToProperties"></a>
+## std::collections::MapToProperties
+```sh
+text = map_to_properties [--prefix prefix] handle
+```
+
+Converts the provided map to properties text.
+
+#### Parameters
+
+* Optional --prefix and the prefix value
+* The map handle.
+
+#### Return Value
+
+The properties text.
+
+#### Examples
+
+```sh
+handle = map
+map_put ${handle} a 1
+map_put ${handle} b 2
+map_put ${handle} a.b.c 123
+
+text = map_to_properties ${handle}
+```
+
+
+#### Aliases:
+map_to_properties
 
 <a name="std__collections__Range"></a>
 ## std::collections::Range
@@ -902,15 +1186,17 @@ range
 <a name="std__collections__ReadProperties"></a>
 ## std::collections::ReadProperties
 ```sh
-count = read_properties text
+count = read_properties [--prefix key] text
 ```
 
 Parses the properties (based on java properties format) text and sets them as variables.<br>
-This command will also return the count of properties read.
+This command will also return the count of properties read.<br>
+If prefix is provided, all properties read, will be stored as variables with the **prefix.** as their prefix.
 
 #### Parameters
 
-The text to parse.
+* Optional --prefix and the prefix value
+* The text to parse.
 
 #### Return Value
 
@@ -925,6 +1211,13 @@ assert_eq ${count} 3
 assert_eq ${a} 1
 assert_eq ${b} 2
 assert_eq ${a.b.c} 3
+
+count = read_properties --prefix config a=1\nb=2\na.b.c=3
+assert_eq ${count} 3
+
+assert_eq ${config.a} 1
+assert_eq ${config.b} 2
+assert_eq ${config.a.b.c} 3
 ```
 
 
@@ -934,14 +1227,15 @@ read_properties
 <a name="std__collections__WriteProperties"></a>
 ## std::collections::WriteProperties
 ```sh
-text = write_properties [names]
+text = write_properties [--prefix prefix] [names]
 ```
 
 Creates a properties string from the provided list of variable names (not values).
 
 #### Parameters
 
-A list of variable names.
+* Optional prefix which will be added to all written properties.
+* A list of variable names.
 
 #### Return Value
 
@@ -959,6 +1253,12 @@ a.b.c = set 3
 # b=2
 # a.b.c=3
 text = write_properties a b a.b.c
+
+# text will be equal to:
+# P.a=1
+# P.b=2
+# P.a.b.c=3
+text = write_properties --prefix P a b a.b.c
 ```
 
 
@@ -1112,6 +1412,33 @@ assert found
 #### Aliases:
 dump_variables
 
+<a name="std__env__GetHomeDirectory"></a>
+## std::env::GetHomeDirectory
+```sh
+var = get_home_dir
+```
+
+Returns the user home directory path.<br>
+In case of any error, false will be returned.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The user home directory path or false in case of any error.
+
+#### Examples
+
+```sh
+directory = get_home_dir
+```
+
+
+#### Aliases:
+get_home_dir
+
 <a name="std__env__GetVar"></a>
 ## std::env::GetVar
 ```sh
@@ -1166,7 +1493,7 @@ directory = pwd
 
 
 #### Aliases:
-pwd
+pwd, print_current_directory
 
 <a name="std__env__SetCurrentDirectory"></a>
 ## std::env::SetCurrentDirectory
@@ -1198,7 +1525,7 @@ cd ./scripts
 
 
 #### Aliases:
-cd, set_current_dir
+cd, set_current_dir, set_current_directory
 
 <a name="std__env__SetVar"></a>
 ## std::env::SetVar
@@ -1410,6 +1737,350 @@ echo Current state: ${will_exit}
 
 #### Aliases:
 exit_on_error, set_exit_on_error
+
+<a name="std__error__TriggerError"></a>
+## std::error::TriggerError
+```sh
+trigger_error [message]
+```
+
+Triggers an error that will trigger the on_error flow.
+
+#### Parameters
+
+Optional error message.
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+trigger_error "my error message"
+error = get_last_error
+assert_eq ${error} "my error message"
+```
+
+
+#### Aliases:
+trigger_error
+
+<a name="std__flowcontrol__ForIn"></a>
+## std::flowcontrol::ForIn
+```sh
+args = array a b c
+for arg in ${args}
+    # commands
+end
+release args
+```
+
+The for/in command enables to iterate over an array (see [array command](#std__collections__Array)).<br>
+The first argument will contain the current iteration value from the array.<br>
+Once all values have been read, it will exit the loop.
+
+#### Parameters
+
+* for
+  * The variable name which will hold the current iteration value
+  * The string "in"
+  * The handle to the array of values to iterate
+* end - no parameters
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+# Simple example iteration over the list of letters:
+args = array a b c
+
+for arg in ${args}
+    echo current arg is: ${arg}
+end
+
+release args
+
+# Example nested loops:
+args = array 1 2 3
+for i in ${args}
+    for j in ${args}
+        echo i: ${i} j: ${j}
+    end
+end
+```
+
+
+#### Aliases:
+for
+
+<a name="std__flowcontrol__Function"></a>
+## std::flowcontrol::Function
+```sh
+function my_function
+    # function content
+    return output
+end
+```
+
+This command provides the function language feature as a set of commands:
+
+* function - Defines a function start block
+* end - Defines the end of the function block
+* return - Allows to exist a function at any point and return an output
+* *function name* - Dynamically created commands based on the function name which are used to invoke the function code.
+
+When a function command is detected, it will search for the end command that comes after.<br>
+That entire block is considered the function code block (functions cannot be nested in outer functions)<br>
+
+In order to invoke the function, simply call the function name with any amount of paramters.<br>
+Those parameters will be set as $1, $2, ... and so on.<br>
+Since variables are global, it will overwrite any older values stored in those variables.<br>
+
+To exist a function and return a value, simply use the **return** command with the value you want to return.<br>
+The variable that was used when the function was originally called, will now store that value.<br>
+The return command can be used to exist early without any value.<br>
+In case the code reached the **end** call, the function will exist but will return not value.
+
+#### Parameters
+
+* function - The function name used later on to invoke the function
+* end - no parameters
+* return - optional single paramter to return as an output of the function call
+* *function name* - Any number of arguments which will automatically be set as global variables: $1, $2, ... as so on.
+
+#### Return Value
+
+The function invocation returns the output provided by the return command.
+
+#### Examples
+
+```sh
+# Simple example of a function definition which echo 'hello world' and exists.
+
+# function start
+function hello_world
+    echo hello world
+end
+
+# function invocation
+hello_world
+
+# Example of calling a function and returning a value
+function get_hello_world
+    return "hello world"
+end
+
+# function invocation
+text = get_hello_world
+
+# this will print "hello world"
+echo ${text}
+
+# Example of passing arguments
+function print_input
+    # $1 is set with the value 'hello'
+    # $2 is set with the value 'world'
+    echo ${1} ${2}
+end
+
+print_input hello world
+
+# Functions can call other functions
+function get_one
+    return 1
+end
+
+function get_number
+    number = get_one
+    return ${number}
+end
+
+output = get_number
+
+# this will print 1
+echo ${output}
+```
+
+
+#### Aliases:
+function, fn
+
+<a name="std__flowcontrol__GoTo"></a>
+## std::flowcontrol::GoTo
+```sh
+goto :label
+```
+
+The goto command enables you to jump to any position in the script, if that position has a label value.
+
+#### Parameters
+
+A single valid label value.
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+goto :good
+
+echo bad
+
+:good echo good
+```
+
+
+#### Aliases:
+goto
+
+<a name="std__flowcontrol__If"></a>
+## std::flowcontrol::If
+```sh
+if [command|value|condition]
+    # commands
+elseif command|value
+    # commands
+else
+    # commands
+end
+```
+
+This command provides the if/elseif/else condition language feature as a set of commands:
+
+* if - Defines an if condition
+* elseif - Defines optional secondary condition blocks
+* else - Optinoal fallback block
+* end - Defines the end of the entire if/else block
+
+if and elseif commands accept either:
+
+* A command with optional arguments and invokes it
+* A single value which doesn't match any known command
+* A condition statement
+
+If the result is one of the following:
+
+* No output
+* false (case insensitive)
+* 0
+* no (case insensitive)
+* Empty value
+
+It is considered falsy.<br>
+In case of falsy value, it will skip to the next elseif/else block.<br>
+If a truthy (non falsy) output is found, it will invoke the commands of that code block and ignore all other elseif/else blocks.<br>
+
+if blocks can be nested in other if blocks (see examples).
+
+A condition statement is made up of values, or/and keywords and '('/')' groups.<br>
+Each must be separated with a space character.
+
+#### Parameters
+
+* if/elseif - A command and its arguments to invoke and evaluate its output, if a single value is provided an no such command exists, it is evaluated as a value.
+* else/end - no parameters
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+# Simple example of an if statement that evaluates the argument value as true and echos "in if"
+if true
+    echo in if
+end
+
+# Example of using **not** command to reverse the output value
+if not false
+    echo in if
+end
+
+# Example of an if statement that evaluates the command as true and echos "in if"
+if set true
+    echo in if
+end
+
+# Example of if condition returning a falsy result and navigation goes to the else block which echos "in else"
+if set false
+    echo should not be here
+else
+    echo in else
+end
+
+# Example of if condition returning a falsy result and navigation goes to the elseif block has a truthy condition
+if set false
+    echo should not be here
+elseif set true
+    echo in else if
+else
+    echo should not be here
+end
+
+# Nested if example:
+if set false
+    echo should not be here
+elseif set true
+    echo in else if but not done yet
+
+    if set true
+        echo nested if
+    end
+else
+    echo should not be here
+end
+
+valid = set false
+if true and false or true and false or ( true and true or false )
+    valid = set true
+end
+assert ${valid}
+
+if true and false or true and false or ( true and true or false ) and false
+    assert_fail
+end
+```
+
+
+#### Aliases:
+if
+
+<a name="std__fs__Append"></a>
+## std::fs::Append
+```sh
+result = appendfile file text
+```
+
+This command enables to write the provided text into the requested file.<br>
+It will return true/false value based if it was able to write the text to the file.<br>
+In case the file doesn't exist, it will create it.<br>
+If the file exists, it will append the text to it.
+
+#### Parameters
+
+* The target file
+* The text content to write
+
+#### Return Value
+
+true/false based if it was able to write the text to the file.
+
+#### Examples
+
+```sh
+out = appendfile ./target/tests/writefile.txt "line 1\nline 2"
+```
+
+
+#### Aliases:
+appendfile
 
 <a name="std__fs__CopyPath"></a>
 ## std::fs::CopyPath
@@ -1753,8 +2424,35 @@ cat ./docs/sdk.md
 #### Aliases:
 cat
 
-<a name="std__fs__Read"></a>
-## std::fs::Read
+<a name="std__fs__ReadBytes"></a>
+## std::fs::ReadBytes
+```sh
+handle = read_binary_file file
+```
+
+Reads a raw file and returns a handle to the binary data.
+
+#### Parameters
+
+A single parameter holding the file path.
+
+#### Return Value
+
+The binary data handle.
+
+#### Examples
+
+```sh
+handle = read_binary_file ./Cargo.toml
+text = bytes_to_string ${handle}
+```
+
+
+#### Aliases:
+readbinfile, read_binary_file
+
+<a name="std__fs__ReadText"></a>
+## std::fs::ReadText
 ```sh
 var = readfile file
 ```
@@ -1777,10 +2475,39 @@ text = readfile ./Cargo.toml
 
 
 #### Aliases:
-readfile
+readfile, read_text_file
 
-<a name="std__fs__Write"></a>
-## std::fs::Write
+<a name="std__fs__WriteBytes"></a>
+## std::fs::WriteBytes
+```sh
+result = write_binary_file file handle
+```
+
+This command enables to write binary data of the provided binary handle into the requested file.<br>
+It will return true/false value based if it was able to write the binary data to the file.
+
+#### Parameters
+
+* The target file
+* The binary data handle
+
+#### Return Value
+
+true/false based if it was able to write the binary data to the file.
+
+#### Examples
+
+```sh
+handle = string_to_bytes "some text"
+result = write_binary_file ./target/tests/data.bin ${handle}
+```
+
+
+#### Aliases:
+writebinfile, write_binary_file
+
+<a name="std__fs__WriteText"></a>
+## std::fs::WriteText
 ```sh
 result = writefile file text
 ```
@@ -1800,12 +2527,12 @@ true/false based if it was able to write the text to the file.
 #### Examples
 
 ```sh
-out = writefile ./target/tests/writefile.txt "line 1\nline 2"
+result = writefile ./target/tests/writefile.txt "line 1\nline 2"
 ```
 
 
 #### Aliases:
-writefile
+writefile, write_text_file
 
 <a name="std__math__Calc"></a>
 ## std::math::Calc
@@ -1893,7 +2620,7 @@ less_than
 var = hostname
 ```
 
-Returns the hostname or none if unable to extract it.
+Returns the hostname.
 
 #### Parameters
 
@@ -1901,7 +2628,7 @@ None
 
 #### Return Value
 
-The hostname or none in case of any error.
+The hostname
 
 #### Examples
 
@@ -2042,6 +2769,7 @@ end
 #### Source:
 
 ```sh
+
 scope::wget::url = array_pop ${scope::wget::arguments}
 
 scope::wget::method = set GET
@@ -2055,7 +2783,7 @@ for scope::wget::arg in ${scope::wget::arguments}
         elif starts_with ${scope::wget::arg} --post-data=
             scope::wget::len = strlen --post-data=
             scope::wget::payload = substring ${scope::wget::arg} ${scope::wget::len}
-        elif starts_with ${scope::wget::arg} -O
+        elif equals ${scope::wget::arg} -O
             scope::wget::lookingfor = set file
         end
     elif equals ${scope::wget::lookingfor} file
@@ -2065,6 +2793,7 @@ for scope::wget::arg in ${scope::wget::arguments}
 end
 
 http_client --method "${scope::wget::method}" --output-file "${scope::wget::file}" --payload "${scope::wget::payload}" ${scope::wget::url}
+
 ```
 
 
@@ -2151,6 +2880,68 @@ code = exit 1
 #### Aliases:
 exit, quit, q
 
+<a name="std__process__ProcessID"></a>
+## std::process::ProcessID
+```sh
+var = pid
+```
+
+Returns the current process ID.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The current process ID.
+
+#### Examples
+
+```sh
+id = pid
+```
+
+
+#### Aliases:
+pid, process_id
+
+<a name="std__process__Watchdog"></a>
+## std::process::Watchdog
+```sh
+count = watchdog [--max-retries value] [--interval value] -- command [arguments]*
+```
+
+Executes the provided native command and arguments.<br>
+In case the command existed it will be executed again up to the max retries provided.<br>
+The watchdog will wait the specified time in milliseconds between invocations.<br>
+In case of an invalid command, the watchdog will not reattempt the invocation and will exit without retries.
+
+#### Parameters
+
+* --max-retries - Positive value of max retries (excluding the first invocation). value <= 0 for unlimited retries. Default is unlimited.
+* --interval - The amount in milliseconds between retries. 0 for no waiting between invocations. Default is no wait.
+* The command to executed (preceded by a **--** separator).
+* The command arguments.
+
+#### Return Value
+
+The amount of invocations or false in case of any error.
+
+#### Examples
+
+```sh
+count = watchdog --max-retries 0 -- echo test
+assert_eq ${count} 1
+
+count = watchdog --max-retries 3 --interval 10 -- echo test
+assert_eq ${count} 4
+```
+
+
+#### Aliases:
+watchdog
+
 <a name="std__scope__Clear"></a>
 ## std::scope::Clear
 ```sh
@@ -2196,6 +2987,215 @@ assert_false ${defined}
 
 #### Aliases:
 clear_scope
+
+<a name="std__string__Base64"></a>
+## std::string::Base64
+
+```sh
+var = base64 [-e] [-encode] [-d] [-decode] value
+```
+
+Invokes the base64 encode/decode command with the provided value.<br>
+This command allows for a more similar cli command which wraps the base64_encode and base64_decode commands.
+
+#### Parameters
+
+* Optional -e or -encode flags to set the mode to encode (default)
+* Optional -d or -decode flags to set the mode to decode
+* The value, in case of encoding this is the binary handle, in case of decoding this is the base64 textual value.
+
+#### Return Value
+
+* In case of encoding, the base64 textual value will be returned.
+* In case of decoding, a handle to the binary data will be returned.
+
+#### Examples
+
+```sh
+handle = string_to_bytes "hello world"
+text = base64 ${handle}
+release ${handle}
+assert_eq ${text} aGVsbG8gd29ybGQ=
+
+handle = base64 -decode ${text}
+text = bytes_to_string ${handle}
+release ${handle}
+assert_eq ${text} "hello world"
+```
+
+
+#### Source:
+
+```sh
+
+scope::base64::input_data = array_pop ${scope::base64::arguments}
+scope::base64::encode = set true
+
+for scope::base64::arg in ${scope::base64::arguments}
+    if equals ${scope::base64::arg} -e
+         scope::base64::encode = set true
+    elif equals ${scope::base64::arg} -encode
+         scope::base64::encode = set true
+    elif equals ${scope::base64::arg} -d
+         scope::base64::encode = set false
+    elif equals ${scope::base64::arg} -decode
+         scope::base64::encode = set false
+    end
+end
+
+if ${scope::base64::encode}
+    scope::base64::output = base64_encode ${scope::base64::input_data}
+else
+    scope::base64::output = base64_decode ${scope::base64::input_data}
+end
+
+scope::base64::output = set ${scope::base64::output}
+
+```
+
+
+#### Aliases:
+base64
+
+<a name="std__string__Base64Decode"></a>
+## std::string::Base64Decode
+```sh
+text = base64_encode handle
+```
+
+Encodes using base64 the provided binary data and returns the encoded text value.<br>
+The binary data is provided as a handle.
+
+#### Parameters
+
+The handle to the binary data to encode.
+
+#### Return Value
+
+The encoded textual value.
+
+#### Examples
+
+```sh
+handle = string_to_bytes "hello world"
+text = base64_encode ${handle}
+
+release ${handle}
+
+assert_eq ${text} "hello world"
+```
+
+
+#### Aliases:
+base64_decode
+
+<a name="std__string__Base64Encode"></a>
+## std::string::Base64Encode
+```sh
+text = base64_encode handle
+```
+
+Encodes using base64 the provided binary data and returns the encoded text value.<br>
+The binary data is provided as a handle.
+
+#### Parameters
+
+The handle to the binary data to encode.
+
+#### Return Value
+
+The encoded textual value.
+
+#### Examples
+
+```sh
+handle = string_to_bytes "hello world"
+text = base64_encode ${handle}
+
+release ${handle}
+
+assert_eq ${text} "hello world"
+```
+
+
+#### Aliases:
+base64_encode
+
+<a name="std__string__BytesToString"></a>
+## std::string::BytesToString
+```sh
+text = bytes_to_string handle
+```
+
+Converts the provided UTF-8 binary array to string and returns it.
+
+#### Parameters
+
+A handle to a binary array holding UTF-8 text.
+
+#### Return Value
+
+The textual data.
+
+#### Examples
+
+```sh
+handle = string_to_bytes "hello world"
+text = bytes_to_string ${handle}
+
+release ${handle}
+
+assert_eq ${text} "hello world"
+```
+
+
+#### Aliases:
+bytes_to_string
+
+<a name="std__string__Concat"></a>
+## std::string::Concat
+
+```sh
+var = concat [value]*
+```
+
+Concats the provided input into a single string and returns it.
+
+#### Parameters
+
+Any number of values to concat.
+
+#### Return Value
+
+The result of the concatenation of all input values.
+
+#### Examples
+
+```sh
+output = concat 1 2 3 4
+assert_eq ${output} 1234
+
+output = concat 1 "2 3" 4
+assert_eq ${output} "12 34"
+```
+
+
+#### Source:
+
+```sh
+
+scope::concat::output = set ""
+for scope::concat::arg in ${scope::concat::arguments}
+    scope::concat::output = set "${scope::concat::output}${scope::concat::arg}"
+end
+
+set ${scope::concat::output}
+
+```
+
+
+#### Aliases:
+concat
 
 <a name="std__string__Contains"></a>
 ## std::string::Contains
@@ -2440,6 +3440,51 @@ assert_eq ${updated} "my large stuff value with lots of stuff"
 #### Aliases:
 replace
 
+<a name="std__string__Split"></a>
+## std::string::Split
+```sh
+handle = split text pattern
+```
+
+Splits the provided text based on the provided pattern and return a handle the
+created array with all the splitted values.
+
+#### Parameters
+
+* The text to split
+* The pattern to split by
+
+#### Return Value
+
+A handle to the values array.
+
+#### Examples
+
+```sh
+handle = split a23b23c23d23e 23
+
+len = array_length ${handle}
+
+value = array_pop ${handle}
+assert_eq ${value} e
+value = array_pop ${handle}
+assert_eq ${value} d
+value = array_pop ${handle}
+assert_eq ${value} c
+value = array_pop ${handle}
+assert_eq ${value} b
+value = array_pop ${handle}
+assert_eq ${value} a
+
+release ${handle}
+
+assert_eq ${len} 5
+```
+
+
+#### Aliases:
+split
+
 <a name="std__string__StartsWith"></a>
 ## std::string::StartsWith
 ```sh
@@ -2473,6 +3518,37 @@ result = starts_with abcd bcd
 
 #### Aliases:
 starts_with
+
+<a name="std__string__StringToBytes"></a>
+## std::string::StringToBytes
+```sh
+handle = string_to_bytes text
+```
+
+Converts the provided string into binary format and returns a handle to the binary data.
+
+#### Parameters
+
+The text to convert.
+
+#### Return Value
+
+A handle to the binary data.
+
+#### Examples
+
+```sh
+handle = string_to_bytes "hello world"
+text = bytes_to_string ${handle}
+
+release ${handle}
+
+assert_eq ${text} "hello world"
+```
+
+
+#### Aliases:
+string_to_bytes
 
 <a name="std__string__SubString"></a>
 ## std::string::SubString

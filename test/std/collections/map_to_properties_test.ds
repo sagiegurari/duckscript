@@ -1,0 +1,54 @@
+
+fn test_map_to_properties
+    handle = map
+    map_put ${handle} a 1
+    map_put ${handle} b 2
+    map_put ${handle} a.b.c 123
+
+    text = map_to_properties ${handle}
+
+    release ${handle}
+
+    handle = map
+    result = map_load_properties --prefix config ${handle} ${text}
+    assert_eq ${result} true
+
+    value = map_get ${handle} config.a
+    assert_eq ${value} 1
+    value = map_get ${handle} config.b
+    assert_eq ${value} 2
+    value = map_get ${handle} config.a.b.c
+    assert_eq ${value} 123
+
+    size = map_size ${handle}
+    assert_eq ${size} 3
+
+    release ${handle}
+end
+
+fn test_map_to_properties_with_prefix
+    handle = map
+    map_put ${handle} a 1
+    map_put ${handle} b 2
+    map_put ${handle} a.b.c 123
+
+    text = map_to_properties --prefix config ${handle}
+
+    release ${handle}
+
+    handle = map
+    result = map_load_properties ${handle} ${text}
+    assert_eq ${result} true
+
+    value = map_get ${handle} config.a
+    assert_eq ${value} 1
+    value = map_get ${handle} config.b
+    assert_eq ${value} 2
+    value = map_get ${handle} config.a.b.c
+    assert_eq ${value} 123
+
+    size = map_size ${handle}
+    assert_eq ${size} 3
+
+    release ${handle}
+end

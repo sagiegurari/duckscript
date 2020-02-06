@@ -38,7 +38,7 @@ fn run_command_not_found() {
 #[test]
 fn run_command_found_with_docs() {
     test::run_script_and_validate(
-        vec![create(""), alias::create("")],
+        vec![create(""), alias::set::create("")],
         "out = man alias",
         CommandValidation::Contains("out".to_string(), "alias ".to_string()),
     );

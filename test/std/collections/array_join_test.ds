@@ -1,0 +1,60 @@
+
+fn test_to_string
+    arr = array hello world
+    string = array_join ${arr} ", "
+
+    release ${arr}
+
+    assert_eq ${string} "hello, world"
+end
+
+fn test_numbers
+    arr = range 1 5
+    string = array_join ${arr} ", "
+
+    release ${arr}
+
+    assert_eq ${string} "1, 2, 3, 4"
+end
+
+fn test_empty_array
+    arr = array
+    string = array_join ${arr} ", "
+
+    release ${arr}
+
+    assert_eq ${string} ""
+end
+
+fn test_empty_separator
+    arr = range 1 5
+    string = array_join ${arr} ""
+
+    release ${arr}
+
+    assert_eq ${string} "1234"
+end
+
+fn test_missing_separator
+    arr = range 1 5
+    string = array_join ${arr}
+
+    error = get_last_error
+    empty = is_empty ${error}
+
+    release ${arr}
+
+    assert_false ${empty}
+    assert_eq ${string} false
+end
+
+fn test_not_an_array
+    arr = set 1
+    string = array_join ${arr} ", "
+
+    error = get_last_error
+    empty = is_empty ${error}
+
+    assert_false ${empty}
+    assert_eq ${string} false
+end

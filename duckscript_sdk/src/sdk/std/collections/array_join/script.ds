@@ -1,0 +1,19 @@
+
+if not is_array ${scope::array_join::argument::1}
+    trigger_error "Invalid input, non array handle or array not found."
+end
+
+if not array_is_empty ${scope::array_join::argument::1}
+    for scope::array_join::item in ${scope::array_join::argument::1}
+        scope::array_join::string = set "${scope::array_join::string}${scope::array_join::item}${scope::array_join::argument::2}"
+    end
+
+    if not is_empty ${scope::array_join::argument::2}
+        scope::array_join::separatorlen = strlen ${scope::array_join::argument::2}
+        scope::array_join::stringlen = strlen ${scope::array_join::string}
+        scope::array_join::offset = calc ${scope::array_join::stringlen} - ${scope::array_join::separatorlen}
+        scope::array_join::string = substring ${scope::array_join::string} 0 ${scope::array_join::offset}
+    end
+end
+
+set ${scope::array_join::string}

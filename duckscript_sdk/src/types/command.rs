@@ -90,6 +90,8 @@ impl Command for AliasCommand {
         if arguments.len() < self.arguments_amount {
             CommandResult::Error("Invalid arguments provided.".to_string())
         } else {
+            let start_count = variables.len();
+
             // define script arguments
             let mut handle_option = None;
             if !arguments.is_empty() {
@@ -198,9 +200,20 @@ impl Command for AliasCommand {
             }
             clear(&self.scope_name, variables);
 
-            match flow_result {
-                Some(result) => result,
-                None => CommandResult::Continue(flow_output),
+            let end_count = variables.len();
+            if start_count != end_count {
+                CommandResult::Crash(
+                    format!(
+                        "Memory leak detected, delta variables count: {}",
+                        end_count - start_count
+                    )
+                    .to_string(),
+                )
+            } else {
+                match flow_result {
+                    Some(result) => result,
+                    None => CommandResult::Continue(flow_output),
+                }
             }
         }
     }
@@ -214,7 +227,7 @@ pub(crate) fn create_alias_command(
     script: String,
     arguments_amount: usize,
 ) -> Result<AliasCommand, ScriptError> {
-    let raw_command = script.trim().to_string();
+    let raw_command = script.to_string();
 
     let command = AliasCommand::new(
         name,

@@ -1,5 +1,5 @@
 ```sh
-if command|value
+if [command|value|condition]
     # commands
 elseif command|value
     # commands
@@ -19,8 +19,9 @@ if and elseif commands accept either:
 
 * A command with optional arguments and invokes it
 * A single value which doesn't match any known command
+* A condition statement
 
-If the value or the result of the command is one of the following:
+If the result is one of the following:
 
 * No output
 * false (case insensitive)
@@ -33,6 +34,9 @@ In case of falsy value, it will skip to the next elseif/else block.<br>
 If a truthy (non falsy) output is found, it will invoke the commands of that code block and ignore all other elseif/else blocks.<br>
 
 if blocks can be nested in other if blocks (see examples).
+
+A condition statement is made up of values, or/and keywords and '('/')' groups.<br>
+Each must be separated with a space character.
 
 #### Parameters
 
@@ -88,5 +92,15 @@ elseif set true
     end
 else
     echo should not be here
+end
+
+valid = set false
+if true and false or true and false or ( true and true or false )
+    valid = set true
+end
+assert ${valid}
+
+if true and false or true and false or ( true and true or false ) and false
+    assert_fail
 end
 ```

@@ -1,5 +1,47 @@
 ## CHANGELOG
 
+### v0.1.9
+
+* The if/else and not commands now support complex conditions #81
+* Release command now support recursive option.
+* New map_clear command.
+* New map_to_properties command.
+* New map_load_properties command.
+* New map_is_empty command.
+* New map_size command.
+* New map_remove command.
+* New is_map command.
+* New map_get command.
+* New map_put command.
+* New map command.
+* The set command now supports 'or' condition.
+* New base64 command #79
+* New write_binary_file command #78
+* New read_binary_file command #78
+* Rename read/write text file commands.
+* New base64_decode command #75
+* New base64_encode command #75
+* New bytes_to_string command.
+* New string_to_bytes command.
+* Add prefix flag to write_properties command #77
+* New split command #76
+* New appendfile command.
+* New watchdog command.
+* New pid command #73
+* New whoami command.
+* Alias based command implementations are not checked for variable leaks.
+* New get_home_dir command.
+* New array_join command.
+* The read_properties command now support **--prefix** flag.
+* New array_concat command.
+* New trigger_error command.
+* New array_push command.
+* New concat command.
+* Improve wget input parsing.
+* Modify full named commands.
+* Prevent panic for wget and http_client on invalid non http URL input.
+* Runtime - Supports byte array state storage
+
 ### v0.1.8 (2020-01-24)
 
 * Move test directory command to public std namespace to enable duckscript unit testing

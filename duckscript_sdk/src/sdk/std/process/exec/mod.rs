@@ -1,10 +1,8 @@
-use crate::utils::pckg;
+use crate::utils::{exec, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
-use std::process::Command as ProcessCommand;
-use std::process::Stdio;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -46,60 +44,31 @@ impl Command for CommandImpl {
         _commands: &mut Commands,
         _line: usize,
     ) -> CommandResult {
-        if arguments.is_empty() {
-            CommandResult::Error("Command not provided.".to_string())
-        } else {
-            let mut command = ProcessCommand::new(&arguments[0]);
+        let allow_input = output_variable.is_some();
+        let print_output = !allow_input;
 
-            for argument in &arguments[1..] {
-                command.arg(argument);
+        match exec::exec(&arguments, print_output, allow_input, 0) {
+            Ok((stdout, stderr, exit_code)) => {
+                match output_variable {
+                    Some(name) => {
+                        let mut key = String::from(&name);
+                        key.push_str(".stdout");
+                        variables.insert(key.clone(), stdout);
+
+                        key = String::from(&name);
+                        key.push_str(".stderr");
+                        variables.insert(key.clone(), stderr);
+
+                        key = String::from(&name);
+                        key.push_str(".code");
+                        variables.insert(key.clone(), exit_code.to_string());
+                    }
+                    None => (),
+                };
+
+                CommandResult::Continue(None)
             }
-
-            command.stdin(Stdio::inherit());
-            if output_variable.is_none() {
-                command.stdout(Stdio::inherit()).stderr(Stdio::inherit());
-            }
-
-            match command.output() {
-                Ok(ref output) => {
-                    match output_variable {
-                        Some(name) => {
-                            let stdout = String::from_utf8_lossy(&output.stdout).into_owned();
-                            let stderr = String::from_utf8_lossy(&output.stderr).into_owned();
-                            let exit_code = match output.status.code() {
-                                Some(value) => value,
-                                None => {
-                                    return CommandResult::Error(
-                                        format!(
-                                            "Unable to extract exit code for command: {}",
-                                            &arguments[0]
-                                        )
-                                        .to_string(),
-                                    );
-                                }
-                            };
-
-                            let mut key = String::from(&name);
-                            key.push_str(".stdout");
-                            variables.insert(key.clone(), stdout);
-
-                            key = String::from(&name);
-                            key.push_str(".stderr");
-                            variables.insert(key.clone(), stderr);
-
-                            key = String::from(&name);
-                            key.push_str(".code");
-                            variables.insert(key.clone(), exit_code.to_string());
-                        }
-                        None => (),
-                    };
-
-                    CommandResult::Continue(None)
-                }
-                Err(_) => CommandResult::Error(
-                    format!("Unable to run command: {}", &arguments[0]).to_string(),
-                ),
-            }
+            Err(error) => CommandResult::Error(error),
         }
     }
 }

@@ -1,0 +1,65 @@
+
+fn test_no_value
+    value = set "hello world"
+    assert_eq ${value} "hello world"
+
+    value = set
+    defined = is_defined value
+    assert_false ${defined}
+end
+
+fn test_single_value
+    value = set "hello world"
+
+    assert_eq ${value} "hello world"
+end
+
+fn test_single_value_falsy
+    value = set false
+
+    assert_eq ${value} false
+end
+
+fn test_multiple_values_true
+    value = set 1 2 3
+
+    assert_eq ${value} 1
+end
+
+fn test_multiple_first_falsy
+    value = set "" or 0 or no or false or NO or FALSE or test
+
+    assert_eq ${value} test
+end
+
+fn test_multiple_all_falsy
+    value = set "" or 0 or no or false or NO or FALSE
+
+    assert_eq ${value} FALSE
+end
+
+fn test_multiple_last_falsy
+    value = set test or false
+
+    assert_eq ${value} test
+end
+
+fn test_multiple_missing_value_after_or
+    value = set false or false or
+
+    error = get_last_error
+    empty = is_empty ${error}
+    assert_false ${empty}
+
+    assert_false ${value}
+end
+
+fn test_multiple_missing_or
+    value = set false false
+
+    error = get_last_error
+    empty = is_empty ${error}
+    assert_false ${empty}
+
+    assert_false ${value}
+end

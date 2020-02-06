@@ -166,3 +166,290 @@ fn eval_condition_command_error() {
 
     assert!(result.is_err());
 }
+
+#[test]
+fn eval_condition_for_slice_empty() {
+    let result = eval_condition_for_slice(&vec![]);
+
+    let output = result.unwrap();
+    assert!(!output);
+}
+
+#[test]
+fn eval_condition_for_slice_true() {
+    let result = eval_condition_for_slice(&vec!["true".to_string()]);
+
+    let output = result.unwrap();
+    assert!(output);
+}
+
+#[test]
+fn eval_condition_for_slice_false() {
+    let result = eval_condition_for_slice(&vec!["false".to_string()]);
+
+    let output = result.unwrap();
+    assert!(!output);
+}
+
+#[test]
+fn eval_condition_for_slice_true_and_false() {
+    let result = eval_condition_for_slice(&vec![
+        "true".to_string(),
+        "and".to_string(),
+        "false".to_string(),
+    ]);
+
+    let output = result.unwrap();
+    assert!(!output);
+}
+
+#[test]
+fn eval_condition_for_slice_false_and_true() {
+    let result = eval_condition_for_slice(&vec![
+        "false".to_string(),
+        "and".to_string(),
+        "true".to_string(),
+    ]);
+
+    let output = result.unwrap();
+    assert!(!output);
+}
+
+#[test]
+fn eval_condition_for_slice_true_or_false() {
+    let result = eval_condition_for_slice(&vec![
+        "true".to_string(),
+        "or".to_string(),
+        "false".to_string(),
+    ]);
+
+    let output = result.unwrap();
+    assert!(output);
+}
+
+#[test]
+fn eval_condition_for_slice_false_or_true() {
+    let result = eval_condition_for_slice(&vec![
+        "false".to_string(),
+        "or".to_string(),
+        "true".to_string(),
+    ]);
+
+    let output = result.unwrap();
+    assert!(output);
+}
+
+#[test]
+fn eval_condition_for_slice_complex_no_parts() {
+    let mut result = eval_condition_for_slice(&vec![
+        "false".to_string(),
+        "or".to_string(),
+        "true".to_string(),
+        "or".to_string(),
+        "false".to_string(),
+    ]);
+    assert!(result.unwrap());
+
+    result = eval_condition_for_slice(&vec![
+        "true".to_string(),
+        "and".to_string(),
+        "false".to_string(),
+        "or".to_string(),
+        "true".to_string(),
+        "and".to_string(),
+        "false".to_string(),
+        "or".to_string(),
+        "true".to_string(),
+    ]);
+    assert!(result.unwrap());
+
+    result = eval_condition_for_slice(&vec![
+        "false".to_string(),
+        "and".to_string(),
+        "false".to_string(),
+        "or".to_string(),
+        "true".to_string(),
+        "and".to_string(),
+        "false".to_string(),
+        "or".to_string(),
+        "true".to_string(),
+    ]);
+    assert!(!result.unwrap());
+
+    result = eval_condition_for_slice(&vec![
+        "true".to_string(),
+        "and".to_string(),
+        "false".to_string(),
+        "or".to_string(),
+        "true".to_string(),
+        "and".to_string(),
+        "false".to_string(),
+        "or".to_string(),
+        "false".to_string(),
+    ]);
+    assert!(!result.unwrap());
+}
+
+#[test]
+fn eval_condition_for_slice_complex_with_parts() {
+    let mut result = eval_condition_for_slice(&vec![
+        "(".to_string(),
+        "false".to_string(),
+        "or".to_string(),
+        "true".to_string(),
+        ")".to_string(),
+    ]);
+    assert!(result.unwrap());
+
+    result = eval_condition_for_slice(&vec![
+        "(".to_string(),
+        "false".to_string(),
+        "or".to_string(),
+        "(".to_string(),
+        "true".to_string(),
+        ")".to_string(),
+        ")".to_string(),
+    ]);
+    assert!(result.unwrap());
+
+    result = eval_condition_for_slice(&vec![
+        "true".to_string(),
+        "and".to_string(),
+        "(".to_string(),
+        "false".to_string(),
+        "or".to_string(),
+        "true".to_string(),
+        ")".to_string(),
+        "and".to_string(),
+        "false".to_string(),
+        "or".to_string(),
+        "false".to_string(),
+    ]);
+    assert!(!result.unwrap());
+
+    result = eval_condition_for_slice(&vec![
+        "true".to_string(),
+        "and".to_string(),
+        "(".to_string(),
+        "false".to_string(),
+        "or".to_string(),
+        "true".to_string(),
+        "and".to_string(),
+        "false".to_string(),
+        ")".to_string(),
+        "or".to_string(),
+        "true".to_string(),
+    ]);
+    assert!(result.unwrap());
+
+    result = eval_condition_for_slice(&vec![
+        "(".to_string(),
+        "(".to_string(),
+        "(".to_string(),
+        ")".to_string(),
+        ")".to_string(),
+        ")".to_string(),
+    ]);
+    assert!(!result.unwrap());
+
+    result = eval_condition_for_slice(&vec![
+        "true".to_string(),
+        "and".to_string(),
+        "false".to_string(),
+        "or".to_string(),
+        "true".to_string(),
+        "and".to_string(),
+        "false".to_string(),
+        "or".to_string(),
+        "(".to_string(),
+        "true".to_string(),
+        "and".to_string(),
+        "true".to_string(),
+        "or".to_string(),
+        "false".to_string(),
+        ")".to_string(),
+        "and".to_string(),
+        "false".to_string(),
+    ]);
+    assert!(!result.unwrap());
+
+    result = eval_condition_for_slice(&vec![
+        "true".to_string(),
+        "and".to_string(),
+        "false".to_string(),
+        "or".to_string(),
+        "true".to_string(),
+        "and".to_string(),
+        "false".to_string(),
+        "or".to_string(),
+        "(".to_string(),
+        "true".to_string(),
+        "and".to_string(),
+        "true".to_string(),
+        "or".to_string(),
+        "false".to_string(),
+        ")".to_string(),
+    ]);
+    assert!(result.unwrap());
+}
+
+#[test]
+fn eval_condition_for_slice_parse_errors() {
+    let mut result = eval_condition_for_slice(&vec!["or".to_string()]);
+    assert!(result.is_err());
+
+    result = eval_condition_for_slice(&vec!["and".to_string()]);
+    assert!(result.is_err());
+
+    result = eval_condition_for_slice(&vec!["(".to_string()]);
+    assert!(result.is_err());
+
+    result = eval_condition_for_slice(&vec![")".to_string()]);
+    assert!(result.is_err());
+
+    result = eval_condition_for_slice(&vec!["(".to_string(), "true".to_string()]);
+    assert!(result.is_err());
+
+    result = eval_condition_for_slice(&vec![
+        "false".to_string(),
+        "or".to_string(),
+        "true".to_string(),
+        ")".to_string(),
+    ]);
+    assert!(result.is_err());
+
+    result = eval_condition_for_slice(&vec!["false".to_string(), "true".to_string()]);
+    assert!(result.is_err());
+
+    result = eval_condition_for_slice(&vec![
+        "true".to_string(),
+        "or".to_string(),
+        "or".to_string(),
+        "true".to_string(),
+    ]);
+    assert!(result.is_err());
+
+    result = eval_condition_for_slice(&vec![
+        "true".to_string(),
+        "and".to_string(),
+        "and".to_string(),
+        "true".to_string(),
+    ]);
+    assert!(result.is_err());
+
+    result = eval_condition_for_slice(&vec![
+        "true".to_string(),
+        "and".to_string(),
+        "or".to_string(),
+        "true".to_string(),
+    ]);
+    assert!(result.is_err());
+
+    result = eval_condition_for_slice(&vec![
+        "true".to_string(),
+        "or".to_string(),
+        "and".to_string(),
+        "true".to_string(),
+    ]);
+    assert!(result.is_err());
+}

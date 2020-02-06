@@ -1,0 +1,30 @@
+
+fn test_size_empty
+    handle = array
+
+    result = array_is_empty ${handle}
+    assert ${result}
+
+    release ${handle}
+end
+
+fn test_size_emptied
+    handle = array
+
+    result = array_push ${handle} value
+    assert_eq ${result} true
+    array_pop ${handle}
+
+    result = array_is_empty ${handle}
+    assert ${result}
+    release ${handle}
+end
+
+fn test_size_not_empty
+    handle = array 1 2 3
+
+    result = array_is_empty ${handle}
+    assert_false ${result}
+
+    release ${handle}
+end

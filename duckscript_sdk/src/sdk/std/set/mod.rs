@@ -1,4 +1,4 @@
-use crate::utils::pckg;
+use crate::utils::{condition, pckg};
 use duckscript::types::command::{Command, CommandResult};
 
 #[cfg(test)]
@@ -8,6 +8,32 @@ mod mod_test;
 #[derive(Clone)]
 pub(crate) struct CommandImpl {
     package: String,
+}
+
+fn get_output(arguments: &Vec<String>) -> Result<Option<String>, String> {
+    let mut looking_for_value = true;
+    let mut last_value = None;
+    for argument in arguments {
+        if looking_for_value {
+            last_value = Some(argument.clone());
+
+            if condition::is_true(Some(argument.clone())) {
+                return Ok(last_value);
+            }
+
+            looking_for_value = false;
+        } else if argument == "or" {
+            looking_for_value = true;
+        } else {
+            return Err(format!("Keyword 'or' expected, found: {}", &argument).to_string());
+        }
+    }
+
+    if looking_for_value {
+        Err("Keyword 'or' found, expected a value afterwards.".to_string())
+    } else {
+        Ok(last_value)
+    }
 }
 
 impl Command for CommandImpl {
@@ -30,8 +56,13 @@ impl Command for CommandImpl {
     fn run(&self, arguments: Vec<String>) -> CommandResult {
         let output = if arguments.is_empty() {
             None
-        } else {
+        } else if arguments.len() == 1 {
             Some(arguments[0].clone())
+        } else {
+            match get_output(&arguments) {
+                Ok(output) => output,
+                Err(error) => return CommandResult::Error(error),
+            }
         };
 
         CommandResult::Continue(output)

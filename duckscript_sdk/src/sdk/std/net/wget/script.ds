@@ -12,7 +12,7 @@ for scope::wget::arg in ${scope::wget::arguments}
         elif starts_with ${scope::wget::arg} --post-data=
             scope::wget::len = strlen --post-data=
             scope::wget::payload = substring ${scope::wget::arg} ${scope::wget::len}
-        elif starts_with ${scope::wget::arg} -O
+        elif equals ${scope::wget::arg} -O
             scope::wget::lookingfor = set file
         end
     elif equals ${scope::wget::lookingfor} file

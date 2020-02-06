@@ -1,0 +1,22 @@
+
+fn test_map_found
+    map_handle = map
+
+    value = is_map ${map_handle}
+    assert ${value}
+
+    released = release ${map_handle}
+    assert ${released}
+end
+
+fn test_not_map
+    map_handle = set true
+
+    value = is_map ${map_handle}
+    assert_false ${value}
+end
+
+fn test_not_found
+    value = is_map ${map_handle}
+    assert_false ${value}
+end

@@ -1,0 +1,119 @@
+
+fn test_if_hardcoded_true
+    valid = set false
+
+    if true
+        valid = set true
+    end
+
+    assert ${valid}
+end
+
+fn test_if_hardcoded_false
+    if false
+        assert_fail
+    end
+end
+
+fn test_if_hardcoded_not_false
+    valid = set false
+
+    if not false
+        valid = set true
+    end
+
+    assert ${valid}
+end
+
+fn test_if_command_returns_true
+    valid = set false
+
+    if set true
+        valid = set true
+    end
+
+    assert ${valid}
+end
+
+fn test_if_condition_true
+    valid = set false
+
+    if true and false or true and false or ( true and true or false )
+        valid = set true
+    end
+
+    assert ${valid}
+end
+
+fn test_if_condition_false
+    if true and false or true and false or ( true and true or false ) and false
+        assert_fail
+    end
+end
+
+fn test_simple_else
+    valid = set false
+
+    if set false
+        assert_fail
+    else
+        valid = set true
+    end
+
+    assert ${valid}
+end
+
+fn test_simple_elseif
+    valid = set false
+
+    if set false
+        assert_fail
+    elseif set true
+        valid = set true
+    else
+        assert_fail
+    end
+
+    assert ${valid}
+end
+
+fn test_nested_if
+    valid = set false
+
+    if set false
+        assert_fail
+    elseif set true
+        if set true
+            valid = set true
+        end
+    else
+        assert_fail
+    end
+
+    assert ${valid}
+end
+
+fn test_nested_if2
+    valid = set false
+
+    value = set false
+    if ${value}
+        assert_fail
+    elseif true
+        value = set true
+
+        if not false
+            value = set "some text"
+
+            if starts_with ${value} "some"
+                valid = set true
+            else
+                assert_fail
+            end
+        end
+    else
+        assert_fail
+    end
+
+    assert ${valid}
+end

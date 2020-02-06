@@ -1,0 +1,42 @@
+
+fn test_no_retries
+    count = watchdog --max-retries 0 -- echo test
+
+    assert_eq ${count} 1
+end
+
+fn test_with_retries
+    count = watchdog --max-retries 3 -- echo test
+
+    assert_eq ${count} 4
+end
+
+fn test_with_retries_and_interval
+    count = watchdog --max-retries 3 --interval 10 -- echo test
+
+    assert_eq ${count} 4
+end
+
+fn test_bad_command
+    count = watchdog --max-retries 3 --interval 10 -- badcommand
+
+    assert_eq ${count} false
+end
+
+fn test_negatived_max_retries
+    count = watchdog --max-retries -3 --interval 10 -- echo test
+
+    assert_eq ${count} 1
+end
+
+fn test_invalid_interval
+    count = watchdog --max-retries 3 --interval -10 -- echo test
+
+    assert_eq ${count} false
+end
+
+fn test_missing_command_separator
+    count = watchdog --max-retries 0 echo test
+
+    assert_eq ${count} false
+end

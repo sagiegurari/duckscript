@@ -49,11 +49,23 @@ impl Command for CommandImpl {
         if arguments.len() < 1 {
             CommandResult::Error("Missing properties names.".to_string())
         } else {
+            let (start_index, prefix) = if arguments.len() > 2 && arguments[0] == "--prefix" {
+                (2, arguments[1].as_str())
+            } else {
+                (0, "")
+            };
+
             let mut data = HashMap::new();
-            for argument in &arguments {
+            for argument in &arguments[start_index..] {
                 match variables.get(argument) {
                     Some(value) => {
-                        data.insert(argument.to_string(), value.to_string());
+                        let mut key = argument.to_string();
+                        if !prefix.is_empty() {
+                            key.insert(0, '.');
+                            key.insert_str(0, prefix);
+                        }
+
+                        data.insert(key, value.to_string());
                     }
                     None => (),
                 }

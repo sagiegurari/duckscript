@@ -26,3 +26,18 @@ fn run_valid() {
     assert_eq!(context.variables.get("a").unwrap(), "1");
     assert_eq!(context.variables.get("b").unwrap(), "2");
 }
+
+#[test]
+fn run_with_prefix() {
+    let context = test::run_script_and_validate(
+        vec![create(""), Box::new(SetCommand {})],
+        r#"
+        props = test_set "a=1\nb=2"
+        out = read_properties --prefix config ${props}
+        "#,
+        CommandValidation::Match("out".to_string(), "2".to_string()),
+    );
+
+    assert_eq!(context.variables.get("config.a").unwrap(), "1");
+    assert_eq!(context.variables.get("config.b").unwrap(), "2");
+}

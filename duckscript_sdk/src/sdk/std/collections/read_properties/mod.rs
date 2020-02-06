@@ -48,10 +48,22 @@ impl Command for CommandImpl {
         if arguments.len() < 1 {
             CommandResult::Error("Missing properties text argument.".to_string())
         } else {
-            match read(arguments[0].as_bytes()) {
+            let (prefix, text) = if arguments.len() >= 3 && arguments[0] == "--prefix" {
+                (arguments[1].to_string(), arguments[2].to_string())
+            } else {
+                ("".to_string(), arguments[0].to_string())
+            };
+
+            match read(text.as_bytes()) {
                 Ok(data) => {
                     for (key, value) in &data {
-                        variables.insert(key.to_string(), value.to_string());
+                        let mut var_key = key.to_string();
+                        if !prefix.is_empty() {
+                            var_key.insert(0, '.');
+                            var_key.insert_str(0, &prefix);
+                        }
+
+                        variables.insert(var_key, value.to_string());
                     }
 
                     CommandResult::Continue(Some(data.len().to_string()))

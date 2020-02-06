@@ -1,0 +1,9 @@
+
+fn test_process_id
+    id = pid
+    
+    empty = is_empty {id}
+    
+    assert_false ${empty}
+    assert ${id}
+end

@@ -1,0 +1,35 @@
+
+fn test_size_empty
+    handle = map
+
+    result = map_is_empty ${handle}
+    assert ${result}
+
+    release ${handle}
+end
+
+fn test_size_emptied
+    handle = map
+
+    result = map_put ${handle} key value
+    assert_eq ${result} true
+    map_remove ${handle} key
+
+    result = map_is_empty ${handle}
+    assert ${result}
+    release ${handle}
+end
+
+fn test_size_not_empty
+    handle = map
+
+    result = map_put ${handle} a 1
+    result = map_put ${handle} b 2
+    result = map_put ${handle} c 3
+    result = map_put ${handle} a 4
+
+    result = map_is_empty ${handle}
+    assert_false ${result}
+    
+    release ${handle}
+end

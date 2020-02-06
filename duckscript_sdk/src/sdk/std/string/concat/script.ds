@@ -1,0 +1,7 @@
+
+scope::concat::output = set ""
+for scope::concat::arg in ${scope::concat::arguments}
+    scope::concat::output = set "${scope::concat::output}${scope::concat::arg}"
+end
+
+set ${scope::concat::output}

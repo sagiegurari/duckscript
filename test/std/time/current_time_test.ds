@@ -1,5 +1,5 @@
 
-function test_current_time
+fn test_current_time
     value = current_time
     
     result = greater_than ${value} 0

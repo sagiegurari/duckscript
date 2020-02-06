@@ -1,0 +1,3 @@
+
+scope::map_is_empty::length = map_size ${scope::map_is_empty::argument::1}
+equals 0 ${scope::map_is_empty::length}

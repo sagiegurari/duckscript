@@ -1,5 +1,5 @@
 
-function test_array_found
+fn test_array_found
     arr = array 1 2 3
 
     value = is_array ${arr}
@@ -9,14 +9,14 @@ function test_array_found
     assert ${released}
 end
 
-function test_not_array
+fn test_not_array
     arr = set true
 
     value = is_array ${arr}
     assert_false ${value}
 end
 
-function test_not_found
+fn test_not_found
     value = is_array ${arr}
     assert_false ${value}
 end

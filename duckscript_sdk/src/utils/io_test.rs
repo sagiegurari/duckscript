@@ -47,6 +47,53 @@ fn write_text_file_valid() {
 }
 
 #[test]
+fn write_to_text_file_exists() {
+    let mut result = write_text_file(
+        "./target/_duckscript/temp/test/write_to_text_file_exists.txt",
+        "test file",
+    );
+
+    assert!(result.is_ok());
+
+    result = write_to_text_file(
+        "./target/_duckscript/temp/test/write_to_text_file_exists.txt",
+        "\ntest file",
+        true,
+    );
+
+    assert!(result.is_ok());
+
+    let text =
+        read_text_file("./target/_duckscript/temp/test/write_to_text_file_exists.txt").unwrap();
+
+    assert_eq!(text, "test file\ntest file");
+}
+
+#[test]
+fn write_to_text_file_not_exists() {
+    let mut result = write_to_text_file(
+        "./target/_duckscript/temp/test/write_to_text_file_not_exists.txt",
+        "test file",
+        true,
+    );
+
+    assert!(result.is_ok());
+
+    result = write_to_text_file(
+        "./target/_duckscript/temp/test/write_to_text_file_not_exists.txt",
+        "\ntest file",
+        true,
+    );
+
+    assert!(result.is_ok());
+
+    let text =
+        read_text_file("./target/_duckscript/temp/test/write_to_text_file_not_exists.txt").unwrap();
+
+    assert_eq!(text, "test file\ntest file");
+}
+
+#[test]
 fn create_empty_file_not_exists() {
     let path = "./target/_duckscript/temp/create_empty_file_not_exists/file.txt";
     let file_path = Path::new(path);

@@ -1,0 +1,64 @@
+
+fn test_no_args
+    output = concat
+    empty = is_empty ${output}
+
+    assert_eq ${output} ""
+    assert ${empty}
+end
+
+fn test_single_arg
+    output = concat 1
+    empty = is_empty ${output}
+
+    assert_eq ${output} 1
+    assert_false ${empty}
+end
+
+fn test_empty
+    output = concat "" ""
+    empty = is_empty ${output}
+
+    assert_eq ${output} ""
+    assert ${empty}
+end
+
+fn test_first_empty
+    output = concat "" test
+    empty = is_empty ${output}
+
+    assert_eq ${output} test
+    assert_false ${empty}
+end
+
+fn test_second_empty
+    output = concat test ""
+    empty = is_empty ${output}
+
+    assert_eq ${output} test
+    assert_false ${empty}
+end
+
+fn test_both_not_empty
+    output = concat 1 2
+    empty = is_empty ${output}
+
+    assert_eq ${output} 12
+    assert_false ${empty}
+end
+
+fn test_multiple
+    output = concat 1 2 3 4
+    empty = is_empty ${output}
+
+    assert_eq ${output} 1234
+    assert_false ${empty}
+end
+
+fn test_with_spaces
+    output = concat 1 "2 3" 4
+    empty = is_empty ${output}
+
+    assert_eq ${output} "12 34"
+    assert_false ${empty}
+end

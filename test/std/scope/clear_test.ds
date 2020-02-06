@@ -1,5 +1,5 @@
 
-function test_clear
+fn test_clear
     testscope = set true
     testscope::1 = set 1
     testscope::2 = set 2

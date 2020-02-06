@@ -1,0 +1,29 @@
+
+fn clear_not_empty
+    handle = map
+    
+    result = map_put ${handle} a 1
+    
+    result = map_is_empty ${handle}
+    assert_false ${result}
+    
+    result map_clear ${handle}
+    assert ${result}
+    
+    result = map_is_empty ${handle}
+    assert ${result}
+    
+    release ${handle}
+end
+
+fn clear_empty
+    handle = map
+    
+    result map_clear ${handle}
+    assert ${result}
+    
+    result = map_is_empty ${handle}
+    assert ${result}
+    
+    release ${handle}
+end

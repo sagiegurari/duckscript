@@ -24,3 +24,16 @@ fn run_valid() {
         CommandValidation::Contains("out".to_string(), "b=2".to_string()),
     );
 }
+
+#[test]
+fn run_with_prefix() {
+    test::run_script_and_validate(
+        vec![create(""), Box::new(SetCommand {})],
+        r#"
+        a = test_set 1
+        b = test_set 2
+        out = write_properties --prefix A a b
+        "#,
+        CommandValidation::Contains("out".to_string(), "A.b=2".to_string()),
+    );
+}

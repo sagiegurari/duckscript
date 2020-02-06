@@ -1,5 +1,5 @@
 
-function test_duckscript_sdk_version
+fn test_duckscript_sdk_version
     version = duckscript_sdk_version
     empty = is_empty version
 

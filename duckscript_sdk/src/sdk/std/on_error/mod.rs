@@ -4,6 +4,7 @@ mod get_last_error_line;
 mod get_last_error_source;
 mod on_error;
 mod set_error;
+mod trigger_error;
 
 use crate::utils::pckg;
 use crate::utils::state::get_core_sub_state_for_command;
@@ -38,6 +39,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(get_last_error_source::create(&package))?;
     commands.set(on_error::create(&package))?;
     commands.set(set_error::create(&package))?;
+    commands.set(trigger_error::create(&package))?;
 
     Ok(())
 }
