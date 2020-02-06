@@ -2,7 +2,7 @@
 
 ### v0.1.9
 
-* The if/else and not commands now support complex conditions.
+* The if/else and not commands now support complex conditions #81
 * Release command now support recursive option.
 * New map_clear command.
 * New map_to_properties command.
