@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.1.9
+### v0.2.0 (2020-02-06)
 
 * The if/else and not commands now support complex conditions #81
 * Release command now support recursive option.

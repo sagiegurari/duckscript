@@ -227,6 +227,19 @@
 <span id="227">227</span>
 <span id="228">228</span>
 <span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::<span class="ident">scope</span>::<span class="ident">clear</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="ident">state</span>::{<span class="ident">get_handles_sub_state</span>, <span class="ident">put_handle</span>};
@@ -320,6 +333,8 @@
         <span class="kw">if</span> <span class="ident">arguments</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">arguments_amount</span> {
             <span class="ident">CommandResult</span>::<span class="ident">Error</span>(<span class="string">&quot;Invalid arguments provided.&quot;</span>.<span class="ident">to_string</span>())
         } <span class="kw">else</span> {
+            <span class="kw">let</span> <span class="ident">start_count</span> <span class="op">=</span> <span class="ident">variables</span>.<span class="ident">len</span>();
+
             <span class="comment">// define script arguments</span>
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handle_option</span> <span class="op">=</span> <span class="prelude-val">None</span>;
             <span class="kw">if</span> <span class="op">!</span><span class="ident">arguments</span>.<span class="ident">is_empty</span>() {
@@ -428,9 +443,20 @@
             }
             <span class="ident">clear</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">scope_name</span>, <span class="ident">variables</span>);
 
-            <span class="kw">match</span> <span class="ident">flow_result</span> {
-                <span class="prelude-val">Some</span>(<span class="ident">result</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">result</span>,
-                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CommandResult</span>::<span class="ident">Continue</span>(<span class="ident">flow_output</span>),
+            <span class="kw">let</span> <span class="ident">end_count</span> <span class="op">=</span> <span class="ident">variables</span>.<span class="ident">len</span>();
+            <span class="kw">if</span> <span class="ident">start_count</span> <span class="op">!</span><span class="op">=</span> <span class="ident">end_count</span> {
+                <span class="ident">CommandResult</span>::<span class="ident">Crash</span>(
+                    <span class="macro">format</span><span class="macro">!</span>(
+                        <span class="string">&quot;Memory leak detected, delta variables count: {}&quot;</span>,
+                        <span class="ident">end_count</span> <span class="op">-</span> <span class="ident">start_count</span>
+                    )
+                    .<span class="ident">to_string</span>(),
+                )
+            } <span class="kw">else</span> {
+                <span class="kw">match</span> <span class="ident">flow_result</span> {
+                    <span class="prelude-val">Some</span>(<span class="ident">result</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">result</span>,
+                    <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CommandResult</span>::<span class="ident">Continue</span>(<span class="ident">flow_output</span>),
+                }
             }
         }
     }
@@ -444,7 +470,7 @@
     <span class="ident">script</span>: <span class="ident">String</span>,
     <span class="ident">arguments_amount</span>: <span class="ident">usize</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">AliasCommand</span>, <span class="ident">ScriptError</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">raw_command</span> <span class="op">=</span> <span class="ident">script</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>();
+    <span class="kw">let</span> <span class="ident">raw_command</span> <span class="op">=</span> <span class="ident">script</span>.<span class="ident">to_string</span>();
 
     <span class="kw">let</span> <span class="ident">command</span> <span class="op">=</span> <span class="ident">AliasCommand</span>::<span class="ident">new</span>(
         <span class="ident">name</span>,

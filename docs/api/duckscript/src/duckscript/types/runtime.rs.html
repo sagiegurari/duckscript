@@ -77,6 +77,8 @@
 <span id="77">77</span>
 <span id="78">78</span>
 <span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # runtime</span>
 <span class="doccomment">//!</span>
@@ -110,6 +112,8 @@
     <span class="ident">UnsignedNumber64Bit</span>(<span class="ident">u64</span>),
     <span class="doccomment">/// textual value</span>
     <span class="ident">String</span>(<span class="ident">String</span>),
+    <span class="doccomment">/// byte (u8) array</span>
+    <span class="ident">ByteArray</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>),
     <span class="doccomment">/// list</span>
     <span class="ident">List</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">StateValue</span><span class="op">&gt;</span>),
     <span class="doccomment">/// sub state value</span>
