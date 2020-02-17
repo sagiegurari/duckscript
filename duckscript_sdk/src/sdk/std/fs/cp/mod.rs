@@ -1,6 +1,7 @@
-use crate::utils::{io, pckg};
+use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
 use fs_extra::dir;
+use fsio::directory::create_parent;
 use std::fs;
 use std::path::Path;
 
@@ -44,7 +45,7 @@ impl Command for CommandImpl {
                 let target_path_str = &arguments[1];
 
                 if source_file {
-                    match io::create_parent_directory(target_path_str) {
+                    match create_parent(target_path_str) {
                         Ok(_) => match fs::copy(source_path_str, target_path_str) {
                             Ok(_) => CommandResult::Continue(Some("true".to_string())),
                             Err(error) => CommandResult::Error(error.to_string()),
@@ -52,7 +53,7 @@ impl Command for CommandImpl {
                         Err(error) => CommandResult::Error(error.to_string()),
                     }
                 } else {
-                    match io::create_directory(target_path_str) {
+                    match fsio::directory::create(target_path_str) {
                         Ok(_) => {
                             let options = dir::CopyOptions::new();
 

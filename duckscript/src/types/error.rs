@@ -4,9 +4,9 @@
 //!
 
 use crate::types::instruction::InstructionMetaInfo;
+use fsio::error::FsIOError;
 use std::fmt;
 use std::fmt::Display;
-use std::io;
 
 #[cfg(test)]
 #[path = "./error_test.rs"]
@@ -33,7 +33,7 @@ fn format_error_message(
 /// Holds the error information
 pub enum ErrorInfo {
     /// Error Info Type
-    ErrorReadingFile(String, Option<io::Error>),
+    ErrorReadingFile(String, Option<FsIOError>),
     /// Error Info Type
     Initialization(String),
     /// Error Info Type

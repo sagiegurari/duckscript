@@ -1,5 +1,6 @@
-use crate::utils::{io, pckg};
+use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
+use fsio::path::canonicalize_or;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -31,7 +32,7 @@ impl Command for CommandImpl {
         if arguments.is_empty() {
             CommandResult::Error("Path not provided.".to_string())
         } else {
-            let path = io::get_canonical_path(&arguments[0]);
+            let path = canonicalize_or(&arguments[0], &arguments[0]);
 
             CommandResult::Continue(Some(path.to_string()))
         }

@@ -1,6 +1,7 @@
-use crate::utils::{io, pckg};
+use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
 use fs_extra::{dir, move_items};
+use fsio;
 use std::fs;
 use std::path::Path;
 
@@ -49,7 +50,7 @@ impl Command for CommandImpl {
                         Err(error) => CommandResult::Error(error.to_string()),
                     }
                 } else {
-                    match io::create_directory(&arguments[1]) {
+                    match fsio::directory::create(&arguments[1]) {
                         Ok(_) => {
                             let options = dir::CopyOptions::new();
                             let from_paths = vec![&arguments[0]];

@@ -1,5 +1,6 @@
-use crate::utils::{io, pckg};
+use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
+use fsio::path::get_parent_directory;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -31,7 +32,7 @@ impl Command for CommandImpl {
         if arguments.is_empty() {
             CommandResult::Error("Path not provided.".to_string())
         } else {
-            let parent_path = io::get_parent_directory_name(&arguments[0]);
+            let parent_path = get_parent_directory(&arguments[0]);
             CommandResult::Continue(parent_path)
         }
     }

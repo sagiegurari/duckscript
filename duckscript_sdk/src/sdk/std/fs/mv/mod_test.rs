@@ -1,6 +1,7 @@
 use super::*;
 use crate::test;
 use crate::test::CommandValidation;
+use fsio::file::ensure_exists;
 
 #[test]
 fn common_functions() {
@@ -29,7 +30,7 @@ fn run_input_path_not_exists() {
 #[test]
 fn run_file_to_file() {
     let mut path = Path::new("./target/_duckscript/mv/run_file_to_file/1/file1.txt");
-    let result = io::create_empty_file("./target/_duckscript/mv/run_file_to_file/1/file1.txt");
+    let result = ensure_exists("./target/_duckscript/mv/run_file_to_file/1/file1.txt");
     assert!(result.is_ok());
     assert!(path.exists());
 
@@ -46,7 +47,7 @@ fn run_file_to_file() {
 #[test]
 fn run_file_to_directory() {
     let mut path = Path::new("./target/_duckscript/mv/run_file_to_directory/1/file1.txt");
-    let result = io::create_empty_file("./target/_duckscript/mv/run_file_to_directory/1/file1.txt");
+    let result = ensure_exists("./target/_duckscript/mv/run_file_to_directory/1/file1.txt");
     assert!(result.is_ok());
     assert!(path.exists());
 
@@ -63,8 +64,7 @@ fn run_file_to_directory() {
 #[test]
 fn run_directory_to_directory() {
     let mut path = Path::new("./target/_duckscript/mv/run_directory_to_directory/1/1/file1.txt");
-    let result =
-        io::create_empty_file("./target/_duckscript/mv/run_directory_to_directory/1/1/file1.txt");
+    let result = ensure_exists("./target/_duckscript/mv/run_directory_to_directory/1/1/file1.txt");
     assert!(result.is_ok());
     assert!(path.exists());
 

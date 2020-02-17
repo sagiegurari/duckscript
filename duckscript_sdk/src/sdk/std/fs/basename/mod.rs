@@ -1,5 +1,6 @@
-use crate::utils::{io, pckg};
+use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
+use fsio::path::get_basename;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -31,7 +32,7 @@ impl Command for CommandImpl {
         if arguments.is_empty() {
             CommandResult::Error("Path not provided.".to_string())
         } else {
-            let basename = io::get_base_name(&arguments[0]);
+            let basename = get_basename(&arguments[0]);
             CommandResult::Continue(basename)
         }
     }

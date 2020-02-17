@@ -1,6 +1,7 @@
 use super::*;
 use crate::test;
 use crate::test::CommandValidation;
+use fsio::file::write_text_file;
 
 #[test]
 fn common_functions() {
@@ -35,7 +36,7 @@ fn run_directory_already_exists() {
 
 #[test]
 fn run_directory_exists_as_file() {
-    let result = io::write_text_file(
+    let result = write_text_file(
         "./target/_duckscript/mkdir/run_directory_exists_as_file/test.txt",
         "test file",
     );

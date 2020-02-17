@@ -1,7 +1,8 @@
 use super::*;
 use crate::test;
 use crate::test::CommandValidation;
-use crate::utils::io;
+use fsio;
+use fsio::file::ensure_exists;
 
 #[test]
 fn common_functions() {
@@ -29,7 +30,7 @@ fn run_path_not_exists() {
 
 #[test]
 fn run_path_not_empty_not_recursive() {
-    let result = io::create_directory("./target/_duckscript/rm/not_empty/dir1");
+    let result = fsio::directory::create("./target/_duckscript/rm/not_empty/dir1");
     assert!(result.is_ok());
 
     test::run_script_and_error(
@@ -42,7 +43,7 @@ fn run_path_not_empty_not_recursive() {
 #[test]
 fn run_path_is_file() {
     let path = Path::new("./target/_duckscript/rm/file.txt");
-    let result = io::create_empty_file("./target/_duckscript/rm/file.txt");
+    let result = ensure_exists("./target/_duckscript/rm/file.txt");
     assert!(result.is_ok());
     assert!(path.exists());
 
@@ -58,7 +59,7 @@ fn run_path_is_file() {
 #[test]
 fn run_path_recursive() {
     let path = Path::new("./target/_duckscript/rm/recursive/file.txt");
-    let result = io::create_empty_file("./target/_duckscript/rm/recursive/file.txt");
+    let result = ensure_exists("./target/_duckscript/rm/recursive/file.txt");
     assert!(result.is_ok());
     assert!(path.exists());
 

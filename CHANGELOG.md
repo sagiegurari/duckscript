@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### v0.2.1
+
+* SDK - Use fsio crate for file system apis.
+* Runtime - Use fsio crate for file system apis.
+
 ### v0.2.0 (2020-02-06)
 
 * The if/else and not commands now support complex conditions #81
