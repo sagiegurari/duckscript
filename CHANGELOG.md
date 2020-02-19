@@ -2,6 +2,7 @@
 
 ### v0.2.1
 
+* New temp_file command #85
 * New spawn command #87
 * Update build makefile.
 * Runtime - Add support for **Any** state type #86

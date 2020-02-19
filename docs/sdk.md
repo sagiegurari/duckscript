@@ -65,6 +65,7 @@
 * [std::fs::Print (cat)](#std__fs__Print)
 * [std::fs::ReadBytes (readbinfile, read_binary_file)](#std__fs__ReadBytes)
 * [std::fs::ReadText (readfile, read_text_file)](#std__fs__ReadText)
+* [std::fs::TempFile (temp_file)](#std__fs__TempFile)
 * [std::fs::WriteBytes (writebinfile, write_binary_file)](#std__fs__WriteBytes)
 * [std::fs::WriteText (writefile, write_text_file)](#std__fs__WriteText)
 * [std::math::Calc (calc)](#std__math__Calc)
@@ -2477,6 +2478,34 @@ text = readfile ./Cargo.toml
 
 #### Aliases:
 readfile, read_text_file
+
+<a name="std__fs__TempFile"></a>
+## std::fs::TempFile
+```sh
+path = temp_file [extension]
+```
+
+This command will create a new empty temporary file and return its path.
+
+#### Parameters
+
+Optional file extension.
+
+#### Return Value
+
+The file path.
+
+#### Examples
+
+```sh
+path = temp_file toml
+
+echo ${path}
+```
+
+
+#### Aliases:
+temp_file
 
 <a name="std__fs__WriteBytes"></a>
 ## std::fs::WriteBytes
