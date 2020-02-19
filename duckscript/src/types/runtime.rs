@@ -9,7 +9,10 @@ mod runtime_test;
 
 use crate::types::command::Commands;
 use crate::types::instruction::Instruction;
+use std::any::Any;
+use std::cell::RefCell;
 use std::collections::HashMap;
+use std::rc::Rc;
 
 /// enum defining what values can be stored in the state map
 #[derive(Debug, Clone)]
@@ -36,6 +39,8 @@ pub enum StateValue {
     List(Vec<StateValue>),
     /// sub state value
     SubState(HashMap<String, StateValue>),
+    /// any value
+    Any(Rc<RefCell<dyn Any>>),
 }
 
 /// The context structure
