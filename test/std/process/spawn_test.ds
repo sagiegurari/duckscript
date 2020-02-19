@@ -1,0 +1,8 @@
+
+fn test_echo
+    output = spawn echo hello world
+
+    empty = is_empty ${output}
+
+    assert_false ${empty}
+end

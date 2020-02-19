@@ -76,6 +76,7 @@
 * [std::process::Execute (exec)](#std__process__Execute)
 * [std::process::Exit (exit, quit, q)](#std__process__Exit)
 * [std::process::ProcessID (pid, process_id)](#std__process__ProcessID)
+* [std::process::Spawn (spawn)](#std__process__Spawn)
 * [std::process::Watchdog (watchdog)](#std__process__Watchdog)
 * [std::scope::Clear (clear_scope)](#std__scope__Clear)
 * [std::string::Base64 (base64)](#std__string__Base64)
@@ -2905,6 +2906,35 @@ id = pid
 
 #### Aliases:
 pid, process_id
+
+<a name="std__process__Spawn"></a>
+## std::process::Spawn
+```sh
+pid = spawn command [args]*
+```
+
+Executes the provided native command and arguments.<br>
+It will not wait for the process to finish and will return the process pid.
+
+#### Parameters
+
+The command to execute and its arguments.
+
+#### Return Value
+
+The process pid.
+
+#### Examples
+
+```sh
+pid = spawn echo test
+
+echo PID: ${pid}
+```
+
+
+#### Aliases:
+spawn
 
 <a name="std__process__Watchdog"></a>
 ## std::process::Watchdog

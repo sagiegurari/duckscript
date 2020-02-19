@@ -1,6 +1,7 @@
 mod exec;
 mod exit;
 mod process_id;
+mod spawn;
 mod watchdog;
 
 use crate::utils::pckg;
@@ -15,6 +16,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(exec::create(&package))?;
     commands.set(exit::create(&package))?;
     commands.set(process_id::create(&package))?;
+    commands.set(spawn::create(&package))?;
     commands.set(watchdog::create(&package))?;
 
     Ok(())

@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use crate::utils::state::get_handles_sub_state;
+use crate::utils::state::remove_handle;
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -10,7 +10,7 @@ use std::collections::HashMap;
 mod mod_test;
 
 fn remove(state: &mut HashMap<String, StateValue>, key: &str, recursive: bool) -> bool {
-    match state.remove(key) {
+    match remove_handle(state, key.to_string()) {
         Some(state_value) => {
             if recursive {
                 match state_value {
@@ -83,8 +83,6 @@ impl Command for CommandImpl {
         if arguments.is_empty() {
             CommandResult::Continue(Some("false".to_string()))
         } else {
-            let state = get_handles_sub_state(state);
-
             let (key, recursive) =
                 if arguments.len() > 1 && (arguments[0] == "-r" || arguments[0] == "--recursive") {
                     (arguments[1].to_string(), true)

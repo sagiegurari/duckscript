@@ -35,9 +35,7 @@ pub(crate) fn put_handle(state: &mut HashMap<String, StateValue>, value: StateVa
         .collect();
     key.insert_str(0, "handle:");
 
-    let handle_state = get_handles_sub_state(state);
-
-    handle_state.insert(key.clone(), value);
+    return_handle(state, key.clone(), value);
 
     key
 }
@@ -49,6 +47,25 @@ pub(crate) fn get_handle(
     let handle_state = get_handles_sub_state(state);
 
     handle_state.get(&key)
+}
+
+pub(crate) fn remove_handle(
+    state: &mut HashMap<String, StateValue>,
+    key: String,
+) -> Option<StateValue> {
+    let handle_state = get_handles_sub_state(state);
+
+    handle_state.remove(&key)
+}
+
+pub(crate) fn return_handle(
+    state: &mut HashMap<String, StateValue>,
+    key: String,
+    value: StateValue,
+) {
+    let handle_state = get_handles_sub_state(state);
+
+    handle_state.insert(key.clone(), value);
 }
 
 fn ensure_sub_state(key: &str, state: &mut HashMap<String, StateValue>) {
