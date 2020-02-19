@@ -2,9 +2,9 @@
 
 ### v0.2.1
 
-* New spawn command.
+* New spawn command #87
 * Update build makefile.
-* Runtime - Add support for **Any** state type.
+* Runtime - Add support for **Any** state type #86
 * SDK - Use fsio crate for file system apis.
 * Runtime - Use fsio crate for file system apis.
 
