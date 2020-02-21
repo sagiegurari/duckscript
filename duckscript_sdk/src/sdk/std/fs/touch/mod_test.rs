@@ -1,6 +1,7 @@
 use super::*;
 use crate::test;
 use crate::test::CommandValidation;
+use fsio;
 
 #[test]
 fn common_functions() {
@@ -23,7 +24,7 @@ fn run_provided() {
 
 #[test]
 fn run_path_to_existing_directory() {
-    let result = io::create_directory("./target/_duckscript/touch/existing_dir");
+    let result = fsio::directory::create("./target/_duckscript/touch/existing_dir");
     assert!(result.is_ok());
 
     test::run_script_and_validate(

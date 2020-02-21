@@ -7,12 +7,12 @@
 #[path = "./parser_test.rs"]
 mod parser_test;
 
-use crate::io;
 use crate::preprocessor;
 use crate::types::error::{ErrorInfo, ScriptError};
 use crate::types::instruction::{
     Instruction, InstructionMetaInfo, InstructionType, PreProcessInstruction, ScriptInstruction,
 };
+use fsio::file::read_text_file;
 
 static COMMENT_PREFIX_STR: &str = "#";
 static PRE_PROCESS_PREFIX: char = '!';
@@ -23,9 +23,11 @@ pub fn parse_file(file: &str) -> Result<Vec<Instruction>, ScriptError> {
     let mut meta_info = InstructionMetaInfo::new();
     meta_info.source = Some(file.to_string());
 
-    match io::read_text_file(file) {
+    match read_text_file(file) {
         Ok(text) => parse_lines(&text, meta_info),
-        Err(error) => Err(error),
+        Err(error) => Err(ScriptError {
+            info: ErrorInfo::ErrorReadingFile(file.to_string(), Some(error)),
+        }),
     }
 }
 

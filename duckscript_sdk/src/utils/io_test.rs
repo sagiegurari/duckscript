@@ -1,25 +1,5 @@
 use super::*;
-
-#[test]
-fn get_parent_directory_name_with_dir() {
-    let directory = get_parent_directory_name("./dir/file.txt");
-
-    assert_eq!(directory.unwrap(), "./dir");
-}
-
-#[test]
-fn get_parent_directory_name_found() {
-    let directory = get_parent_directory_name("./file.txt");
-
-    assert_eq!(directory.unwrap(), ".");
-}
-
-#[test]
-fn get_parent_directory_name_file_only() {
-    let directory = get_parent_directory_name("file.txt");
-
-    assert!(directory.is_none());
-}
+use std::path::Path;
 
 #[test]
 fn read_text_file_found() {

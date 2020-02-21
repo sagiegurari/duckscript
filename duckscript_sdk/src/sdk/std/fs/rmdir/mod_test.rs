@@ -1,7 +1,8 @@
 use super::*;
 use crate::test;
 use crate::test::CommandValidation;
-use crate::utils::io;
+use fsio;
+use fsio::file::ensure_exists;
 
 #[test]
 fn common_functions() {
@@ -24,7 +25,7 @@ fn run_path_not_exists() {
 
 #[test]
 fn run_path_not_empty() {
-    let result = io::create_directory("./target/_duckscript/rmdir/not_empty/dir1");
+    let result = fsio::directory::create("./target/_duckscript/rmdir/not_empty/dir1");
     assert!(result.is_ok());
 
     test::run_script_and_validate(
@@ -36,7 +37,7 @@ fn run_path_not_empty() {
 
 #[test]
 fn run_path_is_file() {
-    let result = io::create_empty_file("./target/_duckscript/rmdir/file.txt");
+    let result = ensure_exists("./target/_duckscript/rmdir/file.txt");
     assert!(result.is_ok());
 
     test::run_script_and_validate(
@@ -48,7 +49,7 @@ fn run_path_is_file() {
 
 #[test]
 fn run_valid() {
-    let result = io::create_directory("./target/_duckscript/rmdir/existing_dir");
+    let result = fsio::directory::create("./target/_duckscript/rmdir/existing_dir");
     assert!(result.is_ok());
 
     test::run_script_and_validate(

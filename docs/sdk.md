@@ -65,6 +65,7 @@
 * [std::fs::Print (cat)](#std__fs__Print)
 * [std::fs::ReadBytes (readbinfile, read_binary_file)](#std__fs__ReadBytes)
 * [std::fs::ReadText (readfile, read_text_file)](#std__fs__ReadText)
+* [std::fs::TempFile (temp_file)](#std__fs__TempFile)
 * [std::fs::WriteBytes (writebinfile, write_binary_file)](#std__fs__WriteBytes)
 * [std::fs::WriteText (writefile, write_text_file)](#std__fs__WriteText)
 * [std::math::Calc (calc)](#std__math__Calc)
@@ -76,6 +77,7 @@
 * [std::process::Execute (exec)](#std__process__Execute)
 * [std::process::Exit (exit, quit, q)](#std__process__Exit)
 * [std::process::ProcessID (pid, process_id)](#std__process__ProcessID)
+* [std::process::Spawn (spawn)](#std__process__Spawn)
 * [std::process::Watchdog (watchdog)](#std__process__Watchdog)
 * [std::scope::Clear (clear_scope)](#std__scope__Clear)
 * [std::string::Base64 (base64)](#std__string__Base64)
@@ -2477,6 +2479,34 @@ text = readfile ./Cargo.toml
 #### Aliases:
 readfile, read_text_file
 
+<a name="std__fs__TempFile"></a>
+## std::fs::TempFile
+```sh
+path = temp_file [extension]
+```
+
+This command will create a new empty temporary file and return its path.
+
+#### Parameters
+
+Optional file extension.
+
+#### Return Value
+
+The file path.
+
+#### Examples
+
+```sh
+path = temp_file toml
+
+echo ${path}
+```
+
+
+#### Aliases:
+temp_file
+
 <a name="std__fs__WriteBytes"></a>
 ## std::fs::WriteBytes
 ```sh
@@ -2905,6 +2935,35 @@ id = pid
 
 #### Aliases:
 pid, process_id
+
+<a name="std__process__Spawn"></a>
+## std::process::Spawn
+```sh
+pid = spawn command [args]*
+```
+
+Executes the provided native command and arguments.<br>
+It will not wait for the process to finish and will return the process pid.
+
+#### Parameters
+
+The command to execute and its arguments.
+
+#### Return Value
+
+The process pid.
+
+#### Examples
+
+```sh
+pid = spawn echo test
+
+echo PID: ${pid}
+```
+
+
+#### Aliases:
+spawn
 
 <a name="std__process__Watchdog"></a>
 ## std::process::Watchdog

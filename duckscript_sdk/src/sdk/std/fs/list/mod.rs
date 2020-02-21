@@ -1,6 +1,7 @@
-use crate::utils::{flags, io, pckg};
+use crate::utils::{flags, pckg};
 use duckscript::types::command::{Command, CommandResult};
 use fs_extra::dir::{ls, DirEntryAttr, DirEntryValue};
+use fsio::path::{get_basename, get_parent_directory};
 use std::collections::{HashMap, HashSet};
 use std::path::Path;
 
@@ -113,7 +114,7 @@ impl Command for CommandImpl {
             }
 
             let (is_file, query_path) = if path.is_file() {
-                match io::get_parent_directory_name(path_str) {
+                match get_parent_directory(path_str) {
                     Some(value) => (true, value),
                     None => return CommandResult::Continue(Some("false".to_string())),
                 }
@@ -128,7 +129,7 @@ impl Command for CommandImpl {
                     let items = ls_result.items;
 
                     if is_file {
-                        let file_name = match io::get_base_name(path_str) {
+                        let file_name = match get_basename(path_str) {
                             Some(value) => value,
                             None => path_str.to_string(),
                         };

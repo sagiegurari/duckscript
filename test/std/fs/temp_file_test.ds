@@ -1,0 +1,16 @@
+
+fn test_no_extension
+    file = temp_file
+    
+    valid = ends_with ${file} .tmp
+    
+    assert ${valid}
+end
+
+fn test_with_extension
+    file = temp_file txt
+    
+    valid = ends_with ${file} .txt
+    
+    assert ${valid}
+end

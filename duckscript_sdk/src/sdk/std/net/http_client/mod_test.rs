@@ -1,6 +1,7 @@
 use super::*;
 use crate::test;
 use crate::test::{CommandValidation, SetCommand};
+use fsio::file::{delete_ignore_error, read_text_file};
 
 #[test]
 fn common_functions() {
@@ -24,8 +25,8 @@ fn run_get() {
 #[test]
 fn run_get_to_file() {
     let file = "./target/_duckscript/http_client/page.html";
-    let result = io::delete_file(file);
-    assert!(result.is_ok());
+    let result = delete_ignore_error(file);
+    assert!(result);
 
     test::run_script_and_validate(
         vec![create("")],
@@ -33,7 +34,7 @@ fn run_get_to_file() {
         CommandValidation::PositiveNumber("out".to_string())
     );
 
-    let read_result = io::read_text_file(file);
+    let read_result = read_text_file(file);
     assert!(read_result.is_ok());
 
     let text = read_result.unwrap();

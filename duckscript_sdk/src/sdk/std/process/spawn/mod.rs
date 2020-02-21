@@ -1,6 +1,5 @@
-use crate::utils::pckg;
+use crate::utils::{exec, pckg};
 use duckscript::types::command::{Command, CommandResult};
-use fsio;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -13,11 +12,11 @@ pub(crate) struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "CreateDirectory")
+        pckg::concat(&self.package, "Spawn")
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["mkdir".to_string()]
+        vec!["spawn".to_string()]
     }
 
     fn help(&self) -> String {
@@ -29,13 +28,13 @@ impl Command for CommandImpl {
     }
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.is_empty() {
-            CommandResult::Error("Directory name not provided.".to_string())
-        } else {
-            match fsio::directory::create(&arguments[0]) {
-                Ok(_) => CommandResult::Continue(Some("true".to_string())),
-                Err(error) => CommandResult::Error(error.to_string()),
+        match exec::spawn(&arguments, false, false, 0) {
+            Ok(child) => {
+                let pid = child.id();
+
+                CommandResult::Continue(Some(pid.to_string()))
             }
+            Err(error) => CommandResult::Error(error),
         }
     }
 }

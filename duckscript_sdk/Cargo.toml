@@ -27,6 +27,7 @@ attohttpc = "^0.11"
 base64 = "^0.11"
 duckscript = { version = "^0.2.0", path = "../duckscript" }
 fs_extra = "^1"
+fsio = { version = "^0.1", features = ["temp-path"] }
 home = "^0.5"
 java-properties = "^1"
 meval = "^0.2"

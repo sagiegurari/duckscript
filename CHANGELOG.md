@@ -1,5 +1,14 @@
 ## CHANGELOG
 
+### v0.2.1
+
+* New temp_file command #85
+* New spawn command #87
+* Update build makefile.
+* Runtime - Add support for **Any** state type #86
+* SDK - Use fsio crate for file system apis.
+* Runtime - Use fsio crate for file system apis.
+
 ### v0.2.0 (2020-02-06)
 
 * The if/else and not commands now support complex conditions #81

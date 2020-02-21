@@ -22,6 +22,9 @@ include = [
     "/README.md"
 ]
 
+[dependencies]
+fsio = "^0.1"
+
 [badges.travis-ci]
 branch = "master"
 repository = "sagiegurari/duckscript"

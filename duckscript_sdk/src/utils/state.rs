@@ -35,9 +35,7 @@ pub(crate) fn put_handle(state: &mut HashMap<String, StateValue>, value: StateVa
         .collect();
     key.insert_str(0, "handle:");
 
-    let handle_state = get_handles_sub_state(state);
-
-    handle_state.insert(key.clone(), value);
+    return_handle(state, key.clone(), value);
 
     key
 }
@@ -49,6 +47,25 @@ pub(crate) fn get_handle(
     let handle_state = get_handles_sub_state(state);
 
     handle_state.get(&key)
+}
+
+pub(crate) fn remove_handle(
+    state: &mut HashMap<String, StateValue>,
+    key: String,
+) -> Option<StateValue> {
+    let handle_state = get_handles_sub_state(state);
+
+    handle_state.remove(&key)
+}
+
+pub(crate) fn return_handle(
+    state: &mut HashMap<String, StateValue>,
+    key: String,
+    value: StateValue,
+) {
+    let handle_state = get_handles_sub_state(state);
+
+    handle_state.insert(key.clone(), value);
 }
 
 fn ensure_sub_state(key: &str, state: &mut HashMap<String, StateValue>) {
@@ -144,6 +161,7 @@ pub(crate) fn get_as_string(state_value: &StateValue) -> Result<String, String> 
         StateValue::ByteArray(_) => Err("Unsupported value type.".to_string()),
         StateValue::List(_) => Err("Unsupported value type.".to_string()),
         StateValue::SubState(_) => Err("Unsupported value type.".to_string()),
+        StateValue::Any(_) => Err("Unsupported value type.".to_string()),
     }
 }
 
@@ -202,6 +220,10 @@ where
             }
             StateValue::List(value) => {
                 state.insert(key, StateValue::List(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::Any(value) => {
+                state.insert(key, StateValue::Any(value));
                 Err("Invalid handle provided.".to_string())
             }
         },
@@ -264,6 +286,10 @@ where
             }
             StateValue::SubState(value) => {
                 state.insert(key, StateValue::SubState(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::Any(value) => {
+                state.insert(key, StateValue::Any(value));
                 Err("Invalid handle provided.".to_string())
             }
         },

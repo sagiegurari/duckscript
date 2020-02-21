@@ -1,6 +1,6 @@
-use crate::utils::pckg;
+use crate::utils::{io, pckg};
 use duckscript::types::command::{Command, CommandResult};
-use fsio;
+use fsio::path::get_temporary_file_path;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -13,11 +13,11 @@ pub(crate) struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "CreateDirectory")
+        pckg::concat(&self.package, "TempFile")
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["mkdir".to_string()]
+        vec!["temp_file".to_string()]
     }
 
     fn help(&self) -> String {
@@ -29,13 +29,17 @@ impl Command for CommandImpl {
     }
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.is_empty() {
-            CommandResult::Error("Directory name not provided.".to_string())
+        let extension = if arguments.is_empty() {
+            "tmp"
         } else {
-            match fsio::directory::create(&arguments[0]) {
-                Ok(_) => CommandResult::Continue(Some("true".to_string())),
-                Err(error) => CommandResult::Error(error.to_string()),
-            }
+            &arguments[0]
+        };
+
+        let path = get_temporary_file_path(extension);
+
+        match io::create_empty_file(&path) {
+            Ok(()) => CommandResult::Continue(Some(path)),
+            Err(error) => CommandResult::Error(error),
         }
     }
 }

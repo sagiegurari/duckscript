@@ -1,6 +1,8 @@
-use crate::utils::{io, pckg};
+use crate::utils::pckg;
 use attohttpc;
 use duckscript::types::command::{Command, CommandResult};
+use fsio::directory::create_parent;
+use fsio::file::delete;
 use std::fs::File;
 
 #[cfg(test)]
@@ -96,8 +98,8 @@ fn do_request(url: String, options: Options) -> CommandResult {
         Ok(response) => {
             if response.is_success() {
                 match options.output_file {
-                    Some(file) => match io::create_parent_directory(&file) {
-                        Ok(_) => match io::delete_file(&file) {
+                    Some(file) => match create_parent(&file) {
+                        Ok(_) => match delete(&file) {
                             Ok(_) => match File::create(file) {
                                 Ok(file_struct) => match response.write_to(file_struct) {
                                     Ok(size) => CommandResult::Continue(Some(size.to_string())),
@@ -105,7 +107,7 @@ fn do_request(url: String, options: Options) -> CommandResult {
                                 },
                                 Err(error) => CommandResult::Error(error.to_string()),
                             },
-                            Err(error) => CommandResult::Error(error),
+                            Err(error) => CommandResult::Error(error.to_string()),
                         },
                         Err(error) => CommandResult::Error(error.to_string()),
                     },
