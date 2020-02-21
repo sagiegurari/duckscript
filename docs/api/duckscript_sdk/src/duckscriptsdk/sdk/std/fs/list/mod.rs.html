@@ -160,10 +160,12 @@
 <span id="160">160</span>
 <span id="161">161</span>
 <span id="162">162</span>
+<span id="163">163</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::{<span class="ident">flags</span>, <span class="ident">io</span>, <span class="ident">pckg</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::{<span class="ident">flags</span>, <span class="ident">pckg</span>};
 <span class="kw">use</span> <span class="ident">duckscript</span>::<span class="ident">types</span>::<span class="ident">command</span>::{<span class="ident">Command</span>, <span class="ident">CommandResult</span>};
 <span class="kw">use</span> <span class="ident">fs_extra</span>::<span class="ident">dir</span>::{<span class="ident">ls</span>, <span class="ident">DirEntryAttr</span>, <span class="ident">DirEntryValue</span>};
+<span class="kw">use</span> <span class="ident">fsio</span>::<span class="ident">path</span>::{<span class="ident">get_basename</span>, <span class="ident">get_parent_directory</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">Path</span>;
 
@@ -276,7 +278,7 @@
             }
 
             <span class="kw">let</span> (<span class="ident">is_file</span>, <span class="ident">query_path</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">path</span>.<span class="ident">is_file</span>() {
-                <span class="kw">match</span> <span class="ident">io</span>::<span class="ident">get_parent_directory_name</span>(<span class="ident">path_str</span>) {
+                <span class="kw">match</span> <span class="ident">get_parent_directory</span>(<span class="ident">path_str</span>) {
                     <span class="prelude-val">Some</span>(<span class="ident">value</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="bool-val">true</span>, <span class="ident">value</span>),
                     <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">CommandResult</span>::<span class="ident">Continue</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;false&quot;</span>.<span class="ident">to_string</span>())),
                 }
@@ -291,7 +293,7 @@
                     <span class="kw">let</span> <span class="ident">items</span> <span class="op">=</span> <span class="ident">ls_result</span>.<span class="ident">items</span>;
 
                     <span class="kw">if</span> <span class="ident">is_file</span> {
-                        <span class="kw">let</span> <span class="ident">file_name</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">io</span>::<span class="ident">get_base_name</span>(<span class="ident">path_str</span>) {
+                        <span class="kw">let</span> <span class="ident">file_name</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">get_basename</span>(<span class="ident">path_str</span>) {
                             <span class="prelude-val">Some</span>(<span class="ident">value</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">value</span>,
                             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">path_str</span>.<span class="ident">to_string</span>(),
                         };

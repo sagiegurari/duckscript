@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.2.1
+### v0.2.1 (2020-02-21)
 
 * New temp_file command #85
 * New spawn command #87

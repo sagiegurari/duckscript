@@ -121,9 +121,9 @@
 <span class="doccomment">//!</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::<span class="ident">instruction</span>::<span class="ident">InstructionMetaInfo</span>;
+<span class="kw">use</span> <span class="ident">fsio</span>::<span class="ident">error</span>::<span class="ident">FsIOError</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Display</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="attribute">#[<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;./error_test.rs&quot;</span>]</span>
@@ -150,7 +150,7 @@
 <span class="doccomment">/// Holds the error information</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ErrorInfo</span> {
     <span class="doccomment">/// Error Info Type</span>
-    <span class="ident">ErrorReadingFile</span>(<span class="ident">String</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span>),
+    <span class="ident">ErrorReadingFile</span>(<span class="ident">String</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FsIOError</span><span class="op">&gt;</span>),
     <span class="doccomment">/// Error Info Type</span>
     <span class="ident">Initialization</span>(<span class="ident">String</span>),
     <span class="doccomment">/// Error Info Type</span>

@@ -43,6 +43,8 @@
 <span id="43">43</span>
 <span id="44">44</span>
 <span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">append</span>;
 <span class="kw">mod</span> <span class="ident">basename</span>;
@@ -57,6 +59,7 @@
 <span class="kw">mod</span> <span class="ident">read_text</span>;
 <span class="kw">mod</span> <span class="ident">rm</span>;
 <span class="kw">mod</span> <span class="ident">rmdir</span>;
+<span class="kw">mod</span> <span class="ident">temp_file</span>;
 <span class="kw">mod</span> <span class="ident">touch</span>;
 <span class="kw">mod</span> <span class="ident">write_bytes</span>;
 <span class="kw">mod</span> <span class="ident">write_text</span>;
@@ -83,6 +86,7 @@
     <span class="ident">commands</span>.<span class="ident">set</span>(<span class="ident">read_text</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">package</span>))<span class="question-mark">?</span>;
     <span class="ident">commands</span>.<span class="ident">set</span>(<span class="ident">rm</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">package</span>))<span class="question-mark">?</span>;
     <span class="ident">commands</span>.<span class="ident">set</span>(<span class="ident">rmdir</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">package</span>))<span class="question-mark">?</span>;
+    <span class="ident">commands</span>.<span class="ident">set</span>(<span class="ident">temp_file</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">package</span>))<span class="question-mark">?</span>;
     <span class="ident">commands</span>.<span class="ident">set</span>(<span class="ident">touch</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">package</span>))<span class="question-mark">?</span>;
     <span class="ident">commands</span>.<span class="ident">set</span>(<span class="ident">write_bytes</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">package</span>))<span class="question-mark">?</span>;
     <span class="ident">commands</span>.<span class="ident">set</span>(<span class="ident">write_text</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">package</span>))<span class="question-mark">?</span>;
