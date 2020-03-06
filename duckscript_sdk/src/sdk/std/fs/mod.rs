@@ -3,6 +3,7 @@ mod basename;
 mod canonical;
 mod cp;
 mod dirname;
+mod exists;
 mod is_directory;
 mod is_file;
 mod list;
@@ -32,6 +33,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(canonical::create(&package))?;
     commands.set(cp::create(&package))?;
     commands.set(dirname::create(&package))?;
+    commands.set(exists::create(&package))?;
     commands.set(is_directory::create(&package))?;
     commands.set(is_file::create(&package))?;
     commands.set(list::create(&package))?;

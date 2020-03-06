@@ -57,6 +57,7 @@
 * [std::fs::CreateEmptyFile (touch)](#std__fs__CreateEmptyFile)
 * [std::fs::DeleteEmptyDirectory (rmdir)](#std__fs__DeleteEmptyDirectory)
 * [std::fs::DeletePath (rm)](#std__fs__DeletePath)
+* [std::fs::Exists (is_path_exists)](#std__fs__Exists)
 * [std::fs::GetCanonicalPath (canonicalize)](#std__fs__GetCanonicalPath)
 * [std::fs::GetFileName (basename)](#std__fs__GetFileName)
 * [std::fs::GetParentDirectory (dirname)](#std__fs__GetParentDirectory)
@@ -2230,6 +2231,33 @@ deleted = rm -r ./target
 
 #### Aliases:
 rm
+
+<a name="std__fs__Exists"></a>
+## std::fs::Exists
+```sh
+var = is_path_exists path
+```
+
+This command will return true/false based if the provided path points to an existing file system entry.
+
+#### Parameters
+
+The path to check.
+
+#### Return Value
+
+True if the path points to an existing file system entry.
+
+#### Examples
+
+```sh
+existing = is_path_exists ./dir
+existing = is_path_exists ./dir/somefile.txt
+```
+
+
+#### Aliases:
+is_path_exists
 
 <a name="std__fs__GetCanonicalPath"></a>
 ## std::fs::GetCanonicalPath
