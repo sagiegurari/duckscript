@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### v0.2.2
+
+* New is_directory command
+* New is_file command
+
 ### v0.2.1 (2020-02-21)
 
 * New temp_file command #85

@@ -60,6 +60,8 @@
 * [std::fs::GetCanonicalPath (canonicalize)](#std__fs__GetCanonicalPath)
 * [std::fs::GetFileName (basename)](#std__fs__GetFileName)
 * [std::fs::GetParentDirectory (dirname)](#std__fs__GetParentDirectory)
+* [std::fs::IsDirectory (is_directory, is_dir)](#std__fs__IsDirectory)
+* [std::fs::IsFile (is_file)](#std__fs__IsFile)
 * [std::fs::List (ls)](#std__fs__List)
 * [std::fs::MovePath (mv)](#std__fs__MovePath)
 * [std::fs::Print (cat)](#std__fs__Print)
@@ -2309,6 +2311,58 @@ directory = dirname ./dir/file.txt
 
 #### Aliases:
 dirname
+
+<a name="std__fs__IsDirectory"></a>
+## std::fs::IsDirectory
+```sh
+var = is_dir path
+```
+
+This command will return true/false based if the provided path points to an existing directory.
+
+#### Parameters
+
+The path to check.
+
+#### Return Value
+
+True if the path points to an existing directory.
+
+#### Examples
+
+```sh
+existing_dir = is_dir ./dir
+```
+
+
+#### Aliases:
+is_directory, is_dir
+
+<a name="std__fs__IsFile"></a>
+## std::fs::IsFile
+```sh
+var = is_file path
+```
+
+This command will return true/false based if the provided path points to an existing file.
+
+#### Parameters
+
+The path to check.
+
+#### Return Value
+
+True if the path points to an existing file.
+
+#### Examples
+
+```sh
+existing_file = is_file ./dir/somefile.txt
+```
+
+
+#### Aliases:
+is_file
 
 <a name="std__fs__List"></a>
 ## std::fs::List
