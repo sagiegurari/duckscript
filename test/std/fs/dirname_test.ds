@@ -3,11 +3,7 @@ os = os_family
 windows = equals ${os} "windows"
 
 fn test_relative_path
-    if ${windows}
-        value = dirname .\\test.txt
-    else
-        value = dirname ./test.txt
-    end
+    value = dirname ./test.txt
 
     assert_eq ${value} .
 end
@@ -15,7 +11,7 @@ end
 fn test_full_path
     if not ${windows}
         value = dirname /dir/test.txt
-        
+
         assert_eq ${value} /dir
     end
 end
