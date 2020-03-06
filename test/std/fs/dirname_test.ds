@@ -1,6 +1,6 @@
 
 os = os_family
-windows = equals os "windows"
+windows = equals ${os} "windows"
 
 fn test_relative_path
     if ${windows}

@@ -1,9 +1,9 @@
 
 os = os_family
-linux = equals os "linux"
+windows = equals ${os} "windows"
 
 fn test_modify
-    if ${linux}
+    if not ${windows}
         file = set ./target/_duskscript_test/chmod/modify.txt
         touch ${file}
 
