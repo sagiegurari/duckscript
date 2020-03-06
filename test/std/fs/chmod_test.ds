@@ -1,0 +1,28 @@
+
+os = os_family
+windows = equals os "windows"
+
+fn test_modify
+    if not ${windows}
+        file = set ./target/_duskscript_test/chmod/modify.txt
+        touch ${file}
+
+        value = chmod 777 ${file}
+        readonly = is_readonly ${file}
+
+        assert_eq ${value} 511
+        assert_false ${readonly}
+
+        value = chmod 444 ${file}
+        readonly = is_readonly ${file}
+
+        assert_eq ${value} 292
+        assert ${readonly}
+    end
+end
+
+fn test_not_exists
+    value = chmod 777 ./target/test.txt
+
+    assert_false ${value}
+end

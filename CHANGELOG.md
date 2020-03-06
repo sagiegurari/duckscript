@@ -2,6 +2,7 @@
 
 ### v0.2.2
 
+* New chmod command #19
 * New is_readonly command.
 * New is_path_exists command.
 * New is_directory command.

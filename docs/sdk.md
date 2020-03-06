@@ -69,6 +69,7 @@
 * [std::fs::Print (cat)](#std__fs__Print)
 * [std::fs::ReadBytes (readbinfile, read_binary_file)](#std__fs__ReadBytes)
 * [std::fs::ReadText (readfile, read_text_file)](#std__fs__ReadText)
+* [std::fs::SetMode (chmod)](#std__fs__SetMode)
 * [std::fs::TempFile (temp_file)](#std__fs__TempFile)
 * [std::fs::WriteBytes (writebinfile, write_binary_file)](#std__fs__WriteBytes)
 * [std::fs::WriteText (writefile, write_text_file)](#std__fs__WriteText)
@@ -2587,6 +2588,34 @@ text = readfile ./Cargo.toml
 
 #### Aliases:
 readfile, read_text_file
+
+<a name="std__fs__SetMode"></a>
+## std::fs::SetMode
+```sh
+result = chmod mode path
+```
+
+This command will update the mode for the given path.<br>
+**This command is currently only available for unix like systems and will return false for all others such as windows.**
+
+#### Parameters
+
+* The new mode, for example 755
+* The path
+
+#### Return Value
+
+The new mode as decimal number or false in case of any error.
+
+#### Examples
+
+```sh
+chmod 777 ./myfile.txt
+```
+
+
+#### Aliases:
+chmod
 
 <a name="std__fs__TempFile"></a>
 ## std::fs::TempFile
