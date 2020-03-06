@@ -6,7 +6,7 @@ fn test_relative_path
 end
 
 fn test_full_path
-    basename /dir/dir/test.txt
+    value = basename /dir/dir/test.txt
 
     assert_eq ${value} test.txt
 end
