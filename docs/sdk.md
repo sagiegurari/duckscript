@@ -63,6 +63,7 @@
 * [std::fs::GetParentDirectory (dirname)](#std__fs__GetParentDirectory)
 * [std::fs::IsDirectory (is_directory, is_dir)](#std__fs__IsDirectory)
 * [std::fs::IsFile (is_file)](#std__fs__IsFile)
+* [std::fs::IsReadonly (is_readonly)](#std__fs__IsReadonly)
 * [std::fs::List (ls)](#std__fs__List)
 * [std::fs::MovePath (mv)](#std__fs__MovePath)
 * [std::fs::Print (cat)](#std__fs__Print)
@@ -2391,6 +2392,32 @@ existing_file = is_file ./dir/somefile.txt
 
 #### Aliases:
 is_file
+
+<a name="std__fs__IsReadonly"></a>
+## std::fs::IsReadonly
+```sh
+var = is_readonly path
+```
+
+This command will return true/false based if the provided path exists and is set to readonly.
+
+#### Parameters
+
+The path to check.
+
+#### Return Value
+
+True if the provided path exists and is set to readonly.
+
+#### Examples
+
+```sh
+readonly = is_readonly ./dir/somefile.txt
+```
+
+
+#### Aliases:
+is_readonly
 
 <a name="std__fs__List"></a>
 ## std::fs::List

@@ -6,6 +6,7 @@ mod dirname;
 mod exists;
 mod is_directory;
 mod is_file;
+mod is_readonly;
 mod list;
 mod mkdir;
 mod mv;
@@ -36,6 +37,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(exists::create(&package))?;
     commands.set(is_directory::create(&package))?;
     commands.set(is_file::create(&package))?;
+    commands.set(is_readonly::create(&package))?;
     commands.set(list::create(&package))?;
     commands.set(mkdir::create(&package))?;
     commands.set(mv::create(&package))?;

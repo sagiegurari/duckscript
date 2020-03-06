@@ -1,0 +1,20 @@
+
+fn test_not_readonly
+    value = is_readonly ./Cargo.toml
+
+    error = get_last_error
+    empty = is_empty ${error}
+    assert ${empty}
+
+    assert_false ${value}
+end
+
+fn test_not_found
+    value = is_readonly ./badpath
+
+    error = get_last_error
+    empty = is_empty ${error}
+    assert_false ${empty}
+
+    assert_false ${value}
+end
