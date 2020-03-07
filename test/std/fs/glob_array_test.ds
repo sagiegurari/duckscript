@@ -1,0 +1,83 @@
+
+fn test_found_all
+    mkdir ./target/_duckscript/glob/test_found_all/dir1/dir12
+    mkdir ./target/_duckscript/glob/test_found_all/dir2
+    mkdir ./target/_duckscript/glob/test_found_all/dir3/file.txt
+
+    handle = glob_array ./target/_duckscript/glob/test_found_all/**/*
+    size = array_length ${handle}
+    assert_eq ${size} 5
+
+    expected = map
+    map_put ${expected} target/_duckscript/glob/test_found_all/dir1 true
+    map_put ${expected} target/_duckscript/glob/test_found_all/dir1/dir12 true
+    map_put ${expected} target/_duckscript/glob/test_found_all/dir2 true
+    map_put ${expected} target/_duckscript/glob/test_found_all/dir3 true
+    map_put ${expected} target/_duckscript/glob/test_found_all/dir3/file.txt true
+
+    size = map_size ${expected}
+    assert_eq ${size} 5
+
+    for path in ${handle}
+        map_remove ${expected} ${path}
+    end
+
+    size = map_size ${expected}
+    assert_eq ${size} 0
+
+    release ${expected}
+    release ${handle}
+end
+
+fn test_found_file_only
+    mkdir ./target/_duckscript/glob/test_found_file_only/dir1/dir12
+    mkdir ./target/_duckscript/glob/test_found_file_only/dir2
+    mkdir ./target/_duckscript/glob/test_found_file_only/dir3/file.txt
+
+    handle = glob_array ./target/_duckscript/glob/test_found_file_only/**/*.txt
+    size = array_length ${handle}
+    assert_eq ${size} 1
+
+    expected = map
+    map_put ${expected} target/_duckscript/glob/test_found_file_only/dir3/file.txt true
+
+    size = map_size ${expected}
+    assert_eq ${size} 1
+
+    for path in ${handle}
+        map_remove ${expected} ${path}
+    end
+
+    size = map_size ${expected}
+    assert_eq ${size} 0
+
+    release ${expected}
+    release ${handle}
+end
+
+fn test_found_sub_tree
+    mkdir ./target/_duckscript/glob/test_found_sub_tree/dir1/dir12
+    mkdir ./target/_duckscript/glob/test_found_sub_tree/dir2
+    mkdir ./target/_duckscript/glob/test_found_sub_tree/dir3/dir31/file.txt
+
+    handle = glob_array ./target/_duckscript/glob/test_found_sub_tree/dir3/**/*
+    size = array_length ${handle}
+    assert_eq ${size} 2
+
+    expected = map
+    map_put ${expected} target/_duckscript/glob/test_found_sub_tree/dir3/dir31 true
+    map_put ${expected} target/_duckscript/glob/test_found_sub_tree/dir3/dir31/file.txt true
+
+    size = map_size ${expected}
+    assert_eq ${size} 2
+
+    for path in ${handle}
+        map_remove ${expected} ${path}
+    end
+
+    size = map_size ${expected}
+    assert_eq ${size} 0
+
+    release ${expected}
+    release ${handle}
+end

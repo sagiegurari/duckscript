@@ -61,6 +61,7 @@
 * [std::fs::GetCanonicalPath (canonicalize)](#std__fs__GetCanonicalPath)
 * [std::fs::GetFileName (basename)](#std__fs__GetFileName)
 * [std::fs::GetParentDirectory (dirname)](#std__fs__GetParentDirectory)
+* [std::fs::GlobArray (glob_array, globarray)](#std__fs__GlobArray)
 * [std::fs::IsDirectory (is_directory, is_dir)](#std__fs__IsDirectory)
 * [std::fs::IsFile (is_file)](#std__fs__IsFile)
 * [std::fs::IsReadonly (is_readonly)](#std__fs__IsReadonly)
@@ -2341,6 +2342,37 @@ directory = dirname ./dir/file.txt
 
 #### Aliases:
 dirname
+
+<a name="std__fs__GlobArray"></a>
+## std::fs::GlobArray
+```sh
+handle = glob_array pattern
+```
+
+Returns an array handle containing all path entries found from the provided glob pattern.<br>
+The pattern can be a relative path from current directory or an absolute path.
+
+#### Parameters
+
+The glob pattern.
+
+#### Return Value
+
+The array handle.
+
+#### Examples
+
+```sh
+handle = glob_array ./somedir/**/*.txt
+
+for path in ${handle}
+    echo ${path}
+end
+```
+
+
+#### Aliases:
+glob_array, globarray
 
 <a name="std__fs__IsDirectory"></a>
 ## std::fs::IsDirectory

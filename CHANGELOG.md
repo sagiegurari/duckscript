@@ -2,6 +2,7 @@
 
 ### v0.2.2
 
+* New glob_array command #90
 * New chmod command #19
 * New is_readonly command.
 * New is_path_exists command.
