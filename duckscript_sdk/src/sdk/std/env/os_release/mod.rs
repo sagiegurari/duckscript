@@ -5,6 +5,23 @@ use duckscript::types::command::{Command, CommandResult};
 #[path = "./mod_test.rs"]
 mod mod_test;
 
+cfg_if::cfg_if! {
+    if #[cfg(windows)] {
+        fn get_os_value() -> Result<String, String> {
+            Err("Not Supported.".to_string())
+        }
+    } else {
+        use uname::uname;
+
+        fn get_os_value() -> Result<String, String> {
+            match uname() {
+                Ok(info) => Ok(info.release),
+                Err(error) => Err(error.to_string()),
+            }
+        }
+    }
+}
+
 #[derive(Clone)]
 pub(crate) struct CommandImpl {
     package: String,
@@ -28,15 +45,9 @@ impl Command for CommandImpl {
     }
 
     fn run(&self, _arguments: Vec<String>) -> CommandResult {
-        if cfg!(windows) {
-            CommandResult::Error("Not Supported.".to_string())
-        } else {
-            use uname::uname;
-
-            match uname() {
-                Ok(info) => CommandResult::Continue(Some(info.release)),
-                Err(error) => CommandResult::Error(error.to_string()),
-            }
+        match get_os_value() {
+            Ok(value) => CommandResult::Continue(Some(value)),
+            Err(error) => CommandResult::Error(error),
         }
     }
 }
