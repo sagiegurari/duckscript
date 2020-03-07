@@ -2,6 +2,7 @@
 
 ### v0.2.2
 
+* New is_windows command.
 * New glob_chmod command.
 * New glob_array command #90
 * New chmod command #19

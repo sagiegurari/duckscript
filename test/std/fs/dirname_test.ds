@@ -1,6 +1,5 @@
 
-os = os_family
-windows = equals ${os} "windows"
+windows = is_windows
 
 fn test_relative_path
     value = dirname ./test.txt

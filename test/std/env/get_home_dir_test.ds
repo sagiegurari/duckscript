@@ -1,8 +1,8 @@
 
 fn test_get
-    os = os_family
+    windows = is_windows
     
-    if not equals ${os} windows
+    if not ${windows}
         directory = get_home_dir
         empty = is_empty ${directory}
         not_false = not equals false ${directory}
