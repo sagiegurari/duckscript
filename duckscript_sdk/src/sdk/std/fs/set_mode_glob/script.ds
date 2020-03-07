@@ -1,0 +1,11 @@
+
+scope::glob_chmod::handle = glob_array ${scope::glob_chmod::argument::2}
+scope::glob_chmod::count = array_length ${scope::glob_chmod::handle}
+
+for scope::glob_chmod::entry in ${scope::glob_chmod::handle}
+    chmod ${scope::glob_chmod::argument::1} ${scope::glob_chmod::entry}
+end
+
+release ${scope::glob_chmod::handle}
+
+set ${scope::glob_chmod::count}

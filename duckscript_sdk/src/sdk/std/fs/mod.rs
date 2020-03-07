@@ -17,6 +17,7 @@ mod read_text;
 mod rm;
 mod rmdir;
 mod set_mode;
+mod set_mode_glob;
 mod temp_file;
 mod touch;
 mod write_bytes;
@@ -50,6 +51,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(rm::create(&package))?;
     commands.set(rmdir::create(&package))?;
     commands.set(set_mode::create(&package))?;
+    commands.set(set_mode_glob::create(&package)?)?;
     commands.set(temp_file::create(&package))?;
     commands.set(touch::create(&package))?;
     commands.set(write_bytes::create(&package))?;

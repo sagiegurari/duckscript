@@ -2,12 +2,14 @@
 
 ### v0.2.2
 
+* New glob_chmod command.
 * New glob_array command #90
 * New chmod command #19
 * New is_readonly command.
 * New is_path_exists command.
 * New is_directory command.
 * New is_file command.
+* Runtime - Fix value expansion for control characters
 
 ### v0.2.1 (2020-02-21)
 

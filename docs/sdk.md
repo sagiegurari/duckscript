@@ -71,6 +71,7 @@
 * [std::fs::ReadBytes (readbinfile, read_binary_file)](#std__fs__ReadBytes)
 * [std::fs::ReadText (readfile, read_text_file)](#std__fs__ReadText)
 * [std::fs::SetMode (chmod)](#std__fs__SetMode)
+* [std::fs::SetModeGlob (glob_chmod)](#std__fs__SetModeGlob)
 * [std::fs::TempFile (temp_file)](#std__fs__TempFile)
 * [std::fs::WriteBytes (writebinfile, write_binary_file)](#std__fs__WriteBytes)
 * [std::fs::WriteText (writefile, write_text_file)](#std__fs__WriteText)
@@ -2648,6 +2649,72 @@ chmod 777 ./myfile.txt
 
 #### Aliases:
 chmod
+
+<a name="std__fs__SetModeGlob"></a>
+## std::fs::SetModeGlob
+
+```sh
+result = glob_chmod mode glob
+```
+
+This command will update the mode for the given glob pattern.<br>
+**This command is currently only available for unix like systems and will return false for all others such as windows.**
+
+#### Parameters
+
+* The new mode, for example 755
+* The path glob
+
+#### Return Value
+
+The amount of path entries affected by the operation or false in case of any error.
+
+#### Examples
+
+```sh
+file1 = set ./target/_duskscript_test/glob_chmod/modify1.txt
+touch ${file1}
+file2 = set ./target/_duskscript_test/glob_chmod/modify2.txt
+touch ${file2}
+
+count = glob_chmod 777 ./target/_duskscript_test/glob_chmod/**/*.txt
+assert_eq ${count} 2
+
+readonly = is_readonly ${file1}
+assert_false ${readonly}
+readonly = is_readonly ${file2}
+assert_false ${readonly}
+
+count = glob_chmod 444 ./target/_duskscript_test/glob_chmod/**/*.txt
+assert_eq ${count} 2
+
+readonly = is_readonly ${file1}
+assert ${readonly}
+readonly = is_readonly ${file2}
+assert ${readonly}
+```
+
+
+#### Source:
+
+```sh
+
+scope::glob_chmod::handle = glob_array ${scope::glob_chmod::argument::2}
+scope::glob_chmod::count = array_length ${scope::glob_chmod::handle}
+
+for scope::glob_chmod::entry in ${scope::glob_chmod::handle}
+    chmod ${scope::glob_chmod::argument::1} ${scope::glob_chmod::entry}
+end
+
+release ${scope::glob_chmod::handle}
+
+set ${scope::glob_chmod::count}
+
+```
+
+
+#### Aliases:
+glob_chmod
 
 <a name="std__fs__TempFile"></a>
 ## std::fs::TempFile
