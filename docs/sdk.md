@@ -36,7 +36,13 @@
 * [std::debug::DumpState (dump_state)](#std__debug__DumpState)
 * [std::debug::DumpVariables (dump_variables)](#std__debug__DumpVariables)
 * [std::env::GetHomeDirectory (get_home_dir)](#std__env__GetHomeDirectory)
+* [std::env::GetOSFamily (os_family)](#std__env__GetOSFamily)
+* [std::env::GetOSName (os_name)](#std__env__GetOSName)
+* [std::env::GetOSRelease (os_release)](#std__env__GetOSRelease)
+* [std::env::GetOSVersion (os_version)](#std__env__GetOSVersion)
+* [std::env::GetUserName (whoami, get_user_name)](#std__env__GetUserName)
 * [std::env::GetVar (get_env)](#std__env__GetVar)
+* [std::env::IsWindows (is_windows)](#std__env__IsWindows)
 * [std::env::PrintCurrentDirectory (pwd, print_current_directory)](#std__env__PrintCurrentDirectory)
 * [std::env::SetCurrentDirectory (cd, set_current_dir, set_current_directory)](#std__env__SetCurrentDirectory)
 * [std::env::SetVar (set_env)](#std__env__SetVar)
@@ -1449,6 +1455,136 @@ directory = get_home_dir
 #### Aliases:
 get_home_dir
 
+<a name="std__env__GetOSFamily"></a>
+## std::env::GetOSFamily
+```sh
+var = os_family
+```
+
+Returns the OS family (windows, linux, mac).
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The OS family (windows, linux, mac).
+
+#### Examples
+
+```sh
+name = os_family
+```
+
+
+#### Aliases:
+os_family
+
+<a name="std__env__GetOSName"></a>
+## std::env::GetOSName
+```sh
+var = os_name
+```
+
+Returns the OS name.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The OS name.
+
+#### Examples
+
+```sh
+name = os_name
+```
+
+
+#### Aliases:
+os_name
+
+<a name="std__env__GetOSRelease"></a>
+## std::env::GetOSRelease
+```sh
+var = os_release
+```
+
+Returns the OS release.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The OS release.
+
+#### Examples
+
+```sh
+release = os_release
+```
+
+
+#### Aliases:
+os_release
+
+<a name="std__env__GetOSVersion"></a>
+## std::env::GetOSVersion
+```sh
+var = os_version
+```
+
+Returns the OS version.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The OS version.
+
+#### Examples
+
+```sh
+version = os_version
+```
+
+
+#### Aliases:
+os_version
+
+<a name="std__env__GetUserName"></a>
+## std::env::GetUserName
+```sh
+var = whoami
+```
+
+Returns the current user name.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The current user name.
+
+#### Examples
+
+```sh
+name = whoami
+```
+
+
+#### Aliases:
+whoami, get_user_name
+
 <a name="std__env__GetVar"></a>
 ## std::env::GetVar
 ```sh
@@ -1474,6 +1610,43 @@ home = get_env HOME
 
 #### Aliases:
 get_env
+
+<a name="std__env__IsWindows"></a>
+## std::env::IsWindows
+
+```sh
+var = is_windows
+```
+
+Returns true if the current OS family is windows.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+True if the current OS family is windows.
+
+#### Examples
+
+```sh
+windows = is_windows
+```
+
+
+#### Source:
+
+```sh
+
+scope::is_windows::os = os_family
+equals ${scope::is_windows::os} windows
+
+```
+
+
+#### Aliases:
+is_windows
 
 <a name="std__env__PrintCurrentDirectory"></a>
 ## std::env::PrintCurrentDirectory

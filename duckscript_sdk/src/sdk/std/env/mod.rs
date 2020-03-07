@@ -23,12 +23,12 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
 
     commands.set(get::create(&package))?;
     commands.set(get_home_dir::create(&package))?;
-    commands.set(get_user_name::create(PACKAGE))?;
-    commands.set(is_windows::create(PACKAGE)?)?;
-    commands.set(os_family::create(PACKAGE))?;
-    commands.set(os_name::create(PACKAGE))?;
-    commands.set(os_release::create(PACKAGE))?;
-    commands.set(os_version::create(PACKAGE))?;
+    commands.set(get_user_name::create(&package))?;
+    commands.set(is_windows::create(&package)?)?;
+    commands.set(os_family::create(&package))?;
+    commands.set(os_name::create(&package))?;
+    commands.set(os_release::create(&package))?;
+    commands.set(os_version::create(&package))?;
     commands.set(print_current_directory::create(&package))?;
     commands.set(set::create(&package))?;
     commands.set(set_current_directory::create(&package))?;
