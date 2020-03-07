@@ -1,5 +1,6 @@
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
+use uname::uname;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -12,11 +13,11 @@ pub(crate) struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "GetOSFamily")
+        pckg::concat(&self.package, "GetOSVersion")
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["os_family".to_string()]
+        vec!["os_version".to_string()]
     }
 
     fn help(&self) -> String {
@@ -28,15 +29,10 @@ impl Command for CommandImpl {
     }
 
     fn run(&self, _arguments: Vec<String>) -> CommandResult {
-        let value = if cfg!(windows) {
-            "windows".to_string()
-        } else if cfg!(target_os = "macos") || cfg!(target_os = "ios") {
-            "mac".to_string()
-        } else {
-            "linux".to_string()
-        };
-
-        CommandResult::Continue(Some(value))
+        match uname() {
+            Ok(info) => CommandResult::Continue(Some(info.version)),
+            Err(error) => CommandResult::Error(error.to_string()),
+        }
     }
 }
 

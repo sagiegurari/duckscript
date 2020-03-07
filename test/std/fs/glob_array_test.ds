@@ -20,7 +20,6 @@ fn test_found_all
 
     for path in ${handle}
         unix_path = replace ${path} \\ /
-        echo ${path} ${unix_path}
         map_remove ${expected} ${unix_path}
     end
 

@@ -3,9 +3,13 @@ mod get_home_dir;
 mod get_user_name;
 mod is_windows;
 mod os_family;
+mod os_name;
+mod os_release;
+mod os_version;
 mod print_current_directory;
 mod set;
 mod set_current_directory;
+mod uname;
 mod unset;
 
 use crate::utils::pckg;
@@ -22,9 +26,13 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(get_user_name::create(PACKAGE))?;
     commands.set(is_windows::create(PACKAGE)?)?;
     commands.set(os_family::create(PACKAGE))?;
+    commands.set(os_name::create(PACKAGE))?;
+    commands.set(os_release::create(PACKAGE))?;
+    commands.set(os_version::create(PACKAGE))?;
     commands.set(print_current_directory::create(&package))?;
     commands.set(set::create(&package))?;
     commands.set(set_current_directory::create(&package))?;
+    commands.set(uname::create(&package)?)?;
     commands.set(unset::create(&package))?;
 
     Ok(())

@@ -34,6 +34,7 @@ home = "^0.5"
 java-properties = "^1"
 meval = "^0.2"
 rand = "^0.7"
+uname = "^0.1"
 walkdir = "^2"
 whoami = "^0.7"
 

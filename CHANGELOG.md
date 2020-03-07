@@ -2,6 +2,10 @@
 
 ### v0.2.2
 
+* \[Breaking Change\] uname is now a new command and does not alias os_family command.
+* New os_version command.
+* New os_release command.
+* New os_name command.
 * New is_windows command.
 * New glob_chmod command.
 * New glob_array command #90

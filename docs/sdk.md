@@ -40,6 +40,7 @@
 * [std::env::PrintCurrentDirectory (pwd, print_current_directory)](#std__env__PrintCurrentDirectory)
 * [std::env::SetCurrentDirectory (cd, set_current_dir, set_current_directory)](#std__env__SetCurrentDirectory)
 * [std::env::SetVar (set_env)](#std__env__SetVar)
+* [std::env::UName (uname)](#std__env__UName)
 * [std::env::UnsetVar (unset_env)](#std__env__UnsetVar)
 * [std::error::GetLastError (get_last_error)](#std__error__GetLastError)
 * [std::error::GetLastErrorLine (get_last_error_line)](#std__error__GetLastErrorLine)
@@ -1564,6 +1565,51 @@ set_env HOME /usr/me
 
 #### Aliases:
 set_env
+
+<a name="std__env__UName"></a>
+## std::env::UName
+
+```sh
+var = uname [-a]
+```
+
+Acts similar to uname on unix like systems.
+
+#### Parameters
+
+* Optional -a for extended information.
+
+#### Return Value
+
+The OS name and optionally extra information.
+
+#### Examples
+
+```sh
+value = uname -a
+```
+
+
+#### Source:
+
+```sh
+
+scope::uname::extended_info = equals -a ${scope::uname::argument::1}
+scope::uname::info = os_name
+
+if ${scope::uname::extended_info}
+    scope::uname::release = os_release
+    scope::uname::version = os_version
+    scope::uname::info = set "${scope::uname::info} ${scope::uname::release} ${scope::uname::version}"
+end
+
+set ${scope::uname::info}
+
+```
+
+
+#### Aliases:
+uname
 
 <a name="std__env__UnsetVar"></a>
 ## std::env::UnsetVar
