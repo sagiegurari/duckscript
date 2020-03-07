@@ -19,7 +19,9 @@ fn test_found_all
     assert_eq ${size} 5
 
     for path in ${handle}
-        map_remove ${expected} ${path}
+        unix_path = replace ${path} \\ /
+        echo ${path} ${unix_path}
+        map_remove ${expected} ${unix_path}
     end
 
     size = map_size ${expected}
@@ -45,7 +47,8 @@ fn test_found_file_only
     assert_eq ${size} 1
 
     for path in ${handle}
-        map_remove ${expected} ${path}
+        unix_path = replace ${path} \\ /
+        map_remove ${expected} ${unix_path}
     end
 
     size = map_size ${expected}
@@ -72,7 +75,8 @@ fn test_found_sub_tree
     assert_eq ${size} 2
 
     for path in ${handle}
-        map_remove ${expected} ${path}
+        unix_path = replace ${path} \\ /
+        map_remove ${expected} ${unix_path}
     end
 
     size = map_size ${expected}

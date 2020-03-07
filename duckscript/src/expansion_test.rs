@@ -8,6 +8,30 @@ fn get_single_value(output: ExpandedValue) -> String {
 }
 
 #[test]
+fn expand_by_wrapper_control_chars() {
+    let mut variables = HashMap::new();
+    variables.insert("FOUND".to_string(), r#"abc/123\\123"#.to_string());
+
+    let output = expand_by_wrapper("${FOUND}", &InstructionMetaInfo::new(), &mut variables);
+
+    let value = get_single_value(output);
+
+    assert_eq!(r#"abc/123\\123"#, value);
+}
+
+#[test]
+fn expand_by_wrapper_only_control_chars() {
+    let mut variables = HashMap::new();
+    variables.insert("FOUND".to_string(), r#"\\"#.to_string());
+
+    let output = expand_by_wrapper("${FOUND}", &InstructionMetaInfo::new(), &mut variables);
+
+    let value = get_single_value(output);
+
+    assert_eq!(r#"\\"#, value);
+}
+
+#[test]
 fn expand_by_wrapper_found_fully() {
     let mut variables = HashMap::new();
     variables.insert("FOUND1".to_string(), "test1".to_string());
