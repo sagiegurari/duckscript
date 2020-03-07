@@ -2,7 +2,8 @@
 var = os_release
 ```
 
-Returns the OS release.
+Returns the OS release.<br>
+**This command is not supported on windows.**
 
 #### Parameters
 

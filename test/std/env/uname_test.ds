@@ -1,4 +1,6 @@
 
+windows = is_windows
+
 fn test_uname
     name = os_name
     info = uname
@@ -7,8 +9,12 @@ end
 
 fn test_uname_extended
     name = os_name
-    release = os_release
-    version = os_version
     info = uname -a
-    assert_eq "${name} ${release} ${version}" ${info}
+    if ${windows}
+        assert_eq ${name} ${info}
+    else
+        release = os_release
+        version = os_version
+        assert_eq "${name} ${release} ${version}" ${info}
+    end
 end

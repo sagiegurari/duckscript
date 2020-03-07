@@ -1,6 +1,5 @@
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
-use uname::uname;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -29,9 +28,15 @@ impl Command for CommandImpl {
     }
 
     fn run(&self, _arguments: Vec<String>) -> CommandResult {
-        match uname() {
-            Ok(info) => CommandResult::Continue(Some(info.release)),
-            Err(error) => CommandResult::Error(error.to_string()),
+        if cfg!(windows) {
+            CommandResult::Error("Not Supported.".to_string())
+        } else {
+            use uname::uname;
+
+            match uname() {
+                Ok(info) => CommandResult::Continue(Some(info.release)),
+                Err(error) => CommandResult::Error(error.to_string()),
+            }
         }
     }
 }

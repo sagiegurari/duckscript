@@ -2,7 +2,8 @@
 var = os_version
 ```
 
-Returns the OS version.
+Returns the OS version.<br>
+**This command is not supported on windows.**
 
 #### Parameters
 

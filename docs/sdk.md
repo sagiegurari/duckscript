@@ -1513,7 +1513,8 @@ os_name
 var = os_release
 ```
 
-Returns the OS release.
+Returns the OS release.<br>
+**This command is not supported on windows.**
 
 #### Parameters
 
@@ -1539,7 +1540,8 @@ os_release
 var = os_version
 ```
 
-Returns the OS version.
+Returns the OS version.<br>
+**This command is not supported on windows.**
 
 #### Parameters
 
@@ -1750,7 +1752,7 @@ Acts similar to uname on unix like systems.
 
 #### Parameters
 
-* Optional -a for extended information.
+* Optional -a for extended information (not supported on windows).
 
 #### Return Value
 
@@ -1770,7 +1772,9 @@ value = uname -a
 scope::uname::extended_info = equals -a ${scope::uname::argument::1}
 scope::uname::info = os_name
 
-if ${scope::uname::extended_info}
+scope::uname::not_windows = not is_windows
+
+if ${scope::uname::extended_info} and ${scope::uname::not_windows}
     scope::uname::release = os_release
     scope::uname::version = os_version
     scope::uname::info = set "${scope::uname::info} ${scope::uname::release} ${scope::uname::version}"
