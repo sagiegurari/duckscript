@@ -82,6 +82,7 @@
 * [std::fs::WriteText (writefile, write_text_file)](#std__fs__WriteText)
 * [std::lib::alias::Set (alias)](#std__lib__alias__Set)
 * [std::lib::alias::Unset (unalias)](#std__lib__alias__Unset)
+* [std::lib::command::Remove (remove_command)](#std__lib__command__Remove)
 * [std::math::Calc (calc)](#std__math__Calc)
 * [std::math::GreaterThan (greater_than)](#std__math__GreaterThan)
 * [std::math::LessThan (less_than)](#std__math__LessThan)
@@ -3028,6 +3029,32 @@ my_echo hello world
 
 #### Aliases:
 unalias
+
+<a name="std__lib__command__Remove"></a>
+## std::lib::command::Remove
+```sh
+remove_command name
+```
+
+Removes a command and all its aliases.
+
+#### Parameters
+
+The command or alias name to remove.
+
+#### Return Value
+
+A true/false value in case a command was removed.
+
+#### Examples
+
+```sh
+remove_command set
+```
+
+
+#### Aliases:
+remove_command
 
 <a name="std__math__Calc"></a>
 ## std::math::Calc

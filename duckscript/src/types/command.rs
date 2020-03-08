@@ -204,7 +204,14 @@ impl Commands {
         };
 
         match self.commands.remove(command_name) {
-            Some(_) => true,
+            Some(command) => {
+                let aliases = command.aliases();
+                for alias in &aliases {
+                    self.aliases.remove(alias);
+                }
+
+                true
+            }
             None => false,
         }
     }

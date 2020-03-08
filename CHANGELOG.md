@@ -2,6 +2,7 @@
 
 ### v0.3.0
 
+* New remove_command command #91
 * \[Breaking Change\] uname is now a new command and does not alias os_family command.
 * New os_version command.
 * New os_release command.

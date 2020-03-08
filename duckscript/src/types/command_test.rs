@@ -218,3 +218,39 @@ fn commands_remove() {
     assert!(commands.get("test11").is_none());
     assert!(!commands.remove("test11"));
 }
+
+#[test]
+fn commands_remove_via_name() {
+    let command = TestCommand1 {};
+    let mut commands = Commands::new();
+
+    commands.set(Box::new(command)).unwrap();
+
+    assert_eq!(commands.get("test11").unwrap().name(), "test1");
+    assert!(commands.exists("test1"));
+    assert!(commands.exists("test11"));
+    assert!(commands.exists("test12"));
+    assert!(commands.remove("test1"));
+    assert!(!commands.exists("test1"));
+    assert!(!commands.exists("test11"));
+    assert!(!commands.exists("test12"));
+    assert!(!commands.remove("test1"));
+}
+
+#[test]
+fn commands_remove_via_alias() {
+    let command = TestCommand1 {};
+    let mut commands = Commands::new();
+
+    commands.set(Box::new(command)).unwrap();
+
+    assert_eq!(commands.get("test11").unwrap().name(), "test1");
+    assert!(commands.exists("test1"));
+    assert!(commands.exists("test11"));
+    assert!(commands.exists("test12"));
+    assert!(commands.remove("test12"));
+    assert!(!commands.exists("test1"));
+    assert!(!commands.exists("test11"));
+    assert!(!commands.exists("test12"));
+    assert!(!commands.remove("test12"));
+}

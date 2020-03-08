@@ -1,4 +1,5 @@
 mod alias;
+mod command;
 
 use crate::utils::pckg;
 use duckscript::types::command::Commands;
@@ -10,6 +11,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     let package = pckg::concat(parent, PACKAGE);
 
     alias::load(commands, &package)?;
+    command::load(commands, &package)?;
 
     Ok(())
 }
