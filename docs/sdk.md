@@ -7,8 +7,6 @@
 * [std::Release (release)](#std__Release)
 * [std::Set (set)](#std__Set)
 * [std::ShowCommandDocumentation (man)](#std__ShowCommandDocumentation)
-* [std::alias::Set (alias)](#std__alias__Set)
-* [std::alias::Unset (unalias)](#std__alias__Unset)
 * [std::collections::Array (array)](#std__collections__Array)
 * [std::collections::ArrayConcat (array_concat)](#std__collections__ArrayConcat)
 * [std::collections::ArrayIsEmpty (array_is_empty)](#std__collections__ArrayIsEmpty)
@@ -82,6 +80,8 @@
 * [std::fs::TempFile (temp_file)](#std__fs__TempFile)
 * [std::fs::WriteBytes (writebinfile, write_binary_file)](#std__fs__WriteBytes)
 * [std::fs::WriteText (writefile, write_text_file)](#std__fs__WriteText)
+* [std::lib::alias::Set (alias)](#std__lib__alias__Set)
+* [std::lib::alias::Unset (unalias)](#std__lib__alias__Unset)
 * [std::math::Calc (calc)](#std__math__Calc)
 * [std::math::GreaterThan (greater_than)](#std__math__GreaterThan)
 * [std::math::LessThan (less_than)](#std__math__LessThan)
@@ -424,72 +424,6 @@ man set
 
 #### Aliases:
 man
-
-<a name="std__alias__Set"></a>
-## std::alias::Set
-```sh
-var = alias command arguments
-```
-
-This command enables to define new commands with default arguments.<br>
-The new alias can be invoked with additional arguments that will be appended to the default set.
-
-#### Parameters
-
-Any number of arguments which will be added to the already defined arguments set during the aliasing.
-
-#### Return Value
-
-**true** if the alias was created, else **false**.
-
-#### Examples
-
-```sh
-# This example creates a new **my_echo** alias that will print the prefix before the requested arguments.
-created = alias my_echo echo [ECHO]
-
-# This will print "[ECHO] hello world "
-created = my_echo hello world
-```
-
-
-#### Aliases:
-alias
-
-<a name="std__alias__Unset"></a>
-## std::alias::Unset
-```sh
-unalias name
-```
-
-Removes previously defined alias and return true/false based if an alias was actually removed.
-
-#### Parameters
-
-The alias name to remove.
-
-#### Return Value
-
-A true/false value in case an alias with the provided name existed.
-
-#### Examples
-
-```sh
-alias my_echo echo [ECHO]
-
-# This will print "[ECHO] hello world "
-my_echo hello world
-
-unalias my_echo
-
-# This will error
-echo The script will now error as my_echo is no longer defined
-my_echo hello world
-```
-
-
-#### Aliases:
-unalias
 
 <a name="std__collections__Array"></a>
 ## std::collections::Array
@@ -3028,6 +2962,72 @@ result = writefile ./target/tests/writefile.txt "line 1\nline 2"
 
 #### Aliases:
 writefile, write_text_file
+
+<a name="std__lib__alias__Set"></a>
+## std::lib::alias::Set
+```sh
+var = alias command arguments
+```
+
+This command enables to define new commands with default arguments.<br>
+The new alias can be invoked with additional arguments that will be appended to the default set.
+
+#### Parameters
+
+Any number of arguments which will be added to the already defined arguments set during the aliasing.
+
+#### Return Value
+
+**true** if the alias was created, else **false**.
+
+#### Examples
+
+```sh
+# This example creates a new **my_echo** alias that will print the prefix before the requested arguments.
+created = alias my_echo echo [ECHO]
+
+# This will print "[ECHO] hello world "
+created = my_echo hello world
+```
+
+
+#### Aliases:
+alias
+
+<a name="std__lib__alias__Unset"></a>
+## std::lib::alias::Unset
+```sh
+unalias name
+```
+
+Removes previously defined alias and return true/false based if an alias was actually removed.
+
+#### Parameters
+
+The alias name to remove.
+
+#### Return Value
+
+A true/false value in case an alias with the provided name existed.
+
+#### Examples
+
+```sh
+alias my_echo echo [ECHO]
+
+# This will print "[ECHO] hello world "
+my_echo hello world
+
+unalias my_echo
+
+# This will error
+echo The script will now error as my_echo is no longer defined
+my_echo hello world
+```
+
+
+#### Aliases:
+unalias
 
 <a name="std__math__Calc"></a>
 ## std::math::Calc
