@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.2.2
+### v0.3.0
 
 * \[Breaking Change\] uname is now a new command and does not alias os_family command.
 * New os_version command.
