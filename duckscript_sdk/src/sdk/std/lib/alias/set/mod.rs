@@ -1,4 +1,4 @@
-use crate::sdk::std::alias::ALIAS_STATE_KEY;
+use crate::sdk::std::lib::alias::ALIAS_STATE_KEY;
 use crate::utils::state::get_sub_state;
 use crate::utils::{eval, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands};
