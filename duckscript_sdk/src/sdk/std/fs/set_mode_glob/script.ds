@@ -1,11 +1,16 @@
 
 scope::glob_chmod::handle = glob_array ${scope::glob_chmod::argument::2}
-scope::glob_chmod::count = array_length ${scope::glob_chmod::handle}
+scope::glob_chmod::output = array_length ${scope::glob_chmod::handle}
 
 for scope::glob_chmod::entry in ${scope::glob_chmod::handle}
-    chmod ${scope::glob_chmod::argument::1} ${scope::glob_chmod::entry}
+    scope::glob_chmod::result = chmod ${scope::glob_chmod::argument::1} ${scope::glob_chmod::entry}
+
+    if equals ${scope::glob_chmod::result} false
+        release ${scope::glob_chmod::handle}
+        scope::glob_chmod::output = set false
+    end
 end
 
 release ${scope::glob_chmod::handle}
 
-set ${scope::glob_chmod::count}
+set ${scope::glob_chmod::output}
