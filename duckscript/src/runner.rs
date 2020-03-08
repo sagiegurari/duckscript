@@ -310,8 +310,6 @@ pub fn run_instruction(
                             command_instance.run(command_arguments)
                         };
 
-                        commands.return_after_usage(command_instance);
-
                         command_result
                     }
                     None => CommandResult::Crash(format!("Command: {} not found.", &command)),

@@ -162,23 +162,17 @@ fn commands_set_get_return_exists() {
 
     let mut command = commands.get_for_use("test1").unwrap();
     assert_eq!(command.name(), "test1");
-    commands.return_after_usage(command);
     command = commands.get_for_use("test2").unwrap();
     assert_eq!(command.name(), "test2");
-    commands.return_after_usage(command);
 
     command = commands.get_for_use("test11").unwrap();
     assert_eq!(command.name(), "test1");
-    commands.return_after_usage(command);
     command = commands.get_for_use("test12").unwrap();
     assert_eq!(command.name(), "test1");
-    commands.return_after_usage(command);
     command = commands.get_for_use("test21").unwrap();
     assert_eq!(command.name(), "test2");
-    commands.return_after_usage(command);
     command = commands.get_for_use("test22").unwrap();
     assert_eq!(command.name(), "test2");
-    commands.return_after_usage(command);
 }
 
 #[test]

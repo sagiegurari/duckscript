@@ -116,14 +116,6 @@ impl Commands {
         }
     }
 
-    /// Returns the command after it was being used.
-    /// No validations will be made.
-    pub fn return_after_usage(&mut self, command: CommandBox) {
-        let name = command.name();
-
-        self.commands.insert(name.clone(), command);
-    }
-
     /// Adds a new command definition.
     /// It will fail in case another command already defined the same name/aliases
     pub fn set(&mut self, command: CommandBox) -> Result<(), ScriptError> {
@@ -165,7 +157,7 @@ impl Commands {
         };
 
         match self.commands.get(command_name) {
-            Some(ref value) => Some(value.clone()),
+            Some(ref value) => Some(value),
             None => None,
         }
     }
@@ -185,8 +177,8 @@ impl Commands {
             None => name,
         };
 
-        match self.commands.remove(command_name) {
-            Some(value) => Some(value),
+        match self.commands.get(command_name) {
+            Some(value) => Some(value.clone()),
             None => None,
         }
     }
@@ -206,7 +198,12 @@ impl Commands {
 
     /// Removes the requested command.
     pub fn remove(&mut self, name: &str) -> bool {
-        match self.get_for_use(name) {
+        let command_name = match self.aliases.get(name) {
+            Some(ref value) => value,
+            None => name,
+        };
+
+        match self.commands.remove(command_name) {
             Some(_) => true,
             None => false,
         }
