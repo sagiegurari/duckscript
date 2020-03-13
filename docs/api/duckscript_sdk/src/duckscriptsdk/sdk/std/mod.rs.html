@@ -56,7 +56,6 @@
 <span id="56">56</span>
 <span id="57">57</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">alias</span>;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">collections</span>;
 <span class="kw">mod</span> <span class="ident">debug</span>;
 <span class="kw">mod</span> <span class="ident">echo</span>;
@@ -65,6 +64,7 @@
 <span class="kw">mod</span> <span class="ident">flowcontrol</span>;
 <span class="kw">mod</span> <span class="ident">fs</span>;
 <span class="kw">mod</span> <span class="ident">is_defined</span>;
+<span class="kw">mod</span> <span class="ident">lib</span>;
 <span class="kw">mod</span> <span class="ident">man</span>;
 <span class="kw">mod</span> <span class="ident">math</span>;
 <span class="kw">mod</span> <span class="ident">net</span>;
@@ -95,12 +95,12 @@
     <span class="ident">commands</span>.<span class="ident">set</span>(<span class="ident">release</span>::<span class="ident">create</span>(<span class="ident">PACKAGE</span>))<span class="question-mark">?</span>;
     <span class="ident">commands</span>.<span class="ident">set</span>(<span class="ident">set</span>::<span class="ident">create</span>(<span class="ident">PACKAGE</span>))<span class="question-mark">?</span>;
 
-    <span class="ident">alias</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">collections</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">debug</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">env</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">flowcontrol</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">fs</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
+    <span class="ident">lib</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">math</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">net</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">on_error</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
