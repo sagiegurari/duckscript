@@ -1,0 +1,20 @@
+
+windows = is_windows
+
+fn test_uname
+    name = os_name
+    info = uname
+    assert_eq ${name} ${info}
+end
+
+fn test_uname_extended
+    name = os_name
+    info = uname -a
+    if ${windows}
+        assert_eq ${name} ${info}
+    else
+        release = os_release
+        version = os_version
+        assert_eq "${name} ${release} ${version}" ${info}
+    end
+end

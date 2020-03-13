@@ -84,6 +84,8 @@ impl Command for CommandImpl {
                             return CommandResult::Error(format!("Command: {} not found", name));
                         }
                     };
+                } else {
+                    println!("Command: {} skipped.", &name);
                 }
             }
 

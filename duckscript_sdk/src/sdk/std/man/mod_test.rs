@@ -1,5 +1,5 @@
 use super::*;
-use crate::sdk::std::alias;
+use crate::sdk::std::release;
 use crate::test;
 use crate::test::{CommandValidation, SetCommand};
 
@@ -38,9 +38,9 @@ fn run_command_not_found() {
 #[test]
 fn run_command_found_with_docs() {
     test::run_script_and_validate(
-        vec![create(""), alias::set::create("")],
-        "out = man alias",
-        CommandValidation::Contains("out".to_string(), "alias ".to_string()),
+        vec![create(""), release::create("")],
+        "out = man release",
+        CommandValidation::Contains("out".to_string(), "release ".to_string()),
     );
 }
 

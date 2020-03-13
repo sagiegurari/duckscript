@@ -1,0 +1,18 @@
+
+fn test_directory
+    value = is_dir ./target
+
+    assert ${value}
+end
+
+fn test_not_directory
+    value = is_dir ./Cargo.toml
+
+    assert_false ${value}
+end
+
+fn test_not_found
+    value = is_dir ./badpath
+
+    assert_false ${value}
+end

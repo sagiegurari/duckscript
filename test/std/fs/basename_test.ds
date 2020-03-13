@@ -1,23 +1,12 @@
 
-os = os_family
-windows = equals os "windows"
-
 fn test_relative_path
-    if ${windows}
-        value = basename .\\test.txt
-    else
-        value = basename ./test.txt
-    end
+    value = basename ./test.txt
 
     assert_eq ${value} test.txt
 end
 
 fn test_full_path
-    if ${windows}
-        value = basename c:\\dir\\dir\\test.txt
-    else
-        value = basename /dir/dir/test.txt
-    end
+    value = basename /dir/dir/test.txt
 
     assert_eq ${value} test.txt
 end

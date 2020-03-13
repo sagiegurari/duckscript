@@ -162,23 +162,17 @@ fn commands_set_get_return_exists() {
 
     let mut command = commands.get_for_use("test1").unwrap();
     assert_eq!(command.name(), "test1");
-    commands.return_after_usage(command);
     command = commands.get_for_use("test2").unwrap();
     assert_eq!(command.name(), "test2");
-    commands.return_after_usage(command);
 
     command = commands.get_for_use("test11").unwrap();
     assert_eq!(command.name(), "test1");
-    commands.return_after_usage(command);
     command = commands.get_for_use("test12").unwrap();
     assert_eq!(command.name(), "test1");
-    commands.return_after_usage(command);
     command = commands.get_for_use("test21").unwrap();
     assert_eq!(command.name(), "test2");
-    commands.return_after_usage(command);
     command = commands.get_for_use("test22").unwrap();
     assert_eq!(command.name(), "test2");
-    commands.return_after_usage(command);
 }
 
 #[test]
@@ -223,4 +217,40 @@ fn commands_remove() {
     assert!(commands.remove("test11"));
     assert!(commands.get("test11").is_none());
     assert!(!commands.remove("test11"));
+}
+
+#[test]
+fn commands_remove_via_name() {
+    let command = TestCommand1 {};
+    let mut commands = Commands::new();
+
+    commands.set(Box::new(command)).unwrap();
+
+    assert_eq!(commands.get("test11").unwrap().name(), "test1");
+    assert!(commands.exists("test1"));
+    assert!(commands.exists("test11"));
+    assert!(commands.exists("test12"));
+    assert!(commands.remove("test1"));
+    assert!(!commands.exists("test1"));
+    assert!(!commands.exists("test11"));
+    assert!(!commands.exists("test12"));
+    assert!(!commands.remove("test1"));
+}
+
+#[test]
+fn commands_remove_via_alias() {
+    let command = TestCommand1 {};
+    let mut commands = Commands::new();
+
+    commands.set(Box::new(command)).unwrap();
+
+    assert_eq!(commands.get("test11").unwrap().name(), "test1");
+    assert!(commands.exists("test1"));
+    assert!(commands.exists("test11"));
+    assert!(commands.exists("test12"));
+    assert!(commands.remove("test12"));
+    assert!(!commands.exists("test1"));
+    assert!(!commands.exists("test11"));
+    assert!(!commands.exists("test12"));
+    assert!(!commands.remove("test12"));
 }

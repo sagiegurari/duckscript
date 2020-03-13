@@ -7,6 +7,27 @@ use duckscript::types::runtime::{Context, StateValue};
 use std::collections::HashMap;
 
 #[derive(Clone)]
+pub(crate) struct EmptyCommand {}
+
+impl Command for EmptyCommand {
+    fn name(&self) -> String {
+        "test_empty".to_string()
+    }
+
+    fn aliases(&self) -> Vec<String> {
+        vec!["test_empty1".to_string(), "test_empty2".to_string()]
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
+    }
+
+    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+        CommandResult::Continue(None)
+    }
+}
+
+#[derive(Clone)]
 pub(crate) struct ErrorCommand {}
 
 impl Command for ErrorCommand {

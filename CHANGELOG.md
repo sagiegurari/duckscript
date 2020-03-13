@@ -1,5 +1,22 @@
 ## CHANGELOG
 
+### v0.3.0
+
+* New remove_command command #91
+* \[Breaking Change\] uname is now a new command and does not alias os_family command.
+* New os_version command.
+* New os_release command.
+* New os_name command.
+* New is_windows command.
+* New glob_chmod command.
+* New glob_array command #90
+* New chmod command #19
+* New is_readonly command.
+* New is_path_exists command.
+* New is_directory command.
+* New is_file command.
+* Runtime - Fix value expansion for control characters
+
 ### v0.2.1 (2020-02-21)
 
 * New temp_file command #85

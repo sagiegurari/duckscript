@@ -7,8 +7,6 @@
 * [std::Release (release)](#std__Release)
 * [std::Set (set)](#std__Set)
 * [std::ShowCommandDocumentation (man)](#std__ShowCommandDocumentation)
-* [std::alias::Set (alias)](#std__alias__Set)
-* [std::alias::Unset (unalias)](#std__alias__Unset)
 * [std::collections::Array (array)](#std__collections__Array)
 * [std::collections::ArrayConcat (array_concat)](#std__collections__ArrayConcat)
 * [std::collections::ArrayIsEmpty (array_is_empty)](#std__collections__ArrayIsEmpty)
@@ -36,10 +34,17 @@
 * [std::debug::DumpState (dump_state)](#std__debug__DumpState)
 * [std::debug::DumpVariables (dump_variables)](#std__debug__DumpVariables)
 * [std::env::GetHomeDirectory (get_home_dir)](#std__env__GetHomeDirectory)
+* [std::env::GetOSFamily (os_family)](#std__env__GetOSFamily)
+* [std::env::GetOSName (os_name)](#std__env__GetOSName)
+* [std::env::GetOSRelease (os_release)](#std__env__GetOSRelease)
+* [std::env::GetOSVersion (os_version)](#std__env__GetOSVersion)
+* [std::env::GetUserName (whoami, get_user_name)](#std__env__GetUserName)
 * [std::env::GetVar (get_env)](#std__env__GetVar)
+* [std::env::IsWindows (is_windows)](#std__env__IsWindows)
 * [std::env::PrintCurrentDirectory (pwd, print_current_directory)](#std__env__PrintCurrentDirectory)
 * [std::env::SetCurrentDirectory (cd, set_current_dir, set_current_directory)](#std__env__SetCurrentDirectory)
 * [std::env::SetVar (set_env)](#std__env__SetVar)
+* [std::env::UName (uname)](#std__env__UName)
 * [std::env::UnsetVar (unset_env)](#std__env__UnsetVar)
 * [std::error::GetLastError (get_last_error)](#std__error__GetLastError)
 * [std::error::GetLastErrorLine (get_last_error_line)](#std__error__GetLastErrorLine)
@@ -57,17 +62,27 @@
 * [std::fs::CreateEmptyFile (touch)](#std__fs__CreateEmptyFile)
 * [std::fs::DeleteEmptyDirectory (rmdir)](#std__fs__DeleteEmptyDirectory)
 * [std::fs::DeletePath (rm)](#std__fs__DeletePath)
+* [std::fs::Exists (is_path_exists)](#std__fs__Exists)
 * [std::fs::GetCanonicalPath (canonicalize)](#std__fs__GetCanonicalPath)
 * [std::fs::GetFileName (basename)](#std__fs__GetFileName)
 * [std::fs::GetParentDirectory (dirname)](#std__fs__GetParentDirectory)
+* [std::fs::GlobArray (glob_array, globarray)](#std__fs__GlobArray)
+* [std::fs::IsDirectory (is_directory, is_dir)](#std__fs__IsDirectory)
+* [std::fs::IsFile (is_file)](#std__fs__IsFile)
+* [std::fs::IsReadonly (is_readonly)](#std__fs__IsReadonly)
 * [std::fs::List (ls)](#std__fs__List)
 * [std::fs::MovePath (mv)](#std__fs__MovePath)
 * [std::fs::Print (cat)](#std__fs__Print)
 * [std::fs::ReadBytes (readbinfile, read_binary_file)](#std__fs__ReadBytes)
 * [std::fs::ReadText (readfile, read_text_file)](#std__fs__ReadText)
+* [std::fs::SetMode (chmod)](#std__fs__SetMode)
+* [std::fs::SetModeGlob (glob_chmod)](#std__fs__SetModeGlob)
 * [std::fs::TempFile (temp_file)](#std__fs__TempFile)
 * [std::fs::WriteBytes (writebinfile, write_binary_file)](#std__fs__WriteBytes)
 * [std::fs::WriteText (writefile, write_text_file)](#std__fs__WriteText)
+* [std::lib::alias::Set (alias)](#std__lib__alias__Set)
+* [std::lib::alias::Unset (unalias)](#std__lib__alias__Unset)
+* [std::lib::command::Remove (remove_command)](#std__lib__command__Remove)
 * [std::math::Calc (calc)](#std__math__Calc)
 * [std::math::GreaterThan (greater_than)](#std__math__GreaterThan)
 * [std::math::LessThan (less_than)](#std__math__LessThan)
@@ -410,72 +425,6 @@ man set
 
 #### Aliases:
 man
-
-<a name="std__alias__Set"></a>
-## std::alias::Set
-```sh
-var = alias command arguments
-```
-
-This command enables to define new commands with default arguments.<br>
-The new alias can be invoked with additional arguments that will be appended to the default set.
-
-#### Parameters
-
-Any number of arguments which will be added to the already defined arguments set during the aliasing.
-
-#### Return Value
-
-**true** if the alias was created, else **false**.
-
-#### Examples
-
-```sh
-# This example creates a new **my_echo** alias that will print the prefix before the requested arguments.
-created = alias my_echo echo [ECHO]
-
-# This will print "[ECHO] hello world "
-created = my_echo hello world
-```
-
-
-#### Aliases:
-alias
-
-<a name="std__alias__Unset"></a>
-## std::alias::Unset
-```sh
-unalias name
-```
-
-Removes previously defined alias and return true/false based if an alias was actually removed.
-
-#### Parameters
-
-The alias name to remove.
-
-#### Return Value
-
-A true/false value in case an alias with the provided name existed.
-
-#### Examples
-
-```sh
-alias my_echo echo [ECHO]
-
-# This will print "[ECHO] hello world "
-my_echo hello world
-
-unalias my_echo
-
-# This will error
-echo The script will now error as my_echo is no longer defined
-my_echo hello world
-```
-
-
-#### Aliases:
-unalias
 
 <a name="std__collections__Array"></a>
 ## std::collections::Array
@@ -1441,6 +1390,138 @@ directory = get_home_dir
 #### Aliases:
 get_home_dir
 
+<a name="std__env__GetOSFamily"></a>
+## std::env::GetOSFamily
+```sh
+var = os_family
+```
+
+Returns the OS family (windows, linux, mac).
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The OS family (windows, linux, mac).
+
+#### Examples
+
+```sh
+name = os_family
+```
+
+
+#### Aliases:
+os_family
+
+<a name="std__env__GetOSName"></a>
+## std::env::GetOSName
+```sh
+var = os_name
+```
+
+Returns the OS name.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The OS name.
+
+#### Examples
+
+```sh
+name = os_name
+```
+
+
+#### Aliases:
+os_name
+
+<a name="std__env__GetOSRelease"></a>
+## std::env::GetOSRelease
+```sh
+var = os_release
+```
+
+Returns the OS release.<br>
+**This command is not supported on windows.**
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The OS release.
+
+#### Examples
+
+```sh
+release = os_release
+```
+
+
+#### Aliases:
+os_release
+
+<a name="std__env__GetOSVersion"></a>
+## std::env::GetOSVersion
+```sh
+var = os_version
+```
+
+Returns the OS version.<br>
+**This command is not supported on windows.**
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The OS version.
+
+#### Examples
+
+```sh
+version = os_version
+```
+
+
+#### Aliases:
+os_version
+
+<a name="std__env__GetUserName"></a>
+## std::env::GetUserName
+```sh
+var = whoami
+```
+
+Returns the current user name.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The current user name.
+
+#### Examples
+
+```sh
+name = whoami
+```
+
+
+#### Aliases:
+whoami, get_user_name
+
 <a name="std__env__GetVar"></a>
 ## std::env::GetVar
 ```sh
@@ -1466,6 +1547,43 @@ home = get_env HOME
 
 #### Aliases:
 get_env
+
+<a name="std__env__IsWindows"></a>
+## std::env::IsWindows
+
+```sh
+var = is_windows
+```
+
+Returns true if the current OS family is windows.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+True if the current OS family is windows.
+
+#### Examples
+
+```sh
+windows = is_windows
+```
+
+
+#### Source:
+
+```sh
+
+scope::is_windows::os = os_family
+equals ${scope::is_windows::os} windows
+
+```
+
+
+#### Aliases:
+is_windows
 
 <a name="std__env__PrintCurrentDirectory"></a>
 ## std::env::PrintCurrentDirectory
@@ -1557,6 +1675,53 @@ set_env HOME /usr/me
 
 #### Aliases:
 set_env
+
+<a name="std__env__UName"></a>
+## std::env::UName
+
+```sh
+var = uname [-a]
+```
+
+Acts similar to uname on unix like systems.
+
+#### Parameters
+
+* Optional -a for extended information (not supported on windows).
+
+#### Return Value
+
+The OS name and optionally extra information.
+
+#### Examples
+
+```sh
+value = uname -a
+```
+
+
+#### Source:
+
+```sh
+
+scope::uname::extended_info = equals -a ${scope::uname::argument::1}
+scope::uname::info = os_name
+
+scope::uname::not_windows = not is_windows
+
+if ${scope::uname::extended_info} and ${scope::uname::not_windows}
+    scope::uname::release = os_release
+    scope::uname::version = os_version
+    scope::uname::info = set "${scope::uname::info} ${scope::uname::release} ${scope::uname::version}"
+end
+
+set ${scope::uname::info}
+
+```
+
+
+#### Aliases:
+uname
 
 <a name="std__env__UnsetVar"></a>
 ## std::env::UnsetVar
@@ -2229,6 +2394,33 @@ deleted = rm -r ./target
 #### Aliases:
 rm
 
+<a name="std__fs__Exists"></a>
+## std::fs::Exists
+```sh
+var = is_path_exists path
+```
+
+This command will return true/false based if the provided path points to an existing file system entry.
+
+#### Parameters
+
+The path to check.
+
+#### Return Value
+
+True if the path points to an existing file system entry.
+
+#### Examples
+
+```sh
+existing = is_path_exists ./dir
+existing = is_path_exists ./dir/somefile.txt
+```
+
+
+#### Aliases:
+is_path_exists
+
 <a name="std__fs__GetCanonicalPath"></a>
 ## std::fs::GetCanonicalPath
 ```sh
@@ -2309,6 +2501,115 @@ directory = dirname ./dir/file.txt
 
 #### Aliases:
 dirname
+
+<a name="std__fs__GlobArray"></a>
+## std::fs::GlobArray
+```sh
+handle = glob_array pattern
+```
+
+Returns an array handle containing all path entries found from the provided glob pattern.<br>
+The pattern can be a relative path from current directory or an absolute path.
+
+#### Parameters
+
+The glob pattern.
+
+#### Return Value
+
+The array handle.
+
+#### Examples
+
+```sh
+handle = glob_array ./somedir/**/*.txt
+
+for path in ${handle}
+    echo ${path}
+end
+```
+
+
+#### Aliases:
+glob_array, globarray
+
+<a name="std__fs__IsDirectory"></a>
+## std::fs::IsDirectory
+```sh
+var = is_dir path
+```
+
+This command will return true/false based if the provided path points to an existing directory.
+
+#### Parameters
+
+The path to check.
+
+#### Return Value
+
+True if the path points to an existing directory.
+
+#### Examples
+
+```sh
+existing_dir = is_dir ./dir
+```
+
+
+#### Aliases:
+is_directory, is_dir
+
+<a name="std__fs__IsFile"></a>
+## std::fs::IsFile
+```sh
+var = is_file path
+```
+
+This command will return true/false based if the provided path points to an existing file.
+
+#### Parameters
+
+The path to check.
+
+#### Return Value
+
+True if the path points to an existing file.
+
+#### Examples
+
+```sh
+existing_file = is_file ./dir/somefile.txt
+```
+
+
+#### Aliases:
+is_file
+
+<a name="std__fs__IsReadonly"></a>
+## std::fs::IsReadonly
+```sh
+var = is_readonly path
+```
+
+This command will return true/false based if the provided path exists and is set to readonly.
+
+#### Parameters
+
+The path to check.
+
+#### Return Value
+
+True if the provided path exists and is set to readonly.
+
+#### Examples
+
+```sh
+readonly = is_readonly ./dir/somefile.txt
+```
+
+
+#### Aliases:
+is_readonly
 
 <a name="std__fs__List"></a>
 ## std::fs::List
@@ -2479,6 +2780,105 @@ text = readfile ./Cargo.toml
 #### Aliases:
 readfile, read_text_file
 
+<a name="std__fs__SetMode"></a>
+## std::fs::SetMode
+```sh
+result = chmod mode path
+```
+
+This command will update the mode for the given path.<br>
+**This command is currently only available for unix like systems and will return false for all others such as windows.**
+
+#### Parameters
+
+* The new mode, for example 755
+* The path
+
+#### Return Value
+
+The new mode as decimal number or false in case of any error.
+
+#### Examples
+
+```sh
+chmod 777 ./myfile.txt
+```
+
+
+#### Aliases:
+chmod
+
+<a name="std__fs__SetModeGlob"></a>
+## std::fs::SetModeGlob
+
+```sh
+result = glob_chmod mode glob
+```
+
+This command will update the mode for the given glob pattern.<br>
+**This command is currently only available for unix like systems and will return false for all others such as windows.**
+
+#### Parameters
+
+* The new mode, for example 755
+* The path glob
+
+#### Return Value
+
+The amount of path entries affected by the operation or false in case of any error.
+
+#### Examples
+
+```sh
+file1 = set ./target/_duskscript_test/glob_chmod/modify1.txt
+touch ${file1}
+file2 = set ./target/_duskscript_test/glob_chmod/modify2.txt
+touch ${file2}
+
+count = glob_chmod 777 ./target/_duskscript_test/glob_chmod/**/*.txt
+assert_eq ${count} 2
+
+readonly = is_readonly ${file1}
+assert_false ${readonly}
+readonly = is_readonly ${file2}
+assert_false ${readonly}
+
+count = glob_chmod 444 ./target/_duskscript_test/glob_chmod/**/*.txt
+assert_eq ${count} 2
+
+readonly = is_readonly ${file1}
+assert ${readonly}
+readonly = is_readonly ${file2}
+assert ${readonly}
+```
+
+
+#### Source:
+
+```sh
+
+scope::glob_chmod::handle = glob_array ${scope::glob_chmod::argument::2}
+scope::glob_chmod::output = array_length ${scope::glob_chmod::handle}
+
+for scope::glob_chmod::entry in ${scope::glob_chmod::handle}
+    scope::glob_chmod::result = chmod ${scope::glob_chmod::argument::1} ${scope::glob_chmod::entry}
+
+    if equals ${scope::glob_chmod::result} false
+        release ${scope::glob_chmod::handle}
+        scope::glob_chmod::output = set false
+    end
+end
+
+release ${scope::glob_chmod::handle}
+
+set ${scope::glob_chmod::output}
+
+```
+
+
+#### Aliases:
+glob_chmod
+
 <a name="std__fs__TempFile"></a>
 ## std::fs::TempFile
 ```sh
@@ -2563,6 +2963,98 @@ result = writefile ./target/tests/writefile.txt "line 1\nline 2"
 
 #### Aliases:
 writefile, write_text_file
+
+<a name="std__lib__alias__Set"></a>
+## std::lib::alias::Set
+```sh
+var = alias command arguments
+```
+
+This command enables to define new commands with default arguments.<br>
+The new alias can be invoked with additional arguments that will be appended to the default set.
+
+#### Parameters
+
+Any number of arguments which will be added to the already defined arguments set during the aliasing.
+
+#### Return Value
+
+**true** if the alias was created, else **false**.
+
+#### Examples
+
+```sh
+# This example creates a new **my_echo** alias that will print the prefix before the requested arguments.
+created = alias my_echo echo [ECHO]
+
+# This will print "[ECHO] hello world "
+created = my_echo hello world
+```
+
+
+#### Aliases:
+alias
+
+<a name="std__lib__alias__Unset"></a>
+## std::lib::alias::Unset
+```sh
+unalias name
+```
+
+Removes previously defined alias and return true/false based if an alias was actually removed.
+
+#### Parameters
+
+The alias name to remove.
+
+#### Return Value
+
+A true/false value in case an alias with the provided name existed.
+
+#### Examples
+
+```sh
+alias my_echo echo [ECHO]
+
+# This will print "[ECHO] hello world "
+my_echo hello world
+
+unalias my_echo
+
+# This will error
+echo The script will now error as my_echo is no longer defined
+my_echo hello world
+```
+
+
+#### Aliases:
+unalias
+
+<a name="std__lib__command__Remove"></a>
+## std::lib::command::Remove
+```sh
+remove_command name
+```
+
+Removes a command and all its aliases.
+
+#### Parameters
+
+The command or alias name to remove.
+
+#### Return Value
+
+A true/false value in case a command was removed.
+
+#### Examples
+
+```sh
+remove_command set
+```
+
+
+#### Aliases:
+remove_command
 
 <a name="std__math__Calc"></a>
 ## std::math::Calc

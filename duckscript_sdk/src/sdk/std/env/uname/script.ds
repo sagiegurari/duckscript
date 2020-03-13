@@ -1,0 +1,13 @@
+
+scope::uname::extended_info = equals -a ${scope::uname::argument::1}
+scope::uname::info = os_name
+
+scope::uname::not_windows = not is_windows
+
+if ${scope::uname::extended_info} and ${scope::uname::not_windows}
+    scope::uname::release = os_release
+    scope::uname::version = os_version
+    scope::uname::info = set "${scope::uname::info} ${scope::uname::release} ${scope::uname::version}"
+end
+
+set ${scope::uname::info}

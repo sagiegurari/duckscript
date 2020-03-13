@@ -1,5 +1,5 @@
 use super::*;
-use crate::sdk::std::alias;
+use crate::sdk::std::lib::alias;
 use crate::test;
 use crate::test::{CommandValidation, SetCommand};
 

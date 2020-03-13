@@ -48,9 +48,11 @@ pub(crate) fn expand_by_wrapper(
     for next_char in value.chars() {
         if !found_prefix {
             if next_char == '\\' && prefix_index == 0 {
-                // skip this character
                 force_push = true
             } else if force_push {
+                if next_char != '$' {
+                    value_string.push('\\');
+                }
                 value_string.push(next_char);
                 force_push = false;
             } else if prefix_index == 0 && (next_char == '$' || next_char == '%') {
@@ -91,7 +93,9 @@ pub(crate) fn expand_by_wrapper(
         }
     }
 
-    if key.len() > 0 {
+    if force_push {
+        value_string.push('\\');
+    } else if key.len() > 0 {
         if prefix_index > 0 || found_prefix {
             push_prefix(&mut value_string, single_type, found_prefix);
         }

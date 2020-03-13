@@ -1,0 +1,59 @@
+use crate::utils::pckg;
+use duckscript::types::command::{Command, CommandResult};
+
+#[cfg(test)]
+#[path = "./mod_test.rs"]
+mod mod_test;
+
+cfg_if::cfg_if! {
+    if #[cfg(windows)] {
+        fn get_os_value() -> Result<String, String> {
+            Err("Not Supported.".to_string())
+        }
+    } else {
+        use uname::uname;
+
+        fn get_os_value() -> Result<String, String> {
+            match uname() {
+                Ok(info) => Ok(info.version),
+                Err(error) => Err(error.to_string()),
+            }
+        }
+    }
+}
+
+#[derive(Clone)]
+pub(crate) struct CommandImpl {
+    package: String,
+}
+
+impl Command for CommandImpl {
+    fn name(&self) -> String {
+        pckg::concat(&self.package, "GetOSVersion")
+    }
+
+    fn aliases(&self) -> Vec<String> {
+        vec!["os_version".to_string()]
+    }
+
+    fn help(&self) -> String {
+        include_str!("help.md").to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
+    }
+
+    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+        match get_os_value() {
+            Ok(value) => CommandResult::Continue(Some(value)),
+            Err(error) => CommandResult::Error(error),
+        }
+    }
+}
+
+pub(crate) fn create(package: &str) -> Box<dyn Command> {
+    Box::new(CommandImpl {
+        package: package.to_string(),
+    })
+}

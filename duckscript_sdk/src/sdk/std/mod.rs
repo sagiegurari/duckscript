@@ -1,4 +1,3 @@
-pub(crate) mod alias;
 pub(crate) mod collections;
 mod debug;
 mod echo;
@@ -7,6 +6,7 @@ mod eval;
 mod flowcontrol;
 mod fs;
 mod is_defined;
+mod lib;
 mod man;
 mod math;
 mod net;
@@ -37,12 +37,12 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     commands.set(release::create(PACKAGE))?;
     commands.set(set::create(PACKAGE))?;
 
-    alias::load(commands, PACKAGE)?;
     collections::load(commands, PACKAGE)?;
     debug::load(commands, PACKAGE)?;
     env::load(commands, PACKAGE)?;
     flowcontrol::load(commands, PACKAGE)?;
     fs::load(commands, PACKAGE)?;
+    lib::load(commands, PACKAGE)?;
     math::load(commands, PACKAGE)?;
     net::load(commands, PACKAGE)?;
     on_error::load(commands, PACKAGE)?;

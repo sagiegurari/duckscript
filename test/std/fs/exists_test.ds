@@ -1,0 +1,18 @@
+
+fn test_file
+    value = is_path_exists ./Cargo.toml
+
+    assert ${value}
+end
+
+fn test_directory
+    value = is_path_exists ./target
+
+    assert ${value}
+end
+
+fn test_not_found
+    value = is_path_exists ./badpath
+
+    assert_false ${value}
+end

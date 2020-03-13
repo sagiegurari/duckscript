@@ -1,0 +1,18 @@
+
+fn test_file
+    value = is_file ./Cargo.toml
+    
+    assert ${value}
+end
+
+fn test_not_file
+    value = is_file ./test
+    
+    assert_false ${value}
+end
+
+fn test_not_found
+    value = is_file ./badpath
+    
+    assert_false ${value}
+end

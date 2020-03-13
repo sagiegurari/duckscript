@@ -1,0 +1,3 @@
+
+scope::is_windows::os = os_family
+equals ${scope::is_windows::os} windows

@@ -1,4 +1,4 @@
-pub(crate) mod set;
+mod set;
 mod unset;
 
 use crate::utils::pckg;
