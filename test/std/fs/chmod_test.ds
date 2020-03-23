@@ -3,7 +3,7 @@ windows = is_windows
 
 fn test_modify
     if not ${windows}
-        file = set ./target/_duskscript_test/chmod/modify.txt
+        file = set ./target/_duckscript_test/chmod/modify.txt
         touch ${file}
 
         value = chmod 777 ${file}

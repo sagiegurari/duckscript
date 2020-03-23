@@ -1,7 +1,7 @@
 
 [config]
 additional_profiles = [
-    "none-thread-safe-tests",
+    "multi-phase-tests",
     "ci-coverage-tasks",
     "ci-all-build-tasks",
     "publish-pre-cleanup"
@@ -14,27 +14,13 @@ script = [
     "rm -Rf ./target"
 ]
 
-[tasks.test-verbose]
-alias = "test"
-
-[tasks.test]
-clear = true
+[tasks.test-multi-phases-flow]
 dependencies = [
     "clean-target"
 ]
-run_task = { name = ["test-thread-safe", "test-single-threaded", "test-scripts"] }
 
-[tasks.test-thread-safe]
-private = true
-env = { RUST_TEST_THREADS = { unset = true } }
-command = "cargo"
-args = ["test"]
-
-[tasks.test-single-threaded]
-private = true
-env = { RUST_TEST_THREADS = "1" }
-command = "cargo"
-args = ["test", "--", "--ignored"]
+[tasks.test-custom]
+alias = "test-scripts"
 
 [tasks.test-scripts]
 cwd = ".."

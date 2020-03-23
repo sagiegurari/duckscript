@@ -17,12 +17,12 @@ The amount of path entries affected by the operation or false in case of any err
 #### Examples
 
 ```sh
-file1 = set ./target/_duskscript_test/glob_chmod/modify1.txt
+file1 = set ./target/_duckscript_test/glob_chmod/modify1.txt
 touch ${file1}
-file2 = set ./target/_duskscript_test/glob_chmod/modify2.txt
+file2 = set ./target/_duckscript_test/glob_chmod/modify2.txt
 touch ${file2}
 
-count = glob_chmod 777 ./target/_duskscript_test/glob_chmod/**/*.txt
+count = glob_chmod 777 ./target/_duckscript_test/glob_chmod/**/*.txt
 assert_eq ${count} 2
 
 readonly = is_readonly ${file1}
@@ -30,7 +30,7 @@ assert_false ${readonly}
 readonly = is_readonly ${file2}
 assert_false ${readonly}
 
-count = glob_chmod 444 ./target/_duskscript_test/glob_chmod/**/*.txt
+count = glob_chmod 444 ./target/_duckscript_test/glob_chmod/**/*.txt
 assert_eq ${count} 2
 
 readonly = is_readonly ${file1}
