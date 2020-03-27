@@ -6,9 +6,11 @@ fn test_file
 end
 
 fn test_directory
-    value = is_path_exists ./target
+    if not is_windows
+        value = is_path_exists ./target
 
-    assert ${value}
+        assert ${value}
+    end
 end
 
 fn test_not_found
