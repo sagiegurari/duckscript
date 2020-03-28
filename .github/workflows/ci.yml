@@ -28,11 +28,11 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: make
-        args: ci-flow
+        args: --no-workspace workspace-ci-flow
     - name: Run CI (Allow Failures)
       if: matrix.rust == 'nightly'
       continue-on-error: true
       uses: actions-rs/cargo@v1
       with:
         command: make
-        args: ci-flow
+        args: --no-workspace workspace-ci-flow
