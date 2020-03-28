@@ -25,16 +25,6 @@ include = [
 [dependencies]
 fsio = "^0.1"
 
-[badges.travis-ci]
-branch = "master"
-repository = "sagiegurari/duckscript"
-
-[badges.appveyor]
-repository = "sagiegurari/duckscript"
-service = "github"
-branch = "master"
-project_name = "sagiegurari/duckscript"
-
 [badges.codecov]
 branch = "master"
 repository = "sagiegurari/duckscript"

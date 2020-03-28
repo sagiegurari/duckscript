@@ -1,26 +1,6 @@
 language: rust
 matrix:
-  allow_failures:
-  - rust: nightly
   include:
-  - rust: stable
-    os: linux
-  - rust: stable
-    os: osx
-  - rust: stable
-    os: windows
-  - rust: beta
-    os: linux
-  - rust: beta
-    os: osx
-  - rust: beta
-    os: windows
-  - rust: nightly
-    os: linux
-  - rust: nightly
-    os: osx
-  - rust: nightly
-    os: windows
   - env: DEPLOY=1
     rust: stable
     os: osx

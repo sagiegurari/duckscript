@@ -30,16 +30,6 @@ path = "src/main.rs"
 duckscript = { version = "^0.3", path = "../duckscript" }
 duckscriptsdk = { version = "^0.3", path = "../duckscript_sdk" }
 
-[badges.travis-ci]
-branch = "master"
-repository = "sagiegurari/duckscript"
-
-[badges.appveyor]
-repository = "sagiegurari/duckscript"
-service = "github"
-branch = "master"
-project_name = "sagiegurari/duckscript"
-
 [badges.codecov]
 branch = "master"
 repository = "sagiegurari/duckscript"
