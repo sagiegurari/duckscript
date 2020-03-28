@@ -1,0 +1,51 @@
+name: Publish
+on: push
+jobs:
+  build:
+    name: Publish for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            binary_target: x86_64-unknown-linux-musl
+          - os: windows-latest
+            binary_target: x86_64-pc-windows-msvc
+          - os: macos-latest
+            binary_target: x86_64-apple-darwin
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        profile: minimal
+        override: true
+    - name: Install rust windows msvc target
+      if: matrix.os == 'windows-latest'
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable-x86_64-pc-windows-msvc
+        profile: minimal
+        override: true
+    - name: Install cargo-make
+      uses: actions-rs/cargo@v1
+      with:
+        command: install
+        args: --debug cargo-make
+    - name: Build Binary (Linux)
+      if: matrix.os == 'ubuntu-latest'
+      uses: zhxiaogg/cargo-static-build@master
+      with:
+        cmd: cargo make --no-workspace zip-release-ci-flow --env CARGO_MAKE_RELEASE_FLOW_TARGET=${{ matrix.binary_target }}
+    - name: Build Binary (Other)
+      if: matrix.os != 'ubuntu-latest'
+      uses: actions-rs/cargo@v1
+      with:
+        command: make
+        args: --no-workspace zip-release-ci-flow --env CARGO_MAKE_RELEASE_FLOW_TARGET=${{ matrix.binary_target }}
+    - name: Display Binary
+      run: |
+        echo Listing Files:
+        dir
