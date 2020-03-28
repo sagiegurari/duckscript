@@ -15,6 +15,9 @@ jobs:
           - os: macos-latest
             binary_target: x86_64-apple-darwin
     steps:
+    - name: Install musl tools
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt-get install musl-tools
     - name: Checkout
       uses: actions/checkout@v2
     - name: Install rust
