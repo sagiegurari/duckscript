@@ -35,13 +35,7 @@ jobs:
       with:
         command: install
         args: --debug cargo-make
-    - name: Build Binary (Linux)
-      if: matrix.os == 'ubuntu-latest'
-      uses: zhxiaogg/cargo-static-build@master
-      with:
-        cmd: cargo make --no-workspace zip-release-ci-flow --env CARGO_MAKE_RELEASE_FLOW_TARGET=${{ matrix.binary_target }}
-    - name: Build Binary (Other)
-      if: matrix.os != 'ubuntu-latest'
+    - name: Build Binary
       uses: actions-rs/cargo@v1
       with:
         command: make
