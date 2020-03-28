@@ -5,6 +5,7 @@ jobs:
     name: Publish for ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: ubuntu-latest
@@ -48,4 +49,5 @@ jobs:
     - name: Display Binary
       run: |
         echo Listing Files:
-        dir
+        dir || true
+        ls -l || true
