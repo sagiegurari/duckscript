@@ -1,7 +1,7 @@
 ```sh
 if [command|value|condition]
     # commands
-elseif command|value
+elseif [command|value|condition]
     # commands
 else
     # commands

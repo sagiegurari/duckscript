@@ -2029,7 +2029,7 @@ The function invocation returns the output provided by the return command.
 # Simple example of a function definition which echo 'hello world' and exists.
 
 # function start
-function hello_world
+fn hello_world
     echo hello world
 end
 
@@ -2037,7 +2037,7 @@ end
 hello_world
 
 # Example of calling a function and returning a value
-function get_hello_world
+fn get_hello_world
     return "hello world"
 end
 
@@ -2048,7 +2048,7 @@ text = get_hello_world
 echo ${text}
 
 # Example of passing arguments
-function print_input
+fn print_input
     # $1 is set with the value 'hello'
     # $2 is set with the value 'world'
     echo ${1} ${2}
@@ -2057,11 +2057,11 @@ end
 print_input hello world
 
 # Functions can call other functions
-function get_one
+fn get_one
     return 1
 end
 
-function get_number
+fn get_number
     number = get_one
     return ${number}
 end
@@ -2111,7 +2111,7 @@ goto
 ```sh
 if [command|value|condition]
     # commands
-elseif command|value
+elseif [command|value|condition]
     # commands
 else
     # commands

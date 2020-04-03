@@ -83,7 +83,7 @@ So in the example:
 echo Hello World
 ```
 
-The **echo** command got 2 arguments: "hello" and "world".<br>
+The **echo** command got 2 arguments: "Hello" and "World".<br>
 If your argument contains a space, you can wrap the entire argument with the ```"``` character as follows:
 
 ```sh
@@ -259,12 +259,12 @@ In order to provide a more richer development experience, common language featur
 This is an example of the [function command](https://github.com/sagiegurari/duckscript/blob/master/docs/sdk.md#std__flowcontrol__Function):
 
 ```sh
-function print_first_and_second_argument
+fn print_first_and_second_argument
     echo ${1} ${2}
     return printed
 end
 
-function run_flow
+fn run_flow
     status = print_first_and_second_argument Hello World
     echo The printout status is: ${status}
 end
