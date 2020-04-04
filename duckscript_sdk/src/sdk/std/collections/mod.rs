@@ -1,5 +1,6 @@
 pub(crate) mod array;
 mod array_concat;
+mod array_get;
 mod array_is_empty;
 mod array_join;
 pub(crate) mod array_length;
@@ -31,6 +32,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
 
     commands.set(array::create(&package))?;
     commands.set(array_concat::create(&package)?)?;
+    commands.set(array_get::create(&package))?;
     commands.set(array_push::create(&package))?;
     commands.set(array_is_empty::create(&package)?)?;
     commands.set(array_join::create(&package)?)?;

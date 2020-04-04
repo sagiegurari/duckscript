@@ -190,6 +190,7 @@ pub(crate) enum CommandValidation {
     Contains(String, String),
     Any(String, Vec<String>),
     Ignore,
+    Undefined(String),
 }
 
 pub(crate) fn test_common_command_functions(command: Box<dyn Command>) {
@@ -293,6 +294,10 @@ pub(crate) fn run_script_and_validate(
                 }
                 CommandValidation::Ignore => {
                     assert!(!context.variables.is_empty());
+                }
+                CommandValidation::Undefined(key) => {
+                    assert!(!context.variables.is_empty());
+                    assert!(!context.variables.contains_key(&key));
                 }
             };
 
