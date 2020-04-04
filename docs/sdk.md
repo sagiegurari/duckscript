@@ -754,26 +754,36 @@ array_push
 <a name="std__collections__ArraySet"></a>
 ## std::collections::ArraySet
 ```sh
-var = array_get handle index
+result = array_set handle index value
 ```
 
-Returns the element from the array at a given index or none if the index is bigger than the array length.
+Updates the array at a given index with the provided value.<br>
+If the array is not found or the index is greater than the array size, this command will return false.<br>
+Otherwise it will return true.
 
 #### Parameters
 
 * The array handle.
 * The element index.
+* The element value.
 
 #### Return Value
 
-The element at the given index from the array or none.
+True if successful.
 
 #### Examples
 
 ```sh
-handle = array 1 2 3
-element = array_get ${handle} 2
-assert_eq ${element} 3
+arr = array old
+
+element = array_get ${arr} 0
+assert_eq ${element} old
+
+result = array_set ${arr} 0 new
+assert ${result}
+
+element = array_get ${arr} 0
+assert_eq ${element} new
 ```
 
 
