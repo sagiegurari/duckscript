@@ -1,0 +1,37 @@
+
+fn test_array_with_data
+    arr = array 1
+
+    element = array_get ${arr} 0
+    assert_eq ${element} 1
+
+    result = array_set ${arr} 0 10
+    assert ${result}
+    element = array_get ${arr} 0
+    assert_eq ${element} 10
+
+    result = array_set ${arr} 0 100
+    assert ${result}
+    element = array_get ${arr} 0
+    assert_eq ${element} 100
+
+    result = array_set ${arr} 1 10
+    assert_false ${result}
+
+    released = release ${arr}
+    assert ${released}
+end
+
+fn test_array_no_data
+    arr = array
+
+    element = array_get ${arr} 0
+    defined = is_defined element
+    assert_false ${defined}
+
+    result = array_set ${arr} 0 10
+    assert_false ${result}
+
+    released = release ${arr}
+    assert ${released}
+end

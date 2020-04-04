@@ -9,11 +9,13 @@
 * [std::ShowCommandDocumentation (man)](#std__ShowCommandDocumentation)
 * [std::collections::Array (array)](#std__collections__Array)
 * [std::collections::ArrayConcat (array_concat)](#std__collections__ArrayConcat)
+* [std::collections::ArrayGet (array_get)](#std__collections__ArrayGet)
 * [std::collections::ArrayIsEmpty (array_is_empty)](#std__collections__ArrayIsEmpty)
 * [std::collections::ArrayJoin (array_join)](#std__collections__ArrayJoin)
 * [std::collections::ArrayLength (array_length, arrlen)](#std__collections__ArrayLength)
 * [std::collections::ArrayPop (array_pop)](#std__collections__ArrayPop)
 * [std::collections::ArrayPush (array_push)](#std__collections__ArrayPush)
+* [std::collections::ArraySet (array_set)](#std__collections__ArraySet)
 * [std::collections::IsArray (is_array)](#std__collections__IsArray)
 * [std::collections::IsMap (is_map)](#std__collections__IsMap)
 * [std::collections::Map (map)](#std__collections__Map)
@@ -512,6 +514,35 @@ set ${scope::array_concat::array}
 #### Aliases:
 array_concat
 
+<a name="std__collections__ArrayGet"></a>
+## std::collections::ArrayGet
+```sh
+var = array_get handle index
+```
+
+Returns the element from the array at a given index or none if the index is bigger than the array length.
+
+#### Parameters
+
+* The array handle.
+* The element index.
+
+#### Return Value
+
+The element at the given index from the array or none.
+
+#### Examples
+
+```sh
+handle = array 1 2 3
+element = array_get ${handle} 2
+assert_eq ${element} 3
+```
+
+
+#### Aliases:
+array_get
+
 <a name="std__collections__ArrayIsEmpty"></a>
 ## std::collections::ArrayIsEmpty
 
@@ -719,6 +750,35 @@ assert_eq ${last_element} 4
 
 #### Aliases:
 array_push
+
+<a name="std__collections__ArraySet"></a>
+## std::collections::ArraySet
+```sh
+var = array_get handle index
+```
+
+Returns the element from the array at a given index or none if the index is bigger than the array length.
+
+#### Parameters
+
+* The array handle.
+* The element index.
+
+#### Return Value
+
+The element at the given index from the array or none.
+
+#### Examples
+
+```sh
+handle = array 1 2 3
+element = array_get ${handle} 2
+assert_eq ${element} 3
+```
+
+
+#### Aliases:
+array_set
 
 <a name="std__collections__IsArray"></a>
 ## std::collections::IsArray

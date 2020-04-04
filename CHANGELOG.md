@@ -2,6 +2,7 @@
 
 ### v0.3.2
 
+* New array_set command.
 * New array_get command #94
 
 ### v0.3.1 (2020-03-28)

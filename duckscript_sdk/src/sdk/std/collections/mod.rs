@@ -6,6 +6,7 @@ mod array_join;
 pub(crate) mod array_length;
 pub(crate) mod array_pop;
 mod array_push;
+mod array_set;
 mod is_array;
 mod is_map;
 mod map;
@@ -34,6 +35,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(array_concat::create(&package)?)?;
     commands.set(array_get::create(&package))?;
     commands.set(array_push::create(&package))?;
+    commands.set(array_set::create(&package))?;
     commands.set(array_is_empty::create(&package)?)?;
     commands.set(array_join::create(&package)?)?;
     commands.set(array_length::create(&package))?;
