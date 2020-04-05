@@ -32,7 +32,7 @@ impl Command for CommandImpl {
             print!("{} ", argument);
         }
 
-        println!("");
+        println!();
 
         CommandResult::Continue(Some(arguments.len().to_string()))
     }

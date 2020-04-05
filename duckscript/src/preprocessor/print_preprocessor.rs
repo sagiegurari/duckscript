@@ -10,5 +10,5 @@ pub(crate) fn run(arguments: &Option<Vec<String>>) {
         }
     }
 
-    println!("");
+    println!();
 }
