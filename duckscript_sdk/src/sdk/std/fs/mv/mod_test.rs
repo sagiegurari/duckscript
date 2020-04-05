@@ -34,10 +34,13 @@ fn run_file_to_file() {
     assert!(result.is_ok());
     assert!(path.exists());
 
-    test::run_script_and_validate(vec![create("")], r#"
+    test::run_script_and_validate(
+        vec![create("")],
+        r#"
     out = mv ./target/_duckscript/mv/run_file_to_file/1/file1.txt ./target/_duckscript/mv/run_file_to_file/2/file2.txt
     "#,
-        CommandValidation::Match("out".to_string(), "true".to_string()),);
+        CommandValidation::Match("out".to_string(), "true".to_string()),
+    );
 
     assert!(!path.exists());
     path = Path::new("./target/_duckscript/mv/run_file_to_file/2/file2.txt");
@@ -51,10 +54,13 @@ fn run_file_to_directory() {
     assert!(result.is_ok());
     assert!(path.exists());
 
-    test::run_script_and_validate(vec![create("")], r#"
+    test::run_script_and_validate(
+        vec![create("")],
+        r#"
     out = mv ./target/_duckscript/mv/run_file_to_directory/1/file1.txt ./target/_duckscript/mv/run_file_to_directory/2
     "#,
-        CommandValidation::Match("out".to_string(), "true".to_string()),);
+        CommandValidation::Match("out".to_string(), "true".to_string()),
+    );
 
     assert!(!path.exists());
     path = Path::new("./target/_duckscript/mv/run_file_to_directory/2/file1.txt");
@@ -68,10 +74,13 @@ fn run_directory_to_directory() {
     assert!(result.is_ok());
     assert!(path.exists());
 
-    test::run_script_and_validate(vec![create("")], r#"
+    test::run_script_and_validate(
+        vec![create("")],
+        r#"
     out = mv ./target/_duckscript/mv/run_directory_to_directory/1 ./target/_duckscript/mv/run_directory_to_directory/2
     "#,
-        CommandValidation::Match("out".to_string(), "true".to_string()),);
+        CommandValidation::Match("out".to_string(), "true".to_string()),
+    );
 
     assert!(!path.exists());
     path = Path::new("./target/_duckscript/mv/run_directory_to_directory/2/1/1/file1.txt");

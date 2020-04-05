@@ -61,7 +61,9 @@ fn parse_options(arguments: &Vec<String>) -> Result<Options, String> {
                         "get" => options.method = Method::Get,
                         "post" => options.method = Method::Post,
                         _ => {
-                            return Err(format!("Unsupported HTTP method: {}", argument).to_string());
+                            return Err(
+                                format!("Unsupported HTTP method: {}", argument).to_string()
+                            );
                         }
                     };
                 }
