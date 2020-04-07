@@ -1,0 +1,3 @@
+[hooks]
+pre-push = "cargo make --no-workspace workspace-ci-flow"
+
