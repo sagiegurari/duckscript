@@ -18,6 +18,10 @@ additional_profiles = [
     "publish-pre-cleanup"
 ]
 
+[tasks.clippy]
+# due to rust bug on github actions flow
+ignore_errors = true
+
 [tasks.generate-sdk-docs]
 workspace = false
 command = "cargo"
