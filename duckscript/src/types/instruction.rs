@@ -14,7 +14,7 @@ pub trait InstructionOperations {
 }
 
 /// Preprocess instruction
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct PreProcessInstruction {
     /// The command name
     pub command: Option<String>,
@@ -25,10 +25,7 @@ pub struct PreProcessInstruction {
 impl PreProcessInstruction {
     /// Creates and returns a new instance.
     pub fn new() -> PreProcessInstruction {
-        PreProcessInstruction {
-            command: None,
-            arguments: None,
-        }
+        Default::default()
     }
 }
 
@@ -40,7 +37,7 @@ impl InstructionOperations for PreProcessInstruction {
 }
 
 /// Runtime script instruction
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct ScriptInstruction {
     /// The label tag
     pub label: Option<String>,
@@ -55,12 +52,7 @@ pub struct ScriptInstruction {
 impl ScriptInstruction {
     /// Creates and returns a new instance.
     pub fn new() -> ScriptInstruction {
-        ScriptInstruction {
-            label: None,
-            output: None,
-            command: None,
-            arguments: None,
-        }
+        Default::default()
     }
 }
 
@@ -83,7 +75,7 @@ pub enum InstructionType {
 }
 
 /// Meta information for all instruction types
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct InstructionMetaInfo {
     /// The line number
     pub line: Option<usize>,
@@ -94,10 +86,7 @@ pub struct InstructionMetaInfo {
 impl InstructionMetaInfo {
     /// Creates and returns a new instance.
     pub fn new() -> InstructionMetaInfo {
-        InstructionMetaInfo {
-            line: None,
-            source: None,
-        }
+        Default::default()
     }
 }
 
