@@ -1,0 +1,15 @@
+
+fn test_env_to_map
+    set_env env_to_map_test1 test_value1
+
+    handle = env_to_map
+
+    set_env env_to_map_test2 test_value2
+
+    value = map_get ${handle} env_to_map_test1
+    assert_eq ${value} test_value1
+    value = map_get ${handle} env_to_map_test2
+    assert_false ${value}
+
+    release ${handle}
+end

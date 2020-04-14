@@ -36,6 +36,7 @@
 * [std::debug::DumpInstructions (dump_instructions)](#std__debug__DumpInstructions)
 * [std::debug::DumpState (dump_state)](#std__debug__DumpState)
 * [std::debug::DumpVariables (dump_variables)](#std__debug__DumpVariables)
+* [std::env::EnvToMap (env_to_map)](#std__env__EnvToMap)
 * [std::env::GetHomeDirectory (get_home_dir)](#std__env__GetHomeDirectory)
 * [std::env::GetOSFamily (os_family)](#std__env__GetOSFamily)
 * [std::env::GetOSName (os_name)](#std__env__GetOSName)
@@ -1474,6 +1475,39 @@ assert found
 
 #### Aliases:
 dump_variables
+
+<a name="std__env__EnvToMap"></a>
+## std::env::EnvToMap
+```sh
+handle = env_to_map
+```
+
+Converts all environment variables to a map and returns the map handle.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The map handle.
+
+#### Examples
+
+```sh
+set_env env_to_map_test test_value
+
+handle = env_to_map
+
+value = map_get ${handle} env_to_map_test
+assert_eq ${value} test_value
+
+release ${handle}
+```
+
+
+#### Aliases:
+env_to_map
 
 <a name="std__env__GetHomeDirectory"></a>
 ## std::env::GetHomeDirectory

@@ -2,6 +2,7 @@
 
 ### v0.3.3
 
+* New env_to_map command #96
 * New map_keys command.
 * New temp_dir command.
 * Runtime - Use default trait.
