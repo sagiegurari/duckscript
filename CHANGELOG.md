@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### v0.3.3
+
+* New temp_dir command.
+* Runtime - Use default trait.
+
 ### v0.3.2 (2020-04-04)
 
 * New array_set command.

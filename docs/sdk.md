@@ -79,6 +79,7 @@
 * [std::fs::ReadText (readfile, read_text_file)](#std__fs__ReadText)
 * [std::fs::SetMode (chmod)](#std__fs__SetMode)
 * [std::fs::SetModeGlob (glob_chmod)](#std__fs__SetModeGlob)
+* [std::fs::TempDirectory (temp_dir)](#std__fs__TempDirectory)
 * [std::fs::TempFile (temp_file)](#std__fs__TempFile)
 * [std::fs::WriteBytes (writebinfile, write_binary_file)](#std__fs__WriteBytes)
 * [std::fs::WriteText (writefile, write_text_file)](#std__fs__WriteText)
@@ -2948,6 +2949,34 @@ set ${scope::glob_chmod::output}
 
 #### Aliases:
 glob_chmod
+
+<a name="std__fs__TempDirectory"></a>
+## std::fs::TempDirectory
+```sh
+path = temp_dir
+```
+
+This command will return the system temporary directory path.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The directory path.
+
+#### Examples
+
+```sh
+path = temp_dir
+
+echo ${path}
+```
+
+
+#### Aliases:
+temp_dir
 
 <a name="std__fs__TempFile"></a>
 ## std::fs::TempFile
