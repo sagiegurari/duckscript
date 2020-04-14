@@ -22,6 +22,7 @@
 * [std::collections::MapClear (map_clear)](#std__collections__MapClear)
 * [std::collections::MapGet (map_get)](#std__collections__MapGet)
 * [std::collections::MapIsEmpty (map_is_empty)](#std__collections__MapIsEmpty)
+* [std::collections::MapKeys (map_keys)](#std__collections__MapKeys)
 * [std::collections::MapLoadProperties (map_load_properties)](#std__collections__MapLoadProperties)
 * [std::collections::MapPut (map_put)](#std__collections__MapPut)
 * [std::collections::MapRemove (map_remove)](#std__collections__MapRemove)
@@ -998,6 +999,46 @@ equals 0 ${scope::map_is_empty::length}
 
 #### Aliases:
 map_is_empty
+
+<a name="std__collections__MapKeys"></a>
+## std::collections::MapKeys
+```sh
+keys = map_keys handle
+```
+
+Returns a handle to an array holding all keys in the provided map handle.
+
+#### Parameters
+
+* The map handle.
+
+#### Return Value
+
+A handle to an array holding all map keys.
+
+#### Examples
+
+```sh
+handle = map
+
+result = map_put ${handle} key1 value1
+assert_eq ${result} true
+result = map_put ${handle} key2 value2
+assert_eq ${result} true
+
+keys = map_keys ${handle}
+for key in ${keys}
+    value = map_get ${handle} ${key}
+    echo Key: ${key} Value: ${value}
+end
+
+release ${handle}
+release ${keys}
+```
+
+
+#### Aliases:
+map_keys
 
 <a name="std__collections__MapLoadProperties"></a>
 ## std::collections::MapLoadProperties
