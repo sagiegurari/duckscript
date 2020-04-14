@@ -38,3 +38,24 @@ fn test_range
     assert_eq ${counter} 100
     released = release ${args}
 end
+
+fn test_map_keys
+    handle = map
+
+    result = map_put ${handle} key1 value1
+    assert_eq ${result} true
+    result = map_put ${handle} key2 value2
+    assert_eq ${result} true
+
+    keys = map_keys ${handle}
+    for key in ${keys}
+        valid = starts_with ${key} key
+        assert ${valid}
+        value = map_get ${handle} ${key}
+        valid = starts_with ${value} value
+        assert ${valid}
+    end
+
+    release ${handle}
+    release ${keys}
+end

@@ -1,0 +1,16 @@
+
+fn test_map_keys
+    handle = map
+
+    result = map_put ${handle} key value
+    assert_eq ${result} true
+
+    keys = map_keys ${handle}
+    size = array_length ${keys}
+    assert_eq ${size} 1
+    value = array_pop ${keys}
+    assert_eq ${value} key
+
+    release ${handle}
+    release ${keys}
+end
