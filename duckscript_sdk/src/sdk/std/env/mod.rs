@@ -1,3 +1,4 @@
+mod cpu_count;
 mod env_to_map;
 mod get_env;
 mod get_home_dir;
@@ -23,6 +24,7 @@ static PACKAGE: &str = "env";
 pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptError> {
     let package = pckg::concat(parent, PACKAGE);
 
+    commands.set(cpu_count::create(&package))?;
     commands.set(env_to_map::create(&package))?;
     commands.set(get_env::create(&package))?;
     commands.set(get_home_dir::create(&package))?;

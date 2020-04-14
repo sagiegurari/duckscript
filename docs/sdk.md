@@ -37,6 +37,7 @@
 * [std::debug::DumpState (dump_state)](#std__debug__DumpState)
 * [std::debug::DumpVariables (dump_variables)](#std__debug__DumpVariables)
 * [std::env::EnvToMap (env_to_map)](#std__env__EnvToMap)
+* [std::env::GetCpuCount (cpu_count, get_cpu_count)](#std__env__GetCpuCount)
 * [std::env::GetHomeDirectory (get_home_dir)](#std__env__GetHomeDirectory)
 * [std::env::GetOSFamily (os_family)](#std__env__GetOSFamily)
 * [std::env::GetOSName (os_name)](#std__env__GetOSName)
@@ -1509,6 +1510,32 @@ release ${handle}
 
 #### Aliases:
 env_to_map
+
+<a name="std__env__GetCpuCount"></a>
+## std::env::GetCpuCount
+```sh
+var = cpu_count
+```
+
+Returns the number of CPUs.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The CPU count.
+
+#### Examples
+
+```sh
+count = cpu_count
+```
+
+
+#### Aliases:
+cpu_count, get_cpu_count
 
 <a name="std__env__GetHomeDirectory"></a>
 ## std::env::GetHomeDirectory
