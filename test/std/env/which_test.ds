@@ -1,0 +1,14 @@
+
+fn test_found
+    path = which rustc
+    valid = is_empty ${path}
+
+    assert_false ${valid}
+end
+
+fn test_not_found
+    path = which bad_executable
+    valid = is_empty ${path}
+
+    assert ${valid}
+end

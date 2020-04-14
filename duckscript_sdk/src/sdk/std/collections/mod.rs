@@ -13,6 +13,7 @@ mod map;
 mod map_clear;
 mod map_get;
 mod map_is_empty;
+mod map_keys;
 mod map_load_properties;
 mod map_put;
 mod map_remove;
@@ -46,6 +47,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(map_clear::create(&package))?;
     commands.set(map_get::create(&package))?;
     commands.set(map_is_empty::create(&package)?)?;
+    commands.set(map_keys::create(&package))?;
     commands.set(map_load_properties::create(&package))?;
     commands.set(map_put::create(&package))?;
     commands.set(map_remove::create(&package))?;

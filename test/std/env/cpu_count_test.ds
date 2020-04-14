@@ -1,0 +1,7 @@
+
+fn test_cpu_count
+    value = cpu_count
+    valid = greater_than ${value} 0
+
+    assert ${valid}
+end

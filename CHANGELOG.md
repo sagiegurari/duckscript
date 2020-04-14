@@ -1,5 +1,15 @@
 ## CHANGELOG
 
+### v0.3.3
+
+* New which command.
+* New cpu_count command.
+* New printenv command #97
+* New env_to_map command #96
+* New map_keys command.
+* New temp_dir command.
+* Runtime - Use default trait.
+
 ### v0.3.2 (2020-04-04)
 
 * New array_set command.

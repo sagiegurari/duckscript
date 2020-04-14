@@ -1,0 +1,9 @@
+
+fn test_print_env
+    set_env TEST_PRINT_ENV TRUE
+
+    text = printenv
+
+    valid = contains ${text} TEST_PRINT_ENV=TRUE
+    assert ${valid}
+end

@@ -1,0 +1,7 @@
+
+scope::print_env::map = env_to_map
+scope::print_env::text = map_to_properties ${scope::print_env::map}
+release ${scope::print_env::map}
+
+echo ${scope::print_env::text}
+set ${scope::print_env::text}

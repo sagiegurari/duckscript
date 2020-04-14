@@ -1,7 +1,6 @@
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
-use fsio::path::from_path::FromPath;
-use home;
+use num_cpus;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -14,11 +13,11 @@ pub(crate) struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "GetHomeDirectory")
+        pckg::concat(&self.package, "GetCpuCount")
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["get_home_dir".to_string()]
+        vec!["cpu_count".to_string(), "get_cpu_count".to_string()]
     }
 
     fn help(&self) -> String {
@@ -30,13 +29,9 @@ impl Command for CommandImpl {
     }
 
     fn run(&self, _arguments: Vec<String>) -> CommandResult {
-        match home::home_dir() {
-            Some(directory) => {
-                let directory_str = FromPath::from_path(&directory);
-                CommandResult::Continue(Some(directory_str))
-            }
-            None => CommandResult::Error("Unable to find user home directory.".to_string()),
-        }
+        let num = num_cpus::get();
+
+        CommandResult::Continue(Some(num.to_string()))
     }
 }
 

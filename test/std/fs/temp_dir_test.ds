@@ -1,0 +1,12 @@
+
+fn test_simple
+    file = temp_file
+    directory = temp_dir
+    dir_exists = is_directory ${directory}
+
+    valid = starts_with ${file} ${directory}
+
+    assert ${valid}
+    assert ${dir_exists}
+end
+

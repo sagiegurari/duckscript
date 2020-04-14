@@ -22,6 +22,7 @@
 * [std::collections::MapClear (map_clear)](#std__collections__MapClear)
 * [std::collections::MapGet (map_get)](#std__collections__MapGet)
 * [std::collections::MapIsEmpty (map_is_empty)](#std__collections__MapIsEmpty)
+* [std::collections::MapKeys (map_keys)](#std__collections__MapKeys)
 * [std::collections::MapLoadProperties (map_load_properties)](#std__collections__MapLoadProperties)
 * [std::collections::MapPut (map_put)](#std__collections__MapPut)
 * [std::collections::MapRemove (map_remove)](#std__collections__MapRemove)
@@ -35,6 +36,9 @@
 * [std::debug::DumpInstructions (dump_instructions)](#std__debug__DumpInstructions)
 * [std::debug::DumpState (dump_state)](#std__debug__DumpState)
 * [std::debug::DumpVariables (dump_variables)](#std__debug__DumpVariables)
+* [std::env::EnvToMap (env_to_map)](#std__env__EnvToMap)
+* [std::env::FindExecutable (which)](#std__env__FindExecutable)
+* [std::env::GetCpuCount (cpu_count, get_cpu_count)](#std__env__GetCpuCount)
 * [std::env::GetHomeDirectory (get_home_dir)](#std__env__GetHomeDirectory)
 * [std::env::GetOSFamily (os_family)](#std__env__GetOSFamily)
 * [std::env::GetOSName (os_name)](#std__env__GetOSName)
@@ -44,6 +48,7 @@
 * [std::env::GetVar (get_env)](#std__env__GetVar)
 * [std::env::IsWindows (is_windows)](#std__env__IsWindows)
 * [std::env::PrintCurrentDirectory (pwd, print_current_directory)](#std__env__PrintCurrentDirectory)
+* [std::env::PrintEnv (print_env, printenv)](#std__env__PrintEnv)
 * [std::env::SetCurrentDirectory (cd, set_current_dir, set_current_directory)](#std__env__SetCurrentDirectory)
 * [std::env::SetVar (set_env)](#std__env__SetVar)
 * [std::env::UName (uname)](#std__env__UName)
@@ -79,6 +84,7 @@
 * [std::fs::ReadText (readfile, read_text_file)](#std__fs__ReadText)
 * [std::fs::SetMode (chmod)](#std__fs__SetMode)
 * [std::fs::SetModeGlob (glob_chmod)](#std__fs__SetModeGlob)
+* [std::fs::TempDirectory (temp_dir)](#std__fs__TempDirectory)
 * [std::fs::TempFile (temp_file)](#std__fs__TempFile)
 * [std::fs::WriteBytes (writebinfile, write_binary_file)](#std__fs__WriteBytes)
 * [std::fs::WriteText (writefile, write_text_file)](#std__fs__WriteText)
@@ -998,6 +1004,46 @@ equals 0 ${scope::map_is_empty::length}
 #### Aliases:
 map_is_empty
 
+<a name="std__collections__MapKeys"></a>
+## std::collections::MapKeys
+```sh
+keys = map_keys handle
+```
+
+Returns a handle to an array holding all keys in the provided map handle.
+
+#### Parameters
+
+* The map handle.
+
+#### Return Value
+
+A handle to an array holding all map keys.
+
+#### Examples
+
+```sh
+handle = map
+
+result = map_put ${handle} key1 value1
+assert_eq ${result} true
+result = map_put ${handle} key2 value2
+assert_eq ${result} true
+
+keys = map_keys ${handle}
+for key in ${keys}
+    value = map_get ${handle} ${key}
+    echo Key: ${key} Value: ${value}
+end
+
+release ${handle}
+release ${keys}
+```
+
+
+#### Aliases:
+map_keys
+
 <a name="std__collections__MapLoadProperties"></a>
 ## std::collections::MapLoadProperties
 ```sh
@@ -1433,6 +1479,92 @@ assert found
 #### Aliases:
 dump_variables
 
+<a name="std__env__EnvToMap"></a>
+## std::env::EnvToMap
+```sh
+handle = env_to_map
+```
+
+Converts all environment variables to a map and returns the map handle.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The map handle.
+
+#### Examples
+
+```sh
+set_env env_to_map_test test_value
+
+handle = env_to_map
+
+value = map_get ${handle} env_to_map_test
+assert_eq ${value} test_value
+
+release ${handle}
+```
+
+
+#### Aliases:
+env_to_map
+
+<a name="std__env__FindExecutable"></a>
+## std::env::FindExecutable
+```sh
+var = which executable
+```
+
+Returns the path to the executable if exists.<br>
+If not found it will return an empty string.
+
+#### Parameters
+
+The executable to find.
+
+#### Return Value
+
+The executable path or empty string if not found.
+
+#### Examples
+
+```sh
+path = which echo
+```
+
+
+#### Aliases:
+which
+
+<a name="std__env__GetCpuCount"></a>
+## std::env::GetCpuCount
+```sh
+var = cpu_count
+```
+
+Returns the number of CPUs.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The CPU count.
+
+#### Examples
+
+```sh
+count = cpu_count
+```
+
+
+#### Aliases:
+cpu_count, get_cpu_count
+
 <a name="std__env__GetHomeDirectory"></a>
 ## std::env::GetHomeDirectory
 ```sh
@@ -1684,6 +1816,52 @@ directory = pwd
 
 #### Aliases:
 pwd, print_current_directory
+
+<a name="std__env__PrintEnv"></a>
+## std::env::PrintEnv
+
+```sh
+var = printenv
+```
+
+Prints and returns all environment variables.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+All environment variables printout text.
+
+#### Examples
+
+```sh
+set_env TEST_PRINT_ENV TRUE
+
+text = printenv
+
+valid = contains ${text} TEST_PRINT_ENV=TRUE
+assert ${valid}
+```
+
+
+#### Source:
+
+```sh
+
+scope::print_env::map = env_to_map
+scope::print_env::text = map_to_properties ${scope::print_env::map}
+release ${scope::print_env::map}
+
+echo ${scope::print_env::text}
+set ${scope::print_env::text}
+
+```
+
+
+#### Aliases:
+print_env, printenv
 
 <a name="std__env__SetCurrentDirectory"></a>
 ## std::env::SetCurrentDirectory
@@ -2948,6 +3126,34 @@ set ${scope::glob_chmod::output}
 
 #### Aliases:
 glob_chmod
+
+<a name="std__fs__TempDirectory"></a>
+## std::fs::TempDirectory
+```sh
+path = temp_dir
+```
+
+This command will return the system temporary directory path.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+The directory path.
+
+#### Examples
+
+```sh
+path = temp_dir
+
+echo ${path}
+```
+
+
+#### Aliases:
+temp_dir
 
 <a name="std__fs__TempFile"></a>
 ## std::fs::TempFile
