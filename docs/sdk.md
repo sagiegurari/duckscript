@@ -46,6 +46,7 @@
 * [std::env::GetVar (get_env)](#std__env__GetVar)
 * [std::env::IsWindows (is_windows)](#std__env__IsWindows)
 * [std::env::PrintCurrentDirectory (pwd, print_current_directory)](#std__env__PrintCurrentDirectory)
+* [std::env::PrintEnv (print_env, printenv)](#std__env__PrintEnv)
 * [std::env::SetCurrentDirectory (cd, set_current_dir, set_current_directory)](#std__env__SetCurrentDirectory)
 * [std::env::SetVar (set_env)](#std__env__SetVar)
 * [std::env::UName (uname)](#std__env__UName)
@@ -1760,6 +1761,52 @@ directory = pwd
 
 #### Aliases:
 pwd, print_current_directory
+
+<a name="std__env__PrintEnv"></a>
+## std::env::PrintEnv
+
+```sh
+var = printenv
+```
+
+Prints and returns all environment variables.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+All environment variables printout text.
+
+#### Examples
+
+```sh
+set_env TEST_PRINT_ENV TRUE
+
+text = printenv
+
+valid = contains ${text} TEST_PRINT_ENV=TRUE
+assert ${valid}
+```
+
+
+#### Source:
+
+```sh
+
+scope::print_env::map = env_to_map
+scope::print_env::text = map_to_properties ${scope::print_env::map}
+release ${scope::print_env::map}
+
+echo ${scope::print_env::text}
+set ${scope::print_env::text}
+
+```
+
+
+#### Aliases:
+print_env, printenv
 
 <a name="std__env__SetCurrentDirectory"></a>
 ## std::env::SetCurrentDirectory

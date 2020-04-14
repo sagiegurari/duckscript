@@ -8,6 +8,7 @@ mod os_name;
 mod os_release;
 mod os_version;
 mod print_current_directory;
+mod print_env;
 mod set_current_directory;
 mod set_env;
 mod uname;
@@ -32,6 +33,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(os_release::create(&package))?;
     commands.set(os_version::create(&package))?;
     commands.set(print_current_directory::create(&package))?;
+    commands.set(print_env::create(&package)?)?;
     commands.set(set_current_directory::create(&package))?;
     commands.set(set_env::create(&package))?;
     commands.set(uname::create(&package)?)?;
