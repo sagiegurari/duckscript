@@ -2,6 +2,7 @@
 
 ### v0.3.3
 
+* New which command.
 * New cpu_count command.
 * New printenv command #97
 * New env_to_map command #96

@@ -37,6 +37,7 @@
 * [std::debug::DumpState (dump_state)](#std__debug__DumpState)
 * [std::debug::DumpVariables (dump_variables)](#std__debug__DumpVariables)
 * [std::env::EnvToMap (env_to_map)](#std__env__EnvToMap)
+* [std::env::FindExecutable (which)](#std__env__FindExecutable)
 * [std::env::GetCpuCount (cpu_count, get_cpu_count)](#std__env__GetCpuCount)
 * [std::env::GetHomeDirectory (get_home_dir)](#std__env__GetHomeDirectory)
 * [std::env::GetOSFamily (os_family)](#std__env__GetOSFamily)
@@ -1510,6 +1511,33 @@ release ${handle}
 
 #### Aliases:
 env_to_map
+
+<a name="std__env__FindExecutable"></a>
+## std::env::FindExecutable
+```sh
+var = which executable
+```
+
+Returns the path to the executable if exists.<br>
+If not found it will return an empty string.
+
+#### Parameters
+
+The executable to find.
+
+#### Return Value
+
+The executable path or empty string if not found.
+
+#### Examples
+
+```sh
+path = which echo
+```
+
+
+#### Aliases:
+which
 
 <a name="std__env__GetCpuCount"></a>
 ## std::env::GetCpuCount

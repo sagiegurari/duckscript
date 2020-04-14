@@ -1,7 +1,7 @@
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
 use fsio::path::from_path::FromPath;
-use home;
+use which;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -14,11 +14,11 @@ pub(crate) struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "GetHomeDirectory")
+        pckg::concat(&self.package, "FindExecutable")
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["get_home_dir".to_string()]
+        vec!["which".to_string()]
     }
 
     fn help(&self) -> String {
@@ -29,13 +29,17 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
-        match home::home_dir() {
-            Some(directory) => {
-                let directory_str = FromPath::from_path(&directory);
-                CommandResult::Continue(Some(directory_str))
+    fn run(&self, arguments: Vec<String>) -> CommandResult {
+        if arguments.is_empty() {
+            CommandResult::Error("No executable name provided.".to_string())
+        } else {
+            match which::which(&arguments[0]) {
+                Ok(path) => {
+                    let path_string: String = FromPath::from_path(&path);
+                    CommandResult::Continue(Some(path_string))
+                }
+                _ => CommandResult::Continue(None),
             }
-            None => CommandResult::Error("Unable to find user home directory.".to_string()),
         }
     }
 }

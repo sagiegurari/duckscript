@@ -14,6 +14,7 @@ mod set_current_directory;
 mod set_env;
 mod uname;
 mod unset;
+mod which;
 
 use crate::utils::pckg;
 use duckscript::types::command::Commands;
@@ -40,6 +41,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(set_env::create(&package))?;
     commands.set(uname::create(&package)?)?;
     commands.set(unset::create(&package))?;
+    commands.set(which::create(&package))?;
 
     Ok(())
 }

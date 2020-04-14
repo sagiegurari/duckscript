@@ -36,6 +36,7 @@ meval = "^0.2"
 num_cpus = "^1"
 rand = "^0.7"
 walkdir = "^2"
+which = { version = "^3", default-features = false }
 whoami = "^0.8"
 
 [target.'cfg(not(windows))'.dependencies]
