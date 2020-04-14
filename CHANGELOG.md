@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.3.3
+### v0.3.3 (2020-04-15)
 
 * New which command.
 * New cpu_count command.

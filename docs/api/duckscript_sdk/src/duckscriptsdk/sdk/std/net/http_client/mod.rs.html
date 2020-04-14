@@ -173,6 +173,8 @@
 <span id="173">173</span>
 <span id="174">174</span>
 <span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="ident">pckg</span>;
 <span class="kw">use</span> <span class="ident">attohttpc</span>;
@@ -237,7 +239,9 @@
                         <span class="string">&quot;get&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">options</span>.<span class="ident">method</span> <span class="op">=</span> <span class="ident">Method</span>::<span class="ident">Get</span>,
                         <span class="string">&quot;post&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">options</span>.<span class="ident">method</span> <span class="op">=</span> <span class="ident">Method</span>::<span class="ident">Post</span>,
                         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
-                            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Unsupported HTTP method: {}&quot;</span>, <span class="ident">argument</span>).<span class="ident">to_string</span>());
+                            <span class="kw">return</span> <span class="prelude-val">Err</span>(
+                                <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Unsupported HTTP method: {}&quot;</span>, <span class="ident">argument</span>).<span class="ident">to_string</span>()
+                            );
                         }
                     };
                 }
