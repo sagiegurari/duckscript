@@ -1,0 +1,10 @@
+
+fn test_valid
+    name = set test
+    assert_eq ${name} test
+
+    value = set_by_name name new_value
+    assert_eq ${name} new_value
+    assert_eq ${value} new_value
+end
+

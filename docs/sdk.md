@@ -132,6 +132,7 @@
 * [std::time::CurrentTimeMillies (current_time)](#std__time__CurrentTimeMillies)
 * [std::var::GetByName (get_by_name)](#std__var__GetByName)
 * [std::var::Set (set)](#std__var__Set)
+* [std::var::SetByName (set_by_name)](#std__var__SetByName)
 
 
 <a name="std__Echo"></a>
@@ -4830,6 +4831,43 @@ assert_eq ${value} FALSE
 
 #### Aliases:
 set
+
+<a name="std__var__SetByName"></a>
+## std::var::SetByName
+```sh
+var = set_by_name name value
+```
+
+This command sets the variable value based on the variable name.<br>
+It is similar to
+```sh
+name = set ${value}
+```
+However, it allows for a dynamic variable name.
+
+#### Parameters
+
+* The variable name.
+* The new variable value.
+
+#### Return Value
+
+The new variable value.
+
+#### Examples
+
+```sh
+var = set test
+value = get_by_name var
+defined = is_defined value
+
+assert ${defined}
+assert_eq ${value} test
+```
+
+
+#### Aliases:
+set_by_name
 
 ### License
 Developed by Sagie Gur-Ari and licensed under the

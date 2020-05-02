@@ -3,6 +3,7 @@
 ### v0.3.4
 
 * New get_by_name command.
+* New set_by_name command.
 
 ### v0.3.3 (2020-04-15)
 
