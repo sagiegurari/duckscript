@@ -5,7 +5,6 @@
 * [std::Not (not)](#std__Not)
 * [std::ReadUserInput (read)](#std__ReadUserInput)
 * [std::Release (release)](#std__Release)
-* [std::Set (set)](#std__Set)
 * [std::ShowCommandDocumentation (man)](#std__ShowCommandDocumentation)
 * [std::collections::Array (array)](#std__collections__Array)
 * [std::collections::ArrayConcat (array_concat)](#std__collections__ArrayConcat)
@@ -131,6 +130,8 @@
 * [std::test::TestDirectory (test_directory)](#std__test__TestDirectory)
 * [std::thread::Sleep (sleep)](#std__thread__Sleep)
 * [std::time::CurrentTimeMillies (current_time)](#std__time__CurrentTimeMillies)
+* [std::var::GetByName (get_by_name)](#std__var__GetByName)
+* [std::var::Set (set)](#std__var__Set)
 
 
 <a name="std__Echo"></a>
@@ -362,51 +363,6 @@ release ${array_handle}
 
 #### Aliases:
 release
-
-<a name="std__Set"></a>
-## std::Set
-```sh
-var = set arg [or arg]*
-```
-
-The set command will simply return the provided argument and set it to the output variable.<br>
-In case the argument is falsy it will attempt to provide another value if an 'or' keyword is set.
-
-A value is considered falsy if it is one of the following:
-
-* false (case insensitive)
-* 0
-* no (case insensitive)
-* Empty value
-
-#### Parameters
-
-The argument to set or an 'or' conditional arguments.
-
-
-#### Return Value
-
-The first truthy value
-
-#### Examples
-
-```sh
-# Return simple 'hello' text value
-var = set hello
-
-# Return expanded value: 'home: ....'
-var = set "home: ${HOME}"
-
-value = set test or false
-assert_eq ${value} test
-
-value = set 0 or no or false or NO or FALSE
-assert_eq ${value} FALSE
-```
-
-
-#### Aliases:
-set
 
 <a name="std__ShowCommandDocumentation"></a>
 ## std::ShowCommandDocumentation
@@ -2252,7 +2208,7 @@ When a function command is detected, it will search for the end command that com
 That entire block is considered the function code block (functions cannot be nested in outer functions)<br>
 
 In order to invoke the function, simply call the function name with any amount of paramters.<br>
-Those parameters will be set as $1, $2, ... and so on.<br>
+Those parameters will be set as ${1}, ${2}, ... and so on.<br>
 Since variables are global, it will overwrite any older values stored in those variables.<br>
 
 To exist a function and return a value, simply use the **return** command with the value you want to return.<br>
@@ -2265,7 +2221,7 @@ In case the code reached the **end** call, the function will exist but will retu
 * function - The function name used later on to invoke the function
 * end - no parameters
 * return - optional single paramter to return as an output of the function call
-* *function name* - Any number of arguments which will automatically be set as global variables: $1, $2, ... as so on.
+* *function name* - Any number of arguments which will automatically be set as global variables: ${1}, ${2}, ... as so on.
 
 #### Return Value
 
@@ -2297,8 +2253,8 @@ echo ${text}
 
 # Example of passing arguments
 fn print_input
-    # $1 is set with the value 'hello'
-    # $2 is set with the value 'world'
+    # ${1} is set with the value 'hello'
+    # ${2} is set with the value 'world'
     echo ${1} ${2}
 end
 
@@ -4794,6 +4750,86 @@ echo ${result}
 
 #### Aliases:
 current_time
+
+<a name="std__var__GetByName"></a>
+## std::var::GetByName
+```sh
+var = get_by_name name
+```
+
+This command returns the variable value based on the given variable name.<br>
+It is similar to
+```sh
+var = set ${name}
+```
+However, it allows for a dynamic variable name.
+
+#### Parameters
+
+The variable name.
+
+#### Return Value
+
+The variable value or none if no such variable exists.
+
+#### Examples
+
+```sh
+var = set test
+value = get_by_name var
+defined = is_defined value
+
+assert ${defined}
+assert_eq ${value} test
+```
+
+
+#### Aliases:
+get_by_name
+
+<a name="std__var__Set"></a>
+## std::var::Set
+```sh
+var = set arg [or arg]*
+```
+
+The set command will simply return the provided argument and set it to the output variable.<br>
+In case the argument is falsy it will attempt to provide another value if an 'or' keyword is set.
+
+A value is considered falsy if it is one of the following:
+
+* false (case insensitive)
+* 0
+* no (case insensitive)
+* Empty value
+
+#### Parameters
+
+The argument to set or an 'or' conditional arguments.
+
+#### Return Value
+
+The first truthy value
+
+#### Examples
+
+```sh
+# Return simple 'hello' text value
+var = set hello
+
+# Return expanded value: 'home: ....'
+var = set "home: ${HOME}"
+
+value = set test or false
+assert_eq ${value} test
+
+value = set 0 or no or false or NO or FALSE
+assert_eq ${value} FALSE
+```
+
+
+#### Aliases:
+set
 
 ### License
 Developed by Sagie Gur-Ari and licensed under the

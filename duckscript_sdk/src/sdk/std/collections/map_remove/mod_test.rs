@@ -1,6 +1,6 @@
 use super::*;
 use crate::sdk::std::collections::{map, map_put};
-use crate::sdk::std::set;
+use crate::sdk::std::var::set;
 use crate::test;
 use crate::test::CommandValidation;
 

@@ -16,11 +16,11 @@ mod process;
 mod read;
 pub(crate) mod release;
 pub(crate) mod scope;
-pub(crate) mod set;
 pub(crate) mod string;
 mod test;
 mod thread;
 mod time;
+mod var;
 
 use duckscript::types::command::Commands;
 use duckscript::types::error::ScriptError;
@@ -35,7 +35,6 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     commands.set(not::create(PACKAGE))?;
     commands.set(read::create(PACKAGE))?;
     commands.set(release::create(PACKAGE))?;
-    commands.set(set::create(PACKAGE))?;
 
     collections::load(commands, PACKAGE)?;
     debug::load(commands, PACKAGE)?;
@@ -52,6 +51,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     test::load(commands, PACKAGE)?;
     thread::load(commands, PACKAGE)?;
     time::load(commands, PACKAGE)?;
+    var::load(commands, PACKAGE)?;
 
     Ok(())
 }

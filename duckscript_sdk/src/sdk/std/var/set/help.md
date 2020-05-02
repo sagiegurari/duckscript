@@ -16,7 +16,6 @@ A value is considered falsy if it is one of the following:
 
 The argument to set or an 'or' conditional arguments.
 
-
 #### Return Value
 
 The first truthy value
