@@ -7,6 +7,20 @@ use crate::test::{
 };
 use crate::types::instruction::{InstructionMetaInfo, PreProcessInstruction};
 
+fn assert_end_reason_exit_called(end_reason: EndReason) {
+    match end_reason {
+        EndReason::ExitCalled => (),
+        _ => panic!("Invalid end reason."),
+    }
+}
+
+fn assert_end_reason_reached_end(end_reason: EndReason) {
+    match end_reason {
+        EndReason::ReachedEnd => (),
+        _ => panic!("Invalid end reason."),
+    }
+}
+
 #[test]
 fn run_script_parse_error() {
     let result = run_script("!bad", Context::new());
@@ -153,7 +167,7 @@ fn run_instructions_unknown_command() {
 
     let runtime = create_runtime(instructions, Context::new());
 
-    let context_result = run_instructions(runtime, 0);
+    let context_result = run_instructions(runtime, 0, false);
 
     assert!(context_result.is_err());
 }
@@ -169,7 +183,7 @@ fn run_instructions_start_bigger_then_script() {
 
     let runtime = create_runtime(instructions, Context::new());
 
-    let context_result = run_instructions(runtime, 10);
+    let context_result = run_instructions(runtime, 10, false);
 
     assert!(context_result.is_ok());
 }
@@ -199,7 +213,7 @@ fn run_instructions_start_after_bad_command() {
 
     let runtime = create_runtime(instructions, context);
 
-    let context_result = run_instructions(runtime, 1);
+    let context_result = run_instructions(runtime, 1, false);
 
     assert!(context_result.is_ok());
 }
@@ -227,12 +241,12 @@ fn run_instructions_exit_result_no_output() {
 
     let runtime = create_runtime(instructions, context);
 
-    let context_result = run_instructions(runtime, 0);
+    let context_result = run_instructions(runtime, 0, false);
 
     assert!(context_result.is_ok());
     let (updated_context, end_reason) = context_result.unwrap();
     assert!(updated_context.variables.is_empty());
-    assert_eq!(end_reason, EndReason::ExitCalled);
+    assert_end_reason_exit_called(end_reason);
 }
 
 #[test]
@@ -260,11 +274,11 @@ fn run_instructions_exit_result_with_output() {
 
     let runtime = create_runtime(instructions, context);
 
-    let context_result = run_instructions(runtime, 0);
+    let context_result = run_instructions(runtime, 0, false);
 
     assert!(context_result.is_ok());
     let (updated_context, end_reason) = context_result.unwrap();
-    assert_eq!(end_reason, EndReason::ExitCalled);
+    assert_end_reason_exit_called(end_reason);
     assert_eq!(
         updated_context.variables.get("out"),
         Some(&"value".to_string())
@@ -289,11 +303,11 @@ fn run_instructions_error_result() {
 
     let runtime = create_runtime(instructions, context);
 
-    let context_result = run_instructions(runtime, 0);
+    let context_result = run_instructions(runtime, 0, false);
 
     assert!(context_result.is_ok());
     let (updated_context, end_reason) = context_result.unwrap();
-    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert_end_reason_reached_end(end_reason);
     let variables = updated_context.variables;
     assert!(!variables.is_empty());
     assert_eq!(variables.get("out").unwrap(), "false");
@@ -330,12 +344,12 @@ fn run_instructions_error_result_with_on_error() {
 
     let runtime = create_runtime(instructions, context);
 
-    let context_result = run_instructions(runtime, 2);
+    let context_result = run_instructions(runtime, 2, false);
 
     assert!(context_result.is_ok());
 
     let (updated_context, end_reason) = context_result.unwrap();
-    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert_end_reason_reached_end(end_reason);
     let variables = updated_context.variables;
     assert!(!variables.is_empty());
     assert_eq!(variables.get("1").unwrap(), "test");
@@ -360,9 +374,31 @@ fn run_instructions_crash_result() {
 
     let runtime = create_runtime(instructions, context);
 
-    let context_result = run_instructions(runtime, 0);
+    let context_result = run_instructions(runtime, 0, false);
 
     assert!(context_result.is_err());
+}
+
+#[test]
+fn run_instructions_crash_result_repl_mode() {
+    let mut instructions = vec![];
+
+    let mut script_instruction = ScriptInstruction::new();
+    script_instruction.command = Some("crash".to_string());
+    instructions.push(Instruction {
+        meta_info: InstructionMetaInfo::new(),
+        instruction_type: InstructionType::Script(script_instruction),
+    });
+
+    let mut context = Context::new();
+    let result = context.commands.set(Box::new(CrashCommand {}));
+    assert!(result.is_ok());
+
+    let runtime = create_runtime(instructions, context);
+
+    let context_result = run_instructions(runtime, 0, true);
+
+    assert!(context_result.is_ok());
 }
 
 #[test]
@@ -380,11 +416,11 @@ fn run_instructions_continue_result_no_output() {
 
     let runtime = create_runtime(instructions, Context::new());
 
-    let context_result = run_instructions(runtime, 0);
+    let context_result = run_instructions(runtime, 0, false);
 
     assert!(context_result.is_ok());
     let (updated_context, end_reason) = context_result.unwrap();
-    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert_end_reason_reached_end(end_reason);
     assert!(updated_context.variables.is_empty());
 }
 
@@ -415,12 +451,12 @@ fn run_instructions_continue_result_with_output() {
 
     let runtime = create_runtime(instructions, context);
 
-    let context_result = run_instructions(runtime, 0);
+    let context_result = run_instructions(runtime, 0, false);
 
     assert!(context_result.is_ok());
 
     let (updated_context, end_reason) = context_result.unwrap();
-    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert_end_reason_reached_end(end_reason);
     assert_eq!(
         updated_context.variables.get("out1"),
         Some(&"value1".to_string())
@@ -468,12 +504,12 @@ fn run_instructions_goto_label_result_no_output() {
 
     let runtime = create_runtime(instructions, context);
 
-    let context_result = run_instructions(runtime, 0);
+    let context_result = run_instructions(runtime, 0, false);
 
     assert!(context_result.is_ok());
 
     let (updated_context, end_reason) = context_result.unwrap();
-    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert_end_reason_reached_end(end_reason);
     assert_eq!(
         updated_context.variables.get("out2"),
         Some(&"value2".to_string())
@@ -518,12 +554,12 @@ fn run_instructions_goto_label_result_with_output() {
 
     let runtime = create_runtime(instructions, context);
 
-    let context_result = run_instructions(runtime, 0);
+    let context_result = run_instructions(runtime, 0, false);
 
     assert!(context_result.is_ok());
 
     let (updated_context, end_reason) = context_result.unwrap();
-    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert_end_reason_reached_end(end_reason);
     assert_eq!(
         updated_context.variables.get("out1"),
         Some(&"my_label".to_string())
@@ -571,12 +607,12 @@ fn run_instructions_goto_line_result_no_output() {
 
     let runtime = create_runtime(instructions, context);
 
-    let context_result = run_instructions(runtime, 0);
+    let context_result = run_instructions(runtime, 0, false);
 
     assert!(context_result.is_ok());
 
     let (updated_context, end_reason) = context_result.unwrap();
-    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert_end_reason_reached_end(end_reason);
     assert_eq!(
         updated_context.variables.get("out2"),
         Some(&"value2".to_string())
@@ -621,12 +657,12 @@ fn run_instructions_goto_line_result_with_output() {
 
     let runtime = create_runtime(instructions, context);
 
-    let context_result = run_instructions(runtime, 0);
+    let context_result = run_instructions(runtime, 0, false);
 
     assert!(context_result.is_ok());
 
     let (updated_context, end_reason) = context_result.unwrap();
-    assert_eq!(end_reason, EndReason::ReachedEnd);
+    assert_end_reason_reached_end(end_reason);
     assert_eq!(
         updated_context.variables.get("out1"),
         Some(&"2".to_string())

@@ -4,6 +4,7 @@
 
 * New get_by_name command.
 * New set_by_name command.
+* \[Breaking Change\] Runtime - REPL mode doesn't stop due to crashes from user commands.
 
 ### v0.3.3 (2020-04-15)
 

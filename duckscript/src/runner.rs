@@ -18,10 +18,11 @@ use crate::types::runtime::{Context, Runtime, StateValue};
 use std::collections::HashMap;
 use std::io::stdin;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug)]
 enum EndReason {
     ExitCalled,
     ReachedEnd,
+    Crash(ScriptError),
 }
 
 /// Executes the provided script with the given context
@@ -59,12 +60,13 @@ pub fn repl(mut context: Context) -> Result<Context, ScriptError> {
                         instructions.append(&mut new_instructions);
                         let runtime = create_runtime(instructions.clone(), context);
 
-                        let (updated_context, end_reason) = run_instructions(runtime, start)?;
+                        let (updated_context, end_reason) = run_instructions(runtime, start, true)?;
 
                         context = updated_context;
 
                         match end_reason {
                             EndReason::ExitCalled => return Ok(context),
+                            EndReason::Crash(error) => println!("{}", &error.to_string()),
                             _ => (),
                         };
                     }
@@ -83,7 +85,7 @@ pub fn repl(mut context: Context) -> Result<Context, ScriptError> {
 fn run(instructions: Vec<Instruction>, context: Context) -> Result<Context, ScriptError> {
     let runtime = create_runtime(instructions, context);
 
-    match run_instructions(runtime, 0) {
+    match run_instructions(runtime, 0, false) {
         Ok((context, _)) => Ok(context),
         Err(error) => Err(error),
     }
@@ -118,6 +120,7 @@ fn create_runtime(instructions: Vec<Instruction>, context: Context) -> Runtime {
 fn run_instructions(
     mut runtime: Runtime,
     start_at: usize,
+    repl_mode: bool,
 ) -> Result<(Context, EndReason), ScriptError> {
     let mut line = start_at;
     let mut state = runtime.context.state.clone();
@@ -183,9 +186,15 @@ fn run_instructions(
                 ()
             }
             CommandResult::Crash(error) => {
-                return Err(ScriptError {
+                let script_error = ScriptError {
                     info: ErrorInfo::Runtime(error, Some(meta_info)),
-                });
+                };
+
+                if repl_mode {
+                    return Ok((runtime.context, EndReason::Crash(script_error)));
+                }
+
+                return Err(script_error);
             }
             CommandResult::Continue(output) => {
                 update_output(&mut runtime.context.variables, output_variable, output);
