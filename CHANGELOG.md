@@ -2,9 +2,10 @@
 
 ### v0.3.4
 
+* \[Breaking Change\] Runtime - REPL mode doesn't stop due to crashes from user commands #103
+* New get_all_var_names command #100
 * New get_by_name command.
 * New set_by_name command.
-* \[Breaking Change\] Runtime - REPL mode doesn't stop due to crashes from user commands.
 
 ### v0.3.3 (2020-04-15)
 

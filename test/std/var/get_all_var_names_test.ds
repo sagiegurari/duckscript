@@ -1,0 +1,26 @@
+
+fn test_with_values
+    test1 = set 1
+    test2 = set 2
+
+    map_handle = map
+    map_put ${map_handle} test1 1
+    map_put ${map_handle} test2 1
+    map_put ${map_handle} map_handle 1
+
+    handle = get_all_var_names
+
+    size = array_length ${handle}
+    assert_eq 3 ${size}
+
+    for name in ${handle}
+        map_remove ${map_handle} ${name}
+    end
+
+    size = map_size ${map_handle}
+    assert_eq 0 ${size}
+
+    release ${map_handle}
+    release ${handle}
+end
+

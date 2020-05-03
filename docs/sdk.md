@@ -130,6 +130,7 @@
 * [std::test::TestDirectory (test_directory)](#std__test__TestDirectory)
 * [std::thread::Sleep (sleep)](#std__thread__Sleep)
 * [std::time::CurrentTimeMillies (current_time)](#std__time__CurrentTimeMillies)
+* [std::var::GetAllVarNames (get_all_var_names)](#std__var__GetAllVarNames)
 * [std::var::GetByName (get_by_name)](#std__var__GetByName)
 * [std::var::Set (set)](#std__var__Set)
 * [std::var::SetByName (set_by_name)](#std__var__SetByName)
@@ -4751,6 +4752,35 @@ echo ${result}
 
 #### Aliases:
 current_time
+
+<a name="std__var__GetAllVarNames"></a>
+## std::var::GetAllVarNames
+```sh
+handle = get_all_var_names
+```
+
+Creates an array holding all currently known variable names and returns the array handle.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+A handle to the array.
+
+#### Examples
+
+```sh
+handle = get_all_var_names
+
+# once done we should release the handle
+release ${handle}
+```
+
+
+#### Aliases:
+get_all_var_names
 
 <a name="std__var__GetByName"></a>
 ## std::var::GetByName
