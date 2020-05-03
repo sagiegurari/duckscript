@@ -19,6 +19,7 @@
 * [std::collections::IsMap (is_map)](#std__collections__IsMap)
 * [std::collections::Map (map)](#std__collections__Map)
 * [std::collections::MapClear (map_clear)](#std__collections__MapClear)
+* [std::collections::MapContainsKey (map_contains_key)](#std__collections__MapContainsKey)
 * [std::collections::MapGet (map_get)](#std__collections__MapGet)
 * [std::collections::MapIsEmpty (map_is_empty)](#std__collections__MapIsEmpty)
 * [std::collections::MapKeys (map_keys)](#std__collections__MapKeys)
@@ -887,6 +888,62 @@ release ${handle}
 
 #### Aliases:
 map_clear
+
+<a name="std__collections__MapContainsKey"></a>
+## std::collections::MapContainsKey
+
+```sh
+var = map_contains_key handle key
+```
+
+Returns true if the provided key was found in the map.
+
+#### Parameters
+
+* The map handle.
+* The key
+
+#### Return Value
+
+True if the key was found in the map.
+
+#### Examples
+
+```sh
+handle = map
+map_put ${handle} key value
+found = map_contains_key ${handle} key
+```
+
+
+#### Source:
+
+```sh
+
+scope::map_contains_key::found = set false
+scope::map_contains_key::not_empty = not map_is_empty ${scope::map_contains_key::argument::1}
+
+if ${scope::map_contains_key::not_empty}
+    scope::map_contains_key::key = set ${scope::map_contains_key::argument::2}
+    scope::map_contains_key::key_array_handle = map_keys ${scope::map_contains_key::argument::1}
+
+    for scope::map_contains_key::item in ${scope::map_contains_key::key_array_handle}
+        scope::map_contains_key::found = equals ${scope::map_contains_key::item} ${scope::map_contains_key::key}
+
+        if ${scope::map_contains_key::found}
+            release ${scope::map_contains_key::key_array_handle}
+        end
+    end
+end
+
+release ${scope::map_contains_key::key_array_handle}
+set ${scope::map_contains_key::found}
+
+```
+
+
+#### Aliases:
+map_contains_key
 
 <a name="std__collections__MapGet"></a>
 ## std::collections::MapGet
