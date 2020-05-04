@@ -8,7 +8,7 @@
 * [std::ShowCommandDocumentation (man)](#std__ShowCommandDocumentation)
 * [std::collections::Array (array)](#std__collections__Array)
 * [std::collections::ArrayConcat (array_concat)](#std__collections__ArrayConcat)
-* [std::collections::ArrayContainsValue (array_contains_value)](#std__collections__ArrayContainsValue)
+* [std::collections::ArrayContains (array_contains)](#std__collections__ArrayContains)
 * [std::collections::ArrayGet (array_get)](#std__collections__ArrayGet)
 * [std::collections::ArrayIsEmpty (array_is_empty)](#std__collections__ArrayIsEmpty)
 * [std::collections::ArrayJoin (array_join)](#std__collections__ArrayJoin)
@@ -481,11 +481,11 @@ set ${scope::array_concat::array}
 #### Aliases:
 array_concat
 
-<a name="std__collections__ArrayContainsValue"></a>
-## std::collections::ArrayContainsValue
+<a name="std__collections__ArrayContains"></a>
+## std::collections::ArrayContains
 
 ```sh
-var = array_contains_value handle value
+var = array_contains handle value
 ```
 
 Returns the first index of the array with the same value as provided.<br>
@@ -504,7 +504,7 @@ The value index in the array or false if not found.
 
 ```sh
 handle = array value1 value2 value3
-index = array_contains_value ${handle} value2
+index = array_contains ${handle} value2
 ```
 
 
@@ -512,28 +512,28 @@ index = array_contains_value ${handle} value2
 
 ```sh
 
-scope::array_contains_value::index = set false
-scope::array_contains_value::value = set ${scope::array_contains_value::argument::2}
+scope::array_contains::index = set false
+scope::array_contains::value = set ${scope::array_contains::argument::2}
 
-scope::array_contains_value::counter = set 0
-for scope::array_contains_value::next_value in ${scope::array_contains_value::argument::1}
-    scope::array_contains_value::found = equals ${scope::array_contains_value::next_value} ${scope::array_contains_value::value}
+scope::array_contains::counter = set 0
+for scope::array_contains::next_value in ${scope::array_contains::argument::1}
+    scope::array_contains::found = equals ${scope::array_contains::next_value} ${scope::array_contains::value}
 
-    if ${scope::array_contains_value::found}
-        scope::array_contains_value::index = set ${scope::array_contains_value::counter}
-        scope::array_contains_value::argument::1 = set
+    if ${scope::array_contains::found}
+        scope::array_contains::index = set ${scope::array_contains::counter}
+        scope::array_contains::argument::1 = set
     end
 
-    scope::array_contains_value::counter = calc ${scope:array_contains_value::counter} + 1
+    scope::array_contains::counter = calc ${scope:array_contains::counter} + 1
 end
 
-set ${scope::array_contains_value::index}
+set ${scope::array_contains::index}
 
 ```
 
 
 #### Aliases:
-array_contains_value
+array_contains
 
 <a name="std__collections__ArrayGet"></a>
 ## std::collections::ArrayGet

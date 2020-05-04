@@ -8,12 +8,12 @@ use duckscript::types::error::ScriptError;
 mod mod_test;
 
 pub(crate) fn create(package: &str) -> Result<Box<dyn Command>, ScriptError> {
-    let name = pckg::concat(package, "ArrayContainsValue");
+    let name = pckg::concat(package, "ArrayContains");
     let command = create_alias_command(
         name,
-        vec!["array_contains_value".to_string()],
+        vec!["array_contains".to_string()],
         include_str!("help.md").to_string(),
-        "array_contains_value".to_string(),
+        "array_contains".to_string(),
         include_str!("script.ds").to_string(),
         2,
     )?;
