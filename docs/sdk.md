@@ -137,6 +137,7 @@
 * [std::var::GetByName (get_by_name)](#std__var__GetByName)
 * [std::var::Set (set)](#std__var__Set)
 * [std::var::SetByName (set_by_name)](#std__var__SetByName)
+* [std::var::Unset (unset)](#std__var__Unset)
 
 
 <a name="std__Echo"></a>
@@ -5019,7 +5020,7 @@ set
 <a name="std__var__SetByName"></a>
 ## std::var::SetByName
 ```sh
-var = set_by_name name value
+var = set_by_name name [value]
 ```
 
 This command sets the variable value based on the variable name.<br>
@@ -5032,7 +5033,7 @@ However, it allows for a dynamic variable name.
 #### Parameters
 
 * The variable name.
-* The new variable value.
+* The new variable value, if not provided, the variable will be unset.
 
 #### Return Value
 
@@ -5052,6 +5053,49 @@ assert_eq ${value} test
 
 #### Aliases:
 set_by_name
+
+<a name="std__var__Unset"></a>
+## std::var::Unset
+
+```sh
+unset [names]*
+```
+
+Undefines all the variable names provided.
+
+#### Parameters
+
+A list of variable names to undefine.
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+var = set 1
+defined = is_defined var
+assert ${defined}
+unset var
+defined = is_defined var
+assert_false ${defined}
+```
+
+
+#### Source:
+
+```sh
+
+for scope::unset::name in ${scope::unset::arguments}
+    set_by_name ${scope::unset::name}
+end
+
+```
+
+
+#### Aliases:
+unset
 
 ### License
 Developed by Sagie Gur-Ari and licensed under the

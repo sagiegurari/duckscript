@@ -3,6 +3,7 @@
 ### v0.3.4
 
 * \[Breaking Change\] Runtime - REPL mode doesn't stop due to crashes from user commands #103
+* New unset command.
 * New array_contains command.
 * New map_contains_value command.
 * New map_contains_key command.

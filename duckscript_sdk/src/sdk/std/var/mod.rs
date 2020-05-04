@@ -2,6 +2,7 @@ mod get_all_var_names;
 mod get_by_name;
 pub(crate) mod set;
 mod set_by_name;
+mod unset;
 
 use crate::utils::pckg;
 use duckscript::types::command::Commands;
@@ -16,6 +17,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(get_by_name::create(&package))?;
     commands.set(set::create(&package))?;
     commands.set(set_by_name::create(&package))?;
+    commands.set(unset::create(&package)?)?;
 
     Ok(())
 }

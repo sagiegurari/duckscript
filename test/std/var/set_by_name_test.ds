@@ -1,5 +1,16 @@
 
-fn test_valid
+fn test_name_only
+    name = set test
+    assert_eq ${name} test
+
+    value = set_by_name name
+    defined = is_defined value
+    assert_false ${defined}
+    defined = is_defined name
+    assert_false ${defined}
+end
+
+fn test_name_and_value
     name = set test
     assert_eq ${name} test
 

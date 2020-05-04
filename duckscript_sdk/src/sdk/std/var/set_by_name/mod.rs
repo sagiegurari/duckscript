@@ -43,12 +43,18 @@ impl Command for CommandImpl {
         _commands: &mut Commands,
         _line: usize,
     ) -> CommandResult {
-        if arguments.len() < 2 {
-            CommandResult::Error("Missing variable name and value.".to_string())
+        if arguments.is_empty() {
+            CommandResult::Error("Missing variable name.".to_string())
         } else {
-            variables.insert(arguments[0].clone(), arguments[1].clone());
+            let output = if arguments.len() > 1 {
+                variables.insert(arguments[0].clone(), arguments[1].clone());
+                Some(arguments[1].clone())
+            } else {
+                variables.remove(&arguments[0]);
+                None
+            };
 
-            CommandResult::Continue(Some(arguments[1].clone()))
+            CommandResult::Continue(output)
         }
     }
 }

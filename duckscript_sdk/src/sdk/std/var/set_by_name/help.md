@@ -1,5 +1,5 @@
 ```sh
-var = set_by_name name value
+var = set_by_name name [value]
 ```
 
 This command sets the variable value based on the variable name.<br>
@@ -12,7 +12,7 @@ However, it allows for a dynamic variable name.
 #### Parameters
 
 * The variable name.
-* The new variable value.
+* The new variable value, if not provided, the variable will be unset.
 
 #### Return Value
 
