@@ -12,6 +12,7 @@ mod is_map;
 mod map;
 mod map_clear;
 mod map_contains_key;
+mod map_contains_value;
 mod map_get;
 mod map_is_empty;
 mod map_keys;
@@ -47,6 +48,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(map::create(&package))?;
     commands.set(map_clear::create(&package))?;
     commands.set(map_contains_key::create(&package)?)?;
+    commands.set(map_contains_value::create(&package)?)?;
     commands.set(map_get::create(&package))?;
     commands.set(map_is_empty::create(&package)?)?;
     commands.set(map_keys::create(&package))?;

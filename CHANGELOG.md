@@ -3,6 +3,7 @@
 ### v0.3.4
 
 * \[Breaking Change\] Runtime - REPL mode doesn't stop due to crashes from user commands #103
+* New map_contains_value command.
 * New map_contains_key command.
 * New get_all_var_names command #100
 * New get_by_name command.
