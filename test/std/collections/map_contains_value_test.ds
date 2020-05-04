@@ -10,16 +10,6 @@ end
 
 fn test_not_found
     handle = map
-    map_put ${handle} key1 value
-
-    found = map_contains_value ${handle} key2
-    release ${handle}
-
-    assert_false ${found}
-end
-
-fn test_not_found
-    handle = map
     map_put ${handle} key1 value1
 
     found = map_contains_value ${handle} value2

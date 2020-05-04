@@ -1,5 +1,6 @@
 pub(crate) mod array;
 mod array_concat;
+mod array_contains_value;
 mod array_get;
 mod array_is_empty;
 mod array_join;
@@ -36,6 +37,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
 
     commands.set(array::create(&package))?;
     commands.set(array_concat::create(&package)?)?;
+    commands.set(array_contains_value::create(&package)?)?;
     commands.set(array_get::create(&package))?;
     commands.set(array_push::create(&package))?;
     commands.set(array_set::create(&package))?;

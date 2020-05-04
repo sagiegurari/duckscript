@@ -1,0 +1,48 @@
+
+fn test_empty
+    handle = array
+
+    found = array_contains_value ${handle} value
+    release ${handle}
+
+    assert_eq ${found} false
+end
+
+fn test_not_found
+    handle = array value1
+
+    found = array_contains_value ${handle} value2
+    release ${handle}
+
+    assert_eq ${found} false
+end
+
+fn test_found
+    handle = array value
+
+    found = array_contains_value ${handle} value
+    release ${handle}
+
+    assert_eq ${found} 0
+end
+
+fn test_both
+    handle = array value1 value2 value1 value1 value2 value2 value3
+    size = array_length ${handle}
+    last_index = calc ${size} - 1
+
+    found = array_contains_value ${handle} value1
+    assert_eq ${found} 0
+
+    found = array_contains_value ${handle} value2
+    assert_eq ${found} 1
+
+    found = array_contains_value ${handle} value3
+    assert ${found} ${last_index}
+
+    found = array_contains_value ${handle} value4
+    assert_eq ${found} false
+
+    release ${handle}
+end
+
