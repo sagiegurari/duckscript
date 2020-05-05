@@ -2,7 +2,6 @@
 
 ### v0.3.4
 
-* \[Breaking Change\] Runtime - REPL mode doesn't stop due to crashes from user commands #103
 * New unset command.
 * New array_contains command.
 * New map_contains_value command.
@@ -10,6 +9,8 @@
 * New get_all_var_names command #100
 * New get_by_name command.
 * New set_by_name command.
+* Runtime - Support for hashset state value.
+* \[Breaking Change\] Runtime - REPL mode doesn't stop due to crashes from user commands #103
 
 ### v0.3.3 (2020-04-15)
 

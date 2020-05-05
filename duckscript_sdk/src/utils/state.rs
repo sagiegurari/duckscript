@@ -160,6 +160,7 @@ pub(crate) fn get_as_string(state_value: &StateValue) -> Result<String, String> 
         StateValue::String(value) => Ok(value.to_string()),
         StateValue::ByteArray(_) => Err("Unsupported value type.".to_string()),
         StateValue::List(_) => Err("Unsupported value type.".to_string()),
+        StateValue::Set(_) => Err("Unsupported value type.".to_string()),
         StateValue::SubState(_) => Err("Unsupported value type.".to_string()),
         StateValue::Any(_) => Err("Unsupported value type.".to_string()),
     }
@@ -222,6 +223,10 @@ where
                 state.insert(key, StateValue::List(value));
                 Err("Invalid handle provided.".to_string())
             }
+            StateValue::Set(value) => {
+                state.insert(key, StateValue::Set(value));
+                Err("Invalid handle provided.".to_string())
+            }
             StateValue::Any(value) => {
                 state.insert(key, StateValue::Any(value));
                 Err("Invalid handle provided.".to_string())
@@ -282,6 +287,10 @@ where
             }
             StateValue::ByteArray(value) => {
                 state.insert(key, StateValue::ByteArray(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::Set(value) => {
+                state.insert(key, StateValue::Set(value));
                 Err("Invalid handle provided.".to_string())
             }
             StateValue::SubState(value) => {
