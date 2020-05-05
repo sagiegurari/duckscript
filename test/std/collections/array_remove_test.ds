@@ -1,0 +1,21 @@
+
+fn test_array_with_data
+    arr = array 1 2 3
+
+    element = array_get ${arr} 0
+    assert_eq ${element} 1
+
+    result = array_remove ${arr} 0
+    assert ${result}
+
+    element = array_get ${arr} 0
+    assert_eq ${element} 2
+
+    result = array_remove ${arr} 1
+    assert ${result}
+    result = array_remove ${arr} 0
+    assert ${result}
+
+    empty = array_is_empty ${arr}
+    assert ${empty}
+end

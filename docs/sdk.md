@@ -16,6 +16,7 @@
 * [std::collections::ArrayLength (array_length, arrlen)](#std__collections__ArrayLength)
 * [std::collections::ArrayPop (array_pop)](#std__collections__ArrayPop)
 * [std::collections::ArrayPush (array_push, array_add, array_put)](#std__collections__ArrayPush)
+* [std::collections::ArrayRemove (array_remove)](#std__collections__ArrayRemove)
 * [std::collections::ArraySet (array_set)](#std__collections__ArraySet)
 * [std::collections::IsArray (is_array)](#std__collections__IsArray)
 * [std::collections::IsMap (is_map)](#std__collections__IsMap)
@@ -814,6 +815,44 @@ assert_eq ${last_element} 4
 
 #### Aliases:
 array_push, array_add, array_put
+
+<a name="std__collections__ArrayRemove"></a>
+## std::collections::ArrayRemove
+```sh
+result = array_remove handle index
+```
+
+Removes the item from the array at the given index.<br>
+If the array is not found or the index is greater than the array size, this command will return false.<br>
+Otherwise it will return true.
+
+#### Parameters
+
+* The array handle.
+* The element index.
+
+#### Return Value
+
+True if successful.
+
+#### Examples
+
+```sh
+arr = array old
+
+element = array_get ${arr} 0
+assert_eq ${element} old
+
+result = array_remove ${arr} 0
+assert ${result}
+
+empty = array_is_empty ${arr}
+assert ${empty}
+```
+
+
+#### Aliases:
+array_remove
 
 <a name="std__collections__ArraySet"></a>
 ## std::collections::ArraySet

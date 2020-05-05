@@ -2,6 +2,7 @@
 
 ### v0.3.4
 
+* New array_remove command.
 * New set_new command.
 * New is_set command.
 * New unset command.
