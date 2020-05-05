@@ -11,6 +11,7 @@
 * New get_all_var_names command #100
 * New get_by_name command.
 * New set_by_name command.
+* Add array_add and array_put aliases to array_push
 * Runtime - Support for hashset state value.
 * \[Breaking Change\] Runtime - REPL mode doesn't stop due to crashes from user commands #103
 
