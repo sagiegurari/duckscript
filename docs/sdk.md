@@ -14,7 +14,7 @@
 * [std::collections::ArrayJoin (array_join)](#std__collections__ArrayJoin)
 * [std::collections::ArrayLength (array_length, arrlen)](#std__collections__ArrayLength)
 * [std::collections::ArrayPop (array_pop)](#std__collections__ArrayPop)
-* [std::collections::ArrayPush (array_push)](#std__collections__ArrayPush)
+* [std::collections::ArrayPush (array_push, array_add, array_put)](#std__collections__ArrayPush)
 * [std::collections::ArraySet (array_set)](#std__collections__ArraySet)
 * [std::collections::IsArray (is_array)](#std__collections__IsArray)
 * [std::collections::IsMap (is_map)](#std__collections__IsMap)
@@ -773,7 +773,7 @@ assert_eq ${last_element} 4
 
 
 #### Aliases:
-array_push
+array_push, array_add, array_put
 
 <a name="std__collections__ArraySet"></a>
 ## std::collections::ArraySet
