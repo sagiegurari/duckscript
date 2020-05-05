@@ -7,6 +7,7 @@
 * [std::Release (release)](#std__Release)
 * [std::ShowCommandDocumentation (man)](#std__ShowCommandDocumentation)
 * [std::collections::Array (array)](#std__collections__Array)
+* [std::collections::ArrayClear (array_clear)](#std__collections__ArrayClear)
 * [std::collections::ArrayConcat (array_concat)](#std__collections__ArrayConcat)
 * [std::collections::ArrayContains (array_contains)](#std__collections__ArrayContains)
 * [std::collections::ArrayGet (array_get)](#std__collections__ArrayGet)
@@ -428,6 +429,45 @@ release ${handle}
 
 #### Aliases:
 array
+
+<a name="std__collections__ArrayClear"></a>
+## std::collections::ArrayClear
+```sh
+result = array_clear handle
+```
+
+Clears the provided array.
+
+#### Parameters
+
+The array handle.
+
+#### Return Value
+
+True if successful.
+
+#### Examples
+
+```sh
+handle = array
+
+result = array_push ${handle} 1
+
+result = array_is_empty ${handle}
+assert_false ${result}
+
+result array_clear ${handle}
+assert ${result}
+
+result = array_is_empty ${handle}
+assert ${result}
+
+release ${handle}
+```
+
+
+#### Aliases:
+array_clear
 
 <a name="std__collections__ArrayConcat"></a>
 ## std::collections::ArrayConcat
