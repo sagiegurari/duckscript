@@ -38,7 +38,7 @@ pub enum StateValue {
     /// list
     List(Vec<StateValue>),
     /// unique set of values
-    Set(HashSet<StateValue>),
+    Set(HashSet<String>),
     /// sub state value
     SubState(HashMap<String, StateValue>),
     /// any value

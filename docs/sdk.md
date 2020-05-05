@@ -18,6 +18,7 @@
 * [std::collections::ArraySet (array_set)](#std__collections__ArraySet)
 * [std::collections::IsArray (is_array)](#std__collections__IsArray)
 * [std::collections::IsMap (is_map)](#std__collections__IsMap)
+* [std::collections::IsSet (is_set)](#std__collections__IsSet)
 * [std::collections::Map (map)](#std__collections__Map)
 * [std::collections::MapClear (map_clear)](#std__collections__MapClear)
 * [std::collections::MapContainsKey (map_contains_key)](#std__collections__MapContainsKey)
@@ -32,6 +33,7 @@
 * [std::collections::MapToProperties (map_to_properties)](#std__collections__MapToProperties)
 * [std::collections::Range (range)](#std__collections__Range)
 * [std::collections::ReadProperties (read_properties)](#std__collections__ReadProperties)
+* [std::collections::Set (set_new)](#std__collections__Set)
 * [std::collections::WriteProperties (write_properties)](#std__collections__WriteProperties)
 * [std::debug::DuckscriptSDKVersion (duckscript_sdk_version)](#std__debug__DuckscriptSDKVersion)
 * [std::debug::DuckscriptVersion (duckscript_version)](#std__debug__DuckscriptVersion)
@@ -876,6 +878,38 @@ assert ${released}
 #### Aliases:
 is_map
 
+<a name="std__collections__IsSet"></a>
+## std::collections::IsSet
+```sh
+var = is_set handle
+```
+
+Returns true if the provided value is a set handle.
+
+#### Parameters
+
+The set handle.
+
+#### Return Value
+
+True if the provided value is a set handle.
+
+#### Examples
+
+```sh
+handle = set_new 1 2 3
+
+value = is_set ${handle}
+assert ${value}
+
+released = release ${handle}
+assert ${released}
+```
+
+
+#### Aliases:
+is_set
+
 <a name="std__collections__Map"></a>
 ## std::collections::Map
 ```sh
@@ -1403,6 +1437,37 @@ assert_eq ${config.a.b.c} 3
 
 #### Aliases:
 read_properties
+
+<a name="std__collections__Set"></a>
+## std::collections::Set
+```sh
+handle = set_new value1 value2 value3 ...
+```
+
+Creates a new set from the input arguments and returns a handle to that set.<br>
+This handle can be passed to other commands which support sets using handles.<br>
+Once the set is no longer used, it should be released using the **release** command.
+
+#### Parameters
+
+Any number of arguments which will construct the set.
+
+#### Return Value
+
+A handle to the set.
+
+#### Examples
+
+```sh
+handle = set_new ${var} "hello world" 5 ${another_var}
+
+# once done we should release the handle
+release ${handle}
+```
+
+
+#### Aliases:
+set_new
 
 <a name="std__collections__WriteProperties"></a>
 ## std::collections::WriteProperties

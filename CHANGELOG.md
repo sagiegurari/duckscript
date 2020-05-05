@@ -2,6 +2,8 @@
 
 ### v0.3.4
 
+* New set_new command.
+* New is_set command.
 * New unset command.
 * New array_contains command.
 * New map_contains_value command.

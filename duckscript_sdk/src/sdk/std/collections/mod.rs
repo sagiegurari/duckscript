@@ -10,6 +10,7 @@ mod array_push;
 mod array_set;
 mod is_array;
 mod is_map;
+mod is_set;
 mod map;
 mod map_clear;
 mod map_contains_key;
@@ -24,6 +25,7 @@ mod map_size;
 mod map_to_properties;
 mod range;
 mod read_properties;
+mod set;
 mod write_properties;
 
 use crate::utils::pckg;
@@ -47,6 +49,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(array_pop::create(&package))?;
     commands.set(is_array::create(&package))?;
     commands.set(is_map::create(&package))?;
+    commands.set(is_set::create(&package))?;
     commands.set(map::create(&package))?;
     commands.set(map_clear::create(&package))?;
     commands.set(map_contains_key::create(&package)?)?;
@@ -61,6 +64,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(map_to_properties::create(&package))?;
     commands.set(range::create(&package))?;
     commands.set(read_properties::create(&package))?;
+    commands.set(set::create(&package))?;
     commands.set(write_properties::create(&package))?;
 
     Ok(())
