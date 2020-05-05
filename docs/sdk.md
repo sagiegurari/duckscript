@@ -13,7 +13,7 @@
 * [std::collections::ArrayGet (array_get)](#std__collections__ArrayGet)
 * [std::collections::ArrayIsEmpty (array_is_empty)](#std__collections__ArrayIsEmpty)
 * [std::collections::ArrayJoin (array_join)](#std__collections__ArrayJoin)
-* [std::collections::ArrayLength (array_length, arrlen)](#std__collections__ArrayLength)
+* [std::collections::ArrayLength (array_length, arrlen, array_size)](#std__collections__ArrayLength)
 * [std::collections::ArrayPop (array_pop)](#std__collections__ArrayPop)
 * [std::collections::ArrayPush (array_push, array_add, array_put)](#std__collections__ArrayPush)
 * [std::collections::ArrayRemove (array_remove)](#std__collections__ArrayRemove)
@@ -757,7 +757,7 @@ echo Array length: ${len} released: ${released}
 
 
 #### Aliases:
-array_length, arrlen
+array_length, arrlen, array_size
 
 <a name="std__collections__ArrayPop"></a>
 ## std::collections::ArrayPop

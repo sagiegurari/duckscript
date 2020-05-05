@@ -2,6 +2,7 @@
 
 ### v0.3.4
 
+* Add array_size alias to array_length command.
 * New array_remove command.
 * New set_new command.
 * New is_set command.
