@@ -42,6 +42,7 @@
 * [std::collections::SetPut (set_put, set_add)](#std__collections__SetPut)
 * [std::collections::SetRemove (set_remove)](#std__collections__SetRemove)
 * [std::collections::SetSize (set_size)](#std__collections__SetSize)
+* [std::collections::SetToArray (set_to_array)](#std__collections__SetToArray)
 * [std::collections::WriteProperties (write_properties)](#std__collections__WriteProperties)
 * [std::debug::DuckscriptSDKVersion (duckscript_sdk_version)](#std__debug__DuckscriptSDKVersion)
 * [std::debug::DuckscriptVersion (duckscript_version)](#std__debug__DuckscriptVersion)
@@ -1758,6 +1759,33 @@ release ${handle}
 
 #### Aliases:
 set_size
+
+<a name="std__collections__SetToArray"></a>
+## std::collections::SetToArray
+```sh
+array_handle = set_to_array set_handle
+```
+
+Converts the provided set to an array and returns the new array handle.
+
+#### Parameters
+
+The set handle.
+
+#### Return Value
+
+The array handle or false in case of error.
+
+#### Examples
+
+```sh
+set_handle = set_new value1 value2 value3
+array_handle = set_to_array ${set_handle}
+```
+
+
+#### Aliases:
+set_to_array
 
 <a name="std__collections__WriteProperties"></a>
 ## std::collections::WriteProperties

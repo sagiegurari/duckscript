@@ -34,6 +34,7 @@ mod set_is_empty;
 mod set_put;
 mod set_remove;
 mod set_size;
+mod set_to_array;
 mod write_properties;
 
 use crate::utils::pckg;
@@ -81,6 +82,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(set_put::create(&package))?;
     commands.set(set_remove::create(&package))?;
     commands.set(set_size::create(&package))?;
+    commands.set(set_to_array::create(&package))?;
     commands.set(write_properties::create(&package))?;
 
     Ok(())

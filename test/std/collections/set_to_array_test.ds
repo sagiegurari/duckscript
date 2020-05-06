@@ -1,0 +1,24 @@
+
+fn test_map_keys
+    handle = set_new 1 2 3 4
+
+    arr = set_to_array ${handle}
+    size = array_length ${arr}
+    assert_eq ${size} 4
+
+    result = array_contains ${arr} 1
+    contained = not equals ${result} false
+    assert ${contained}
+    result = array_contains ${arr} 2
+    contained = not equals ${result} false
+    assert ${contained}
+    result = array_contains ${arr} 3
+    contained = not equals ${result} false
+    assert ${contained}
+    result = array_contains ${arr} 4
+    contained = not equals ${result} false
+    assert ${contained}
+
+    release ${handle}
+    release ${arr}
+end
