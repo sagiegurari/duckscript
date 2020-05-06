@@ -1,0 +1,29 @@
+
+fn test_remove
+    handle = set_new
+
+    result = set_put ${handle} value
+    assert_eq ${result} true
+
+    removed = set_remove ${handle} value
+    assert ${removed}
+
+    empty = set_is_empty ${handle}
+    assert ${empty}
+
+    release ${handle}
+end
+
+fn test_remove_twice
+    handle = set_new
+
+    result = set_put ${handle} value
+    assert_eq ${result} true
+
+    removed = set_remove ${handle} value
+    assert ${removed}
+    removed = set_remove ${handle} value
+    assert_false ${removed}
+
+    release ${handle}
+end

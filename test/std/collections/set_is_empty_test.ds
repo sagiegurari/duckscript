@@ -1,0 +1,35 @@
+
+fn test_size_empty
+    handle = set_new
+
+    result = set_is_empty ${handle}
+    assert ${result}
+
+    release ${handle}
+end
+
+fn test_size_emptied
+    handle = set_new
+
+    result = set_put ${handle} value
+    assert_eq ${result} true
+    set_remove ${handle} value
+
+    result = set_is_empty ${handle}
+    assert ${result}
+    release ${handle}
+end
+
+fn test_size_not_empty
+    handle = set_new
+
+    result = set_put ${handle} 1
+    result = set_put ${handle} 2
+    result = set_put ${handle} 3
+    result = set_put ${handle} 1
+
+    result = set_is_empty ${handle}
+    assert_false ${result}
+
+    release ${handle}
+end

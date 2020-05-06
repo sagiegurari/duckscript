@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use crate::utils::state::{get_handles_sub_state, mutate_map};
+use crate::utils::state::{get_handles_sub_state, mutate_set};
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -16,11 +16,11 @@ pub(crate) struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "MapPut")
+        pckg::concat(&self.package, "SetRemove")
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["map_put".to_string(), "map_add".to_string()]
+        vec!["set_remove".to_string()]
     }
 
     fn help(&self) -> String {
@@ -46,25 +46,22 @@ impl Command for CommandImpl {
         _line: usize,
     ) -> CommandResult {
         if arguments.is_empty() {
-            CommandResult::Error("Map handle not provided.".to_string())
-        } else if arguments.len() < 3 {
-            CommandResult::Error("Key/Value not provided.".to_string())
+            CommandResult::Error("Set handle not provided.".to_string())
+        } else if arguments.len() < 2 {
+            CommandResult::Error("Value not provided.".to_string())
         } else {
             let state = get_handles_sub_state(state);
 
             let key = arguments[0].clone();
 
-            let result = mutate_map(key, state, |map| {
-                let item_key = arguments[1].clone();
-                let value = arguments[2].clone();
+            let result = mutate_set(key, state, |set| {
+                let item = set.remove(&arguments[1]);
 
-                map.insert(item_key, StateValue::String(value));
-
-                Ok(None)
+                Ok(Some(item.to_string()))
             });
 
             match result {
-                Ok(_) => CommandResult::Continue(Some("true".to_string())),
+                Ok(value) => CommandResult::Continue(value),
                 Err(error) => CommandResult::Error(error),
             }
         }

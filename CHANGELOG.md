@@ -2,6 +2,12 @@
 
 ### v0.3.4
 
+* New set_contains command.
+* New set_remove command.
+* New set_size command.
+* New set_is_empty command.
+* New set_put command.
+* New set_clear command.
 * Add array_size alias to array_length command.
 * New array_remove command.
 * New set_new command.

@@ -29,13 +29,19 @@
 * [std::collections::MapIsEmpty (map_is_empty)](#std__collections__MapIsEmpty)
 * [std::collections::MapKeys (map_keys)](#std__collections__MapKeys)
 * [std::collections::MapLoadProperties (map_load_properties)](#std__collections__MapLoadProperties)
-* [std::collections::MapPut (map_put)](#std__collections__MapPut)
+* [std::collections::MapPut (map_put, map_add)](#std__collections__MapPut)
 * [std::collections::MapRemove (map_remove)](#std__collections__MapRemove)
 * [std::collections::MapSize (map_size)](#std__collections__MapSize)
 * [std::collections::MapToProperties (map_to_properties)](#std__collections__MapToProperties)
 * [std::collections::Range (range)](#std__collections__Range)
 * [std::collections::ReadProperties (read_properties)](#std__collections__ReadProperties)
 * [std::collections::Set (set_new)](#std__collections__Set)
+* [std::collections::SetClear (set_clear)](#std__collections__SetClear)
+* [std::collections::SetContains (set_contains)](#std__collections__SetContains)
+* [std::collections::SetIsEmpty (set_is_empty)](#std__collections__SetIsEmpty)
+* [std::collections::SetPut (set_put, set_add)](#std__collections__SetPut)
+* [std::collections::SetRemove (set_remove)](#std__collections__SetRemove)
+* [std::collections::SetSize (set_size)](#std__collections__SetSize)
 * [std::collections::WriteProperties (write_properties)](#std__collections__WriteProperties)
 * [std::debug::DuckscriptSDKVersion (duckscript_sdk_version)](#std__debug__DuckscriptSDKVersion)
 * [std::debug::DuckscriptVersion (duckscript_version)](#std__debug__DuckscriptVersion)
@@ -1340,7 +1346,7 @@ release ${handle}
 
 
 #### Aliases:
-map_put
+map_put, map_add
 
 <a name="std__collections__MapRemove"></a>
 ## std::collections::MapRemove
@@ -1547,6 +1553,211 @@ release ${handle}
 
 #### Aliases:
 set_new
+
+<a name="std__collections__SetClear"></a>
+## std::collections::SetClear
+```sh
+result = set_clear handle
+```
+
+Clears the provided set.
+
+#### Parameters
+
+The set handle.
+
+#### Return Value
+
+True if successful.
+
+#### Examples
+
+```sh
+handle = set
+
+result = set_put ${handle} 1
+
+result = set_is_empty ${handle}
+assert_false ${result}
+
+result set_clear ${handle}
+assert ${result}
+
+result = set_is_empty ${handle}
+assert ${result}
+
+release ${handle}
+```
+
+
+#### Aliases:
+set_clear
+
+<a name="std__collections__SetContains"></a>
+## std::collections::SetContains
+```sh
+var = set_contains handle value
+```
+
+Returns true if the set contains the provided value.
+
+#### Parameters
+
+* The set handle.
+* The value
+
+#### Return Value
+
+True if the value was found in the set.
+
+#### Examples
+
+```sh
+handle = set_new value1 value2 value3
+found = set_contains ${handle} value2
+```
+
+
+#### Aliases:
+set_contains
+
+<a name="std__collections__SetIsEmpty"></a>
+## std::collections::SetIsEmpty
+
+```sh
+var = set_is_empty handle
+```
+
+Returns true if the provided set handle is an empty set.
+
+#### Parameters
+
+The set handle.
+
+#### Return Value
+
+True if the provided handle belongs to an empty set.
+
+#### Examples
+
+```sh
+handle = set
+set_put ${handle} value
+empty = set_is_empty ${handle}
+```
+
+
+#### Source:
+
+```sh
+
+scope::set_is_empty::length = set_size ${scope::set_is_empty::argument::1}
+equals 0 ${scope::set_is_empty::length}
+
+```
+
+
+#### Aliases:
+set_is_empty
+
+<a name="std__collections__SetPut"></a>
+## std::collections::SetPut
+```sh
+var = set_put handle value
+```
+
+Pushes an additional value to an existing set.
+
+#### Parameters
+
+The set handle.
+
+#### Return Value
+
+True if a new value was pushed.
+
+#### Examples
+
+```sh
+handle = set_new 1 2 3
+set_put ${handle} 4
+size = set_size ${handle}
+assert_eq ${size} 4
+```
+
+
+#### Aliases:
+set_put, set_add
+
+<a name="std__collections__SetRemove"></a>
+## std::collections::SetRemove
+```sh
+removed = set_remove handle value
+```
+
+Removes a the value from the set and returns true/false if it was removed.
+
+#### Parameters
+
+* The set handle.
+* The value to remove.
+
+#### Return Value
+
+True if the value was found and removed from the set.
+
+#### Examples
+
+```sh
+handle = set_new
+
+result = set_put ${handle} value
+assert_eq ${result} true
+
+removed = set_remove ${handle} value
+assert ${removed}
+
+release ${handle}
+```
+
+
+#### Aliases:
+set_remove
+
+<a name="std__collections__SetSize"></a>
+## std::collections::SetSize
+```sh
+var = set_size handle
+```
+
+Returns the set size based on the provided set handle.
+
+#### Parameters
+
+The set handle.
+
+#### Return Value
+
+The set size.
+
+#### Examples
+
+```sh
+handle = set
+
+result = set_put ${handle} 1
+result = set_put ${handle} 2
+result = set_put ${handle} 3
+
+result = set_size ${handle}
+assert_eq ${result} 3
+
+release ${handle}
+```
+
+
+#### Aliases:
+set_size
 
 <a name="std__collections__WriteProperties"></a>
 ## std::collections::WriteProperties
