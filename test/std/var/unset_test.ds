@@ -1,0 +1,42 @@
+
+fn test_empty
+    unset
+end
+
+fn test_single
+    name = set test
+    assert_eq ${name} test
+
+    value = unset name
+    defined = is_defined value
+    assert_false ${defined}
+    defined = is_defined name
+    assert_false ${defined}
+end
+
+fn test_multiple
+    name1 = set test1
+    name2 = set test2
+
+    value = unset name1 name2
+    defined = is_defined value
+    assert_false ${defined}
+    defined = is_defined name1
+    assert_false ${defined}
+    defined = is_defined name2
+    assert_false ${defined}
+end
+
+fn test_not_found_mixed
+    name1 = set test1
+    name2 = set test2
+
+    value = unset name1 name2 name3 name4 name1
+    defined = is_defined value
+    assert_false ${defined}
+    defined = is_defined name1
+    assert_false ${defined}
+    defined = is_defined name2
+    assert_false ${defined}
+end
+

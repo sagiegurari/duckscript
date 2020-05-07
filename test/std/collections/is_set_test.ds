@@ -1,0 +1,22 @@
+
+fn test_set_found
+    set_handle = set_new
+
+    value = is_set ${set_handle}
+    assert ${value}
+
+    released = release ${set_handle}
+    assert ${released}
+end
+
+fn test_not_set
+    set_handle = set true
+
+    value = is_set ${set_handle}
+    assert_false ${value}
+end
+
+fn test_not_found
+    value = is_set ${set_handle}
+    assert_false ${value}
+end

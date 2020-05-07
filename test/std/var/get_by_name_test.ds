@@ -1,0 +1,24 @@
+
+fn test_no_name
+    value = get_by_name
+    defined = is_defined value
+
+    assert_false ${defined}
+end
+
+fn test_variable_not_found
+    value = get_by_name notfound
+    defined = is_defined value
+
+    assert_false ${defined}
+end
+
+fn test_variable_found
+    var = set test
+    value = get_by_name var
+    defined = is_defined value
+
+    assert ${defined}
+    assert_eq ${value} test
+end
+

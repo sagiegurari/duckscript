@@ -1,0 +1,27 @@
+
+fn clear_not_empty
+    handle = set_new 1 2 3
+
+    result = set_is_empty ${handle}
+    assert_false ${result}
+
+    result set_clear ${handle}
+    assert ${result}
+
+    result = set_is_empty ${handle}
+    assert ${result}
+
+    release ${handle}
+end
+
+fn clear_empty
+    handle = set_new
+
+    result set_clear ${handle}
+    assert ${result}
+
+    result = set_is_empty ${handle}
+    assert ${result}
+
+    release ${handle}
+end

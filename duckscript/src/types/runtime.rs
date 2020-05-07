@@ -11,7 +11,7 @@ use crate::types::command::Commands;
 use crate::types::instruction::Instruction;
 use std::any::Any;
 use std::cell::RefCell;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::rc::Rc;
 
 /// enum defining what values can be stored in the state map
@@ -37,6 +37,8 @@ pub enum StateValue {
     ByteArray(Vec<u8>),
     /// list
     List(Vec<StateValue>),
+    /// unique set of values
+    Set(HashSet<String>),
     /// sub state value
     SubState(HashMap<String, StateValue>),
     /// any value

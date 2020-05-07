@@ -20,7 +20,7 @@ impl Command for CommandImpl {
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["map_put".to_string()]
+        vec!["map_put".to_string(), "map_add".to_string()]
     }
 
     fn help(&self) -> String {

@@ -5,31 +5,45 @@
 * [std::Not (not)](#std__Not)
 * [std::ReadUserInput (read)](#std__ReadUserInput)
 * [std::Release (release)](#std__Release)
-* [std::Set (set)](#std__Set)
 * [std::ShowCommandDocumentation (man)](#std__ShowCommandDocumentation)
 * [std::collections::Array (array)](#std__collections__Array)
+* [std::collections::ArrayClear (array_clear)](#std__collections__ArrayClear)
 * [std::collections::ArrayConcat (array_concat)](#std__collections__ArrayConcat)
+* [std::collections::ArrayContains (array_contains)](#std__collections__ArrayContains)
 * [std::collections::ArrayGet (array_get)](#std__collections__ArrayGet)
 * [std::collections::ArrayIsEmpty (array_is_empty)](#std__collections__ArrayIsEmpty)
 * [std::collections::ArrayJoin (array_join)](#std__collections__ArrayJoin)
-* [std::collections::ArrayLength (array_length, arrlen)](#std__collections__ArrayLength)
+* [std::collections::ArrayLength (array_length, arrlen, array_size)](#std__collections__ArrayLength)
 * [std::collections::ArrayPop (array_pop)](#std__collections__ArrayPop)
-* [std::collections::ArrayPush (array_push)](#std__collections__ArrayPush)
+* [std::collections::ArrayPush (array_push, array_add, array_put)](#std__collections__ArrayPush)
+* [std::collections::ArrayRemove (array_remove)](#std__collections__ArrayRemove)
 * [std::collections::ArraySet (array_set)](#std__collections__ArraySet)
 * [std::collections::IsArray (is_array)](#std__collections__IsArray)
 * [std::collections::IsMap (is_map)](#std__collections__IsMap)
+* [std::collections::IsSet (is_set)](#std__collections__IsSet)
 * [std::collections::Map (map)](#std__collections__Map)
 * [std::collections::MapClear (map_clear)](#std__collections__MapClear)
+* [std::collections::MapContainsKey (map_contains_key)](#std__collections__MapContainsKey)
+* [std::collections::MapContainsValue (map_contains_value)](#std__collections__MapContainsValue)
 * [std::collections::MapGet (map_get)](#std__collections__MapGet)
 * [std::collections::MapIsEmpty (map_is_empty)](#std__collections__MapIsEmpty)
 * [std::collections::MapKeys (map_keys)](#std__collections__MapKeys)
 * [std::collections::MapLoadProperties (map_load_properties)](#std__collections__MapLoadProperties)
-* [std::collections::MapPut (map_put)](#std__collections__MapPut)
+* [std::collections::MapPut (map_put, map_add)](#std__collections__MapPut)
 * [std::collections::MapRemove (map_remove)](#std__collections__MapRemove)
 * [std::collections::MapSize (map_size)](#std__collections__MapSize)
 * [std::collections::MapToProperties (map_to_properties)](#std__collections__MapToProperties)
 * [std::collections::Range (range)](#std__collections__Range)
 * [std::collections::ReadProperties (read_properties)](#std__collections__ReadProperties)
+* [std::collections::Set (set_new)](#std__collections__Set)
+* [std::collections::SetClear (set_clear)](#std__collections__SetClear)
+* [std::collections::SetContains (set_contains)](#std__collections__SetContains)
+* [std::collections::SetFromArray (set_from_array)](#std__collections__SetFromArray)
+* [std::collections::SetIsEmpty (set_is_empty)](#std__collections__SetIsEmpty)
+* [std::collections::SetPut (set_put, set_add)](#std__collections__SetPut)
+* [std::collections::SetRemove (set_remove)](#std__collections__SetRemove)
+* [std::collections::SetSize (set_size)](#std__collections__SetSize)
+* [std::collections::SetToArray (set_to_array)](#std__collections__SetToArray)
 * [std::collections::WriteProperties (write_properties)](#std__collections__WriteProperties)
 * [std::debug::DuckscriptSDKVersion (duckscript_sdk_version)](#std__debug__DuckscriptSDKVersion)
 * [std::debug::DuckscriptVersion (duckscript_version)](#std__debug__DuckscriptVersion)
@@ -131,6 +145,11 @@
 * [std::test::TestDirectory (test_directory)](#std__test__TestDirectory)
 * [std::thread::Sleep (sleep)](#std__thread__Sleep)
 * [std::time::CurrentTimeMillies (current_time)](#std__time__CurrentTimeMillies)
+* [std::var::GetAllVarNames (get_all_var_names)](#std__var__GetAllVarNames)
+* [std::var::GetByName (get_by_name)](#std__var__GetByName)
+* [std::var::Set (set)](#std__var__Set)
+* [std::var::SetByName (set_by_name)](#std__var__SetByName)
+* [std::var::Unset (unset)](#std__var__Unset)
 
 
 <a name="std__Echo"></a>
@@ -363,51 +382,6 @@ release ${array_handle}
 #### Aliases:
 release
 
-<a name="std__Set"></a>
-## std::Set
-```sh
-var = set arg [or arg]*
-```
-
-The set command will simply return the provided argument and set it to the output variable.<br>
-In case the argument is falsy it will attempt to provide another value if an 'or' keyword is set.
-
-A value is considered falsy if it is one of the following:
-
-* false (case insensitive)
-* 0
-* no (case insensitive)
-* Empty value
-
-#### Parameters
-
-The argument to set or an 'or' conditional arguments.
-
-
-#### Return Value
-
-The first truthy value
-
-#### Examples
-
-```sh
-# Return simple 'hello' text value
-var = set hello
-
-# Return expanded value: 'home: ....'
-var = set "home: ${HOME}"
-
-value = set test or false
-assert_eq ${value} test
-
-value = set 0 or no or false or NO or FALSE
-assert_eq ${value} FALSE
-```
-
-
-#### Aliases:
-set
-
 <a name="std__ShowCommandDocumentation"></a>
 ## std::ShowCommandDocumentation
 ```sh
@@ -465,6 +439,45 @@ release ${handle}
 #### Aliases:
 array
 
+<a name="std__collections__ArrayClear"></a>
+## std::collections::ArrayClear
+```sh
+result = array_clear handle
+```
+
+Clears the provided array.
+
+#### Parameters
+
+The array handle.
+
+#### Return Value
+
+True if successful.
+
+#### Examples
+
+```sh
+handle = array
+
+result = array_push ${handle} 1
+
+result = array_is_empty ${handle}
+assert_false ${result}
+
+result array_clear ${handle}
+assert ${result}
+
+result = array_is_empty ${handle}
+assert ${result}
+
+release ${handle}
+```
+
+
+#### Aliases:
+array_clear
+
 <a name="std__collections__ArrayConcat"></a>
 ## std::collections::ArrayConcat
 
@@ -519,6 +532,60 @@ set ${scope::array_concat::array}
 
 #### Aliases:
 array_concat
+
+<a name="std__collections__ArrayContains"></a>
+## std::collections::ArrayContains
+
+```sh
+var = array_contains handle value
+```
+
+Returns the first index of the array with the same value as provided.<br>
+If not found, false will be returned.
+
+#### Parameters
+
+* The array handle.
+* The value
+
+#### Return Value
+
+The value index in the array or false if not found.
+
+#### Examples
+
+```sh
+handle = array value1 value2 value3
+index = array_contains ${handle} value2
+```
+
+
+#### Source:
+
+```sh
+
+scope::array_contains::index = set false
+scope::array_contains::value = set ${scope::array_contains::argument::2}
+
+scope::array_contains::counter = set 0
+for scope::array_contains::next_value in ${scope::array_contains::argument::1}
+    scope::array_contains::found = equals ${scope::array_contains::next_value} ${scope::array_contains::value}
+
+    if ${scope::array_contains::found}
+        scope::array_contains::index = set ${scope::array_contains::counter}
+        scope::array_contains::argument::1 = set
+    end
+
+    scope::array_contains::counter = calc ${scope:array_contains::counter} + 1
+end
+
+set ${scope::array_contains::index}
+
+```
+
+
+#### Aliases:
+array_contains
 
 <a name="std__collections__ArrayGet"></a>
 ## std::collections::ArrayGet
@@ -698,7 +765,7 @@ echo Array length: ${len} released: ${released}
 
 
 #### Aliases:
-array_length, arrlen
+array_length, arrlen, array_size
 
 <a name="std__collections__ArrayPop"></a>
 ## std::collections::ArrayPop
@@ -755,7 +822,45 @@ assert_eq ${last_element} 4
 
 
 #### Aliases:
-array_push
+array_push, array_add, array_put
+
+<a name="std__collections__ArrayRemove"></a>
+## std::collections::ArrayRemove
+```sh
+result = array_remove handle index
+```
+
+Removes the item from the array at the given index.<br>
+If the array is not found or the index is greater than the array size, this command will return false.<br>
+Otherwise it will return true.
+
+#### Parameters
+
+* The array handle.
+* The element index.
+
+#### Return Value
+
+True if successful.
+
+#### Examples
+
+```sh
+arr = array old
+
+element = array_get ${arr} 0
+assert_eq ${element} old
+
+result = array_remove ${arr} 0
+assert ${result}
+
+empty = array_is_empty ${arr}
+assert ${empty}
+```
+
+
+#### Aliases:
+array_remove
 
 <a name="std__collections__ArraySet"></a>
 ## std::collections::ArraySet
@@ -860,6 +965,38 @@ assert ${released}
 #### Aliases:
 is_map
 
+<a name="std__collections__IsSet"></a>
+## std::collections::IsSet
+```sh
+var = is_set handle
+```
+
+Returns true if the provided value is a set handle.
+
+#### Parameters
+
+The set handle.
+
+#### Return Value
+
+True if the provided value is a set handle.
+
+#### Examples
+
+```sh
+handle = set_new 1 2 3
+
+value = is_set ${handle}
+assert ${value}
+
+released = release ${handle}
+assert ${released}
+```
+
+
+#### Aliases:
+is_set
+
 <a name="std__collections__Map"></a>
 ## std::collections::Map
 ```sh
@@ -929,6 +1066,103 @@ release ${handle}
 
 #### Aliases:
 map_clear
+
+<a name="std__collections__MapContainsKey"></a>
+## std::collections::MapContainsKey
+
+```sh
+var = map_contains_key handle key
+```
+
+Returns true if the provided key was found in the map.
+
+#### Parameters
+
+* The map handle.
+* The key
+
+#### Return Value
+
+True if the key was found in the map.
+
+#### Examples
+
+```sh
+handle = map
+map_put ${handle} key value
+found = map_contains_key ${handle} key
+```
+
+
+#### Source:
+
+```sh
+
+scope::map_contains_key::value = map_get ${scope::map_contains_key::argument::1} ${scope::map_contains_key::argument::2}
+is_defined scope::map_contains_key::value
+
+```
+
+
+#### Aliases:
+map_contains_key
+
+<a name="std__collections__MapContainsValue"></a>
+## std::collections::MapContainsValue
+
+```sh
+var = map_contains_value handle value
+```
+
+Returns true if the provided value was found in the map.
+
+#### Parameters
+
+* The map handle.
+* The value
+
+#### Return Value
+
+True if the value was found in the map.
+
+#### Examples
+
+```sh
+handle = map
+map_put ${handle} key value
+found = map_contains_value ${handle} value
+```
+
+
+#### Source:
+
+```sh
+
+scope::map_contains_value::found = set false
+scope::map_contains_value::not_empty = not map_is_empty ${scope::map_contains_value::argument::1}
+
+if ${scope::map_contains_value::not_empty}
+    scope::map_contains_value::value = set ${scope::map_contains_value::argument::2}
+    scope::map_contains_value::key_array_handle = map_keys ${scope::map_contains_value::argument::1}
+
+    for scope::map_contains_value::item in ${scope::map_contains_value::key_array_handle}
+        scope::map_contains_value::next_value = map_get ${scope::map_contains_value::argument::1} ${scope::map_contains_value::item}
+        scope::map_contains_value::found = equals ${scope::map_contains_value::next_value} ${scope::map_contains_value::value}
+
+        if ${scope::map_contains_value::found}
+            release ${scope::map_contains_value::key_array_handle}
+        end
+    end
+end
+
+release ${scope::map_contains_value::key_array_handle}
+set ${scope::map_contains_value::found}
+
+```
+
+
+#### Aliases:
+map_contains_value
 
 <a name="std__collections__MapGet"></a>
 ## std::collections::MapGet
@@ -1114,7 +1348,7 @@ release ${handle}
 
 
 #### Aliases:
-map_put
+map_put, map_add
 
 <a name="std__collections__MapRemove"></a>
 ## std::collections::MapRemove
@@ -1290,6 +1524,315 @@ assert_eq ${config.a.b.c} 3
 
 #### Aliases:
 read_properties
+
+<a name="std__collections__Set"></a>
+## std::collections::Set
+```sh
+handle = set_new value1 value2 value3 ...
+```
+
+Creates a new set from the input arguments and returns a handle to that set.<br>
+This handle can be passed to other commands which support sets using handles.<br>
+Once the set is no longer used, it should be released using the **release** command.
+
+#### Parameters
+
+Any number of arguments which will construct the set.
+
+#### Return Value
+
+A handle to the set.
+
+#### Examples
+
+```sh
+handle = set_new ${var} "hello world" 5 ${another_var}
+
+# once done we should release the handle
+release ${handle}
+```
+
+
+#### Aliases:
+set_new
+
+<a name="std__collections__SetClear"></a>
+## std::collections::SetClear
+```sh
+result = set_clear handle
+```
+
+Clears the provided set.
+
+#### Parameters
+
+The set handle.
+
+#### Return Value
+
+True if successful.
+
+#### Examples
+
+```sh
+handle = set
+
+result = set_put ${handle} 1
+
+result = set_is_empty ${handle}
+assert_false ${result}
+
+result set_clear ${handle}
+assert ${result}
+
+result = set_is_empty ${handle}
+assert ${result}
+
+release ${handle}
+```
+
+
+#### Aliases:
+set_clear
+
+<a name="std__collections__SetContains"></a>
+## std::collections::SetContains
+```sh
+var = set_contains handle value
+```
+
+Returns true if the set contains the provided value.
+
+#### Parameters
+
+* The set handle.
+* The value
+
+#### Return Value
+
+True if the value was found in the set.
+
+#### Examples
+
+```sh
+handle = set_new value1 value2 value3
+found = set_contains ${handle} value2
+```
+
+
+#### Aliases:
+set_contains
+
+<a name="std__collections__SetFromArray"></a>
+## std::collections::SetFromArray
+
+```sh
+set_handle = set_from_array array_handle
+```
+
+Returns a set handle created from the provided array values.
+
+#### Parameters
+
+The array handle.
+
+#### Return Value
+
+The new set handle.
+
+#### Examples
+
+```sh
+array_handle = array value1 value2 value3
+set_handle = set_from_array ${handle}
+```
+
+
+#### Source:
+
+```sh
+
+if not is_array ${scope::set_from_array::argument::1}
+    trigger_error "Invalid input, non array handle or array not found."
+end
+
+scope::set_from_array::set = set_new
+for scope::set_from_array::next_value in ${scope::set_from_array::argument::1}
+    set_put ${scope::set_from_array::set} ${scope::set_from_array::next_value}
+end
+
+set ${scope::set_from_array::set}
+
+```
+
+
+#### Aliases:
+set_from_array
+
+<a name="std__collections__SetIsEmpty"></a>
+## std::collections::SetIsEmpty
+
+```sh
+var = set_is_empty handle
+```
+
+Returns true if the provided set handle is an empty set.
+
+#### Parameters
+
+The set handle.
+
+#### Return Value
+
+True if the provided handle belongs to an empty set.
+
+#### Examples
+
+```sh
+handle = set
+set_put ${handle} value
+empty = set_is_empty ${handle}
+```
+
+
+#### Source:
+
+```sh
+
+scope::set_is_empty::length = set_size ${scope::set_is_empty::argument::1}
+equals 0 ${scope::set_is_empty::length}
+
+```
+
+
+#### Aliases:
+set_is_empty
+
+<a name="std__collections__SetPut"></a>
+## std::collections::SetPut
+```sh
+var = set_put handle value
+```
+
+Pushes an additional value to an existing set.
+
+#### Parameters
+
+The set handle.
+
+#### Return Value
+
+True if a new value was pushed.
+
+#### Examples
+
+```sh
+handle = set_new 1 2 3
+set_put ${handle} 4
+size = set_size ${handle}
+assert_eq ${size} 4
+```
+
+
+#### Aliases:
+set_put, set_add
+
+<a name="std__collections__SetRemove"></a>
+## std::collections::SetRemove
+```sh
+removed = set_remove handle value
+```
+
+Removes a the value from the set and returns true/false if it was removed.
+
+#### Parameters
+
+* The set handle.
+* The value to remove.
+
+#### Return Value
+
+True if the value was found and removed from the set.
+
+#### Examples
+
+```sh
+handle = set_new
+
+result = set_put ${handle} value
+assert_eq ${result} true
+
+removed = set_remove ${handle} value
+assert ${removed}
+
+release ${handle}
+```
+
+
+#### Aliases:
+set_remove
+
+<a name="std__collections__SetSize"></a>
+## std::collections::SetSize
+```sh
+var = set_size handle
+```
+
+Returns the set size based on the provided set handle.
+
+#### Parameters
+
+The set handle.
+
+#### Return Value
+
+The set size.
+
+#### Examples
+
+```sh
+handle = set
+
+result = set_put ${handle} 1
+result = set_put ${handle} 2
+result = set_put ${handle} 3
+
+result = set_size ${handle}
+assert_eq ${result} 3
+
+release ${handle}
+```
+
+
+#### Aliases:
+set_size
+
+<a name="std__collections__SetToArray"></a>
+## std::collections::SetToArray
+```sh
+array_handle = set_to_array set_handle
+```
+
+Converts the provided set to an array and returns the new array handle.
+
+#### Parameters
+
+The set handle.
+
+#### Return Value
+
+The array handle or false in case of error.
+
+#### Examples
+
+```sh
+set_handle = set_new value1 value2 value3
+array_handle = set_to_array ${set_handle}
+```
+
+
+#### Aliases:
+set_to_array
 
 <a name="std__collections__WriteProperties"></a>
 ## std::collections::WriteProperties
@@ -2252,7 +2795,7 @@ When a function command is detected, it will search for the end command that com
 That entire block is considered the function code block (functions cannot be nested in outer functions)<br>
 
 In order to invoke the function, simply call the function name with any amount of paramters.<br>
-Those parameters will be set as $1, $2, ... and so on.<br>
+Those parameters will be set as ${1}, ${2}, ... and so on.<br>
 Since variables are global, it will overwrite any older values stored in those variables.<br>
 
 To exist a function and return a value, simply use the **return** command with the value you want to return.<br>
@@ -2265,7 +2808,7 @@ In case the code reached the **end** call, the function will exist but will retu
 * function - The function name used later on to invoke the function
 * end - no parameters
 * return - optional single paramter to return as an output of the function call
-* *function name* - Any number of arguments which will automatically be set as global variables: $1, $2, ... as so on.
+* *function name* - Any number of arguments which will automatically be set as global variables: ${1}, ${2}, ... as so on.
 
 #### Return Value
 
@@ -2297,8 +2840,8 @@ echo ${text}
 
 # Example of passing arguments
 fn print_input
-    # $1 is set with the value 'hello'
-    # $2 is set with the value 'world'
+    # ${1} is set with the value 'hello'
+    # ${2} is set with the value 'world'
     echo ${1} ${2}
 end
 
@@ -4794,6 +5337,195 @@ echo ${result}
 
 #### Aliases:
 current_time
+
+<a name="std__var__GetAllVarNames"></a>
+## std::var::GetAllVarNames
+```sh
+handle = get_all_var_names
+```
+
+Creates an array holding all currently known variable names and returns the array handle.
+
+#### Parameters
+
+None
+
+#### Return Value
+
+A handle to the array.
+
+#### Examples
+
+```sh
+handle = get_all_var_names
+
+# once done we should release the handle
+release ${handle}
+```
+
+
+#### Aliases:
+get_all_var_names
+
+<a name="std__var__GetByName"></a>
+## std::var::GetByName
+```sh
+var = get_by_name name
+```
+
+This command returns the variable value based on the given variable name.<br>
+It is similar to
+```sh
+var = set ${name}
+```
+However, it allows for a dynamic variable name.
+
+#### Parameters
+
+The variable name.
+
+#### Return Value
+
+The variable value or none if no such variable exists.
+
+#### Examples
+
+```sh
+var = set test
+value = get_by_name var
+defined = is_defined value
+
+assert ${defined}
+assert_eq ${value} test
+```
+
+
+#### Aliases:
+get_by_name
+
+<a name="std__var__Set"></a>
+## std::var::Set
+```sh
+var = set arg [or arg]*
+```
+
+The set command will simply return the provided argument and set it to the output variable.<br>
+In case the argument is falsy it will attempt to provide another value if an 'or' keyword is set.
+
+A value is considered falsy if it is one of the following:
+
+* false (case insensitive)
+* 0
+* no (case insensitive)
+* Empty value
+
+#### Parameters
+
+The argument to set or an 'or' conditional arguments.
+
+#### Return Value
+
+The first truthy value
+
+#### Examples
+
+```sh
+# Return simple 'hello' text value
+var = set hello
+
+# Return expanded value: 'home: ....'
+var = set "home: ${HOME}"
+
+value = set test or false
+assert_eq ${value} test
+
+value = set 0 or no or false or NO or FALSE
+assert_eq ${value} FALSE
+```
+
+
+#### Aliases:
+set
+
+<a name="std__var__SetByName"></a>
+## std::var::SetByName
+```sh
+var = set_by_name name [value]
+```
+
+This command sets the variable value based on the variable name.<br>
+It is similar to
+```sh
+name = set ${value}
+```
+However, it allows for a dynamic variable name.
+
+#### Parameters
+
+* The variable name.
+* The new variable value, if not provided, the variable will be unset.
+
+#### Return Value
+
+The new variable value.
+
+#### Examples
+
+```sh
+var = set test
+value = get_by_name var
+defined = is_defined value
+
+assert ${defined}
+assert_eq ${value} test
+```
+
+
+#### Aliases:
+set_by_name
+
+<a name="std__var__Unset"></a>
+## std::var::Unset
+
+```sh
+unset [names]*
+```
+
+Undefines all the variable names provided.
+
+#### Parameters
+
+A list of variable names to undefine.
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+var = set 1
+defined = is_defined var
+assert ${defined}
+unset var
+defined = is_defined var
+assert_false ${defined}
+```
+
+
+#### Source:
+
+```sh
+
+for scope::unset::name in ${scope::unset::arguments}
+    set_by_name ${scope::unset::name}
+end
+
+```
+
+
+#### Aliases:
+unset
 
 ### License
 Developed by Sagie Gur-Ari and licensed under the

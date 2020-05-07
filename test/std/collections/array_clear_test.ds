@@ -1,0 +1,29 @@
+
+fn clear_not_empty
+    handle = array
+
+    result = array_push ${handle} 1
+
+    result = array_is_empty ${handle}
+    assert_false ${result}
+
+    result array_clear ${handle}
+    assert ${result}
+
+    result = array_is_empty ${handle}
+    assert ${result}
+
+    release ${handle}
+end
+
+fn clear_empty
+    handle = array
+
+    result array_clear ${handle}
+    assert ${result}
+
+    result = array_is_empty ${handle}
+    assert ${result}
+
+    release ${handle}
+end

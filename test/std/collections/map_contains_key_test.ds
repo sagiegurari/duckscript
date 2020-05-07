@@ -1,0 +1,47 @@
+
+fn test_empty
+    handle = map
+
+    found = map_contains_key ${handle} key
+    release ${handle}
+
+    assert_false ${found}
+end
+
+fn test_not_found
+    handle = map
+    map_put ${handle} key1 value
+
+    found = map_contains_key ${handle} key2
+    release ${handle}
+
+    assert_false ${found}
+end
+
+fn test_found
+    handle = map
+    map_put ${handle} key value
+
+    found = map_contains_key ${handle} key
+    release ${handle}
+
+    assert ${found}
+end
+
+fn test_both
+    handle = map
+    map_put ${handle} key1 value
+    map_put ${handle} key2 value
+
+    found = map_contains_key ${handle} key1
+    assert ${found}
+
+    found = map_contains_key ${handle} key2
+    assert ${found}
+
+    found = map_contains_key ${handle} key3
+    assert_false ${found}
+
+    release ${handle}
+end
+

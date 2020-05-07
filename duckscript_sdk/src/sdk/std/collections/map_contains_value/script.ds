@@ -1,0 +1,20 @@
+
+scope::map_contains_value::found = set false
+scope::map_contains_value::not_empty = not map_is_empty ${scope::map_contains_value::argument::1}
+
+if ${scope::map_contains_value::not_empty}
+    scope::map_contains_value::value = set ${scope::map_contains_value::argument::2}
+    scope::map_contains_value::key_array_handle = map_keys ${scope::map_contains_value::argument::1}
+
+    for scope::map_contains_value::item in ${scope::map_contains_value::key_array_handle}
+        scope::map_contains_value::next_value = map_get ${scope::map_contains_value::argument::1} ${scope::map_contains_value::item}
+        scope::map_contains_value::found = equals ${scope::map_contains_value::next_value} ${scope::map_contains_value::value}
+
+        if ${scope::map_contains_value::found}
+            release ${scope::map_contains_value::key_array_handle}
+        end
+    end
+end
+
+release ${scope::map_contains_value::key_array_handle}
+set ${scope::map_contains_value::found}

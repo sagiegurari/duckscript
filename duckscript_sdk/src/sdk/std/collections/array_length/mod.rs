@@ -20,7 +20,11 @@ impl Command for CommandImpl {
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["array_length".to_string(), "arrlen".to_string()]
+        vec![
+            "array_length".to_string(),
+            "arrlen".to_string(),
+            "array_size".to_string(),
+        ]
     }
 
     fn help(&self) -> String {

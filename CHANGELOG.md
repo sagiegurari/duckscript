@@ -1,5 +1,31 @@
 ## CHANGELOG
 
+### v0.3.4
+
+* New set_from_array command.
+* New set_to_array command.
+* New set_contains command.
+* New set_remove command.
+* New set_size command.
+* New set_is_empty command.
+* New set_put command.
+* New set_clear command.
+* Add array_size alias to array_length command.
+* New array_remove command.
+* New set_new command.
+* New is_set command.
+* New unset command.
+* New array_clear command.
+* New array_contains command.
+* New map_contains_value command.
+* New map_contains_key command.
+* New get_all_var_names command #100
+* New get_by_name command.
+* New set_by_name command.
+* Add array_add and array_put aliases to array_push
+* Runtime - Support for hashset state value.
+* \[Breaking Change\] Runtime - REPL mode doesn't stop due to crashes from user commands #103
+
 ### v0.3.3 (2020-04-15)
 
 * New which command.

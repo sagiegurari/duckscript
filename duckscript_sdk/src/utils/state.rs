@@ -2,7 +2,7 @@ use crate::utils::pckg;
 use duckscript::types::runtime::StateValue;
 use rand::distributions::Alphanumeric;
 use rand::{thread_rng, Rng};
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::iter;
 
 #[cfg(test)]
@@ -160,6 +160,7 @@ pub(crate) fn get_as_string(state_value: &StateValue) -> Result<String, String> 
         StateValue::String(value) => Ok(value.to_string()),
         StateValue::ByteArray(_) => Err("Unsupported value type.".to_string()),
         StateValue::List(_) => Err("Unsupported value type.".to_string()),
+        StateValue::Set(_) => Err("Unsupported value type.".to_string()),
         StateValue::SubState(_) => Err("Unsupported value type.".to_string()),
         StateValue::Any(_) => Err("Unsupported value type.".to_string()),
     }
@@ -222,6 +223,10 @@ where
                 state.insert(key, StateValue::List(value));
                 Err("Invalid handle provided.".to_string())
             }
+            StateValue::Set(value) => {
+                state.insert(key, StateValue::Set(value));
+                Err("Invalid handle provided.".to_string())
+            }
             StateValue::Any(value) => {
                 state.insert(key, StateValue::Any(value));
                 Err("Invalid handle provided.".to_string())
@@ -282,6 +287,80 @@ where
             }
             StateValue::ByteArray(value) => {
                 state.insert(key, StateValue::ByteArray(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::Set(value) => {
+                state.insert(key, StateValue::Set(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::SubState(value) => {
+                state.insert(key, StateValue::SubState(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::Any(value) => {
+                state.insert(key, StateValue::Any(value));
+                Err("Invalid handle provided.".to_string())
+            }
+        },
+        None => Err(format!("Handle: {} not found.", &key).to_string()),
+    }
+}
+
+pub(crate) fn mutate_set<F>(
+    key: String,
+    state: &mut HashMap<String, StateValue>,
+    mut handler: F,
+) -> Result<Option<String>, String>
+where
+    F: FnMut(&mut HashSet<String>) -> Result<Option<String>, String>,
+{
+    match state.remove(&key) {
+        Some(state_value) => match state_value {
+            StateValue::Set(mut set) => {
+                let result = handler(&mut set);
+
+                state.insert(key, StateValue::Set(set));
+
+                result
+            }
+            StateValue::Boolean(value) => {
+                state.insert(key, StateValue::Boolean(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::Number(value) => {
+                state.insert(key, StateValue::Number(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::UnsignedNumber(value) => {
+                state.insert(key, StateValue::UnsignedNumber(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::Number32Bit(value) => {
+                state.insert(key, StateValue::Number32Bit(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::UnsignedNumber32Bit(value) => {
+                state.insert(key, StateValue::UnsignedNumber32Bit(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::Number64Bit(value) => {
+                state.insert(key, StateValue::Number64Bit(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::UnsignedNumber64Bit(value) => {
+                state.insert(key, StateValue::UnsignedNumber64Bit(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::String(value) => {
+                state.insert(key, StateValue::String(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::ByteArray(value) => {
+                state.insert(key, StateValue::ByteArray(value));
+                Err("Invalid handle provided.".to_string())
+            }
+            StateValue::List(value) => {
+                state.insert(key, StateValue::List(value));
                 Err("Invalid handle provided.".to_string())
             }
             StateValue::SubState(value) => {

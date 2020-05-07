@@ -5,11 +5,6 @@ use duckscript::types::command::{Command, CommandResult};
 #[path = "./mod_test.rs"]
 mod mod_test;
 
-#[derive(Clone)]
-pub(crate) struct CommandImpl {
-    package: String,
-}
-
 fn get_output(arguments: &Vec<String>) -> Result<Option<String>, String> {
     let mut looking_for_value = true;
     let mut last_value = None;
@@ -34,6 +29,11 @@ fn get_output(arguments: &Vec<String>) -> Result<Option<String>, String> {
     } else {
         Ok(last_value)
     }
+}
+
+#[derive(Clone)]
+pub(crate) struct CommandImpl {
+    package: String,
 }
 
 impl Command for CommandImpl {

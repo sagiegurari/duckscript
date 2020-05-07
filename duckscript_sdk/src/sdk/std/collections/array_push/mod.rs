@@ -20,7 +20,11 @@ impl Command for CommandImpl {
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["array_push".to_string()]
+        vec![
+            "array_push".to_string(),
+            "array_add".to_string(),
+            "array_put".to_string(),
+        ]
     }
 
     fn help(&self) -> String {

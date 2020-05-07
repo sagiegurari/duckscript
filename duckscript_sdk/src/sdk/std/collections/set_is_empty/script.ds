@@ -1,0 +1,3 @@
+
+scope::set_is_empty::length = set_size ${scope::set_is_empty::argument::1}
+equals 0 ${scope::set_is_empty::length}

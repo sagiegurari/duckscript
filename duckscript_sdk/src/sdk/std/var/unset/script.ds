@@ -1,0 +1,4 @@
+
+for scope::unset::name in ${scope::unset::arguments}
+    set_by_name ${scope::unset::name}
+end

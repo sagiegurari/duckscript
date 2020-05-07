@@ -201,7 +201,7 @@ impl Command for AliasCommand {
             clear(&self.scope_name, variables);
 
             let end_count = variables.len();
-            if start_count != end_count {
+            if start_count < end_count {
                 CommandResult::Crash(
                     format!(
                         "Memory leak detected, delta variables count: {}",

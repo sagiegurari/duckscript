@@ -1,0 +1,3 @@
+
+scope::map_contains_key::value = map_get ${scope::map_contains_key::argument::1} ${scope::map_contains_key::argument::2}
+is_defined scope::map_contains_key::value
