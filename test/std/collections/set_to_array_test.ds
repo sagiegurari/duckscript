@@ -1,5 +1,5 @@
 
-fn test_map_keys
+fn test_valid
     handle = set_new 1 2 3 4
 
     arr = set_to_array ${handle}

@@ -1,0 +1,11 @@
+
+if not is_array ${scope::set_from_array::argument::1}
+    trigger_error "Invalid input, non array handle or array not found."
+end
+
+scope::set_from_array::set = set_new
+for scope::set_from_array::next_value in ${scope::set_from_array::argument::1}
+    set_put ${scope::set_from_array::set} ${scope::set_from_array::next_value}
+end
+
+set ${scope::set_from_array::set}

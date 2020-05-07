@@ -38,6 +38,7 @@
 * [std::collections::Set (set_new)](#std__collections__Set)
 * [std::collections::SetClear (set_clear)](#std__collections__SetClear)
 * [std::collections::SetContains (set_contains)](#std__collections__SetContains)
+* [std::collections::SetFromArray (set_from_array)](#std__collections__SetFromArray)
 * [std::collections::SetIsEmpty (set_is_empty)](#std__collections__SetIsEmpty)
 * [std::collections::SetPut (set_put, set_add)](#std__collections__SetPut)
 * [std::collections::SetRemove (set_remove)](#std__collections__SetRemove)
@@ -1621,6 +1622,52 @@ found = set_contains ${handle} value2
 
 #### Aliases:
 set_contains
+
+<a name="std__collections__SetFromArray"></a>
+## std::collections::SetFromArray
+
+```sh
+set_handle = set_from_array array_handle
+```
+
+Returns a set handle created from the provided array values.
+
+#### Parameters
+
+The array handle.
+
+#### Return Value
+
+The new set handle.
+
+#### Examples
+
+```sh
+array_handle = array value1 value2 value3
+set_handle = set_from_array ${handle}
+```
+
+
+#### Source:
+
+```sh
+
+if not is_array ${scope::set_from_array::argument::1}
+    trigger_error "Invalid input, non array handle or array not found."
+end
+
+scope::set_from_array::set = set_new
+for scope::set_from_array::next_value in ${scope::set_from_array::argument::1}
+    set_put ${scope::set_from_array::set} ${scope::set_from_array::next_value}
+end
+
+set ${scope::set_from_array::set}
+
+```
+
+
+#### Aliases:
+set_from_array
 
 <a name="std__collections__SetIsEmpty"></a>
 ## std::collections::SetIsEmpty

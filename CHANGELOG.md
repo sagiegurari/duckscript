@@ -2,6 +2,7 @@
 
 ### v0.3.4
 
+* New set_from_array command.
 * New set_to_array command.
 * New set_contains command.
 * New set_remove command.

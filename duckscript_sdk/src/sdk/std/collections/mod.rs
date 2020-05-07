@@ -30,6 +30,7 @@ mod read_properties;
 mod set;
 mod set_clear;
 mod set_contains;
+mod set_from_array;
 mod set_is_empty;
 mod set_put;
 mod set_remove;
@@ -78,6 +79,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(set::create(&package))?;
     commands.set(set_clear::create(&package))?;
     commands.set(set_contains::create(&package))?;
+    commands.set(set_from_array::create(&package)?)?;
     commands.set(set_is_empty::create(&package)?)?;
     commands.set(set_put::create(&package))?;
     commands.set(set_remove::create(&package))?;

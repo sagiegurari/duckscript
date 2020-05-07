@@ -1,0 +1,21 @@
+
+fn test_valid
+    arr = array 1 2 3 1
+
+    handle = set_from_array ${arr}
+    size = set_size ${handle}
+    assert_eq ${size} 3
+
+    result = set_contains ${handle} 1
+    contained = not equals ${result} false
+    assert ${contained}
+    result = set_contains ${handle} 2
+    contained = not equals ${result} false
+    assert ${contained}
+    result = set_contains ${handle} 3
+    contained = not equals ${result} false
+    assert ${contained}
+
+    release ${handle}
+    release ${arr}
+end
