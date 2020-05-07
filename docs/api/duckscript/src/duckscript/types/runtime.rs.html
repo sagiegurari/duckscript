@@ -84,6 +84,8 @@
 <span id="84">84</span>
 <span id="85">85</span>
 <span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # runtime</span>
 <span class="doccomment">//!</span>
@@ -98,7 +100,7 @@
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::<span class="ident">instruction</span>::<span class="ident">Instruction</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">any</span>::<span class="ident">Any</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">cell</span>::<span class="ident">RefCell</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">rc</span>::<span class="ident">Rc</span>;
 
 <span class="doccomment">/// enum defining what values can be stored in the state map</span>
@@ -124,6 +126,8 @@
     <span class="ident">ByteArray</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>),
     <span class="doccomment">/// list</span>
     <span class="ident">List</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">StateValue</span><span class="op">&gt;</span>),
+    <span class="doccomment">/// unique set of values</span>
+    <span class="ident">Set</span>(<span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>),
     <span class="doccomment">/// sub state value</span>
     <span class="ident">SubState</span>(<span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">StateValue</span><span class="op">&gt;</span>),
     <span class="doccomment">/// any value</span>

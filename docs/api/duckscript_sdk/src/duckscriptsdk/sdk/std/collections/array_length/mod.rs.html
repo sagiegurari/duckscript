@@ -70,6 +70,10 @@
 <span id="70">70</span>
 <span id="71">71</span>
 <span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="ident">pckg</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="ident">state</span>::<span class="ident">get_handles_sub_state</span>;
@@ -93,7 +97,11 @@
     }
 
     <span class="kw">fn</span> <span class="ident">aliases</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;array_length&quot;</span>.<span class="ident">to_string</span>(), <span class="string">&quot;arrlen&quot;</span>.<span class="ident">to_string</span>()]
+        <span class="macro">vec</span><span class="macro">!</span>[
+            <span class="string">&quot;array_length&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="string">&quot;arrlen&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="string">&quot;array_size&quot;</span>.<span class="ident">to_string</span>(),
+        ]
     }
 
     <span class="kw">fn</span> <span class="ident">help</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {

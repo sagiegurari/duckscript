@@ -74,11 +74,11 @@
 <span class="kw">mod</span> <span class="ident">read</span>;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">release</span>;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">scope</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">set</span>;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">string</span>;
 <span class="kw">mod</span> <span class="ident">test</span>;
 <span class="kw">mod</span> <span class="ident">thread</span>;
 <span class="kw">mod</span> <span class="ident">time</span>;
+<span class="kw">mod</span> <span class="ident">var</span>;
 
 <span class="kw">use</span> <span class="ident">duckscript</span>::<span class="ident">types</span>::<span class="ident">command</span>::<span class="ident">Commands</span>;
 <span class="kw">use</span> <span class="ident">duckscript</span>::<span class="ident">types</span>::<span class="ident">error</span>::<span class="ident">ScriptError</span>;
@@ -93,7 +93,6 @@
     <span class="ident">commands</span>.<span class="ident">set</span>(<span class="ident">not</span>::<span class="ident">create</span>(<span class="ident">PACKAGE</span>))<span class="question-mark">?</span>;
     <span class="ident">commands</span>.<span class="ident">set</span>(<span class="ident">read</span>::<span class="ident">create</span>(<span class="ident">PACKAGE</span>))<span class="question-mark">?</span>;
     <span class="ident">commands</span>.<span class="ident">set</span>(<span class="ident">release</span>::<span class="ident">create</span>(<span class="ident">PACKAGE</span>))<span class="question-mark">?</span>;
-    <span class="ident">commands</span>.<span class="ident">set</span>(<span class="ident">set</span>::<span class="ident">create</span>(<span class="ident">PACKAGE</span>))<span class="question-mark">?</span>;
 
     <span class="ident">collections</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">debug</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
@@ -110,6 +109,7 @@
     <span class="ident">test</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">thread</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
     <span class="ident">time</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
+    <span class="ident">var</span>::<span class="ident">load</span>(<span class="ident">commands</span>, <span class="ident">PACKAGE</span>)<span class="question-mark">?</span>;
 
     <span class="prelude-val">Ok</span>(())
 }

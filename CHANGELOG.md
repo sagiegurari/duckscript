@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.3.4
+### v0.4.0 (2020-05-07)
 
 * New set_from_array command.
 * New set_to_array command.

@@ -444,7 +444,7 @@
             <span class="ident">clear</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">scope_name</span>, <span class="ident">variables</span>);
 
             <span class="kw">let</span> <span class="ident">end_count</span> <span class="op">=</span> <span class="ident">variables</span>.<span class="ident">len</span>();
-            <span class="kw">if</span> <span class="ident">start_count</span> <span class="op">!</span><span class="op">=</span> <span class="ident">end_count</span> {
+            <span class="kw">if</span> <span class="ident">start_count</span> <span class="op">&lt;</span> <span class="ident">end_count</span> {
                 <span class="ident">CommandResult</span>::<span class="ident">Crash</span>(
                     <span class="macro">format</span><span class="macro">!</span>(
                         <span class="string">&quot;Memory leak detected, delta variables count: {}&quot;</span>,
