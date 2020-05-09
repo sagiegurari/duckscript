@@ -474,7 +474,7 @@ runner::run_script_file(file, context)?;
 ```
 
 That's it!<br>
-Unless you want to provide your own custom SDK, prepopulate the runtime context with custom variables/state or
+Unless you want to provide your own custom SDK, pre populate the runtime context with custom variables/state or
 pull information out of the context after invocation than those 3 lines of code is all you need to do.<br>
 Let's go over it line by line.<br>
 
