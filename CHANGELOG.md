@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.4.1
+### v0.4.1 (2020-06-04)
 
 * New Enable to error an exec command via new --fail-on-error flag #108
 
