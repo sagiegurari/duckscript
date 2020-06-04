@@ -46,8 +46,8 @@ impl Command for CommandImpl {
     ) -> CommandResult {
         let allow_input = output_variable.is_some();
         let print_output = !allow_input;
-        let (start_index, fail_on_error) = if !arguments.is_empty() {
-            if arguments[0] == "--fail-on-error" {
+        let (start_index, fail_on_error) =
+            if !arguments.is_empty() && arguments[0] == "--fail-on-error" {
                 if output_variable.is_some() {
                     (1, true)
                 } else {
@@ -55,10 +55,7 @@ impl Command for CommandImpl {
                 }
             } else {
                 (0, false)
-            }
-        } else {
-            (0, false)
-        };
+            };
 
         match exec::exec(&arguments, print_output, allow_input, start_index) {
             Ok((stdout, stderr, exit_code)) => match output_variable {
