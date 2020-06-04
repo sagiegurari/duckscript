@@ -1,12 +1,21 @@
 
-fn test_echo
+fn test_echo_with_output
     output = exec echo hello world
 
     stdout = trim ${output.stdout}
     stderr = trim ${output.stderr}
     exit_code = set ${output.code}
-    
+
     assert_eq ${stdout} "hello world"
     assert_eq ${stderr} ""
     assert_eq ${exit_code} 0
 end
+
+fn test_echo_without_output
+    exec echo hello world
+end
+
+fn test_echo_with_fail_on_error_flag
+    exec --fail-on-error echo hello world
+end
+

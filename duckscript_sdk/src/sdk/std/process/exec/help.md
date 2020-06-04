@@ -1,5 +1,5 @@
 ```sh
-exec command [args]*
+exec [--fail-on-error] command [args]*
 
 output = exec command [args]*
 stdout = set ${output.stdout}
@@ -9,6 +9,7 @@ exit_code = set ${output.code}
 
 Executes the provided native command and arguments.<br>
 If no output variable is set, the command output will be flushed to the main out/err stream of the parent process.<br>
+In addition, in order to fail the command in case of the child process failed, add the --fail_on_error flag.<br>
 If an output variable is set, it will be used as a base variable name from which the command stout, stderr and exit code information can be pulled from.<br>
 The actual output variable name will not be modified, instead new variables will be created using that variable name as a baseline:
 
@@ -18,7 +19,8 @@ The actual output variable name will not be modified, instead new variables will
 
 #### Parameters
 
-The command to execute and its arguments.
+* --fail-on-error - If no output variable is provided, it will cause an error in case the executed processed exists with an error exist code.
+* The command to execute and its arguments.
 
 #### Return Value
 

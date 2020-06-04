@@ -226,10 +226,13 @@ pub(crate) fn run_script_and_error(
     let result = run_command(commands, script);
     match result {
         Ok(context) => {
-            assert_eq!(
-                context.variables.get(&output_variable.to_string()).unwrap(),
-                "false"
-            );
+            if !output_variable.is_empty() {
+                assert_eq!(
+                    context.variables.get(&output_variable.to_string()).unwrap(),
+                    "false"
+                );
+            }
+
             assert_eq!(
                 context
                     .variables

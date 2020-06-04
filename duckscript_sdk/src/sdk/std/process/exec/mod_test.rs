@@ -18,6 +18,20 @@ fn run_no_output() {
 }
 
 #[test]
+fn run_no_output_with_fail_on_error_valid() {
+    test::run_script_and_validate(
+        vec![create("")],
+        "exec --fail-on-error echo test",
+        CommandValidation::None,
+    );
+}
+
+#[test]
+fn run_no_output_with_fail_on_error_invalid() {
+    test::run_script_and_error(vec![create("")], "exec --fail-on-error badcommand", "");
+}
+
+#[test]
 fn run_with_output() {
     let context = test::run_script_and_validate(
         vec![create("")],

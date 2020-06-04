@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.4.1
+
+* New Enable to error an exec command via new --fail-on-error flag #108
+
 ### v0.4.0 (2020-05-07)
 
 * New set_from_array command.
