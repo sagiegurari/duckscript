@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.4.2 (2020-06-05)
+
+* Fixed parsing issue for commands evaluated by other commands (for example if conditions)
+
 ### v0.4.1 (2020-06-04)
 
 * New Enable to error an exec command via new --fail-on-error flag #108

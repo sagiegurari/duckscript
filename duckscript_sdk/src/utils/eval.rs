@@ -29,7 +29,10 @@ pub(crate) fn eval(
             line_buffer.push(' ');
         }
 
-        let line_str = line_buffer.replace("\r", "").replace("\n", "");
+        let line_str = line_buffer
+            .replace("\r", "")
+            .replace("\n", "")
+            .replace("\\", "\\\\");
 
         match parser::parse_text(&line_str) {
             Ok(instructions) => {
