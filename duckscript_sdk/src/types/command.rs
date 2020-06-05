@@ -1,4 +1,5 @@
 use crate::types::scope::clear;
+use crate::types::scope::set_line_context_name;
 use crate::utils::state::{get_handles_sub_state, put_handle};
 use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
 use duckscript::types::error::ScriptError;
@@ -91,6 +92,7 @@ impl Command for AliasCommand {
             CommandResult::Error("Invalid arguments provided.".to_string())
         } else {
             let start_count = variables.len();
+            let line_context_name = set_line_context_name(&self.scope_name, state);
 
             // define script arguments
             let mut handle_option = None;
@@ -199,6 +201,7 @@ impl Command for AliasCommand {
                 None => (),
             }
             clear(&self.scope_name, variables);
+            set_line_context_name(&line_context_name, state);
 
             let end_count = variables.len();
             if start_count < end_count {

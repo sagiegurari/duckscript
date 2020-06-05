@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.4.3
+
+* Fixed end command bug which directed execution to wrong sub command when multiple script contexts are running #110
+
 ### v0.4.2 (2020-06-05)
 
 * Fixed parsing issue for commands evaluated by other commands (for example if conditions)

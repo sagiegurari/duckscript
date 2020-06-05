@@ -1,12 +1,21 @@
 use super::*;
 
 #[test]
+fn get_core_sub_state_for_runtime_valid() {
+    let mut state = HashMap::new();
+    let value = get_core_sub_state_for_runtime(&mut state, "test".to_string());
+
+    assert!(value.is_empty());
+    assert!(state.contains_key("duckscriptsdk::runtime::test"));
+}
+
+#[test]
 fn get_core_sub_state_for_command_valid() {
     let mut state = HashMap::new();
     let value = get_core_sub_state_for_command(&mut state, "test".to_string());
 
     assert!(value.is_empty());
-    assert!(state.contains_key("duckscriptsdk::test"));
+    assert!(state.contains_key("duckscriptsdk::command::test"));
 }
 
 #[test]
