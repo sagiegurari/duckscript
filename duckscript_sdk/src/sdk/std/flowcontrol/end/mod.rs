@@ -1,3 +1,4 @@
+use crate::sdk::std::flowcontrol::get_line_key;
 use crate::utils::state::get_core_sub_state_for_command;
 use duckscript::runner;
 use duckscript::types::command::{Command, CommandResult, Commands};
@@ -15,9 +16,9 @@ static END_STATE_KEY: &str = "end";
 pub(crate) static END_COMMAND_NAME: &str = "end";
 
 fn get_command(line: usize, state: &mut HashMap<String, StateValue>) -> Option<String> {
+    let key = get_line_key(line, state);
     let sub_state = get_core_sub_state_for_command(state, END_STATE_KEY.to_string());
 
-    let key = line.to_string();
     match sub_state.get(&key) {
         Some(state_value) => match state_value {
             StateValue::String(command) => Some(command.clone()),
@@ -33,9 +34,10 @@ fn get_command(line: usize, state: &mut HashMap<String, StateValue>) -> Option<S
 }
 
 pub(crate) fn set_command(line: usize, state: &mut HashMap<String, StateValue>, command: String) {
+    let key = get_line_key(line, state);
     let sub_state = get_core_sub_state_for_command(state, END_STATE_KEY.to_string());
 
-    sub_state.insert(line.to_string(), StateValue::String(command));
+    sub_state.insert(key, StateValue::String(command));
 }
 
 #[derive(Clone)]

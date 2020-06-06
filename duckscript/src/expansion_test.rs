@@ -7,6 +7,13 @@ fn get_single_value(output: ExpandedValue) -> String {
     }
 }
 
+fn get_multi_value(output: ExpandedValue) -> Vec<String> {
+    match output {
+        ExpandedValue::Multi(value) => value,
+        _ => panic!("Invalid type."),
+    }
+}
+
 #[test]
 fn expand_by_wrapper_control_chars() {
     let mut variables = HashMap::new();
@@ -219,4 +226,52 @@ value4:test4
     "#,
         value
     );
+}
+
+#[test]
+fn expand_by_wrapper_control_chars_multi() {
+    let mut variables = HashMap::new();
+    variables.insert("FOUND".to_string(), r#"abc/123\\123"#.to_string());
+
+    let output = expand_by_wrapper("%{FOUND}", &InstructionMetaInfo::new(), &mut variables);
+
+    let value = get_multi_value(output);
+
+    assert_eq!(value.len(), 1);
+    assert_eq!(r#"abc/123\\123"#, value[0]);
+}
+
+#[test]
+fn expand_by_wrapper_split_multi() {
+    let mut variables = HashMap::new();
+    variables.insert("FOUND".to_string(), r#"abc 123"#.to_string());
+
+    let output = expand_by_wrapper("%{FOUND}", &InstructionMetaInfo::new(), &mut variables);
+
+    let value = get_multi_value(output);
+
+    assert_eq!(value.len(), 2);
+    assert_eq!("abc", value[0]);
+    assert_eq!("123", value[1]);
+}
+
+#[test]
+fn expand_by_wrapper_split_complex_multi() {
+    let mut variables = HashMap::new();
+    variables.insert(
+        "FOUND".to_string(),
+        r#"abc 123 "in quotes" 2
+lines"#
+            .to_string(),
+    );
+
+    let output = expand_by_wrapper("%{FOUND}", &InstructionMetaInfo::new(), &mut variables);
+
+    let value = get_multi_value(output);
+
+    assert_eq!(value.len(), 4);
+    assert_eq!("abc", value[0]);
+    assert_eq!("123", value[1]);
+    assert_eq!("in quotes", value[2]);
+    assert_eq!("2\nlines", value[3]);
 }

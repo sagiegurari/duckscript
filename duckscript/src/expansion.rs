@@ -108,7 +108,7 @@ pub(crate) fn expand_by_wrapper(
         ExpandedValue::Single(value_string.to_string())
     } else {
         let chars = value_string.to_string().chars().collect();
-        match parser::parse_arguments(meta_info, &chars, 0) {
+        match parser::reparse_arguments(meta_info, &chars, 0) {
             Ok(values_option) => match values_option {
                 Some(values) => ExpandedValue::Multi(values),
                 None => ExpandedValue::None,

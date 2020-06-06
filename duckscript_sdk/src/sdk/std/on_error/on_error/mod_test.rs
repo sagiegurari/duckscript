@@ -21,7 +21,10 @@ fn run_valid() {
         CommandValidation::Match("out".to_string(), "false".to_string()),
     );
 
-    let sub_state_value = context.state.get("duckscriptsdk::on_error").unwrap();
+    let sub_state_value = context
+        .state
+        .get("duckscriptsdk::command::on_error")
+        .unwrap();
     match sub_state_value {
         StateValue::SubState(sub_state) => {
             match sub_state.get("error").unwrap() {

@@ -1,4 +1,4 @@
-use crate::sdk::std::flowcontrol::{end, forin, function};
+use crate::sdk::std::flowcontrol::{end, forin, function, get_line_key};
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
 use crate::utils::{condition, instruction_query, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
@@ -223,10 +223,10 @@ fn get_or_create_if_meta_info_for_line(
     instructions: &Vec<Instruction>,
     package: String,
 ) -> Result<IfElseMetaInfo, String> {
+    let key = get_line_key(line, state);
     let if_state = get_core_sub_state_for_command(state, IFELSE_STATE_KEY.to_string());
     let if_meta_info_state = get_sub_state(META_INFO_STATE_KEY.to_string(), if_state);
 
-    let key = line.to_string();
     let mut if_state_for_line = get_sub_state(key.clone(), if_meta_info_state);
 
     let result = match deserialize_ifelse_meta_info(&mut if_state_for_line) {

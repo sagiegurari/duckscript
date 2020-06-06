@@ -56,7 +56,7 @@ fn parse_pre_process_line_just_command_with_arguments() {
 #[test]
 fn parse_next_argument_empty() {
     let chars = "".chars().collect();
-    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0, false);
 
     assert!(result.is_ok());
 
@@ -69,7 +69,7 @@ fn parse_next_argument_empty() {
 #[test]
 fn parse_next_argument_spaces_only() {
     let chars = "   ".chars().collect();
-    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0, false);
 
     assert!(result.is_ok());
 
@@ -82,7 +82,7 @@ fn parse_next_argument_spaces_only() {
 #[test]
 fn parse_next_argument_value_only() {
     let chars = "test".chars().collect();
-    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0, false);
 
     assert!(result.is_ok());
 
@@ -95,7 +95,7 @@ fn parse_next_argument_value_only() {
 #[test]
 fn parse_next_argument_value_after_spaces() {
     let chars = "  test".chars().collect();
-    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0, false);
 
     assert!(result.is_ok());
 
@@ -108,7 +108,7 @@ fn parse_next_argument_value_after_spaces() {
 #[test]
 fn parse_next_argument_value_in_middle_of_spaces() {
     let chars = "  test  ".chars().collect();
-    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0, false);
 
     assert!(result.is_ok());
 
@@ -121,7 +121,7 @@ fn parse_next_argument_value_in_middle_of_spaces() {
 #[test]
 fn parse_next_argument_value_in_middle_of_spaces_start_in_middle_of_value() {
     let chars = "  test  ".chars().collect();
-    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 3);
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 3, false);
 
     assert!(result.is_ok());
 
@@ -134,7 +134,7 @@ fn parse_next_argument_value_in_middle_of_spaces_start_in_middle_of_value() {
 #[test]
 fn parse_next_argument_value_with_quots() {
     let chars = r#"  "test"  "#.chars().collect();
-    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0, false);
 
     assert!(result.is_ok());
 
@@ -147,7 +147,7 @@ fn parse_next_argument_value_with_quots() {
 #[test]
 fn parse_next_argument_empty_with_quots() {
     let chars = r#"  ""  "#.chars().collect();
-    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0, false);
 
     assert!(result.is_ok());
 
@@ -160,7 +160,7 @@ fn parse_next_argument_empty_with_quots() {
 #[test]
 fn parse_next_argument_value_with_control() {
     let chars = r#"  \"test\"\\\n\r\t test   "#.chars().collect();
-    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0, false);
 
     assert!(result.is_ok());
 
@@ -173,7 +173,7 @@ fn parse_next_argument_value_with_control() {
 #[test]
 fn parse_next_argument_value_with_space_in_middle() {
     let chars = r#"  "test \"test\""  "#.chars().collect();
-    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0, false);
 
     assert!(result.is_ok());
 
@@ -186,7 +186,7 @@ fn parse_next_argument_value_with_space_in_middle() {
 #[test]
 fn parse_next_argument_value_with_comment_in_middle() {
     let chars = r#"  "test \"test\" #test test"  "#.chars().collect();
-    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0, false);
 
     assert!(result.is_ok());
 
@@ -199,7 +199,7 @@ fn parse_next_argument_value_with_comment_in_middle() {
 #[test]
 fn parse_next_argument_value_with_comment_afterwards() {
     let chars = r#"  test#comment"#.chars().collect();
-    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0, false);
 
     assert!(result.is_ok());
 
@@ -212,7 +212,7 @@ fn parse_next_argument_value_with_comment_afterwards() {
 #[test]
 fn parse_next_argument_value_with_comment_afterwards_wrapped_with_quotes() {
     let chars = r#"  "test#comment""#.chars().collect();
-    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0, false);
 
     assert!(result.is_ok());
 
@@ -225,7 +225,7 @@ fn parse_next_argument_value_with_comment_afterwards_wrapped_with_quotes() {
 #[test]
 fn parse_next_argument_value_with_control_error() {
     let chars = r#"  \a  "#.chars().collect();
-    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0, false);
 
     assert!(result.is_err());
 }
@@ -233,7 +233,7 @@ fn parse_next_argument_value_with_control_error() {
 #[test]
 fn parse_next_argument_value_with_partial_variable_control_error() {
     let chars = r#"  \$  "#.chars().collect();
-    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0, false);
 
     assert!(result.is_err());
 }
@@ -241,7 +241,7 @@ fn parse_next_argument_value_with_partial_variable_control_error() {
 #[test]
 fn parse_next_argument_value_with_control_end_error() {
     let chars = r#"  \"#.chars().collect();
-    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0, false);
 
     assert!(result.is_err());
 }
@@ -249,7 +249,7 @@ fn parse_next_argument_value_with_control_end_error() {
 #[test]
 fn parse_next_argument_value_with_variable_control() {
     let chars = r#"  \${out}  "#.chars().collect();
-    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0, false);
 
     assert!(result.is_ok());
 
@@ -262,7 +262,7 @@ fn parse_next_argument_value_with_variable_control() {
 #[test]
 fn parse_next_argument_value_with_quote_end_error() {
     let chars = r#"  ""#.chars().collect();
-    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0);
+    let result = parse_next_argument(&InstructionMetaInfo::new(), &chars, 0, false);
 
     assert!(result.is_err());
 }
