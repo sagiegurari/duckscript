@@ -196,11 +196,28 @@ pub(crate) fn parse_arguments(
     line_text: &Vec<char>,
     start_index: usize,
 ) -> Result<Option<Vec<String>>, ScriptError> {
+    parse_arguments_with_options(meta_info, line_text, start_index, false)
+}
+
+pub(crate) fn reparse_arguments(
+    meta_info: &InstructionMetaInfo,
+    line_text: &Vec<char>,
+    start_index: usize,
+) -> Result<Option<Vec<String>>, ScriptError> {
+    parse_arguments_with_options(meta_info, line_text, start_index, true)
+}
+
+fn parse_arguments_with_options(
+    meta_info: &InstructionMetaInfo,
+    line_text: &Vec<char>,
+    start_index: usize,
+    control_as_char: bool,
+) -> Result<Option<Vec<String>>, ScriptError> {
     let mut arguments = vec![];
 
     let mut index = start_index;
     loop {
-        match parse_next_argument(&meta_info, &line_text, index) {
+        match parse_next_argument(&meta_info, &line_text, index, control_as_char) {
             Ok(output) => {
                 let (next_index, argument) = output;
 
@@ -226,8 +243,17 @@ fn parse_next_argument(
     meta_info: &InstructionMetaInfo,
     line_text: &Vec<char>,
     start_index: usize,
+    control_as_char: bool,
 ) -> Result<(usize, Option<String>), ScriptError> {
-    parse_next_value(&meta_info, &line_text, start_index, true, true, false)
+    parse_next_value(
+        &meta_info,
+        &line_text,
+        start_index,
+        true,
+        !control_as_char,
+        false,
+        control_as_char,
+    )
 }
 
 fn parse_next_value(
@@ -237,6 +263,7 @@ fn parse_next_value(
     allow_quotes: bool,
     allow_control: bool,
     stop_on_equals: bool,
+    control_as_char: bool,
 ) -> Result<(usize, Option<String>), ScriptError> {
     let end_index = line_text.len();
 
@@ -286,7 +313,9 @@ fn parse_next_value(
                         });
                     }
                 } else if character == '\\' {
-                    if allow_control {
+                    if control_as_char {
+                        argument.push(character);
+                    } else if allow_control {
                         in_control = true;
                         found_variable_prefix = false;
                     } else {
@@ -327,7 +356,9 @@ fn parse_next_value(
                         });
                     }
                 } else if character == '\\' {
-                    if allow_control {
+                    if control_as_char {
+                        argument.push(character);
+                    } else if allow_control {
                         in_control = true;
                     } else {
                         return Err(ScriptError {
@@ -379,7 +410,7 @@ fn find_label(
             index = index + 1;
 
             if character == LABEL_PREFIX {
-                match parse_next_value(&meta_info, &line_text, index, false, false, false) {
+                match parse_next_value(&meta_info, &line_text, index, false, false, false, false) {
                     Ok(output) => {
                         let (next_index, value) = output;
                         index = next_index;
@@ -421,7 +452,15 @@ fn find_output_and_command(
     start_index: usize,
     instruction: &mut ScriptInstruction,
 ) -> Result<usize, ScriptError> {
-    match parse_next_value(&meta_info, &line_text, start_index, false, false, true) {
+    match parse_next_value(
+        &meta_info,
+        &line_text,
+        start_index,
+        false,
+        false,
+        true,
+        false,
+    ) {
         Ok(output) => {
             let (next_index, value) = output;
 
@@ -444,7 +483,9 @@ fn find_output_and_command(
                 }
 
                 if instruction.output.is_some() {
-                    match parse_next_value(&meta_info, &line_text, index, false, false, false) {
+                    match parse_next_value(
+                        &meta_info, &line_text, index, false, false, false, false,
+                    ) {
                         Ok(output) => {
                             let (next_index, value) = output;
 
