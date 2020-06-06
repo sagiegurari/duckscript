@@ -3,6 +3,7 @@
 ### v0.4.3
 
 * Fixed end command bug which directed execution to wrong sub command when multiple script contexts are running #110
+* Runtime - Fixed spread expansion with control characters #109
 
 ### v0.4.2 (2020-06-05)
 
