@@ -4,11 +4,22 @@ mod function;
 mod goto;
 mod ifelse;
 
+use crate::types::scope::get_line_context_name;
 use crate::utils::pckg;
 use duckscript::types::command::Commands;
 use duckscript::types::error::ScriptError;
+use duckscript::types::runtime::StateValue;
+use std::collections::HashMap;
 
 static PACKAGE: &str = "flowcontrol";
+
+fn get_line_key(line: usize, state: &mut HashMap<String, StateValue>) -> String {
+    let mut key = get_line_context_name(state);
+    key.push_str("::");
+    key.push_str(&line.to_string());
+
+    key
+}
 
 pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptError> {
     let package = pckg::concat(parent, PACKAGE);

@@ -1,4 +1,5 @@
 use crate::sdk::std::flowcontrol::{end, forin, ifelse};
+use crate::types::scope::get_line_context_name;
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
 use crate::utils::{instruction_query, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
@@ -27,6 +28,7 @@ struct CallInfo {
     pub(crate) call_line: usize,
     pub(crate) start_line: usize,
     pub(crate) end_line: usize,
+    pub(crate) line_context_name: String,
     pub(crate) output_variable: Option<String>,
 }
 
@@ -110,6 +112,10 @@ fn push_to_call_stack(state: &mut HashMap<String, StateValue>, call_info: &CallI
         "end_line".to_string(),
         StateValue::UnsignedNumber(call_info.end_line),
     );
+    sub_state.insert(
+        "line_context_name".to_string(),
+        StateValue::String(call_info.line_context_name.clone()),
+    );
     if let Some(output_variable) = &call_info.output_variable {
         sub_state.insert(
             "output_variable".to_string(),
@@ -151,6 +157,14 @@ fn pop_from_call_stack(state: &mut HashMap<String, StateValue>) -> Option<CallIn
                     None => return pop_from_call_stack(state),
                 };
 
+                let line_context_name = match sub_state.get("line_context_name") {
+                    Some(value) => match value {
+                        StateValue::String(line_context_name) => line_context_name.clone(),
+                        _ => return pop_from_call_stack(state),
+                    },
+                    None => return pop_from_call_stack(state),
+                };
+
                 let output_variable = match sub_state.get("output_variable") {
                     Some(value) => match value {
                         StateValue::String(output_variable) => Some(output_variable.to_string()),
@@ -163,6 +177,7 @@ fn pop_from_call_stack(state: &mut HashMap<String, StateValue>) -> Option<CallIn
                     call_line,
                     start_line,
                     end_line,
+                    line_context_name,
                     output_variable,
                 })
             }
@@ -190,11 +205,14 @@ fn run_call(
                 variables.insert(index.to_string(), argument);
             }
 
+            let line_context_name = get_line_context_name(state);
+
             // store to call stack
             let call_info = CallInfo {
                 call_line: line,
                 start_line: fn_info.start,
                 end_line: fn_info.end,
+                line_context_name,
                 output_variable,
             };
             push_to_call_stack(state, &call_info);
@@ -434,9 +452,11 @@ impl Command for EndFunctionCommand {
         _commands: &mut Commands,
         line: usize,
     ) -> CommandResult {
+        let line_context_name = get_line_context_name(state);
+
         match pop_from_call_stack(state) {
             Some(call_info) => {
-                if call_info.end_line == line {
+                if call_info.end_line == line && call_info.line_context_name == line_context_name {
                     let next_line = call_info.call_line + 1;
                     CommandResult::GoTo(None, GoToValue::Line(next_line))
                 } else {
@@ -485,9 +505,14 @@ impl Command for ReturnCommand {
         _commands: &mut Commands,
         line: usize,
     ) -> CommandResult {
+        let line_context_name = get_line_context_name(state);
+
         match pop_from_call_stack(state) {
             Some(call_info) => {
-                if call_info.start_line < line && call_info.end_line > line {
+                if call_info.start_line < line
+                    && call_info.end_line > line
+                    && call_info.line_context_name == line_context_name
+                {
                     match call_info.output_variable {
                         Some(name) => {
                             if arguments.is_empty() {

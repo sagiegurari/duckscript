@@ -1,4 +1,4 @@
-use crate::sdk::std::flowcontrol::{end, function, ifelse};
+use crate::sdk::std::flowcontrol::{end, function, get_line_key, ifelse};
 use crate::utils::state::{
     get_as_string, get_core_sub_state_for_command, get_handle, get_list, get_sub_state,
 };
@@ -162,10 +162,10 @@ fn get_or_create_forin_meta_info_for_line(
     instructions: &Vec<Instruction>,
     package: String,
 ) -> Result<ForInMetaInfo, String> {
+    let key = get_line_key(line, state);
     let forin_state = get_core_sub_state_for_command(state, FORIN_STATE_KEY.to_string());
     let forin_meta_info_state = get_sub_state(META_INFO_STATE_KEY.to_string(), forin_state);
 
-    let key = line.to_string();
     let mut forin_state_for_line = get_sub_state(key.clone(), forin_meta_info_state);
 
     let result = match deserialize_forin_meta_info(&mut forin_state_for_line) {
