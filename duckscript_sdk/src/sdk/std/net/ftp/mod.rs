@@ -4,6 +4,7 @@ mod nlst;
 use crate::utils::pckg;
 use duckscript::types::command::{CommandResult, Commands};
 use duckscript::types::error::ScriptError;
+use ftp::types::{FileType, FormatControl};
 use ftp::FtpStream;
 
 static PACKAGE: &str = "ftp";
@@ -18,12 +19,21 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
 }
 
 #[derive(Clone)]
+pub(crate) enum TransferType {
+    // ascii
+    Ascii,
+    // image/binary
+    Binary,
+}
+
+#[derive(Clone)]
 pub(crate) struct Options {
     host: Option<String>,
     port: u32,
     user_name: Option<String>,
     password: Option<String>,
     path: Option<String>,
+    transfer_type: Option<TransferType>,
 }
 
 impl Options {
@@ -34,6 +44,7 @@ impl Options {
             user_name: None,
             password: None,
             path: None,
+            transfer_type: None,
         }
     }
 }
@@ -45,6 +56,7 @@ enum LookingFor {
     UserName,
     Password,
     Path,
+    TransferType,
 }
 
 pub(crate) fn run_with_connection(
@@ -72,6 +84,7 @@ fn parse_common_options(arguments: &Vec<String>) -> Result<Options, String> {
                 "--username" => looking_for = LookingFor::UserName,
                 "--password" => looking_for = LookingFor::Password,
                 "--path" => looking_for = LookingFor::Path,
+                "--type" => looking_for = LookingFor::TransferType,
                 _ => (),
             },
             LookingFor::Host => {
@@ -107,6 +120,21 @@ fn parse_common_options(arguments: &Vec<String>) -> Result<Options, String> {
                 }
                 looking_for = LookingFor::Flag;
             }
+            LookingFor::TransferType => {
+                if !argument.is_empty() {
+                    match argument.as_str() {
+                        "A" => options.transfer_type = Some(TransferType::Ascii),
+                        "I" => options.transfer_type = Some(TransferType::Binary),
+                        _ => {
+                            return Err(
+                                "Invalid transfer type provided, only A or I are supported."
+                                    .to_string(),
+                            )
+                        }
+                    }
+                    looking_for = LookingFor::Flag;
+                }
+            }
         }
     }
 
@@ -141,6 +169,18 @@ fn run_in_ftp_connection_context(
                     // move to another directory
                     if let Some(path) = options_cloned.path {
                         if let Err(error) = ftp_stream.cwd(path.as_str()) {
+                            return CommandResult::Error(error.to_string());
+                        }
+                    }
+
+                    // set transfer type
+                    if let Some(transfer_type) = options_cloned.transfer_type {
+                        let file_type = match transfer_type {
+                            TransferType::Ascii => FileType::Ascii(FormatControl::Default),
+                            TransferType::Binary => FileType::Image,
+                        };
+
+                        if let Err(error) = ftp_stream.transfer_type(file_type) {
                             return CommandResult::Error(error.to_string());
                         }
                     }
