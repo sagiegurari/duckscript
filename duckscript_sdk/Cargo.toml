@@ -37,7 +37,7 @@ num_cpus = "^1"
 rand = "^0.7"
 walkdir = "^2"
 which = { version = "^4", default-features = false }
-whoami = "^0.8"
+whoami = "^0.9"
 
 [target.'cfg(not(windows))'.dependencies]
 uname = "^0.1"
