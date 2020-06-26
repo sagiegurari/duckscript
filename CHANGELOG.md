@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### v0.5.1
+
+* New ftp_list command.
+* New ftp_nlst command.
+
 ### v0.5.0 (2020-06-06)
 
 * Fixed end command bug which directed execution to wrong sub command when multiple script contexts are running #110

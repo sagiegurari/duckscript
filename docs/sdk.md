@@ -111,6 +111,8 @@
 * [std::net::Hostname (hostname)](#std__net__Hostname)
 * [std::net::HttpClient (http_client)](#std__net__HttpClient)
 * [std::net::WGet (wget)](#std__net__WGet)
+* [std::net::ftp::List (ftp_list)](#std__net__ftp__List)
+* [std::net::ftp::NLst (ftp_nlst)](#std__net__ftp__NLst)
 * [std::process::Execute (exec)](#std__process__Execute)
 * [std::process::Exit (exit, quit, q)](#std__process__Exit)
 * [std::process::ProcessID (pid, process_id)](#std__process__ProcessID)
@@ -4140,6 +4142,76 @@ http_client --method "${scope::wget::method}" --output-file "${scope::wget::file
 
 #### Aliases:
 wget
+
+<a name="std__net__ftp__List"></a>
+## std::net::ftp::List
+```sh
+handle = ftp_list --host <hostname> [--port 21] [--username <user name>] [--password <password>] [--path <path>]
+```
+
+Invokes the FTP LIST command from the given connection details and path.<br>
+Returns a handle to an array of all response entries.
+
+#### Parameters
+
+* --host - The host name or IP to connect to
+* --port - Optional port number to use (by default 21)
+* --username - Optional user name used to login (if not user or password provided, no login operation will be invoked)
+* --password - Optional password used to login (if not user or password provided, no login operation will be invoked)
+* --path - Optional path on the remote server to invoke operation on
+
+#### Return Value
+
+A handle to an array holding all entries.
+
+#### Examples
+
+```sh
+handle = ftp_list --host myhost --username someuser --password 12345
+
+for entry in ${handle}
+    echo ${entry}
+end
+```
+
+
+#### Aliases:
+ftp_list
+
+<a name="std__net__ftp__NLst"></a>
+## std::net::ftp::NLst
+```sh
+handle = ftp_nlst --host <hostname> [--port 21] [--username <user name>] [--password <password>] [--path <path>]
+```
+
+Invokes the FTP NLST command from the given connection details and path.<br>
+Returns a handle to an array of all response entries.
+
+#### Parameters
+
+* --host - The host name or IP to connect to
+* --port - Optional port number to use (by default 21)
+* --username - Optional user name used to login (if not user or password provided, no login operation will be invoked)
+* --password - Optional password used to login (if not user or password provided, no login operation will be invoked)
+* --path - Optional path on the remote server to invoke operation on
+
+#### Return Value
+
+A handle to an array holding all entries.
+
+#### Examples
+
+```sh
+handle = ftp_nlst --host myhost --username someuser --password 12345
+
+for entry in ${handle}
+    echo ${entry}
+end
+```
+
+
+#### Aliases:
+ftp_nlst
 
 <a name="std__process__Execute"></a>
 ## std::process::Execute

@@ -1,0 +1,14 @@
+
+fn test_valid
+    arr = ftp_nlst --host test.rebex.net --username demo --password password
+
+    empty = array_is_empty ${arr}
+    assert_false ${empty}
+
+    merged = array_join ${arr} ,
+    found = contains ${merged} pub
+    assert ${found}
+
+    release ${arr}
+end
+
