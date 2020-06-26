@@ -12,3 +12,16 @@ fn test_valid
     release ${arr}
 end
 
+fn test_with_path
+    arr = ftp_list --host test.rebex.net --username demo --password password --path pub
+
+    empty = array_is_empty ${arr}
+    assert_false ${empty}
+
+    merged = array_join ${arr} ,
+    found = contains ${merged} example
+    assert ${found}
+
+    release ${arr}
+end
+

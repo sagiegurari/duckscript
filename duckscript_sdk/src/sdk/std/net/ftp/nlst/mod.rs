@@ -47,17 +47,10 @@ impl Command for CommandImpl {
         _commands: &mut Commands,
         _line: usize,
     ) -> CommandResult {
-        run_with_connection(&arguments, &mut |options: &Options,
+        run_with_connection(&arguments, &mut |_options: &Options,
                                               ftp_stream: &mut FtpStream|
          -> CommandResult {
-            let options_clone = options.clone();
-
-            let operation_result = match options_clone.path {
-                Some(value) => ftp_stream.nlst(Some(value.as_str())),
-                None => ftp_stream.nlst(None),
-            };
-
-            match operation_result {
+            match ftp_stream.nlst(None) {
                 Ok(output) => {
                     let mut array = vec![];
 

@@ -126,21 +126,26 @@ fn run_in_ftp_connection_context(
 
             match FtpStream::connect(&connection_string) {
                 Ok(mut ftp_stream) => {
-                    let operation_result =
-                        if options.user_name.is_some() && options.password.is_some() {
-                            let options_cloned = options.clone();
-                            let user_name = options_cloned.user_name.unwrap();
-                            let password = options_cloned.password.unwrap();
+                    let options_cloned = options.clone();
 
-                            ftp_stream.login(&user_name, &password)
-                        } else {
-                            Ok(())
-                        };
+                    // login if needed
+                    if options.user_name.is_some() && options.password.is_some() {
+                        let user_name = options_cloned.user_name.unwrap();
+                        let password = options_cloned.password.unwrap();
 
-                    let result = match operation_result {
-                        Ok(_) => func(&mut ftp_stream),
-                        Err(error) => CommandResult::Error(error.to_string()),
-                    };
+                        if let Err(error) = ftp_stream.login(&user_name, &password) {
+                            return CommandResult::Error(error.to_string());
+                        }
+                    }
+
+                    // move to another directory
+                    if let Some(path) = options_cloned.path {
+                        if let Err(error) = ftp_stream.cwd(path.as_str()) {
+                            return CommandResult::Error(error.to_string());
+                        }
+                    }
+
+                    let result = func(&mut ftp_stream);
 
                     ftp_stream.quit().unwrap_or(());
 
