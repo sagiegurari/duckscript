@@ -2,6 +2,8 @@
 
 ### v0.5.1
 
+* New ftp_get command.
+* New ftp_get_in_memory command.
 * New ftp_list command.
 * New ftp_nlst command.
 

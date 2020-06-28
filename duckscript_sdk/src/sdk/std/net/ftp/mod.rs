@@ -1,3 +1,5 @@
+mod get;
+mod get_in_memory;
 mod list;
 mod nlst;
 
@@ -12,6 +14,8 @@ static PACKAGE: &str = "ftp";
 pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptError> {
     let package = pckg::concat(parent, PACKAGE);
 
+    commands.set(get::create(&package))?;
+    commands.set(get_in_memory::create(&package))?;
     commands.set(list::create(&package))?;
     commands.set(nlst::create(&package))?;
 
@@ -34,6 +38,8 @@ pub(crate) struct Options {
     password: Option<String>,
     path: Option<String>,
     transfer_type: Option<TransferType>,
+    remote_file: Option<String>,
+    local_file: Option<String>,
 }
 
 impl Options {
@@ -45,6 +51,8 @@ impl Options {
             password: None,
             path: None,
             transfer_type: None,
+            remote_file: None,
+            local_file: None,
         }
     }
 }
@@ -57,17 +65,34 @@ enum LookingFor {
     Password,
     Path,
     TransferType,
+    RemoteFile,
+    LocalFile,
 }
 
 pub(crate) fn run_with_connection(
     arguments: &Vec<String>,
     func: &mut FnMut(&Options, &mut FtpStream) -> CommandResult,
 ) -> CommandResult {
+    validate_and_run_with_connection(
+        arguments,
+        &|_options: &Options| -> Result<(), String> { Ok(()) },
+        func,
+    )
+}
+
+pub(crate) fn validate_and_run_with_connection(
+    arguments: &Vec<String>,
+    validate_input: &Fn(&Options) -> Result<(), String>,
+    func: &mut FnMut(&Options, &mut FtpStream) -> CommandResult,
+) -> CommandResult {
     match parse_common_options(&arguments) {
-        Ok(options) => run_in_ftp_connection_context(
-            &options,
-            &mut |ftp_stream: &mut FtpStream| -> CommandResult { func(&options, ftp_stream) },
-        ),
+        Ok(options) => match validate_input(&options) {
+            Ok(_) => run_in_ftp_connection_context(
+                &options,
+                &mut |ftp_stream: &mut FtpStream| -> CommandResult { func(&options, ftp_stream) },
+            ),
+            Err(error) => CommandResult::Error(error),
+        },
         Err(error) => CommandResult::Error(error),
     }
 }
@@ -85,6 +110,8 @@ fn parse_common_options(arguments: &Vec<String>) -> Result<Options, String> {
                 "--password" => looking_for = LookingFor::Password,
                 "--path" => looking_for = LookingFor::Path,
                 "--type" => looking_for = LookingFor::TransferType,
+                "--remote-file" => looking_for = LookingFor::RemoteFile,
+                "--local-file" => looking_for = LookingFor::LocalFile,
                 _ => (),
             },
             LookingFor::Host => {
@@ -134,6 +161,18 @@ fn parse_common_options(arguments: &Vec<String>) -> Result<Options, String> {
                     }
                     looking_for = LookingFor::Flag;
                 }
+            }
+            LookingFor::RemoteFile => {
+                if !argument.is_empty() {
+                    options.remote_file = Some(argument.to_string());
+                }
+                looking_for = LookingFor::Flag;
+            }
+            LookingFor::LocalFile => {
+                if !argument.is_empty() {
+                    options.local_file = Some(argument.to_string());
+                }
+                looking_for = LookingFor::Flag;
             }
         }
     }

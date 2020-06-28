@@ -1,0 +1,16 @@
+
+fn test_valid
+    filename = set ./target/_duckscript_test/net/ftp/get/readme.txt
+    result = ftp_get --host test.rebex.net --username demo --password password --remote-file readme.txt --local-file ${filename}
+
+    assert ${result}
+
+    text = readfile ${filename}
+
+    empty = is_empty ${text}
+    assert_false ${empty}
+
+    found = contains ${text} Welcome
+    assert ${found}
+end
+

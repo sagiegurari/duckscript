@@ -1,0 +1,14 @@
+
+fn test_valid
+    handle = ftp_get_in_memory --host test.rebex.net --username demo --password password --remote-file readme.txt
+
+    text = bytes_to_string ${handle}
+    release ${handle}
+
+    empty = is_empty ${text}
+    assert_false ${empty}
+
+    found = contains ${text} Welcome
+    assert ${found}
+end
+

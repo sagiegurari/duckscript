@@ -111,6 +111,8 @@
 * [std::net::Hostname (hostname)](#std__net__Hostname)
 * [std::net::HttpClient (http_client)](#std__net__HttpClient)
 * [std::net::WGet (wget)](#std__net__WGet)
+* [std::net::ftp::Get (ftp_get)](#std__net__ftp__Get)
+* [std::net::ftp::GetInMemory (ftp_get_in_memory)](#std__net__ftp__GetInMemory)
 * [std::net::ftp::List (ftp_list)](#std__net__ftp__List)
 * [std::net::ftp::NLst (ftp_nlst)](#std__net__ftp__NLst)
 * [std::process::Execute (exec)](#std__process__Execute)
@@ -4142,6 +4144,72 @@ http_client --method "${scope::wget::method}" --output-file "${scope::wget::file
 
 #### Aliases:
 wget
+
+<a name="std__net__ftp__Get"></a>
+## std::net::ftp::Get
+```sh
+result = ftp_get --host <hostname> [--port 21] [--username <user name>] [--password <password>] [--path <path>] [--type <A/I>] --remote-file <file name> --local-file <file name>
+```
+
+Invokes the FTP GET command from the given connection and file details.
+
+#### Parameters
+
+* --host - The host name or IP to connect to
+* --port - Optional port number to use (by default 21)
+* --username - Optional user name used to login (if not user or password provided, no login operation will be invoked)
+* --password - Optional password used to login (if not user or password provided, no login operation will be invoked)
+* --path - Optional path on the remote server to invoke operation on
+* --type - Optional setting of the transfer type as A (ascii) I (image, binary)
+* --remote-file - The remote file to download
+* --local-file - The target local file name
+
+#### Return Value
+
+true if operation was completed.
+
+#### Examples
+
+```sh
+ftp_get --host myhost --username someuser --password 12345 --remote-file README.md --local-file README.md
+```
+
+
+#### Aliases:
+ftp_get
+
+<a name="std__net__ftp__GetInMemory"></a>
+## std::net::ftp::GetInMemory
+```sh
+handle = ftp_get_in_memory --host <hostname> [--port 21] [--username <user name>] [--password <password>] [--path <path>] [--type <A/I>] --remote-file <file name>
+```
+
+Invokes the FTP GET command from the given connection and file details.
+
+#### Parameters
+
+* --host - The host name or IP to connect to
+* --port - Optional port number to use (by default 21)
+* --username - Optional user name used to login (if not user or password provided, no login operation will be invoked)
+* --password - Optional password used to login (if not user or password provided, no login operation will be invoked)
+* --path - Optional path on the remote server to invoke operation on
+* --type - Optional setting of the transfer type as A (ascii) I (image, binary)
+* --remote-file - The remote file to download
+
+#### Return Value
+
+The binary data handle.
+
+#### Examples
+
+```sh
+handle = ftp_get_in_memory --host myhost --username someuser --password 12345 --remote-file README.md
+text = bytes_to_string ${handle}
+```
+
+
+#### Aliases:
+ftp_get_in_memory
 
 <a name="std__net__ftp__List"></a>
 ## std::net::ftp::List
