@@ -115,6 +115,8 @@
 * [std::net::ftp::GetInMemory (ftp_get_in_memory)](#std__net__ftp__GetInMemory)
 * [std::net::ftp::List (ftp_list)](#std__net__ftp__List)
 * [std::net::ftp::NLst (ftp_nlst)](#std__net__ftp__NLst)
+* [std::net::ftp::Put (ftp_put)](#std__net__ftp__Put)
+* [std::net::ftp::PutInMemory (ftp_put_in_memory)](#std__net__ftp__PutInMemory)
 * [std::process::Execute (exec)](#std__process__Execute)
 * [std::process::Exit (exit, quit, q)](#std__process__Exit)
 * [std::process::ProcessID (pid, process_id)](#std__process__ProcessID)
@@ -4280,6 +4282,72 @@ end
 
 #### Aliases:
 ftp_nlst
+
+<a name="std__net__ftp__Put"></a>
+## std::net::ftp::Put
+```sh
+result = ftp_put --host <hostname> [--port 21] [--username <user name>] [--password <password>] [--path <path>] [--type <A/I>] --remote-file <file name> --local-file <file name>
+```
+
+Invokes the FTP PUT command from the given connection and file details.
+
+#### Parameters
+
+* --host - The host name or IP to connect to
+* --port - Optional port number to use (by default 21)
+* --username - Optional user name used to login (if not user or password provided, no login operation will be invoked)
+* --password - Optional password used to login (if not user or password provided, no login operation will be invoked)
+* --path - Optional path on the remote server to invoke operation on
+* --type - Optional setting of the transfer type as A (ascii) I (image, binary)
+* --remote-file - The remote file to upload
+* --local-file - The source local file to upload
+
+#### Return Value
+
+true if operation was completed.
+
+#### Examples
+
+```sh
+ftp_put --host myhost --username someuser --password 12345 --remote-file README.md --local-file README.md
+```
+
+
+#### Aliases:
+ftp_put
+
+<a name="std__net__ftp__PutInMemory"></a>
+## std::net::ftp::PutInMemory
+```sh
+result = ftp_put_in_memory --host <hostname> [--port 21] [--username <user name>] [--password <password>] [--path <path>] [--type <A/I>] --remote-file <file name> --content <content>
+```
+
+Invokes the FTP PUT command from the given connection and file details.
+
+#### Parameters
+
+* --host - The host name or IP to connect to
+* --port - Optional port number to use (by default 21)
+* --username - Optional user name used to login (if not user or password provided, no login operation will be invoked)
+* --password - Optional password used to login (if not user or password provided, no login operation will be invoked)
+* --path - Optional path on the remote server to invoke operation on
+* --type - Optional setting of the transfer type as A (ascii) I (image, binary)
+* --remote-file - The remote file to upload
+* --content - The textual content to upload
+
+#### Return Value
+
+true if operation was completed.
+
+#### Examples
+
+```sh
+ftp_put_in_memory --host myhost --username someuser --password 12345 --remote-file README.md --content "This is the README content"
+```
+
+
+#### Aliases:
+ftp_put_in_memory
 
 <a name="std__process__Execute"></a>
 ## std::process::Execute

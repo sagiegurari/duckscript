@@ -2,6 +2,8 @@ mod get;
 mod get_in_memory;
 mod list;
 mod nlst;
+mod put;
+mod put_in_memory;
 
 use crate::utils::pckg;
 use duckscript::types::command::{CommandResult, Commands};
@@ -18,6 +20,8 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(get_in_memory::create(&package))?;
     commands.set(list::create(&package))?;
     commands.set(nlst::create(&package))?;
+    commands.set(put::create(&package))?;
+    commands.set(put_in_memory::create(&package))?;
 
     Ok(())
 }
@@ -40,6 +44,7 @@ pub(crate) struct Options {
     transfer_type: Option<TransferType>,
     remote_file: Option<String>,
     local_file: Option<String>,
+    content: Option<String>,
 }
 
 impl Options {
@@ -53,6 +58,7 @@ impl Options {
             transfer_type: None,
             remote_file: None,
             local_file: None,
+            content: None,
         }
     }
 }
@@ -67,6 +73,7 @@ enum LookingFor {
     TransferType,
     RemoteFile,
     LocalFile,
+    Content,
 }
 
 pub(crate) fn run_with_connection(
@@ -112,6 +119,7 @@ fn parse_common_options(arguments: &Vec<String>) -> Result<Options, String> {
                 "--type" => looking_for = LookingFor::TransferType,
                 "--remote-file" => looking_for = LookingFor::RemoteFile,
                 "--local-file" => looking_for = LookingFor::LocalFile,
+                "--content" => looking_for = LookingFor::Content,
                 _ => (),
             },
             LookingFor::Host => {
@@ -171,6 +179,12 @@ fn parse_common_options(arguments: &Vec<String>) -> Result<Options, String> {
             LookingFor::LocalFile => {
                 if !argument.is_empty() {
                     options.local_file = Some(argument.to_string());
+                }
+                looking_for = LookingFor::Flag;
+            }
+            LookingFor::Content => {
+                if !argument.is_empty() {
+                    options.content = Some(argument.to_string());
                 }
                 looking_for = LookingFor::Flag;
             }
