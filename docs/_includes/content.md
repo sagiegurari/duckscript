@@ -499,6 +499,10 @@ pub fn run_script(text: &str, context: Context) -> Result<Context, ScriptError>;
 pub fn run_script_file(file: &str, context: Context) -> Result<Context, ScriptError>;
 ```
 
+<a name="editor-support"></a>
+## Editor Support
+* Vim: [vim-duckscript](https://github.com/nastevens/vim-duckscript)
+
 <a name="contributing"></a>
 ## Contributing
 There are many ways to contribute to duckscript, including:
