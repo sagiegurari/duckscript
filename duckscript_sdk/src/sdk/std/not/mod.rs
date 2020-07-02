@@ -40,14 +40,14 @@ impl Command for CommandImpl {
         state: &mut HashMap<String, StateValue>,
         variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
+        instructions: &Vec<Instruction>,
         commands: &mut Commands,
         _line: usize,
     ) -> CommandResult {
         if arguments.is_empty() {
             CommandResult::Error("Missing condition".to_string())
         } else {
-            match condition::eval_condition(arguments, state, variables, commands) {
+            match condition::eval_condition(arguments, instructions, state, variables, commands) {
                 Ok(passed) => {
                     let output = !passed;
                     CommandResult::Continue(Some(output.to_string()))

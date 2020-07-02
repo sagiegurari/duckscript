@@ -344,7 +344,13 @@ impl Command for IfCommand {
                 self.package.clone(),
             ) {
                 Ok(if_else_info) => {
-                    match condition::eval_condition(arguments, state, variables, commands) {
+                    match condition::eval_condition(
+                        arguments,
+                        instructions,
+                        state,
+                        variables,
+                        commands,
+                    ) {
                         Ok(passed) => {
                             if passed {
                                 let next_line = if if_else_info.else_lines.is_empty() {
@@ -422,7 +428,7 @@ impl Command for ElseIfCommand {
         state: &mut HashMap<String, StateValue>,
         variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
+        instructions: &Vec<Instruction>,
         commands: &mut Commands,
         line: usize,
     ) -> CommandResult {
@@ -436,7 +442,7 @@ impl Command for ElseIfCommand {
                     CommandResult::GoTo(None, GoToValue::Line(next_line))
                 } else {
                     let if_else_info = call_info.meta_info.clone();
-                    match condition::eval_condition(arguments, state, variables, commands) {
+                    match condition::eval_condition(arguments, instructions, state, variables, commands) {
                         Ok(passed) => {
                             if passed {
                                 let next_line = if call_info.else_line_index + 1 < if_else_info.else_lines.len() {

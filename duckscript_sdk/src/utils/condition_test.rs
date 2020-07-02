@@ -61,6 +61,7 @@ fn is_true_valid() {
 fn eval_condition_empty() {
     let result = eval_condition(
         vec![],
+        &vec![],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut Commands::new(),
@@ -77,6 +78,7 @@ fn eval_condition_empty() {
 fn eval_condition_value_true() {
     let result = eval_condition(
         vec!["true".to_string()],
+        &vec![],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut Commands::new(),
@@ -93,6 +95,7 @@ fn eval_condition_value_true() {
 fn eval_condition_value_false() {
     let result = eval_condition(
         vec!["false".to_string()],
+        &vec![],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut Commands::new(),
@@ -115,6 +118,7 @@ fn eval_condition_command_true() {
 
     let result = eval_condition(
         vec!["test_set".to_string(), "true".to_string()],
+        &vec![],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
@@ -137,6 +141,7 @@ fn eval_condition_command_false() {
 
     let result = eval_condition(
         vec!["test_set".to_string(), "false".to_string()],
+        &vec![],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
@@ -159,6 +164,7 @@ fn eval_condition_command_error() {
 
     let result = eval_condition(
         vec!["test_error".to_string()],
+        &vec![],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,

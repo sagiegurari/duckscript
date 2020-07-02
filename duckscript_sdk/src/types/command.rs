@@ -1,11 +1,12 @@
 use crate::types::scope::clear;
 use crate::types::scope::set_line_context_name;
+use crate::utils::eval;
 use crate::utils::state::{get_handles_sub_state, put_handle};
-use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
+use duckscript::parser;
+use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::error::ScriptError;
-use duckscript::types::instruction::{Instruction, InstructionType};
+use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
-use duckscript::{parser, runner};
 use std::collections::HashMap;
 
 #[derive(Clone)]
@@ -119,77 +120,8 @@ impl Command for AliasCommand {
                 handle_option = Some(handle);
             }
 
-            let mut line = 0;
-            let mut flow_output = None;
-            let mut flow_result = None;
-            loop {
-                let instruction = if self.instructions.len() > line {
-                    self.instructions[line].clone()
-                } else {
-                    break;
-                };
-
-                match instruction.instruction_type {
-                    InstructionType::Script(ref script_instruction) => {
-                        let (command_result, _) = runner::run_instruction(
-                            commands,
-                            variables,
-                            state,
-                            &self.instructions,
-                            instruction.clone(),
-                            line,
-                        );
-
-                        match command_result {
-                            CommandResult::Exit(output) => {
-                                flow_result = Some(CommandResult::Exit(output));
-                                break;
-                            }
-                            CommandResult::Error(error) => {
-                                flow_result = Some(CommandResult::Error(error));
-                                break;
-                            }
-                            CommandResult::Crash(error) => {
-                                flow_result = Some(CommandResult::Crash(error));
-                                break;
-                            }
-                            CommandResult::GoTo(output, goto_value) => {
-                                flow_output = output.clone();
-
-                                match goto_value {
-                                    GoToValue::Label(_) => {
-                                        flow_result = Some(CommandResult::Error(
-                                            "goto label result not supported in alias command flow.".to_string(),
-                                        ));
-                                        break;
-                                    }
-                                    GoToValue::Line(line_number) => line = line_number,
-                                }
-                            }
-                            CommandResult::Continue(output) => {
-                                flow_output = output.clone();
-
-                                match script_instruction.output {
-                                    Some(ref output_variable) => {
-                                        match output {
-                                            Some(value) => {
-                                                variables.insert(output_variable.to_string(), value)
-                                            }
-                                            None => variables.remove(output_variable),
-                                        };
-                                    }
-                                    None => (),
-                                };
-
-                                line = line + 1;
-                            }
-                        };
-                    }
-                    _ => {
-                        line = line + 1;
-                    }
-                };
-            }
+            let (flow_result, flow_output) =
+                eval::eval_instructions(&self.instructions, commands, state, variables, 0);
 
             match handle_option {
                 Some(handle) => {

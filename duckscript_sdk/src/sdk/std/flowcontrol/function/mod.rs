@@ -524,8 +524,14 @@ impl Command for ReturnCommand {
                         None => (),
                     };
 
+                    let output = if arguments.is_empty() {
+                        None
+                    } else {
+                        Some(arguments[0].clone())
+                    };
+
                     let next_line = call_info.call_line + 1;
-                    CommandResult::GoTo(None, GoToValue::Line(next_line))
+                    CommandResult::GoTo(output, GoToValue::Line(next_line))
                 } else {
                     push_to_call_stack(state, &call_info);
                     CommandResult::Continue(None)
