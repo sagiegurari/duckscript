@@ -8,7 +8,7 @@
 * New ftp_get_in_memory command.
 * New ftp_list command.
 * New ftp_nlst command.
-* Conditions to support function calls #116
+* \[Breaking Change\] Conditions to support function calls #116
 
 ### v0.5.0 (2020-06-06)
 
