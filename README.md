@@ -38,6 +38,7 @@
 * [Duckscript Embedding Tutorial](#embed-tutorial)
     * [Setting Up The Context](#embed-tutorial-setup-context)
     * [Running The Script](#embed-tutorial-running)
+* [Editor Support](#editor-support)
 * [Contributing](#contributing)
 * [Release History](https://github.com/sagiegurari/duckscript/blob/master/CHANGELOG.md)
 * [License](#license)
@@ -541,6 +542,10 @@ pub fn run_script(text: &str, context: Context) -> Result<Context, ScriptError>;
 /// Executes the provided script file with the given context
 pub fn run_script_file(file: &str, context: Context) -> Result<Context, ScriptError>;
 ```
+
+<a name="editor-support"></a>
+## Editor Support
+* Vim: [vim-duckscript](https://github.com/nastevens/vim-duckscript)
 
 <a name="contributing"></a>
 ## Contributing

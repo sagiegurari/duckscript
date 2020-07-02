@@ -25,6 +25,7 @@
 * [Duckscript Embedding Tutorial](#embed-tutorial)
     * [Setting Up The Context](#embed-tutorial-setup-context)
     * [Running The Script](#embed-tutorial-running)
+* [Editor Support](#editor-support)
 * [Contributing](#contributing)
 * [Release History](https://github.com/sagiegurari/duckscript/blob/master/CHANGELOG.md)
 * [License](#license)
