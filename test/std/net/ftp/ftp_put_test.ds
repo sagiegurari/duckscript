@@ -1,0 +1,17 @@
+
+fn test_auth_error
+    test_enabled = equals ${TEST_FTP_PUT} true
+
+    if ${test_enabled}
+        filename = set ./target/_duckscript_test/net/ftp/put/readme.txt
+        writefile ${filename} "test content"
+
+        result = ftp_put --host test.rebex.net --username demo --password password --remote-file readme2.txt --local-file ${filename}
+
+        assert_false ${result}
+        last_error = get_last_error
+        found = contains "${last_error}" 550
+        assert ${found}
+    end
+end
+

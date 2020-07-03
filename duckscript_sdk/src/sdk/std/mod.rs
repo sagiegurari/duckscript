@@ -10,6 +10,7 @@ mod lib;
 mod man;
 mod math;
 mod net;
+mod noop;
 mod not;
 pub(crate) mod on_error;
 mod process;
@@ -32,6 +33,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     commands.set(eval::create(PACKAGE))?;
     commands.set(is_defined::create(PACKAGE))?;
     commands.set(man::create(PACKAGE))?;
+    commands.set(noop::create(PACKAGE))?;
     commands.set(not::create(PACKAGE))?;
     commands.set(read::create(PACKAGE))?;
     commands.set(release::create(PACKAGE))?;

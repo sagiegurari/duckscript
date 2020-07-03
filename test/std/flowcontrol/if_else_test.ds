@@ -117,3 +117,46 @@ fn test_nested_if2
 
     assert ${valid}
 end
+
+fn test_if_call_to_functions
+    value = _test_return_true
+    valid = set false
+    if ${value}
+        valid = set true
+    end
+    assert ${valid}
+
+    value = _test_return_false
+    valid = set true
+    if ${value}
+        valid = set false
+    end
+    assert ${valid}
+
+    valid = set false
+    if _test_return_true
+        valid = set true
+    end
+    assert ${valid}
+
+    valid = set true
+    if _test_return_false
+        valid = set false
+    end
+    assert ${valid}
+
+    valid = set false
+    if not _test_return_false
+        valid = set true
+    end
+    assert ${valid}
+end
+
+fn _test_return_true
+    return true
+end
+
+fn _test_return_false
+    return false
+end
+

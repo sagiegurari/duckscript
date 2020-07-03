@@ -2,6 +2,7 @@
 * [std::Echo (echo)](#std__Echo)
 * [std::Eval (eval)](#std__Eval)
 * [std::IsDefined (is_defined)](#std__IsDefined)
+* [std::Noop (noop)](#std__Noop)
 * [std::Not (not)](#std__Not)
 * [std::ReadUserInput (read)](#std__ReadUserInput)
 * [std::Release (release)](#std__Release)
@@ -111,6 +112,12 @@
 * [std::net::Hostname (hostname)](#std__net__Hostname)
 * [std::net::HttpClient (http_client)](#std__net__HttpClient)
 * [std::net::WGet (wget)](#std__net__WGet)
+* [std::net::ftp::Get (ftp_get)](#std__net__ftp__Get)
+* [std::net::ftp::GetInMemory (ftp_get_in_memory)](#std__net__ftp__GetInMemory)
+* [std::net::ftp::List (ftp_list)](#std__net__ftp__List)
+* [std::net::ftp::NLst (ftp_nlst)](#std__net__ftp__NLst)
+* [std::net::ftp::Put (ftp_put)](#std__net__ftp__Put)
+* [std::net::ftp::PutInMemory (ftp_put_in_memory)](#std__net__ftp__PutInMemory)
 * [std::process::Execute (exec)](#std__process__Execute)
 * [std::process::Exit (exit, quit, q)](#std__process__Exit)
 * [std::process::ProcessID (pid, process_id)](#std__process__ProcessID)
@@ -237,6 +244,32 @@ exists = is_defined key
 
 #### Aliases:
 is_defined
+
+<a name="std__Noop"></a>
+## std::Noop
+```sh
+noop
+```
+
+Empty function that does nothing and returns none.
+
+#### Parameters
+
+All parameters are ignored
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+noop
+```
+
+
+#### Aliases:
+noop
 
 <a name="std__Not"></a>
 ## std::Not
@@ -4140,6 +4173,208 @@ http_client --method "${scope::wget::method}" --output-file "${scope::wget::file
 
 #### Aliases:
 wget
+
+<a name="std__net__ftp__Get"></a>
+## std::net::ftp::Get
+```sh
+result = ftp_get --host <hostname> [--port 21] [--username <user name>] [--password <password>] [--path <path>] [--type <A/I>] --remote-file <file name> --local-file <file name>
+```
+
+Invokes the FTP GET command from the given connection and file details.
+
+#### Parameters
+
+* --host - The host name or IP to connect to
+* --port - Optional port number to use (by default 21)
+* --username - Optional user name used to login (if not user or password provided, no login operation will be invoked)
+* --password - Optional password used to login (if not user or password provided, no login operation will be invoked)
+* --path - Optional path on the remote server to invoke operation on
+* --type - Optional setting of the transfer type as A (ascii) I (image, binary)
+* --remote-file - The remote file to download
+* --local-file - The target local file name
+
+#### Return Value
+
+true if operation was completed.
+
+#### Examples
+
+```sh
+ftp_get --host myhost --username someuser --password 12345 --remote-file README.md --local-file README.md
+```
+
+
+#### Aliases:
+ftp_get
+
+<a name="std__net__ftp__GetInMemory"></a>
+## std::net::ftp::GetInMemory
+```sh
+handle = ftp_get_in_memory --host <hostname> [--port 21] [--username <user name>] [--password <password>] [--path <path>] [--type <A/I>] --remote-file <file name>
+```
+
+Invokes the FTP GET command from the given connection and file details.
+
+#### Parameters
+
+* --host - The host name or IP to connect to
+* --port - Optional port number to use (by default 21)
+* --username - Optional user name used to login (if not user or password provided, no login operation will be invoked)
+* --password - Optional password used to login (if not user or password provided, no login operation will be invoked)
+* --path - Optional path on the remote server to invoke operation on
+* --type - Optional setting of the transfer type as A (ascii) I (image, binary)
+* --remote-file - The remote file to download
+
+#### Return Value
+
+The binary data handle.
+
+#### Examples
+
+```sh
+handle = ftp_get_in_memory --host myhost --username someuser --password 12345 --remote-file README.md
+text = bytes_to_string ${handle}
+```
+
+
+#### Aliases:
+ftp_get_in_memory
+
+<a name="std__net__ftp__List"></a>
+## std::net::ftp::List
+```sh
+handle = ftp_list --host <hostname> [--port 21] [--username <user name>] [--password <password>] [--path <path>]
+```
+
+Invokes the FTP LIST command from the given connection details and path.<br>
+Returns a handle to an array of all response entries.
+
+#### Parameters
+
+* --host - The host name or IP to connect to
+* --port - Optional port number to use (by default 21)
+* --username - Optional user name used to login (if not user or password provided, no login operation will be invoked)
+* --password - Optional password used to login (if not user or password provided, no login operation will be invoked)
+* --path - Optional path on the remote server to invoke operation on
+
+#### Return Value
+
+A handle to an array holding all entries.
+
+#### Examples
+
+```sh
+handle = ftp_list --host myhost --username someuser --password 12345
+
+for entry in ${handle}
+    echo ${entry}
+end
+```
+
+
+#### Aliases:
+ftp_list
+
+<a name="std__net__ftp__NLst"></a>
+## std::net::ftp::NLst
+```sh
+handle = ftp_nlst --host <hostname> [--port 21] [--username <user name>] [--password <password>] [--path <path>]
+```
+
+Invokes the FTP NLST command from the given connection details and path.<br>
+Returns a handle to an array of all response entries.
+
+#### Parameters
+
+* --host - The host name or IP to connect to
+* --port - Optional port number to use (by default 21)
+* --username - Optional user name used to login (if not user or password provided, no login operation will be invoked)
+* --password - Optional password used to login (if not user or password provided, no login operation will be invoked)
+* --path - Optional path on the remote server to invoke operation on
+
+#### Return Value
+
+A handle to an array holding all entries.
+
+#### Examples
+
+```sh
+handle = ftp_nlst --host myhost --username someuser --password 12345
+
+for entry in ${handle}
+    echo ${entry}
+end
+```
+
+
+#### Aliases:
+ftp_nlst
+
+<a name="std__net__ftp__Put"></a>
+## std::net::ftp::Put
+```sh
+result = ftp_put --host <hostname> [--port 21] [--username <user name>] [--password <password>] [--path <path>] [--type <A/I>] --remote-file <file name> --local-file <file name>
+```
+
+Invokes the FTP PUT command from the given connection and file details.
+
+#### Parameters
+
+* --host - The host name or IP to connect to
+* --port - Optional port number to use (by default 21)
+* --username - Optional user name used to login (if not user or password provided, no login operation will be invoked)
+* --password - Optional password used to login (if not user or password provided, no login operation will be invoked)
+* --path - Optional path on the remote server to invoke operation on
+* --type - Optional setting of the transfer type as A (ascii) I (image, binary)
+* --remote-file - The remote file to upload
+* --local-file - The source local file to upload
+
+#### Return Value
+
+true if operation was completed.
+
+#### Examples
+
+```sh
+ftp_put --host myhost --username someuser --password 12345 --remote-file README.md --local-file README.md
+```
+
+
+#### Aliases:
+ftp_put
+
+<a name="std__net__ftp__PutInMemory"></a>
+## std::net::ftp::PutInMemory
+```sh
+result = ftp_put_in_memory --host <hostname> [--port 21] [--username <user name>] [--password <password>] [--path <path>] [--type <A/I>] --remote-file <file name> --content <content>
+```
+
+Invokes the FTP PUT command from the given connection and file details.
+
+#### Parameters
+
+* --host - The host name or IP to connect to
+* --port - Optional port number to use (by default 21)
+* --username - Optional user name used to login (if not user or password provided, no login operation will be invoked)
+* --password - Optional password used to login (if not user or password provided, no login operation will be invoked)
+* --path - Optional path on the remote server to invoke operation on
+* --type - Optional setting of the transfer type as A (ascii) I (image, binary)
+* --remote-file - The remote file to upload
+* --content - The textual content to upload
+
+#### Return Value
+
+true if operation was completed.
+
+#### Examples
+
+```sh
+ftp_put_in_memory --host myhost --username someuser --password 12345 --remote-file README.md --content "This is the README content"
+```
+
+
+#### Aliases:
+ftp_put_in_memory
 
 <a name="std__process__Execute"></a>
 ## std::process::Execute

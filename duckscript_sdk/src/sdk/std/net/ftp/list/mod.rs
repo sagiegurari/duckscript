@@ -1,7 +1,10 @@
-use crate::utils::{condition, pckg};
+use crate::sdk::std::net::ftp::{run_with_connection, Options};
+use crate::utils::pckg;
+use crate::utils::state::put_handle;
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
+use ftp::FtpStream;
 use std::collections::HashMap;
 
 #[cfg(test)]
@@ -15,11 +18,11 @@ pub(crate) struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "Not")
+        pckg::concat(&self.package, "List")
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["not".to_string()]
+        vec!["ftp_list".to_string()]
     }
 
     fn help(&self) -> String {
@@ -38,23 +41,30 @@ impl Command for CommandImpl {
         &self,
         arguments: Vec<String>,
         state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
+        _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
-        instructions: &Vec<Instruction>,
-        commands: &mut Commands,
+        _instructions: &Vec<Instruction>,
+        _commands: &mut Commands,
         _line: usize,
     ) -> CommandResult {
-        if arguments.is_empty() {
-            CommandResult::Error("Missing condition".to_string())
-        } else {
-            match condition::eval_condition(arguments, instructions, state, variables, commands) {
-                Ok(passed) => {
-                    let output = !passed;
-                    CommandResult::Continue(Some(output.to_string()))
+        run_with_connection(&arguments, &mut |_options: &Options,
+                                              ftp_stream: &mut FtpStream|
+         -> CommandResult {
+            match ftp_stream.list(None) {
+                Ok(output) => {
+                    let mut array = vec![];
+
+                    for item in output {
+                        array.push(StateValue::String(item));
+                    }
+
+                    let key = put_handle(state, StateValue::List(array));
+
+                    CommandResult::Continue(Some(key))
                 }
                 Err(error) => CommandResult::Error(error.to_string()),
             }
-        }
+        })
     }
 }
 

@@ -1,0 +1,17 @@
+
+fn test_no_args
+    value = noop
+
+    defined = is_defined value
+
+    assert_false ${value}
+end
+
+fn test_multiple_args
+    value = noop 1 2 3 4
+
+    defined = is_defined value
+
+    assert_false ${value}
+end
+
