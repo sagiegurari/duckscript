@@ -81,8 +81,7 @@ pub(crate) fn eval_with_instructions(
     } else {
         match parse(arguments) {
             Ok(instruction) => {
-                let mut all_instructions = instructions.clone();
-                all_instructions.push(instruction);
+                let all_instructions = [&instructions[..], &vec![instruction]].concat();
                 let (flow_result, flow_output) = eval_instructions(
                     &all_instructions,
                     commands,
