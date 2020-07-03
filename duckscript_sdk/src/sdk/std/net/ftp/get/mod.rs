@@ -19,7 +19,7 @@ fn write_file(reader: &mut dyn Read, target_file: &str) -> Result<(), Error> {
         loop {
             let read_size = reader.read(&mut buffer)?;
             if read_size > 0 {
-                writer.write(&buffer[0..read_size])?;
+                writer.write_all(&buffer[0..read_size])?;
             } else {
                 break;
             }
