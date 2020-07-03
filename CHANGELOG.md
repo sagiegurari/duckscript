@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.6.0
+### v0.6.0 (2020-07-03)
 
 * New ftp_put command.
 * New fpt_put_in_memory command.
