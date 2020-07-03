@@ -2,6 +2,7 @@
 * [std::Echo (echo)](#std__Echo)
 * [std::Eval (eval)](#std__Eval)
 * [std::IsDefined (is_defined)](#std__IsDefined)
+* [std::Noop (noop)](#std__Noop)
 * [std::Not (not)](#std__Not)
 * [std::ReadUserInput (read)](#std__ReadUserInput)
 * [std::Release (release)](#std__Release)
@@ -243,6 +244,32 @@ exists = is_defined key
 
 #### Aliases:
 is_defined
+
+<a name="std__Noop"></a>
+## std::Noop
+```sh
+noop
+```
+
+Empty function that does nothing and returns none.
+
+#### Parameters
+
+All parameters are ignored
+
+#### Return Value
+
+None
+
+#### Examples
+
+```sh
+noop
+```
+
+
+#### Aliases:
+noop
 
 <a name="std__Not"></a>
 ## std::Not
