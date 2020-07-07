@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### v0.6.1
+
+* New is_path_newer command.
+* New get_last_modified_time command.
+
 ### v0.6.0 (2020-07-03)
 
 * New ftp_put command.
