@@ -92,6 +92,7 @@
 * [std::fs::GlobArray (glob_array, globarray)](#std__fs__GlobArray)
 * [std::fs::IsDirectory (is_directory, is_dir)](#std__fs__IsDirectory)
 * [std::fs::IsFile (is_file)](#std__fs__IsFile)
+* [std::fs::IsPathNewer (is_path_newer)](#std__fs__IsPathNewer)
 * [std::fs::IsReadonly (is_readonly)](#std__fs__IsReadonly)
 * [std::fs::List (ls)](#std__fs__List)
 * [std::fs::MovePath (mv)](#std__fs__MovePath)
@@ -3435,6 +3436,34 @@ existing_file = is_file ./dir/somefile.txt
 
 #### Aliases:
 is_file
+
+<a name="std__fs__IsPathNewer"></a>
+## std::fs::IsPathNewer
+```sh
+var = is_path_newer newer older
+```
+
+This command will return true if the 'newer' path last modified time is after the 'older' path last modified time.
+
+#### Parameters
+
+* newer - The file/directory path to check.
+* older - The file/directory path to check.
+
+#### Return Value
+
+True if the 'newer' path last modified time is after the 'older' path last modified time.
+Otherwise or in case of an error, false will be returned.
+
+#### Examples
+
+```sh
+newer = is_path_newer ./new_file.txt ./old_file.txt
+```
+
+
+#### Aliases:
+is_path_newer
 
 <a name="std__fs__IsReadonly"></a>
 ## std::fs::IsReadonly
