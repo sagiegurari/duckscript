@@ -1,4 +1,5 @@
 use duckscript::types::error::{ErrorInfo, ScriptError};
+use fsio;
 use fsio::file::{append_file, ensure_exists, read_file, write_file};
 
 #[cfg(test)]
@@ -49,6 +50,13 @@ pub(crate) fn write_to_file(file: &str, data: &[u8], append: bool) -> Result<(),
 pub(crate) fn create_empty_file(file: &str) -> Result<(), String> {
     match ensure_exists(file) {
         Ok(_) => Ok(()),
+        Err(error) => Err(error.to_string()),
+    }
+}
+
+pub(crate) fn get_last_modified_time(path: &str) -> Result<u128, String> {
+    match fsio::path::get_last_modified_time(path) {
+        Ok(time) => Ok(time),
         Err(error) => Err(error.to_string()),
     }
 }

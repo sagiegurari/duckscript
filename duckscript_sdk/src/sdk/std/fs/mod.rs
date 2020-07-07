@@ -8,6 +8,7 @@ mod get_last_modified_time;
 mod glob_array;
 mod is_directory;
 mod is_file;
+mod is_path_newer;
 mod is_readonly;
 mod list;
 mod mkdir;
@@ -44,6 +45,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(glob_array::create(&package))?;
     commands.set(is_directory::create(&package))?;
     commands.set(is_file::create(&package))?;
+    commands.set(is_path_newer::create(&package))?;
     commands.set(is_readonly::create(&package))?;
     commands.set(list::create(&package))?;
     commands.set(mkdir::create(&package))?;

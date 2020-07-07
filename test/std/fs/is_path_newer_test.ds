@@ -1,0 +1,20 @@
+
+fn test_valid
+    dir = set ./target/_duckscript_test/fs/is_path_newer/
+    older = set "${dir}/older.txt"
+    newer = set "${dir}/newer.txt"
+
+    touch ${older}
+    sleep 10
+    touch ${newer}
+
+    result = is_path_newer ${older} ${newer}
+    assert_false ${result}
+
+    result = is_path_newer ${newer} ${older}
+    assert ${result}
+
+    result = is_path_newer ${older} ${older}
+    assert_false ${result}
+end
+

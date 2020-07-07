@@ -12,11 +12,11 @@ pub(crate) struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "GetLastModifiedTime")
+        pckg::concat(&self.package, "IsPathNewer")
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["get_last_modified_time".to_string()]
+        vec!["is_path_newer".to_string()]
     }
 
     fn help(&self) -> String {
@@ -28,13 +28,21 @@ impl Command for CommandImpl {
     }
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.is_empty() {
-            CommandResult::Error("Path not provided.".to_string())
+        if arguments.len() < 2 {
+            CommandResult::Error("Paths not provided.".to_string())
         } else {
-            match io::get_last_modified_time(&arguments[0]) {
-                Ok(time) => CommandResult::Continue(Some(time.to_string())),
-                Err(error) => CommandResult::Error(error),
-            }
+            let newer = match io::get_last_modified_time(&arguments[0]) {
+                Ok(time) => time,
+                Err(error) => return CommandResult::Error(error),
+            };
+
+            let older = match io::get_last_modified_time(&arguments[1]) {
+                Ok(time) => time,
+                Err(error) => return CommandResult::Error(error),
+            };
+
+            let result = if newer > older { true } else { false };
+            CommandResult::Continue(Some(result.to_string()))
         }
     }
 }
