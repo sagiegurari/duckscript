@@ -1,0 +1,18 @@
+
+fn test_file
+    time = get_last_modified_time ./Cargo.toml
+    positive = greater_than ${time} 0
+    assert ${positive}
+end
+
+fn test_directory
+    time = get_last_modified_time .
+    positive = greater_than ${time} 0
+    assert ${positive}
+end
+
+fn test_not_found
+    time = get_last_modified_time ./badfile
+    assert_false ${time}
+end
+
