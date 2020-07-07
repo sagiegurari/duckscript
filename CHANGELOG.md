@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.6.1
+### v0.6.1 (2020-07-08)
 
 * New is_path_newer command.
 * New get_last_modified_time command.
