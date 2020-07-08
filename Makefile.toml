@@ -37,9 +37,9 @@ args = [
 
 [tasks.generate-readme]
 workspace = false
-script_runner = "@duckscript"
 script = [
 '''
+#!@duckscript
 echo Generating README
 
 rm ./README.md
