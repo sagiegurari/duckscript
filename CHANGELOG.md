@@ -2,9 +2,9 @@
 
 ### v0.6.2
 
-* New function <scope> annotation.
-* New scope_pop_stack command.
-* New scope_push_stack command.
+* New function <scope> annotation #121
+* New scope_pop_stack command #121
+* New scope_push_stack command #121
 
 ### v0.6.1 (2020-07-08)
 
