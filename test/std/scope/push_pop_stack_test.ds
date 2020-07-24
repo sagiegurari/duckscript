@@ -1,0 +1,85 @@
+
+fn test_push_pop
+    root1 = set 1
+    root2 = set 2
+    root3 = set 3
+    root4 = set 4
+
+    result = scope_push_stack
+
+    assert ${result}
+
+    defined = is_defined root1
+    assert_false ${defined}
+    defined = is_defined root2
+    assert_false ${defined}
+    defined = is_defined root3
+    assert_false ${defined}
+    defined = is_defined root4
+    assert_false ${defined}
+
+    child1 = set 1
+    child2 = set 2
+    child3 = set 3
+    child4 = set 4
+
+    result = scope_pop_stack
+
+    assert ${result}
+    assert_eq ${root1} 1
+    assert_eq ${root2} 2
+    assert_eq ${root3} 3
+    assert_eq ${root4} 4
+
+    defined = is_defined child1
+    assert_false ${defined}
+    defined = is_defined child2
+    assert_false ${defined}
+    defined = is_defined child3
+    assert_false ${defined}
+    defined = is_defined child4
+    assert_false ${defined}
+end
+
+fn test_push_pop_with_copy
+    root1 = set 1
+    root2 = set 2
+    root3 = set 3
+    root4 = set 4
+
+    result = scope_push_stack --copy root2 root4
+
+    assert ${result}
+    assert_eq ${root2} 2
+    assert_eq ${root4} 4
+
+    defined = is_defined root2
+    assert ${defined}
+    defined = is_defined root1
+    assert_false ${defined}
+    defined = is_defined root3
+    assert_false ${defined}
+
+    child1 = set 1
+    child2 = set 2
+    child3 = set 3
+    child4 = set 4
+
+    result = scope_pop_stack --copy child2 child4
+
+    assert ${result}
+    assert_eq ${root1} 1
+    assert_eq ${root2} 2
+    assert_eq ${root3} 3
+    assert_eq ${root4} 4
+    assert_eq ${child2} 2
+    assert_eq ${child4} 4
+
+    defined = is_defined child2
+    assert ${defined}
+    defined = is_defined child1
+    assert_false ${defined}
+    defined = is_defined child3
+    assert_false ${defined}
+end
+

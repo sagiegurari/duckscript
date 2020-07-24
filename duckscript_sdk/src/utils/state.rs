@@ -111,7 +111,7 @@ pub(crate) fn get_sub_state(
     }
 }
 
-fn ensure_list(key: &str, state: &mut HashMap<String, StateValue>) {
+pub(crate) fn ensure_list(key: &str, state: &mut HashMap<String, StateValue>) {
     match state.get(key) {
         Some(value) => match value {
             StateValue::List(_) => (),
