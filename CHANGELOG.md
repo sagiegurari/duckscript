@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.6.2
+### v0.6.2 (2020-07-24)
 
 * New function &lt;scope&gt; annotation #121
 * New scope_pop_stack command #121

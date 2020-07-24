@@ -1,6 +1,6 @@
 [package]
 name = "duckscript_cli"
-version = "0.6.1"
+version = "0.6.2"
 authors = ["Sagie Gur-Ari <sagiegurari@gmail.com>"]
 description = "The duckscript command line executable."
 license = "Apache-2.0"
@@ -28,7 +28,7 @@ path = "src/main.rs"
 
 [dependencies]
 duckscript = { version = "^0.5.0", path = "../duckscript" }
-duckscriptsdk = { version = "^0.6.1", path = "../duckscript_sdk" }
+duckscriptsdk = { version = "^0.6.2", path = "../duckscript_sdk" }
 
 [badges.codecov]
 branch = "master"
