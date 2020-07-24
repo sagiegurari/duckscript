@@ -1,7 +1,7 @@
 use crate::sdk::std::flowcontrol::{end, forin, ifelse};
 use crate::types::scope::get_line_context_name;
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
-use crate::utils::{instruction_query, pckg};
+use crate::utils::{annotation, instruction_query, pckg, scope};
 use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
@@ -21,6 +21,7 @@ struct FunctionMetaInfo {
     pub(crate) name: String,
     pub(crate) start: usize,
     pub(crate) end: usize,
+    pub(crate) scoped: bool,
 }
 
 #[derive(Debug)]
@@ -30,6 +31,7 @@ struct CallInfo {
     pub(crate) end_line: usize,
     pub(crate) line_context_name: String,
     pub(crate) output_variable: Option<String>,
+    pub(crate) scoped: bool,
 }
 
 fn store_fn_info_in_state(
@@ -57,6 +59,7 @@ fn store_fn_info_in_state(
         StateValue::UnsignedNumber(meta_info.start),
     );
     fn_info_state.insert("end".to_string(), StateValue::UnsignedNumber(meta_info.end));
+    fn_info_state.insert("scoped".to_string(), StateValue::Boolean(meta_info.scoped));
 
     Ok(())
 }
@@ -85,10 +88,19 @@ fn get_fn_info_from_state(
             _ => return None,
         };
 
+        let scoped = match fn_info_state.get("scoped") {
+            Some(state_value) => match state_value {
+                StateValue::Boolean(value) => *value,
+                _ => false,
+            },
+            _ => false,
+        };
+
         Some(FunctionMetaInfo {
             name: name.to_string(),
             start,
             end,
+            scoped,
         })
     } else {
         None
@@ -122,6 +134,7 @@ fn push_to_call_stack(state: &mut HashMap<String, StateValue>, call_info: &CallI
             StateValue::String(output_variable.to_string()),
         );
     }
+    sub_state.insert("scoped".to_string(), StateValue::Boolean(call_info.scoped));
 
     call_stack.push(StateValue::SubState(sub_state));
 }
@@ -173,12 +186,21 @@ fn pop_from_call_stack(state: &mut HashMap<String, StateValue>) -> Option<CallIn
                     None => None,
                 };
 
+                let scoped = match sub_state.get("scoped") {
+                    Some(value) => match value {
+                        StateValue::Boolean(scoped) => *scoped,
+                        _ => false,
+                    },
+                    None => false,
+                };
+
                 Some(CallInfo {
                     call_line,
                     start_line,
                     end_line,
                     line_context_name,
                     output_variable,
+                    scoped,
                 })
             }
             _ => return pop_from_call_stack(state),
@@ -197,6 +219,13 @@ fn run_call(
 ) -> CommandResult {
     match get_fn_info_from_state(state, &function_name) {
         Some(fn_info) => {
+            if fn_info.scoped {
+                match scope::push(variables, state, &vec![]) {
+                    Err(error) => return CommandResult::Error(error),
+                    _ => (),
+                }
+            }
+
             // define function arguments
             let mut index = 0;
             for argument in arguments {
@@ -214,6 +243,7 @@ fn run_call(
                 end_line: fn_info.end,
                 line_context_name,
                 output_variable,
+                scoped: fn_info.scoped,
             };
             push_to_call_stack(state, &call_info);
 
@@ -273,7 +303,18 @@ impl Command for FunctionCommand {
         if arguments.is_empty() {
             CommandResult::Error("Missing function name.".to_string())
         } else {
-            let function_name = arguments[0].clone();
+            let (function_name, scoped) = if arguments.len() == 1 {
+                (arguments[0].clone(), false)
+            } else {
+                match annotation::parse(&arguments[0]) {
+                    Some(annotations) => (
+                        arguments[1].clone(),
+                        annotations.contains(&"scope".to_string()),
+                    ),
+                    None => (arguments[0].clone(), false),
+                }
+            };
+
             match get_fn_info_from_state(state, &function_name) {
                 Some(fn_info) => {
                     if fn_info.start != line {
@@ -332,6 +373,7 @@ impl Command for FunctionCommand {
                                     name: function_name.clone(),
                                     start: line,
                                     end: fn_end_line,
+                                    scoped,
                                 };
 
                                 end::set_command(fn_end_line, state, end_command.name());
@@ -446,7 +488,7 @@ impl Command for EndFunctionCommand {
         &self,
         _arguments: Vec<String>,
         state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
+        variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
@@ -458,6 +500,14 @@ impl Command for EndFunctionCommand {
             Some(call_info) => {
                 if call_info.end_line == line && call_info.line_context_name == line_context_name {
                     let next_line = call_info.call_line + 1;
+
+                    if call_info.scoped {
+                        match scope::pop(variables, state, &vec![]) {
+                            Err(error) => return CommandResult::Error(error),
+                            _ => (),
+                        }
+                    }
+
                     CommandResult::GoTo(None, GoToValue::Line(next_line))
                 } else {
                     push_to_call_stack(state, &call_info);
@@ -514,11 +564,11 @@ impl Command for ReturnCommand {
                     && call_info.line_context_name == line_context_name
                 {
                     match call_info.output_variable {
-                        Some(name) => {
+                        Some(ref name) => {
                             if arguments.is_empty() {
-                                variables.remove(&name);
+                                variables.remove(name);
                             } else {
-                                variables.insert(name, arguments[0].clone());
+                                variables.insert(name.to_string(), arguments[0].clone());
                             }
                         }
                         None => (),
@@ -529,6 +579,18 @@ impl Command for ReturnCommand {
                     } else {
                         Some(arguments[0].clone())
                     };
+
+                    if call_info.scoped {
+                        let copy = match call_info.output_variable {
+                            Some(ref name) => vec![name.to_string()],
+                            None => vec![],
+                        };
+
+                        match scope::pop(variables, state, &copy) {
+                            Err(error) => return CommandResult::Error(error),
+                            _ => (),
+                        }
+                    }
 
                     let next_line = call_info.call_line + 1;
                     CommandResult::GoTo(output, GoToValue::Line(next_line))

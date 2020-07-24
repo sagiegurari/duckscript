@@ -83,7 +83,7 @@ The following sections will teach you how to write and run duck scripts.
 
 <a name="tutorial-hello-world"></a>
 ### Hello World Example
-Let's take a really simple example (all examples are located in the [examples](https://github.com/sagiegurari/duckscript/tree/master/examples) directory):
+Let's take a really simple example (all examples are located in the [examples](https://github.com/sagiegurari/duckscript/tree/master/examples) directory:
 
 ```sh
 # print the text "Hello World"

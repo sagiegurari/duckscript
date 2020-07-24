@@ -1,5 +1,11 @@
 ## CHANGELOG
 
+### v0.6.2
+
+* New function &lt;scope&gt; annotation #121
+* New scope_pop_stack command #121
+* New scope_push_stack command #121
+
 ### v0.6.1 (2020-07-08)
 
 * New is_path_newer command.
