@@ -2,6 +2,7 @@
 * [Overview](#overview)
     * [Language Goals](#lang-goals)
 * [Installation](#installation)
+    * [Homebrew](#installation-homebrew)
     * [Binary Release](#installation-binary-release)
 * [Duckscript Tutorial](#tutorial)
     * [Hello World Example](#tutorial-hello-world)

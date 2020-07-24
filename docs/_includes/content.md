@@ -24,6 +24,13 @@ This will install duckscript script runner, the standard duckscript SDK and the 
 You should then have a **duck** executable in your ~/.cargo/bin directory.<br>
 Make sure to add ~/.cargo/bin directory to your PATH variable.
 
+<a name="installation-homebrew"></a>
+### Homebrew
+
+```sh
+brew install duckscript
+```
+
 <a name="installation-binary-release"></a>
 ### Binary Release
 Binary releases are available in the [github releases page](https://github.com/sagiegurari/duckscript/releases).<br>

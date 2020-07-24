@@ -71,6 +71,7 @@ Make sure to add ~/.cargo/bin directory to your PATH variable.
 
 <a name="installation-homebrew"></a>
 ### Homebrew
+
 ```sh
 brew install duckscript
 ```

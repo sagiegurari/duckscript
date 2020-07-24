@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.6.3 (2020-07-24)
+
+* Reduce rustc minimal version.
+
 ### v0.6.2 (2020-07-24)
 
 * New function &lt;scope&gt; annotation #121
