@@ -15,6 +15,7 @@
 * [Overview](#overview)
     * [Language Goals](#lang-goals)
 * [Installation](#installation)
+    * [Homebrew](#installation-homebrew)
     * [Binary Release](#installation-binary-release)
 * [Duckscript Tutorial](#tutorial)
     * [Hello World Example](#tutorial-hello-world)
@@ -67,6 +68,12 @@ cargo install --force duckscript_cli
 This will install duckscript script runner, the standard duckscript SDK and the duckscript CLI.<br>
 You should then have a **duck** executable in your ~/.cargo/bin directory.<br>
 Make sure to add ~/.cargo/bin directory to your PATH variable.
+
+<a name="installation-homebrew"></a>
+### Homebrew
+```sh
+brew install duckscript
+```
 
 <a name="installation-binary-release"></a>
 ### Binary Release
