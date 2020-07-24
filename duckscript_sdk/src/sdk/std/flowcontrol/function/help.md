@@ -14,7 +14,7 @@ This command provides the function language feature as a set of commands:
 * function/fn - Defines a function start block
 * end - Defines the end of the function block
 * return - Allows to exist a function at any point and return an output
-* *<scope>* - Optional annotation which enables to use a new scope during the function invocation.
+* *&lt;scope&gt;* - Optional annotation which enables to use a new scope during the function invocation.
 * *function name* - Dynamically created commands based on the function name which are used to invoke the function code.
 
 When a function command is detected, it will search for the end command that comes after.<br>
@@ -29,7 +29,7 @@ The variable that was used when the function was originally called, will now sto
 The return command can be used to exist early without any value.<br>
 In case the code reached the **end** call, the function will exist but will return not value.<br>
 
-The *<scope>* annotation enables to start a new scope when running the function.<br>
+The *&lt;scope&gt;* annotation enables to start a new scope when running the function.<br>
 All variables defined will not be available except the variables provided to the function as arguments.<br>
 All variables created during the function invocation will be deleted once the function ends, except the return value.<br>
 This enables a clean function invocation without impacting the global variables.
@@ -39,6 +39,7 @@ This enables a clean function invocation without impacting the global variables.
 * function - The function name used later on to invoke the function
 * end - no parameters
 * return - optional single paramter to return as an output of the function call
+* *&lt;scope&gt;* - Optional annotation which enables to use a new scope during the function invocation.
 * *function name* - Any number of arguments which will automatically be set as global variables: ${1}, ${2}, ... as so on.
 
 #### Return Value
@@ -70,7 +71,9 @@ text = get_hello_world
 echo ${text}
 
 # Example of passing arguments
-fn print_input
+# Also the function is with scope annotation so it has no access
+# to any variable except those provided during the function invocation.
+fn <scope> print_input
     # ${1} is set with the value 'hello'
     # ${2} is set with the value 'world'
     echo ${1} ${2}
