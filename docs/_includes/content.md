@@ -31,6 +31,8 @@ Make sure to add ~/.cargo/bin directory to your PATH variable.
 brew install duckscript
 ```
 
+More details in the [brew page](https://formulae.brew.sh/formula/duckscript)
+
 <a name="installation-binary-release"></a>
 ### Binary Release
 Binary releases are available in the [github releases page](https://github.com/sagiegurari/duckscript/releases).<br>
