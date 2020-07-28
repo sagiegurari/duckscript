@@ -6,6 +6,7 @@ mod eval;
 mod flowcontrol;
 mod fs;
 mod is_defined;
+mod json;
 mod lib;
 mod man;
 mod math;
@@ -43,6 +44,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     env::load(commands, PACKAGE)?;
     flowcontrol::load(commands, PACKAGE)?;
     fs::load(commands, PACKAGE)?;
+    json::load(commands, PACKAGE)?;
     lib::load(commands, PACKAGE)?;
     math::load(commands, PACKAGE)?;
     net::load(commands, PACKAGE)?;

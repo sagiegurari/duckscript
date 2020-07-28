@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.6.4
+
+* New json_parse command #124
+
 ### v0.6.3 (2020-07-24)
 
 * Reduce rustc minimal version.
