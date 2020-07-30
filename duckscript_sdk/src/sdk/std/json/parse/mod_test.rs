@@ -24,7 +24,7 @@ out = json_parse "{\"name\": \"my package\", \"version\": 1, \"publish\": false,
 
     let variables = context.variables;
 
-    assert!(!variables.contains_key("out"));
+    assert_eq!(variables.get("out").unwrap(), "[OBJECT]");
     assert_eq!(variables.get("out.name").unwrap(), "my package");
     assert_eq!(variables.get("out.version").unwrap(), "1");
     assert_eq!(variables.get("out.publish").unwrap(), "false");

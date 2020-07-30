@@ -1,0 +1,47 @@
+
+fn test_all_types
+    jsonstring = set "{\"name\": \"my package\", \"version\": 1, \"publish\": false, \"keywords\": [\"test1\", \"test2\"], \"directories\": {\"test\": \"spec\"}}"
+    package = json_parse ${jsonstring}
+
+    assert_eq ${package} "[OBJECT]"
+    assert_eq ${package.name} "my package"
+    assert_eq ${package.version} 1
+    assert_eq ${package.publish} false
+    assert_eq ${package.keywords.length} 2
+    assert_eq ${package.keywords[0]} test1
+    assert_eq ${package.keywords[1]} test2
+    assert_eq ${package.directories.test} spec
+
+    package.keywords[1] = json_parse ${jsonstring}
+    package.subpackage = json_parse ${jsonstring}
+    package.name = set "my package 2"
+
+    update_jsonstring = json_encode package
+
+    package2 = json_parse ${update_jsonstring}
+
+    assert_eq ${package2} "[OBJECT]"
+    assert_eq ${package2.name} "my package 2"
+    assert_eq ${package2.version} 1
+    assert_eq ${package2.publish} false
+    assert_eq ${package2.keywords.length} 2
+    assert_eq ${package2.keywords[0]} test1
+    assert_eq ${package2.keywords[1]} "[OBJECT]"
+    assert_eq ${package2.directories.test} spec
+    assert_eq ${package2.subpackage} "[OBJECT]"
+    assert_eq ${package2.subpackage.name} "my package"
+    assert_eq ${package2.subpackage.version} 1
+    assert_eq ${package2.subpackage.publish} false
+    assert_eq ${package2.subpackage.keywords.length} 2
+    assert_eq ${package2.subpackage.keywords[0]} test1
+    assert_eq ${package2.subpackage.keywords[1]} test2
+    assert_eq ${package2.subpackage.directories.test} spec
+    assert_eq ${package2.keywords[1].name} "my package"
+    assert_eq ${package2.keywords[1].version} 1
+    assert_eq ${package2.keywords[1].publish} false
+    assert_eq ${package2.keywords[1].keywords.length} 2
+    assert_eq ${package2.keywords[1].keywords[0]} test1
+    assert_eq ${package2.keywords[1].keywords[1]} test2
+    assert_eq ${package2.keywords[1].directories.test} spec
+end
+

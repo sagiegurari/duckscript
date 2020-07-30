@@ -25,9 +25,7 @@ The root value.
 ```sh
 package = json_parse "{\"name\": \"my package\", \"version\": 1, \"publish\": false, \"keywords\": [\"test1\", \"test2\"], \"directories\": {\"test\": \"spec\"}}"
 
-defined = is_defined package
-assert_false ${defined}
-
+assert_eq ${package} "[OBJECT]"
 assert_eq ${package.name} "my package"
 assert_eq ${package.version} 1
 assert_eq ${package.publish} false

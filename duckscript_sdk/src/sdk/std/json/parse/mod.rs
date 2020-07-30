@@ -1,3 +1,4 @@
+use crate::sdk::std::json::OBJECT_VALUE;
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
@@ -33,6 +34,8 @@ fn create_variables(data: Value, name: &str, variables: &mut HashMap<String, Str
             None
         }
         Value::Object(map) => {
+            variables.insert(name.to_string(), OBJECT_VALUE.to_string());
+
             for (key, value) in map {
                 let child_name = format!("{}.{}", name, key);
                 create_variables(value, &child_name, variables);

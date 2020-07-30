@@ -105,6 +105,7 @@
 * [std::fs::TempFile (temp_file)](#std__fs__TempFile)
 * [std::fs::WriteBytes (writebinfile, write_binary_file)](#std__fs__WriteBytes)
 * [std::fs::WriteText (writefile, write_text_file)](#std__fs__WriteText)
+* [std::json::Encode (json_encode)](#std__json__Encode)
 * [std::json::Parse (json_parse)](#std__json__Parse)
 * [std::lib::alias::Set (alias)](#std__lib__alias__Set)
 * [std::lib::alias::Unset (unalias)](#std__lib__alias__Unset)
@@ -3888,6 +3889,34 @@ result = writefile ./target/tests/writefile.txt "line 1\nline 2"
 #### Aliases:
 writefile, write_text_file
 
+<a name="std__json__Encode"></a>
+## std::json::Encode
+```sh
+string = json_encode var_name
+```
+
+This function will encode all variables, starting from the root variable as a JSON string.<br>
+Since duckscript is untyped, all boolean and numeric values will be encoded as strings.
+
+#### Parameters
+
+The root variable name
+
+#### Return Value
+
+The JSON string
+
+#### Examples
+
+```sh
+package = json_parse "{\"name\": \"my package\", \"version\": 1, \"publish\": false, \"keywords\": [\"test1\", \"test2\"], \"directories\": {\"test\": \"spec\"}}"
+jsonstring = json_encode package
+```
+
+
+#### Aliases:
+json_encode
+
 <a name="std__json__Parse"></a>
 ## std::json::Parse
 ```sh
@@ -3917,9 +3946,7 @@ The root value.
 ```sh
 package = json_parse "{\"name\": \"my package\", \"version\": 1, \"publish\": false, \"keywords\": [\"test1\", \"test2\"], \"directories\": {\"test\": \"spec\"}}"
 
-defined = is_defined package
-assert_false ${defined}
-
+assert_eq ${package} "[OBJECT]"
 assert_eq ${package.name} "my package"
 assert_eq ${package.version} 1
 assert_eq ${package.publish} false

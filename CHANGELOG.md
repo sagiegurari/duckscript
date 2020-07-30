@@ -2,6 +2,7 @@
 
 ### v0.6.4
 
+* New json_encode command #124
 * New json_parse command #124
 
 ### v0.6.3 (2020-07-24)
