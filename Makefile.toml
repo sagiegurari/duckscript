@@ -58,6 +58,16 @@ writefile ./README.md ${readme_text}
 '''
 ]
 
+[tasks.test-script]
+workspace = false
+command = "cargo"
+args = [
+    "run",
+    "--",
+    "--eval",
+    "test_file ./test/${@}"
+]
+
 [tasks.test-scripts]
 workspace = false
 command = "cargo"
@@ -65,7 +75,7 @@ args = [
     "run",
     "--",
     "--eval",
-    "test_directory ./test"
+    "test_directory ./test/"
 ]
 
 [tasks.workspace-docs]

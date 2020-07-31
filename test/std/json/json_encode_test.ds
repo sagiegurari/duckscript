@@ -1,0 +1,100 @@
+
+fn test_simple_types
+    str = json_parse \"myvalue\"
+    assert_eq ${str} myvalue
+    jsonstring = json_encode str
+    assert_eq ${jsonstring} \"myvalue\"
+
+    number = json_parse 500
+    assert_eq ${number} 500
+    jsonstring = json_encode number
+    assert_eq ${jsonstring} \"500\"
+
+    bool = json_parse true
+    assert_eq ${bool} true
+    jsonstring = json_encode bool
+    assert_eq ${jsonstring} \"true\"
+
+    arr = json_parse "[1, 2, 3]"
+    assert_eq ${arr.length} 3
+    arr_range = range 0 ${arr.length}
+    for index in ${arr_range}
+        expected_value = calc ${index} + 1
+        value = get_by_name arr[${index}]
+        assert_eq ${value} ${expected_value}
+    end
+
+    object = json_parse "{\"str\": \"my string value\", \"number\": 500, \"bool\": true, \"array\": [1, 2, 3]}"
+    assert_eq ${object} [OBJECT]
+    assert_eq ${object.str} "my string value"
+    assert_eq ${object.number} 500
+    assert_eq ${object.bool} true
+    assert_eq ${object.array.length} 3
+    assert_eq ${object.array[0]} 1
+    assert_eq ${object.array[1]} 2
+    assert_eq ${object.array[2]} 3
+    jsonstring = json_encode object
+    found = contains ${jsonstring} "\"str\":\"my string value\""
+    assert ${found}
+    found = contains ${jsonstring} "\"number\":\"500\""
+    assert ${found}
+    found = contains ${jsonstring} "\"bool\":\"true\""
+    assert ${found}
+    found = contains ${jsonstring} "\"array\":[\"1\",\"2\",\"3\"]"
+    assert ${found}
+
+    unset_all_vars --prefix object
+    defined = is_defined object
+    assert_false ${defined}
+    defined = is_defined object.str
+    assert_false ${defined}
+    defined = is_defined object.array.length
+    assert_false ${defined}
+end
+
+fn test_all_types
+    jsonstring = set "{\"name\": \"my package\", \"version\": 1, \"publish\": false, \"keywords\": [\"test1\", \"test2\"], \"directories\": {\"test\": \"spec\"}}"
+    package = json_parse ${jsonstring}
+
+    assert_eq ${package} "[OBJECT]"
+    assert_eq ${package.name} "my package"
+    assert_eq ${package.version} 1
+    assert_eq ${package.publish} false
+    assert_eq ${package.keywords.length} 2
+    assert_eq ${package.keywords[0]} test1
+    assert_eq ${package.keywords[1]} test2
+    assert_eq ${package.directories.test} spec
+
+    package.keywords[1] = json_parse ${jsonstring}
+    package.subpackage = json_parse ${jsonstring}
+    package.name = set "my package 2"
+
+    update_jsonstring = json_encode package
+
+    package2 = json_parse ${update_jsonstring}
+
+    assert_eq ${package2} "[OBJECT]"
+    assert_eq ${package2.name} "my package 2"
+    assert_eq ${package2.version} 1
+    assert_eq ${package2.publish} false
+    assert_eq ${package2.keywords.length} 2
+    assert_eq ${package2.keywords[0]} test1
+    assert_eq ${package2.keywords[1]} "[OBJECT]"
+    assert_eq ${package2.directories.test} spec
+    assert_eq ${package2.subpackage} "[OBJECT]"
+    assert_eq ${package2.subpackage.name} "my package"
+    assert_eq ${package2.subpackage.version} 1
+    assert_eq ${package2.subpackage.publish} false
+    assert_eq ${package2.subpackage.keywords.length} 2
+    assert_eq ${package2.subpackage.keywords[0]} test1
+    assert_eq ${package2.subpackage.keywords[1]} test2
+    assert_eq ${package2.subpackage.directories.test} spec
+    assert_eq ${package2.keywords[1].name} "my package"
+    assert_eq ${package2.keywords[1].version} 1
+    assert_eq ${package2.keywords[1].publish} false
+    assert_eq ${package2.keywords[1].keywords.length} 2
+    assert_eq ${package2.keywords[1].keywords[0]} test1
+    assert_eq ${package2.keywords[1].keywords[1]} test2
+    assert_eq ${package2.keywords[1].directories.test} spec
+end
+

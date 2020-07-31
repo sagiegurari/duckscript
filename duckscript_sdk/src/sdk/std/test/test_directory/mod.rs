@@ -77,7 +77,7 @@ impl Command for CommandImpl {
 
                     let test_script = format!(
                         r#"
-result = std::test::TestFile {} {}
+result = test_file {} {}
 assert result
 "#,
                         &file, &test_name

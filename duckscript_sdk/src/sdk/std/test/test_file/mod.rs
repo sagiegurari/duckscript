@@ -30,8 +30,12 @@ impl Command for CommandImpl {
         pckg::concat(&self.package, "TestFile")
     }
 
+    fn aliases(&self) -> Vec<String> {
+        vec!["test_file".to_string()]
+    }
+
     fn help(&self) -> String {
-        "".to_string()
+        include_str!("help.md").to_string()
     }
 
     fn clone_and_box(&self) -> Box<dyn Command> {
