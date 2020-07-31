@@ -3974,6 +3974,15 @@ fn test_simple_types
     assert ${found}
     found = contains ${jsonstring} "\"array\":[\"1\",\"2\",\"3\"]"
     assert ${found}
+
+    # we can cleanup all variables created from the json parse starting from the root object
+    unset_all_vars --prefix object
+    defined = is_defined object
+    assert_false ${defined}
+    defined = is_defined object.str
+    assert_false ${defined}
+    defined = is_defined object.array.length
+    assert_false ${defined}
 end
 ```
 
