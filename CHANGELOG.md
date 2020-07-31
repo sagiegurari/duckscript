@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.6.4
+### v0.6.4 (2020-07-31)
 
 * New json_encode command #124
 * New json_parse command #124
