@@ -2,7 +2,7 @@
 
 ### v0.6.5 (2020-07-31)
 
-* Bug fix in substring when using end index only.
+* Bug fix in substring when using negative end index only.
 
 ### v0.6.4 (2020-07-31)
 
