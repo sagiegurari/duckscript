@@ -118,6 +118,17 @@ fn test_nested_if2
     assert ${valid}
 end
 
+fn test_if_call_command
+    text = set test,
+
+    valid = set false
+    if ends_with ${text} ,
+        valid = set true
+    end
+
+    assert ${valid}
+end
+
 fn test_if_call_to_functions
     value = _test_return_true
     valid = set false
