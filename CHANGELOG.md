@@ -4,6 +4,7 @@
 
 * New json_encode command #124
 * New json_parse command #124
+* New unset_all_vars command.
 * Module level documentation #125
 * test_file command is now documented and public.
 
