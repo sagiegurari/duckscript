@@ -154,6 +154,30 @@ impl Command for AliasCommand {
     }
 }
 
+#[derive(Clone)]
+struct DocOnlyCommand {
+    name: String,
+    help: String,
+}
+
+impl Command for DocOnlyCommand {
+    fn name(&self) -> String {
+        self.name.clone()
+    }
+
+    fn help(&self) -> String {
+        self.help.clone()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
+    }
+
+    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+        CommandResult::Error("Documentation only commands should not be executed.".to_string())
+    }
+}
+
 pub(crate) fn create_alias_command(
     name: String,
     aliases: Vec<String>,
@@ -174,4 +198,11 @@ pub(crate) fn create_alias_command(
     )?;
 
     Ok(command)
+}
+
+pub(crate) fn create_doc_only_command(name: &str, help: &str) -> Box<dyn Command> {
+    Box::new(DocOnlyCommand {
+        name: name.to_string(),
+        help: help.to_string(),
+    })
 }

@@ -38,6 +38,7 @@ mod set_size;
 mod set_to_array;
 mod write_properties;
 
+use crate::types::command::create_doc_only_command;
 use crate::utils::pckg;
 use duckscript::types::command::Commands;
 use duckscript::types::error::ScriptError;
@@ -46,6 +47,8 @@ static PACKAGE: &str = "collections";
 
 pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptError> {
     let package = pckg::concat(parent, PACKAGE);
+
+    commands.set(create_doc_only_command(&package, include_str!("help.md")))?;
 
     commands.set(array::create(&package))?;
     commands.set(array_clear::create(&package))?;

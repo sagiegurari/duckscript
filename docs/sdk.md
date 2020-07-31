@@ -7,6 +7,7 @@
 * [std::ReadUserInput (read)](#std__ReadUserInput)
 * [std::Release (release)](#std__Release)
 * [std::ShowCommandDocumentation (man)](#std__ShowCommandDocumentation)
+* [std::collections](#std__collections)
 * [std::collections::Array (array)](#std__collections__Array)
 * [std::collections::ArrayClear (array_clear)](#std__collections__ArrayClear)
 * [std::collections::ArrayConcat (array_concat)](#std__collections__ArrayConcat)
@@ -105,6 +106,7 @@
 * [std::fs::TempFile (temp_file)](#std__fs__TempFile)
 * [std::fs::WriteBytes (writebinfile, write_binary_file)](#std__fs__WriteBytes)
 * [std::fs::WriteText (writefile, write_text_file)](#std__fs__WriteText)
+* [std::json](#std__json)
 * [std::json::Encode (json_encode)](#std__json__Encode)
 * [std::json::Parse (json_parse)](#std__json__Parse)
 * [std::lib::alias::Set (alias)](#std__lib__alias__Set)
@@ -156,6 +158,7 @@
 * [std::test::AssertFail (assert_fail)](#std__test__AssertFail)
 * [std::test::AssertFalse (assert_false)](#std__test__AssertFalse)
 * [std::test::TestDirectory (test_directory)](#std__test__TestDirectory)
+* [std::test::TestFile (test_file)](#std__test__TestFile)
 * [std::thread::Sleep (sleep)](#std__thread__Sleep)
 * [std::time::CurrentTimeMillies (current_time)](#std__time__CurrentTimeMillies)
 * [std::var::GetAllVarNames (get_all_var_names)](#std__var__GetAllVarNames)
@@ -446,6 +449,21 @@ man set
 
 #### Aliases:
 man
+
+<a name="std__collections"></a>
+## std::collections
+The collections module contains commands which enable to interact with different data models such as arrays, sets and maps.
+
+* Arrays are simple ordered list of items
+* Sets are unordered unique collection of items
+* Maps are key/value (dictionary) structure where the keys are unique
+
+Access to these data structures are done via handles.<br>
+Handles are provided by the data structure creation command (such as: array, range, map, set) and are used in all
+other commands to read/modify those data structures.<br>
+Once done with a specific data structure, you must release it via release command to prevent any memory leaks.
+
+
 
 <a name="std__collections__Array"></a>
 ## std::collections::Array
@@ -3889,6 +3907,77 @@ result = writefile ./target/tests/writefile.txt "line 1\nline 2"
 #### Aliases:
 writefile, write_text_file
 
+<a name="std__json"></a>
+## std::json
+The json module provides json parsing and encoding capabilities.<br>
+When parsing a JSON string, the structure will be represented by simple variables.<br>
+The root object (or simple value) will be set in the json_parse output variable and any sub structure will be
+defined as variables with prefix of the root variable name.<br>
+Object nodes, will have the value of: **[OBJECT]**.<br>
+Array nodes will have a length variable defined, for example: **arr.length**<br>
+
+Because duckscript variables have no type, the json_encode will define every boolean/numeric value as JSON string.<br>
+
+Below is a simple example showing how to parse and encode values of all types.
+
+```sh
+fn test_simple_types
+    str = json_parse \"myvalue\"
+    assert_eq ${str} myvalue
+    jsonstring = json_encode str
+    assert_eq ${jsonstring} \"myvalue\"
+
+    number = json_parse 500
+    assert_eq ${number} 500
+    jsonstring = json_encode number
+    # numeric value is encoded as string
+    assert_eq ${jsonstring} \"500\"
+
+    bool = json_parse true
+    assert_eq ${bool} true
+    jsonstring = json_encode bool
+    # boolean value is encoded to string
+    assert_eq ${jsonstring} \"true\"
+
+    arr = json_parse "[1, 2, 3]"
+    # arr.length is not part of the JSON structure but added as a variable to enable
+    # to loop over the array using the range command
+    assert_eq ${arr.length} 3
+    # direct array location access example
+    assert_eq ${arr[0]} 1
+    assert_eq ${arr[1]} 2
+    assert_eq ${arr[2]} 3
+    # array loop example
+    arr_range = range 0 ${arr.length}
+    for index in ${arr_range}
+        expected_value = calc ${index} + 1
+        value = get_by_name arr[${index}]
+        assert_eq ${value} ${expected_value}
+    end
+
+    object = json_parse "{\"str\": \"my string value\", \"number\": 500, \"bool\": true, \"array\": [1, 2, 3]}"
+    assert_eq ${object} [OBJECT]
+    assert_eq ${object.str} "my string value"
+    assert_eq ${object.number} 500
+    assert_eq ${object.bool} true
+    assert_eq ${object.array.length} 3
+    assert_eq ${object.array[0]} 1
+    assert_eq ${object.array[1]} 2
+    assert_eq ${object.array[2]} 3
+    jsonstring = json_encode object
+    found = contains ${jsonstring} "\"str\":\"my string value\""
+    assert ${found}
+    found = contains ${jsonstring} "\"number\":\"500\""
+    assert ${found}
+    found = contains ${jsonstring} "\"bool\":\"true\""
+    assert ${found}
+    found = contains ${jsonstring} "\"array\":[\"1\",\"2\",\"3\"]"
+    assert ${found}
+end
+```
+
+
+
 <a name="std__json__Encode"></a>
 ## std::json::Encode
 ```sh
@@ -5748,6 +5837,46 @@ end
 
 #### Aliases:
 test_directory
+
+<a name="std__test__TestFile"></a>
+## std::test::TestFile
+```sh
+test_file file [test name]
+```
+
+This command can be used to run unit tests written in duckscript.<br>
+It will run all test functions that start with **test_** in the given file.<br>
+Each such function is considered as a test and can run any type of code and check itself using assert commands.
+
+#### Parameters
+
+* The file name containing the test functions.
+* Optional pattern for the test function to limit invocation of only those tests.
+
+#### Return Value
+
+**true** if successful.
+
+#### Examples
+
+This is an example of a test function:
+
+```sh
+function test_set_get_unset
+    unset_env TEST_SET_GET_UNSET
+    value = get_env TEST_SET_GET_UNSET
+    assert_false ${value}
+
+    value = set_env TEST_SET_GET_UNSET "test value"
+    assert ${value}
+    value = get_env TEST_SET_GET_UNSET
+    assert_eq ${value} "test value"
+end
+```
+
+
+#### Aliases:
+test_file
 
 <a name="std__thread__Sleep"></a>
 ## std::thread::Sleep
