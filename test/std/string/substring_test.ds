@@ -26,7 +26,7 @@ end
 fn test_text_with_end
     output = substring "test" -2
 
-    assert_eq ${output} "st"
+    assert_eq ${output} "te"
 end
 
 fn test_text_with_range_and_start_too_big

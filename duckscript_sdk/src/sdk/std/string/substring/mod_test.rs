@@ -43,8 +43,8 @@ fn run_text_only_start() {
 fn run_text_only_end() {
     test::run_script_and_validate(
         vec![create("")],
-        "out = substring text -1",
-        CommandValidation::Match("out".to_string(), "t".to_string()),
+        "out = substring abcd -1",
+        CommandValidation::Match("out".to_string(), "abc".to_string()),
     );
 }
 

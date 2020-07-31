@@ -57,15 +57,15 @@ impl Command for CommandImpl {
                                 (value, string_len)
                             }
                         } else {
-                            let start_index = value + string_len;
+                            let end_index = string_len + value;
 
-                            if start_index < 0 {
+                            if end_index < 0 {
                                 return CommandResult::Error(
                                     "Index from end cannot be bigger than total text size."
                                         .to_string(),
                                 );
                             } else {
-                                (start_index, string_len)
+                                (0, end_index)
                             }
                         }
                     }
