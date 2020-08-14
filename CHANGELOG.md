@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.6.6 (2020-08-14)
+
+* Bug fix in exec command with fail on error flag.
+
 ### v0.6.5 (2020-07-31)
 
 * Bug fix in substring when using negative end index only.

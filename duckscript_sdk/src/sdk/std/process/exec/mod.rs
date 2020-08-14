@@ -48,11 +48,7 @@ impl Command for CommandImpl {
         let print_output = !allow_input;
         let (start_index, fail_on_error) =
             if !arguments.is_empty() && arguments[0] == "--fail-on-error" {
-                if output_variable.is_some() {
-                    (1, true)
-                } else {
-                    (1, false)
-                }
+                (1, output_variable.is_none())
             } else {
                 (0, false)
             };
