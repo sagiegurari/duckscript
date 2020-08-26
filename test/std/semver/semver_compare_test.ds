@@ -1,0 +1,42 @@
+
+fn test_equal
+    equal = semver_is_equal 1.2.3 1.2.3
+    assert ${equal}
+
+    newer = semver_is_newer 1.2.3 1.2.3
+    assert_false ${newer}
+end
+
+fn test_not_equal_major
+    equal = semver_is_equal 1.2.3 2.2.3
+    assert_false ${equal}
+
+    newer = semver_is_newer 1.2.3 2.2.3
+    assert_false ${newer}
+
+    newer = semver_is_newer 3.2.3 2.2.3
+    assert ${newer}
+end
+
+fn test_not_equal_minor
+    equal = semver_is_equal 1.2.3 1.3.3
+    assert_false ${equal}
+
+    newer = semver_is_newer 1.2.3 1.3.3
+    assert_false ${newer}
+
+    newer = semver_is_newer 1.3.3 1.2.3
+    assert ${newer}
+end
+
+fn test_not_equal_patch
+    equal = semver_is_equal 1.2.3 1.2.4
+    assert_false ${equal}
+
+    newer = semver_is_newer 1.2.3 1.2.4
+    assert_false ${newer}
+
+    newer = semver_is_newer 1.2.4 1.2.3
+    assert ${newer}
+end
+

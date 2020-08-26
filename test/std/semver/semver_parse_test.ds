@@ -1,0 +1,9 @@
+
+fn test_valid
+    version = semver_parse 1.2.3
+
+    assert_eq ${version.major} 1
+    assert_eq ${version.minor} 2
+    assert_eq ${version.patch} 3
+end
+

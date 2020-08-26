@@ -132,6 +132,9 @@
 * [std::scope::Clear (clear_scope)](#std__scope__Clear)
 * [std::scope::PopStack (scope_pop_stack)](#std__scope__PopStack)
 * [std::scope::PushStack (scope_push_stack)](#std__scope__PushStack)
+* [std::semver::IsEqual (semver_is_equal)](#std__semver__IsEqual)
+* [std::semver::IsNewer (semver_is_newer)](#std__semver__IsNewer)
+* [std::semver::Parse (semver_parse)](#std__semver__Parse)
 * [std::string::Base64 (base64)](#std__string__Base64)
 * [std::string::Base64Decode (base64_decode)](#std__string__Base64Decode)
 * [std::string::Base64Encode (base64_encode)](#std__string__Base64Encode)
@@ -4928,6 +4931,105 @@ echo ${defined}
 
 #### Aliases:
 scope_push_stack
+
+<a name="std__semver__IsEqual"></a>
+## std::semver::IsEqual
+```sh
+output = semver_is_equal value1 value2
+```
+
+Returns true if both semver values are valid and equal.
+
+#### Parameters
+
+Two semver values to compare.
+
+#### Return Value
+
+True if both semver values are valid and equal, else false.
+
+#### Examples
+
+```sh
+equal = semver_is_equal 1.2.3 1.2.3
+assert ${equal}
+
+equal = semver_is_equal 1.2.3 2.2.3
+assert_false ${equal}
+```
+
+
+#### Aliases:
+semver_is_equal
+
+<a name="std__semver__IsNewer"></a>
+## std::semver::IsNewer
+```sh
+output = semver_is_newer newer older
+```
+
+Returns true if both semver values are valid and first value is newer.
+
+#### Parameters
+
+* The expected newer value
+* The expected older value
+
+#### Return Value
+
+True if both semver values are valid and first value is newer, else false.
+
+#### Examples
+
+```sh
+newer = semver_is_newer 3.2.3 2.2.3
+assert ${newer}
+
+newer = semver_is_newer 1.2.3 2.2.3
+assert_false ${newer}
+
+newer = semver_is_newer 1.2.3 1.2.3
+assert_false ${newer}
+```
+
+
+#### Aliases:
+semver_is_newer
+
+<a name="std__semver__Parse"></a>
+## std::semver::Parse
+```sh
+base = semver_parse value
+```
+
+Parses the provided value and sets the major, minor and patch variables.<br>
+The variable names are based on the output variable name, for example if the output variable name is out:
+
+* out.major - Holds the output major version
+* out.minor - Holds the output minor version
+* out.patch - Holds the output patch version
+
+#### Parameters
+
+The semver value.
+
+#### Return Value
+
+The major, minor and patch values.
+
+#### Examples
+
+```sh
+version = semver_parse 1.2.3
+
+echo ${version.major}
+echo ${version.minor}
+echo ${version.patch}
+```
+
+
+#### Aliases:
+semver_parse
 
 <a name="std__string__Base64"></a>
 ## std::string::Base64

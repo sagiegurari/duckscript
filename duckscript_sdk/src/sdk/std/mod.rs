@@ -18,6 +18,7 @@ mod process;
 mod read;
 pub(crate) mod release;
 pub(crate) mod scope;
+mod semver;
 pub(crate) mod string;
 mod test;
 mod thread;
@@ -51,6 +52,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     on_error::load(commands, PACKAGE)?;
     process::load(commands, PACKAGE)?;
     scope::load(commands, PACKAGE)?;
+    semver::load(commands, PACKAGE)?;
     string::load(commands, PACKAGE)?;
     test::load(commands, PACKAGE)?;
     thread::load(commands, PACKAGE)?;

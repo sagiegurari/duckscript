@@ -3,6 +3,7 @@
 ### v0.6.7
 
 * New --get-exit-code flag for exec command #127
+* New semver_parse, semver_is_equal and semver_is_newer commands #129
 
 ### v0.6.6 (2020-08-14)
 
