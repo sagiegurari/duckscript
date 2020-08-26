@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.6.7
+
+* New --get-exit-code flag for exec command #127
+
 ### v0.6.6 (2020-08-14)
 
 * Bug fix in exec command with fail on error flag.

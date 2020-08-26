@@ -52,3 +52,23 @@ fn run_with_output() {
 fn run_error_code_with_output() {
     test::run_script_and_error(vec![create("")], "out = exec badcommand", "out");
 }
+
+#[test]
+#[cfg(target_os = "linux")]
+fn run_get_exit_code_valid() {
+    test::run_script_and_validate(
+        vec![create("")],
+        "out = exec --get-exit-code true",
+        CommandValidation::Match("out".to_string(), "0".to_string()),
+    );
+}
+
+#[test]
+#[cfg(target_os = "linux")]
+fn run_get_exit_code_error() {
+    test::run_script_and_validate(
+        vec![create("")],
+        "out = exec --get-exit-code false",
+        CommandValidation::Match("out".to_string(), "1".to_string()),
+    );
+}
