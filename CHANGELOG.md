@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.6.7
+### v0.6.7 (2020-08-27)
 
 * New --get-exit-code flag for exec command #127
 * New random_range and random_text commands #128

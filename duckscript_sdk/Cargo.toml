@@ -1,6 +1,6 @@
 [package]
 name = "duckscriptsdk"
-version = "0.6.6"
+version = "0.6.7"
 authors = ["Sagie Gur-Ari <sagiegurari@gmail.com>"]
 description = "The duckscript SDK."
 license = "Apache-2.0"

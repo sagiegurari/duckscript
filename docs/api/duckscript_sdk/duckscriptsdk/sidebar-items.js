@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["load","Loads all core commands"],["version","Returns the library version."]]});
