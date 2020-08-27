@@ -1,0 +1,18 @@
+
+fn test_not_defined
+    defined = is_command_defined badcommand
+
+    assert_false ${defined}
+end
+
+fn test_defined
+    defined = is_command_defined is_command_defined
+    assert ${defined}
+
+    defined = is_command_defined assert
+    assert ${defined}
+
+    defined = is_command_defined test_defined
+    assert ${defined}
+end
+

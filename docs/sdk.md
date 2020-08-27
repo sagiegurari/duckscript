@@ -1,7 +1,7 @@
 # Table of Contents
 * [std::Echo (echo)](#std__Echo)
 * [std::Eval (eval)](#std__Eval)
-* [std::IsDefined (is_defined)](#std__IsDefined)
+* [std::IsCommandDefined (is_command_defined)](#std__IsCommandDefined)
 * [std::Noop (noop)](#std__Noop)
 * [std::Not (not)](#std__Not)
 * [std::ReadUserInput (read)](#std__ReadUserInput)
@@ -129,9 +129,14 @@
 * [std::process::ProcessID (pid, process_id)](#std__process__ProcessID)
 * [std::process::Spawn (spawn)](#std__process__Spawn)
 * [std::process::Watchdog (watchdog)](#std__process__Watchdog)
+* [std::random::Range (random_range, rand_range)](#std__random__Range)
+* [std::random::Text (random_text, rand_text)](#std__random__Text)
 * [std::scope::Clear (clear_scope)](#std__scope__Clear)
 * [std::scope::PopStack (scope_pop_stack)](#std__scope__PopStack)
 * [std::scope::PushStack (scope_push_stack)](#std__scope__PushStack)
+* [std::semver::IsEqual (semver_is_equal)](#std__semver__IsEqual)
+* [std::semver::IsNewer (semver_is_newer)](#std__semver__IsNewer)
+* [std::semver::Parse (semver_parse)](#std__semver__Parse)
 * [std::string::Base64 (base64)](#std__string__Base64)
 * [std::string::Base64Decode (base64_decode)](#std__string__Base64Decode)
 * [std::string::Base64Encode (base64_encode)](#std__string__Base64Encode)
@@ -228,32 +233,31 @@ eval ${command} hello world
 #### Aliases:
 eval
 
-<a name="std__IsDefined"></a>
-## std::IsDefined
+<a name="std__IsCommandDefined"></a>
+## std::IsCommandDefined
 ```sh
-var = is_defined key
+var = is_command_defined key
 ```
 
-Returns true if the provided variable name (not value) exists.
+Returns true if the provided command name exists.
 
 #### Parameters
 
-The variable name.
+The command name.
 
 #### Return Value
 
-True if the variable is defined.
+True if the command exists.
 
 #### Examples
 
 ```sh
-key = set "hello world"
-exists = is_defined key
+exists = is_command_defined exec
 ```
 
 
 #### Aliases:
-is_defined
+is_command_defined
 
 <a name="std__Noop"></a>
 ## std::Noop
@@ -4628,11 +4632,13 @@ output = exec command [args]*
 stdout = set ${output.stdout}
 stderr = set ${output.stderr}
 exit_code = set ${output.code}
+
+exit_code = exec --get-exit-code command [args]*
 ```
 
 Executes the provided native command and arguments.<br>
 If no output variable is set, the command output will be flushed to the main out/err stream of the parent process.<br>
-In addition, in order to fail the command in case of the child process failed, add the --fail_on_error flag.<br>
+In addition, in order to fail the command in case of the child process failed, add the --fail-on-error flag.<br>
 If an output variable is set, it will be used as a base variable name from which the command stout, stderr and exit code information can be pulled from.<br>
 The actual output variable name will not be modified, instead new variables will be created using that variable name as a baseline:
 
@@ -4640,9 +4646,12 @@ The actual output variable name will not be modified, instead new variables will
 * *output*.stderr - Will hold the stderr text content.
 * *output*.code - Will hold the process exit code.
 
+If an output variable is set and the --get-exit-code flag is provided, the output will only contain the exit code.
+
 #### Parameters
 
 * --fail-on-error - If no output variable is provided, it will cause an error in case the executed processed exists with an error exist code.
+* --get-exit-code - If an output variable is provided, it will contain the exit code.
 * The command to execute and its arguments.
 
 #### Return Value
@@ -4792,6 +4801,61 @@ assert_eq ${count} 4
 #### Aliases:
 watchdog
 
+<a name="std__random__Range"></a>
+## std::random::Range
+```sh
+output = random_range min max
+```
+
+Generate a random value in the range of min and max values provided, i.e. inclusive of min and exclusive of max.
+
+#### Parameters
+
+* min - The min range value (inclusive)
+* max - The max range value (exclusive)
+
+#### Return Value
+
+The generated numeric value.
+
+#### Examples
+
+```sh
+value = random_range -10 10
+echo ${value}
+```
+
+
+#### Aliases:
+random_range, rand_range
+
+<a name="std__random__Text"></a>
+## std::random::Text
+```sh
+output = random_text [length]
+```
+
+Generates random alphanumeric text with the requested length (length is 1 if not provided).
+
+#### Parameters
+
+Optional text length. Length is defaulted to 1 if not provided.
+
+#### Return Value
+
+The generated alphanumeric value.
+
+#### Examples
+
+```sh
+value = random_text 50
+echo ${value}
+```
+
+
+#### Aliases:
+random_text, rand_text
+
 <a name="std__scope__Clear"></a>
 ## std::scope::Clear
 ```sh
@@ -4923,6 +4987,105 @@ echo ${defined}
 
 #### Aliases:
 scope_push_stack
+
+<a name="std__semver__IsEqual"></a>
+## std::semver::IsEqual
+```sh
+output = semver_is_equal value1 value2
+```
+
+Returns true if both semver values are valid and equal.
+
+#### Parameters
+
+Two semver values to compare.
+
+#### Return Value
+
+True if both semver values are valid and equal, else false.
+
+#### Examples
+
+```sh
+equal = semver_is_equal 1.2.3 1.2.3
+assert ${equal}
+
+equal = semver_is_equal 1.2.3 2.2.3
+assert_false ${equal}
+```
+
+
+#### Aliases:
+semver_is_equal
+
+<a name="std__semver__IsNewer"></a>
+## std::semver::IsNewer
+```sh
+output = semver_is_newer newer older
+```
+
+Returns true if both semver values are valid and first value is newer.
+
+#### Parameters
+
+* The expected newer value
+* The expected older value
+
+#### Return Value
+
+True if both semver values are valid and first value is newer, else false.
+
+#### Examples
+
+```sh
+newer = semver_is_newer 3.2.3 2.2.3
+assert ${newer}
+
+newer = semver_is_newer 1.2.3 2.2.3
+assert_false ${newer}
+
+newer = semver_is_newer 1.2.3 1.2.3
+assert_false ${newer}
+```
+
+
+#### Aliases:
+semver_is_newer
+
+<a name="std__semver__Parse"></a>
+## std::semver::Parse
+```sh
+base = semver_parse value
+```
+
+Parses the provided value and sets the major, minor and patch variables.<br>
+The variable names are based on the output variable name, for example if the output variable name is out:
+
+* out.major - Holds the output major version
+* out.minor - Holds the output minor version
+* out.patch - Holds the output patch version
+
+#### Parameters
+
+The semver value.
+
+#### Return Value
+
+The major, minor and patch values.
+
+#### Examples
+
+```sh
+version = semver_parse 1.2.3
+
+echo ${version.major}
+echo ${version.minor}
+echo ${version.patch}
+```
+
+
+#### Aliases:
+semver_parse
 
 <a name="std__string__Base64"></a>
 ## std::string::Base64

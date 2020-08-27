@@ -1,0 +1,11 @@
+
+fn test_valid
+    value = random_range -10 10
+
+    in_min = greater_than ${value} -11
+    in_max = greater_than 10 ${value}
+
+    assert ${in_min}
+    assert ${in_max}
+end
+

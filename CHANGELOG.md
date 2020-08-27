@@ -1,5 +1,12 @@
 ## CHANGELOG
 
+### v0.6.7
+
+* New --get-exit-code flag for exec command #127
+* New random_range and random_text commands #128
+* New semver_parse, semver_is_equal and semver_is_newer commands #129
+* New is_command_defined command #130
+
 ### v0.6.6 (2020-08-14)
 
 * Bug fix in exec command with fail on error flag.

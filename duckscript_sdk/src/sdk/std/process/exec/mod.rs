@@ -45,30 +45,40 @@ impl Command for CommandImpl {
         _line: usize,
     ) -> CommandResult {
         let allow_input = output_variable.is_some();
-        let print_output = !allow_input;
-        let (start_index, fail_on_error) =
+        let (print_output, start_index, fail_on_error, exit_code_output) =
             if !arguments.is_empty() && arguments[0] == "--fail-on-error" {
-                (1, output_variable.is_none())
+                (
+                    output_variable.is_none(),
+                    1,
+                    output_variable.is_none(),
+                    false,
+                )
+            } else if !arguments.is_empty() && arguments[0] == "--get-exit-code" {
+                (true, 1, false, true)
             } else {
-                (0, false)
+                (output_variable.is_none(), 0, false, false)
             };
 
         match exec::exec(&arguments, print_output, allow_input, start_index) {
             Ok((stdout, stderr, exit_code)) => match output_variable {
                 Some(name) => {
-                    let mut key = String::from(&name);
-                    key.push_str(".stdout");
-                    variables.insert(key.clone(), stdout);
+                    if exit_code_output {
+                        CommandResult::Continue(Some(exit_code.to_string()))
+                    } else {
+                        let mut key = String::from(&name);
+                        key.push_str(".stdout");
+                        variables.insert(key.clone(), stdout);
 
-                    key = String::from(&name);
-                    key.push_str(".stderr");
-                    variables.insert(key.clone(), stderr);
+                        key = String::from(&name);
+                        key.push_str(".stderr");
+                        variables.insert(key.clone(), stderr);
 
-                    key = String::from(&name);
-                    key.push_str(".code");
-                    variables.insert(key.clone(), exit_code.to_string());
+                        key = String::from(&name);
+                        key.push_str(".code");
+                        variables.insert(key.clone(), exit_code.to_string());
 
-                    CommandResult::Continue(None)
+                        CommandResult::Continue(None)
+                    }
                 }
                 None => {
                     if fail_on_error && exit_code != 0 {
