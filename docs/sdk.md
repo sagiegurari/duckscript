@@ -1,7 +1,7 @@
 # Table of Contents
 * [std::Echo (echo)](#std__Echo)
 * [std::Eval (eval)](#std__Eval)
-* [std::IsDefined (is_defined)](#std__IsDefined)
+* [std::IsCommandDefined (is_command_defined)](#std__IsCommandDefined)
 * [std::Noop (noop)](#std__Noop)
 * [std::Not (not)](#std__Not)
 * [std::ReadUserInput (read)](#std__ReadUserInput)
@@ -233,32 +233,31 @@ eval ${command} hello world
 #### Aliases:
 eval
 
-<a name="std__IsDefined"></a>
-## std::IsDefined
+<a name="std__IsCommandDefined"></a>
+## std::IsCommandDefined
 ```sh
-var = is_defined key
+var = is_command_defined key
 ```
 
-Returns true if the provided variable name (not value) exists.
+Returns true if the provided command name exists.
 
 #### Parameters
 
-The variable name.
+The command name.
 
 #### Return Value
 
-True if the variable is defined.
+True if the command exists.
 
 #### Examples
 
 ```sh
-key = set "hello world"
-exists = is_defined key
+exists = is_command_defined exec
 ```
 
 
 #### Aliases:
-is_defined
+is_command_defined
 
 <a name="std__Noop"></a>
 ## std::Noop

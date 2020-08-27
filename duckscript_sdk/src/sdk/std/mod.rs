@@ -5,7 +5,7 @@ mod env;
 mod eval;
 mod flowcontrol;
 mod fs;
-mod is_defined;
+mod is_command_defined;
 mod json;
 mod lib;
 mod man;
@@ -34,7 +34,7 @@ static PACKAGE: &str = "std";
 pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     commands.set(echo::create(PACKAGE))?;
     commands.set(eval::create(PACKAGE))?;
-    commands.set(is_defined::create(PACKAGE))?;
+    commands.set(is_command_defined::create(PACKAGE))?;
     commands.set(man::create(PACKAGE))?;
     commands.set(noop::create(PACKAGE))?;
     commands.set(not::create(PACKAGE))?;
