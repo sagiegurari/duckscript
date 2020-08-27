@@ -129,6 +129,8 @@
 * [std::process::ProcessID (pid, process_id)](#std__process__ProcessID)
 * [std::process::Spawn (spawn)](#std__process__Spawn)
 * [std::process::Watchdog (watchdog)](#std__process__Watchdog)
+* [std::random::Range (random_range, rand_range)](#std__random__Range)
+* [std::random::Text (random_text, rand_text)](#std__random__Text)
 * [std::scope::Clear (clear_scope)](#std__scope__Clear)
 * [std::scope::PopStack (scope_pop_stack)](#std__scope__PopStack)
 * [std::scope::PushStack (scope_push_stack)](#std__scope__PushStack)
@@ -4799,6 +4801,61 @@ assert_eq ${count} 4
 
 #### Aliases:
 watchdog
+
+<a name="std__random__Range"></a>
+## std::random::Range
+```sh
+output = random_range min max
+```
+
+Generate a random value in the range of min and max values provided, i.e. inclusive of min and exclusive of max.
+
+#### Parameters
+
+* min - The min range value (inclusive)
+* max - The max range value (exclusive)
+
+#### Return Value
+
+The generated numeric value.
+
+#### Examples
+
+```sh
+value = random_range -10 10
+echo ${value}
+```
+
+
+#### Aliases:
+random_range, rand_range
+
+<a name="std__random__Text"></a>
+## std::random::Text
+```sh
+output = random_text [length]
+```
+
+Generates random alphanumeric text with the requested length (length is 1 if not provided).
+
+#### Parameters
+
+Optional text length. Length is defaulted to 1 if not provided.
+
+#### Return Value
+
+The generated alphanumeric value.
+
+#### Examples
+
+```sh
+value = random_text 50
+echo ${value}
+```
+
+
+#### Aliases:
+random_text, rand_text
 
 <a name="std__scope__Clear"></a>
 ## std::scope::Clear

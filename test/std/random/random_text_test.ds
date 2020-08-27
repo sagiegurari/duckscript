@@ -1,0 +1,17 @@
+
+fn test_no_length
+    value = random_text
+
+    len = strlen ${value}
+
+    assert_eq ${len} 1
+end
+
+fn test_with_length
+    value = random_text 50
+
+    len = strlen ${value}
+
+    assert_eq ${len} 50
+end
+

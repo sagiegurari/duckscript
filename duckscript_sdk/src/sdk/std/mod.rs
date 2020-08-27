@@ -15,6 +15,7 @@ mod noop;
 mod not;
 pub(crate) mod on_error;
 mod process;
+mod random;
 mod read;
 pub(crate) mod release;
 pub(crate) mod scope;
@@ -51,6 +52,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     net::load(commands, PACKAGE)?;
     on_error::load(commands, PACKAGE)?;
     process::load(commands, PACKAGE)?;
+    random::load(commands, PACKAGE)?;
     scope::load(commands, PACKAGE)?;
     semver::load(commands, PACKAGE)?;
     string::load(commands, PACKAGE)?;

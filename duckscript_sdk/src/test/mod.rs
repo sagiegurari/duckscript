@@ -186,6 +186,7 @@ impl Command for OnErrorCommand {
 pub(crate) enum CommandValidation {
     None,
     PositiveNumber(String),
+    StringLength(String, usize),
     Match(String, String),
     Contains(String, String),
     Any(String, Vec<String>),
@@ -294,6 +295,12 @@ pub(crate) fn run_script_and_validate(
                     let var_value = context.variables.get(&key).unwrap();
                     let numeric_value: u128 = var_value.parse().unwrap();
                     assert!(numeric_value > 0)
+                }
+                CommandValidation::StringLength(key, length) => {
+                    assert!(!context.variables.is_empty());
+
+                    let var_value = context.variables.get(&key).unwrap();
+                    assert!(var_value.len() == length)
                 }
                 CommandValidation::Ignore => {
                     assert!(!context.variables.is_empty());
