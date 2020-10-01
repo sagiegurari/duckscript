@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["repl","Provides the REPL entry point"],["run_instruction","Enables to evaluate a single instruction and return its result."],["run_script","Executes the provided script with the given context"],["run_script_file","Executes the provided script file with the given context"]]});
