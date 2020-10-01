@@ -229,6 +229,48 @@ value4:test4
 }
 
 #[test]
+fn expand_by_wrapper_multi_with_escape() {
+    let mut variables = HashMap::new();
+    variables.insert("FOUND1".to_string(), "test1".to_string());
+    variables.insert("FOUND2".to_string(), "test2".to_string());
+    variables.insert("FOUND3".to_string(), "test3".to_string());
+    variables.insert("FOUND4".to_string(), "test4".to_string());
+
+    let output = expand_by_wrapper(
+        r#"
+value1:\${FOUND1}
+value2:\${FOUND2}
+value3:\%{FOUND3}
+value4:\%{FOUND4}
+
+value1:${FOUND1}
+value2:${FOUND2}
+value3:${FOUND3}
+value4:${FOUND4}
+    "#,
+        &InstructionMetaInfo::new(),
+        &mut variables,
+    );
+
+    let value = get_single_value(output);
+
+    assert_eq!(
+        r#"
+value1:${FOUND1}
+value2:${FOUND2}
+value3:%{FOUND3}
+value4:%{FOUND4}
+
+value1:test1
+value2:test2
+value3:test3
+value4:test4
+    "#,
+        value
+    );
+}
+
+#[test]
 fn expand_by_wrapper_control_chars_multi() {
     let mut variables = HashMap::new();
     variables.insert("FOUND".to_string(), r#"abc/123\\123"#.to_string());
@@ -274,4 +316,44 @@ lines"#
     assert_eq!("123", value[1]);
     assert_eq!("in quotes", value[2]);
     assert_eq!("2\nlines", value[3]);
+}
+
+#[test]
+fn expand_by_wrapper_dollar_sign() {
+    let mut variables = HashMap::new();
+    let output = expand_by_wrapper("$", &InstructionMetaInfo::new(), &mut variables);
+
+    let value = get_single_value(output);
+
+    assert_eq!("$", value);
+}
+
+#[test]
+fn expand_by_wrapper_dollar_sign_with_escape() {
+    let mut variables = HashMap::new();
+    let output = expand_by_wrapper("\\$", &InstructionMetaInfo::new(), &mut variables);
+
+    let value = get_single_value(output);
+
+    assert_eq!("$", value);
+}
+
+#[test]
+fn expand_by_wrapper_percentage_sign() {
+    let mut variables = HashMap::new();
+    let output = expand_by_wrapper("%", &InstructionMetaInfo::new(), &mut variables);
+
+    let value = get_single_value(output);
+
+    assert_eq!("%", value);
+}
+
+#[test]
+fn expand_by_wrapper_percentage_sign_with_escape() {
+    let mut variables = HashMap::new();
+    let output = expand_by_wrapper("\\%", &InstructionMetaInfo::new(), &mut variables);
+
+    let value = get_single_value(output);
+
+    assert_eq!("%", value);
 }

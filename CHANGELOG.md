@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.6.8 (2020-10-01)
+
+* Runtime - Fix variable expansion and support single $ and % characters #132
+
 ### v0.6.7 (2020-08-27)
 
 * New --get-exit-code flag for exec command #127

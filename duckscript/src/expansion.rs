@@ -50,7 +50,7 @@ pub(crate) fn expand_by_wrapper(
             if next_char == '\\' && prefix_index == 0 {
                 force_push = true
             } else if force_push {
-                if next_char != '$' {
+                if next_char != '$' && next_char != '%' {
                     value_string.push('\\');
                 }
                 value_string.push(next_char);
@@ -100,6 +100,9 @@ pub(crate) fn expand_by_wrapper(
             push_prefix(&mut value_string, single_type, found_prefix);
         }
         value_string.push_str(&key);
+    } else if prefix_index == 1 {
+        push_prefix(&mut value_string, single_type, false);
+        single_type = true;
     }
 
     if value_string.is_empty() {
