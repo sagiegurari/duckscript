@@ -2123,7 +2123,7 @@ env_to_map
 var = which executable
 ```
 
-Returns the path to the executable if exists.<br>
+Returns the path to the executable if it exists.<br>
 If not found it will return an empty string.
 
 #### Parameters
@@ -4650,7 +4650,7 @@ If an output variable is set and the --get-exit-code flag is provided, the outpu
 
 #### Parameters
 
-* --fail-on-error - If no output variable is provided, it will cause an error in case the executed processed exists with an error exist code.
+* --fail-on-error - If no output variable is provided, it will cause an error in case the executed process exits with an error exit code.
 * --get-exit-code - If an output variable is provided, it will contain the exit code.
 * The command to execute and its arguments.
 
@@ -4772,15 +4772,15 @@ count = watchdog [--max-retries value] [--interval value] -- command [arguments]
 ```
 
 Executes the provided native command and arguments.<br>
-In case the command existed it will be executed again up to the max retries provided.<br>
-The watchdog will wait the specified time in milliseconds between invocations.<br>
+In case the command exited it will be executed again up to the max retries provided.<br>
+The watchdog will wait the specified interval in milliseconds between invocations.<br>
 In case of an invalid command, the watchdog will not reattempt the invocation and will exit without retries.
 
 #### Parameters
 
 * --max-retries - Positive value of max retries (excluding the first invocation). value <= 0 for unlimited retries. Default is unlimited.
 * --interval - The amount in milliseconds between retries. 0 for no waiting between invocations. Default is no wait.
-* The command to executed (preceded by a **--** separator).
+* The command to execute (preceded by a **--** separator).
 * The command arguments.
 
 #### Return Value
