@@ -2,7 +2,7 @@
 var = which executable
 ```
 
-Returns the path to the executable if exists.<br>
+Returns the path to the executable if it exists.<br>
 If not found it will return an empty string.
 
 #### Parameters

@@ -2123,7 +2123,7 @@ env_to_map
 var = which executable
 ```
 
-Returns the path to the executable if exists.<br>
+Returns the path to the executable if it exists.<br>
 If not found it will return an empty string.
 
 #### Parameters
@@ -2854,7 +2854,7 @@ This command provides the function language feature as a set of commands:
 
 * function/fn - Defines a function start block
 * end - Defines the end of the function block
-* return - Allows to exist a function at any point and return an output
+* return - Allows to exit a function at any point and return an output
 * *&lt;scope&gt;* - Optional annotation which enables to use a new scope during the function invocation.
 * *function name* - Dynamically created commands based on the function name which are used to invoke the function code.
 
@@ -2865,10 +2865,10 @@ In order to invoke the function, simply call the function name with any amount o
 Those parameters will be set as ${1}, ${2}, ... and so on.<br>
 Since variables are global, it will overwrite any older values stored in those variables.<br>
 
-To exist a function and return a value, simply use the **return** command with the value you want to return.<br>
+To exit a function and return a value, simply use the **return** command with the value you want to return.<br>
 The variable that was used when the function was originally called, will now store that value.<br>
-The return command can be used to exist early without any value.<br>
-In case the code reached the **end** call, the function will exist but will return not value.<br>
+The return command can be used to exit early without any value.<br>
+In case the code reached the **end** call, the function will exit but will not return a value.<br>
 
 The *&lt;scope&gt;* annotation enables to start a new scope when running the function.<br>
 All variables defined will not be available except the variables provided to the function as arguments.<br>
@@ -2890,7 +2890,7 @@ The function invocation returns the output provided by the return command.
 #### Examples
 
 ```sh
-# Simple example of a function definition which echo 'hello world' and exists.
+# Simple example of a function definition which echo 'hello world' and exits.
 
 # function start
 fn hello_world
@@ -4650,7 +4650,7 @@ If an output variable is set and the --get-exit-code flag is provided, the outpu
 
 #### Parameters
 
-* --fail-on-error - If no output variable is provided, it will cause an error in case the executed processed exists with an error exist code.
+* --fail-on-error - If no output variable is provided, it will cause an error in case the executed process exits with an error exit code.
 * --get-exit-code - If an output variable is provided, it will contain the exit code.
 * The command to execute and its arguments.
 
@@ -4772,15 +4772,15 @@ count = watchdog [--max-retries value] [--interval value] -- command [arguments]
 ```
 
 Executes the provided native command and arguments.<br>
-In case the command existed it will be executed again up to the max retries provided.<br>
-The watchdog will wait the specified time in milliseconds between invocations.<br>
+In case the command exited it will be executed again up to the max retries provided.<br>
+The watchdog will wait the specified interval in milliseconds between invocations.<br>
 In case of an invalid command, the watchdog will not reattempt the invocation and will exit without retries.
 
 #### Parameters
 
 * --max-retries - Positive value of max retries (excluding the first invocation). value <= 0 for unlimited retries. Default is unlimited.
 * --interval - The amount in milliseconds between retries. 0 for no waiting between invocations. Default is no wait.
-* The command to executed (preceded by a **--** separator).
+* The command to execute (preceded by a **--** separator).
 * The command arguments.
 
 #### Return Value
