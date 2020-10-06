@@ -13,7 +13,7 @@ This command provides the function language feature as a set of commands:
 
 * function/fn - Defines a function start block
 * end - Defines the end of the function block
-* return - Allows to exist a function at any point and return an output
+* return - Allows to exit a function at any point and return an output
 * *&lt;scope&gt;* - Optional annotation which enables to use a new scope during the function invocation.
 * *function name* - Dynamically created commands based on the function name which are used to invoke the function code.
 
@@ -24,10 +24,10 @@ In order to invoke the function, simply call the function name with any amount o
 Those parameters will be set as ${1}, ${2}, ... and so on.<br>
 Since variables are global, it will overwrite any older values stored in those variables.<br>
 
-To exist a function and return a value, simply use the **return** command with the value you want to return.<br>
+To exit a function and return a value, simply use the **return** command with the value you want to return.<br>
 The variable that was used when the function was originally called, will now store that value.<br>
-The return command can be used to exist early without any value.<br>
-In case the code reached the **end** call, the function will exist but will return not value.<br>
+The return command can be used to exit early without any value.<br>
+In case the code reached the **end** call, the function will exit but will not return a value.<br>
 
 The *&lt;scope&gt;* annotation enables to start a new scope when running the function.<br>
 All variables defined will not be available except the variables provided to the function as arguments.<br>
@@ -49,7 +49,7 @@ The function invocation returns the output provided by the return command.
 #### Examples
 
 ```sh
-# Simple example of a function definition which echo 'hello world' and exists.
+# Simple example of a function definition which echo 'hello world' and exits.
 
 # function start
 fn hello_world
