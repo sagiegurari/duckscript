@@ -9,12 +9,10 @@ additional_profiles = [
 
 [tasks.clean-target]
 condition = { files_exist = ["./target"] }
-script = [
-'''
+script = '''
 #!@duckscript
 rm -Rf ./target
 '''
-]
 
 [tasks.test-multi-phases-flow]
 dependencies = [

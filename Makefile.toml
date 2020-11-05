@@ -37,8 +37,7 @@ args = [
 
 [tasks.generate-readme]
 workspace = false
-script = [
-'''
+script = '''
 #!@duckscript
 echo Generating README
 
@@ -56,7 +55,6 @@ readme_text = replace ${readme_text} https://github.com/sagiegurari/duckscript/b
 
 writefile ./README.md ${readme_text}
 '''
-]
 
 [tasks.test-script]
 workspace = false
