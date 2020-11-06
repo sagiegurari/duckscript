@@ -12,14 +12,14 @@ readme = "README.md"
 keywords = ["script", "script-engine", "language"]
 categories = ["command-line-utilities", "development-tools"]
 include = [
-    "/benches/*",
-    "/docs/*",
-    "/examples/*",
-    "/src/*",
-    "/tests/*",
-    "/Cargo.toml",
-    "/LICENSE",
-    "/README.md"
+  "/benches/*",
+  "/docs/*",
+  "/examples/*",
+  "/src/*",
+  "/tests/*",
+  "/Cargo.toml",
+  "/LICENSE",
+  "/README.md",
 ]
 
 [dependencies]

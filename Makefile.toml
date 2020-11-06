@@ -4,10 +4,7 @@ CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
 CARGO_MAKE_BINARY_EXECUTABLE_NAME = "duck"
 
 [env.sdk]
-CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = [
-    "duckscript_sdk",
-    "duckscript_cli"
-]
+CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = ["duckscript_sdk", "duckscript_cli"]
 
 [env.cli]
 CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = "duckscript_cli"
@@ -15,10 +12,11 @@ CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = "duckscript_cli"
 [config]
 main_project_member = "duckscript_cli"
 additional_profiles = [
-    "ci-coverage-tasks",
-    "ci-all-build-tasks",
-    "ci-static-code-analysis-tasks",
-    "publish-pre-cleanup"
+  "all-default-tasks",
+  "ci-coverage-tasks",
+  "ci-all-build-tasks",
+  "ci-static-code-analysis-tasks",
+  "publish-pre-cleanup",
 ]
 
 [tasks.clippy]
@@ -28,12 +26,7 @@ ignore_errors = true
 [tasks.generate-sdk-docs]
 workspace = false
 command = "cargo"
-args = [
-    "run",
-    "--",
-    "--eval",
-    "internal::SDKDocsGen std ./docs/sdk.md"
-]
+args = ["run", "--", "--eval", "internal::SDKDocsGen std ./docs/sdk.md"]
 
 [tasks.generate-readme]
 workspace = false
@@ -59,31 +52,18 @@ writefile ./README.md ${readme_text}
 [tasks.test-script]
 workspace = false
 command = "cargo"
-args = [
-    "run",
-    "--",
-    "--eval",
-    "test_file ./test/${@}"
-]
+args = ["run", "--", "--eval", "test_file ./test/${@}"]
 
 [tasks.test-scripts]
 workspace = false
 command = "cargo"
-args = [
-    "run",
-    "--",
-    "--eval",
-    "test_directory ./test/"
-]
+args = ["run", "--", "--eval", "test_directory ./test/"]
 
 [tasks.workspace-docs]
-dependencies = [
-    "generate-sdk-docs",
-    "generate-readme"
-]
+dependencies = ["generate-sdk-docs", "generate-readme"]
 
 [tasks.install_local]
 workspace = false
 cwd = "./duckscript_cli"
 command = "cargo"
-args = [ "install", "--force", "--path", "." ]
+args = ["install", "--force", "--path", "."]

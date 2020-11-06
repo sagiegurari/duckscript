@@ -1,9 +1,5 @@
 [workspace]
-members = [
-    "duckscript",
-    "duckscript_sdk",
-    "duckscript_cli",
-]
+members = ["duckscript", "duckscript_sdk", "duckscript_cli"]
 
 [profile.release]
 opt-level = "z"

@@ -1,10 +1,10 @@
 
 [config]
 additional_profiles = [
-    "multi-phase-tests",
-    "ci-coverage-tasks",
-    "ci-all-build-tasks",
-    "publish-pre-cleanup"
+  "multi-phase-tests",
+  "ci-coverage-tasks",
+  "ci-all-build-tasks",
+  "publish-pre-cleanup",
 ]
 
 [tasks.clean-target]
@@ -15,9 +15,7 @@ rm -Rf ./target
 '''
 
 [tasks.test-multi-phases-flow]
-dependencies = [
-    "clean-target"
-]
+dependencies = ["clean-target"]
 
 [tasks.test-custom]
 alias = "test-scripts"
@@ -25,11 +23,7 @@ alias = "test-scripts"
 [tasks.test-scripts]
 cwd = ".."
 command = "cargo"
-args = [
-    "make",
-    "--no-workspace",
-    "test-scripts"
-]
+args = ["make", "--no-workspace", "test-scripts"]
 
 [tasks.pre-coverage]
 alias = "clean-target"
