@@ -3,6 +3,7 @@ mod forin;
 mod function;
 mod goto;
 mod ifelse;
+mod while_mod;
 
 use crate::types::scope::get_line_context_name;
 use crate::utils::pckg;
@@ -30,6 +31,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     forin::load(commands, &package)?;
     function::load(commands, &package)?;
     ifelse::load(commands, &package)?;
+    while_mod::load(commands, &package)?;
 
     Ok(())
 }

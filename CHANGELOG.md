@@ -2,6 +2,7 @@
 
 ### v0.6.9
 
+* New while loop command #138
 * New linter CLI command #139
 
 ### v0.6.8 (2020-10-01)

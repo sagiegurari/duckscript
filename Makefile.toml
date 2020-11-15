@@ -60,6 +60,7 @@ command = "cargo"
 args = ["run", "--", "--eval", "test_directory ./test/"]
 
 [tasks.workspace-docs]
+workspace = false
 dependencies = ["generate-sdk-docs", "generate-readme"]
 
 [tasks.install_local]

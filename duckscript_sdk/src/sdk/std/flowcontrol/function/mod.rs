@@ -1,4 +1,4 @@
-use crate::sdk::std::flowcontrol::{end, forin, ifelse};
+use crate::sdk::std::flowcontrol::{end, forin, ifelse, while_mod};
 use crate::types::scope::get_line_context_name;
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
 use crate::utils::{annotation, instruction_query, pckg, scope};
@@ -345,6 +345,9 @@ impl Command for FunctionCommand {
                     let forin_command = forin::ForInCommand::new(&self.package);
                     start_blocks.append(&mut forin_command.aliases());
                     start_blocks.push(forin_command.name());
+                    let while_command = while_mod::WhileCommand::new(&self.package);
+                    start_blocks.append(&mut while_command.aliases());
+                    start_blocks.push(while_command.name());
 
                     let end_if_command = ifelse::EndIfCommand::new(&self.package);
                     let mut end_blocks = end_if_command.aliases();
@@ -352,6 +355,9 @@ impl Command for FunctionCommand {
                     let end_forin_command = forin::EndForInCommand::new(&self.package);
                     end_blocks.append(&mut end_forin_command.aliases());
                     end_blocks.push(end_forin_command.name());
+                    let end_while_command = while_mod::EndWhileCommand::new(&self.package);
+                    end_blocks.append(&mut end_while_command.aliases());
+                    end_blocks.push(end_while_command.name());
                     end_blocks.push(end::END_COMMAND_NAME.to_string());
 
                     match instruction_query::find_commands(
