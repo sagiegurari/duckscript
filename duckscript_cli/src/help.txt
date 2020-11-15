@@ -4,6 +4,7 @@ USAGE:
 FLAGS:
     -h, --help      Prints help information
     -e, --eval      Evaluate script
+    -l, --lint      Lints the provided file
 
 ARGS:
-    <FILE>          The script file to execute
+    <FILE>          The script file to execute/lint
