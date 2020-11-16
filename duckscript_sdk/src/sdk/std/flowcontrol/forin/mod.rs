@@ -1,4 +1,4 @@
-use crate::sdk::std::flowcontrol::{end, function, get_line_key, ifelse};
+use crate::sdk::std::flowcontrol::{end, function, get_line_key, ifelse, while_mod};
 use crate::utils::state::{
     get_as_string, get_core_sub_state_for_command, get_handle, get_list, get_sub_state,
 };
@@ -126,6 +126,9 @@ fn create_forin_meta_info_for_line(
     let function_command = function::FunctionCommand::new(&package);
     start_blocks.append(&mut function_command.aliases());
     start_blocks.push(function_command.name());
+    let while_command = while_mod::WhileCommand::new(&package);
+    start_blocks.append(&mut while_command.aliases());
+    start_blocks.push(while_command.name());
 
     let end_if_command = ifelse::EndIfCommand::new(&package);
     let mut end_blocks = end_if_command.aliases();
@@ -133,6 +136,9 @@ fn create_forin_meta_info_for_line(
     let end_function_command = function::EndFunctionCommand::new(&package);
     end_blocks.append(&mut end_function_command.aliases());
     end_blocks.push(end_function_command.name());
+    let end_while_command = while_mod::EndWhileCommand::new(&package);
+    end_blocks.append(&mut end_while_command.aliases());
+    end_blocks.push(end_while_command.name());
     end_blocks.push(end::END_COMMAND_NAME.to_string());
 
     let positions_options = instruction_query::find_commands(

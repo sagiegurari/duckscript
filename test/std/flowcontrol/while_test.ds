@@ -1,0 +1,131 @@
+
+fn test_while_hardcoded_true
+    valid = set false
+
+    while true
+        valid = set true
+        goto :test_while_hardcoded_true
+    end
+
+:test_while_hardcoded_true
+
+    assert ${valid}
+end
+
+fn test_while_hardcoded_false
+    while false
+        assert_fail
+    end
+end
+
+fn test_while_hardcoded_not_false
+    valid = set false
+
+    while not false
+        valid = set true
+        goto :test_while_hardcoded_not_false
+    end
+
+:test_while_hardcoded_not_false
+
+    assert ${valid}
+end
+
+fn test_while_command_returns_true
+    valid = set false
+
+    while set true
+        valid = set true
+        goto :test_while_command_returns_true
+    end
+
+:test_while_command_returns_true
+
+    assert ${valid}
+end
+
+fn test_while_condition_true
+    valid = set false
+
+    condition = set true
+    while true and false or true and false or ( true and true or false ) and ${condition}
+        valid = set true
+        condition = set false
+    end
+
+    assert ${valid}
+end
+
+fn test_while_condition_false
+    while true and false or true and false or ( true and true or false ) and false
+        assert_fail
+    end
+end
+
+fn test_nested_while
+    top_count = set 0
+    inner_count = set 0
+    counter = set 0
+    while not equals ${top_count} 10
+        top_count = calc ${top_count} + 1
+        inner_count = set 0
+
+        while not equals ${inner_count} 10
+            inner_count = calc ${inner_count} + 1
+            counter = calc ${counter} + 1
+        end
+    end
+
+    assert_eq ${counter} 100
+end
+
+fn test_while_call_command
+    text = set test,
+
+    valid = set false
+    while ends_with ${text} ,
+        valid = set true
+        text = set false
+    end
+
+    assert ${valid}
+end
+
+fn test_while_call_to_functions
+    value = _test_return_true
+    valid = set false
+    while ${value}
+        valid = set true
+        value = set false
+    end
+    assert ${valid}
+
+    value = _test_return_false
+    valid = set true
+    while ${value}
+        valid = set false
+    end
+    assert ${valid}
+
+    valid = set true
+    while _test_return_false
+        valid = set false
+    end
+    assert ${valid}
+
+    valid = set true
+    while not _test_return_true
+        valid = set false
+    end
+    assert ${valid}
+end
+
+fn _test_return_true
+    return true
+end
+
+fn _test_return_false
+    return false
+end
+
+

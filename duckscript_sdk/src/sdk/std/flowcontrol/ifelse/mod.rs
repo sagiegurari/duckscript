@@ -1,4 +1,4 @@
-use crate::sdk::std::flowcontrol::{end, forin, function, get_line_key};
+use crate::sdk::std::flowcontrol::{end, forin, function, get_line_key, while_mod};
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
 use crate::utils::{condition, instruction_query, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
@@ -186,6 +186,9 @@ fn create_if_meta_info_for_line(
     let forin_command = forin::ForInCommand::new(&package);
     start_blocks.append(&mut forin_command.aliases());
     start_blocks.push(forin_command.name());
+    let while_command = while_mod::WhileCommand::new(&package);
+    start_blocks.append(&mut while_command.aliases());
+    start_blocks.push(while_command.name());
 
     let end_forin_command = forin::EndForInCommand::new(&package);
     let mut end_blocks = end_forin_command.aliases();
@@ -193,6 +196,9 @@ fn create_if_meta_info_for_line(
     let end_function_command = function::EndFunctionCommand::new(&package);
     end_blocks.append(&mut end_function_command.aliases());
     end_blocks.push(end_function_command.name());
+    let end_while_command = while_mod::EndWhileCommand::new(&package);
+    end_blocks.append(&mut end_while_command.aliases());
+    end_blocks.push(end_while_command.name());
     end_blocks.push(end::END_COMMAND_NAME.to_string());
 
     let positions_options = instruction_query::find_commands(

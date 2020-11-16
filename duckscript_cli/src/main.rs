@@ -141,6 +141,8 @@
 //! [Apache 2](https://github.com/sagiegurari/duckscript/blob/master/LICENSE) open source license.
 //!
 
+mod linter;
+
 use duckscript::runner;
 use duckscript::types::error::ScriptError;
 use duckscript::types::runtime::Context;
@@ -185,17 +187,23 @@ fn run_cli() -> Result<(), ScriptError> {
 
         Ok(())
     } else {
-        let (value, is_file) = if args.len() == 2 {
-            (args[1].clone(), true)
+        let (value, is_file, run) = if args.len() == 2 {
+            (args[1].clone(), true, true)
         } else {
             if args[1] == "-e" || args[1] == "--eval" {
-                (args[2].clone(), false)
+                (args[2].clone(), false, true)
+            } else if args[1] == "-l" || args[1] == "--lint" {
+                (args[2].clone(), true, false)
             } else {
-                (args[1].clone(), true)
+                (args[1].clone(), true, true)
             }
         };
 
-        run_script(&value, is_file)
+        if run {
+            run_script(&value, is_file)
+        } else {
+            linter::lint_file(&value)
+        }
     }
 }
 
