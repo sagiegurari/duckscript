@@ -4,7 +4,7 @@ fn test_flow_control_empty_loop
 
     index = set 0
     for arg in ${arguments}
-        if equals arg a
+        if equals ${arg} a
             if starts_with ${arg} a
                 assert_eq ${index} 0
             elif starts_with ${arg} b
@@ -12,7 +12,7 @@ fn test_flow_control_empty_loop
             elif starts_with ${arg} c
                 assert_fail
             end
-        elif equals arg b
+        elif equals ${arg} b
             assert_eq ${index} 1
         end
 
@@ -29,7 +29,7 @@ fn test_flow_control_loop
 
     index = set 0
     for arg in ${arguments}
-        if equals arg a
+        if equals ${arg} a
             if starts_with ${arg} a
                 assert_eq ${index} 0
             elif starts_with ${arg} b
@@ -37,14 +37,20 @@ fn test_flow_control_loop
             elif starts_with ${arg} c
                 assert_fail
             end
-        elif equals arg b
+        elif equals ${arg} b
             assert_eq ${index} 1
+
+            counter = set 0
+            while not equals ${counter} 10
+                counter = calc ${counter} + 1
+                index = calc ${index} + 1
+            end
         end
 
         index = calc ${index} + 1
     end
 
-    assert_eq ${index} 3
+    assert_eq ${index} 13
 
     release ${arguments}
 end
