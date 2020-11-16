@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.6.9
+### v0.6.9 (2020-10-16)
 
 * New while loop command #138
 * New linter CLI command #139
