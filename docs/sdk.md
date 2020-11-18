@@ -2862,7 +2862,7 @@ This command provides the function language feature as a set of commands:
 When a function command is detected, it will search for the end command that comes after.<br>
 That entire block is considered the function code block (functions cannot be nested in outer functions)<br>
 
-In order to invoke the function, simply call the function name with any amount of paramters.<br>
+In order to invoke the function, simply call the function name with any amount of parameters.<br>
 Those parameters will be set as ${1}, ${2}, ... and so on.<br>
 Since variables are global, it will overwrite any older values stored in those variables.<br>
 
