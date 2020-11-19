@@ -2880,7 +2880,7 @@ This enables a clean function invocation without impacting the global variables.
 
 * function - The function name used later on to invoke the function
 * end - no parameters
-* return - optional single paramter to return as an output of the function call
+* return - optional single parameter to return as an output of the function call
 * *&lt;scope&gt;* - Optional annotation which enables to use a new scope during the function invocation.
 * *function name* - Any number of arguments which will automatically be set as global variables: ${1}, ${2}, ... as so on.
 
