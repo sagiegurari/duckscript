@@ -421,7 +421,7 @@ The command result can be one of the following:
 * Continue(Option<String>) - Tells the runner to continue to the next command and optionally set the output variable the given value.
 * GoTo(Option<String>, GoToValue) - Tells the runner to jump to the requested line or label and optionally set the output variable the given value.
 * Error(String) - Returns the value 'false' and invokes the 'on_error' command if exists with the error message and instruction information.
-* Crash(String) - Tells the runner to stop the exection and return the error message.
+* Crash(String) - Tells the runner to stop the execution and return the error message.
 * Exit(Option<String>) - Tells the runner to stop the execution and optionally set the output variable the given value.
 
 Let's implement a simple **set** command which accepts a single argument and sets the output variable to that value.<br>

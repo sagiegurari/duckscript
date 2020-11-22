@@ -20,7 +20,7 @@ This command provides the function language feature as a set of commands:
 When a function command is detected, it will search for the end command that comes after.<br>
 That entire block is considered the function code block (functions cannot be nested in outer functions)<br>
 
-In order to invoke the function, simply call the function name with any amount of paramters.<br>
+In order to invoke the function, simply call the function name with any amount of parameters.<br>
 Those parameters will be set as ${1}, ${2}, ... and so on.<br>
 Since variables are global, it will overwrite any older values stored in those variables.<br>
 
@@ -38,7 +38,7 @@ This enables a clean function invocation without impacting the global variables.
 
 * function - The function name used later on to invoke the function
 * end - no parameters
-* return - optional single paramter to return as an output of the function call
+* return - optional single parameter to return as an output of the function call
 * *&lt;scope&gt;* - Optional annotation which enables to use a new scope during the function invocation.
 * *function name* - Any number of arguments which will automatically be set as global variables: ${1}, ${2}, ... as so on.
 
