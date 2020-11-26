@@ -250,7 +250,7 @@ fn run_instructions_exit_result_no_output() {
 }
 
 #[test]
-fn run_instructions_exit_result_with_output() {
+fn run_instructions_exit_result_with_string_output() {
     let mut instructions = vec![];
 
     let mut script_instruction = ScriptInstruction::new();
@@ -283,6 +283,69 @@ fn run_instructions_exit_result_with_output() {
         updated_context.variables.get("out"),
         Some(&"value".to_string())
     );
+}
+
+#[test]
+fn run_instructions_exit_result_with_0_output() {
+    let mut instructions = vec![];
+
+    let mut script_instruction = ScriptInstruction::new();
+    script_instruction.command = Some("exit".to_string());
+    script_instruction.output = Some("out".to_string());
+    script_instruction.arguments = Some(vec!["0".to_string()]);
+    instructions.push(Instruction {
+        meta_info: InstructionMetaInfo::new(),
+        instruction_type: InstructionType::Script(script_instruction),
+    });
+    script_instruction = ScriptInstruction::new();
+    script_instruction.command = Some("bad".to_string());
+    instructions.push(Instruction {
+        meta_info: InstructionMetaInfo::new(),
+        instruction_type: InstructionType::Script(script_instruction),
+    });
+
+    let mut context = Context::new();
+    let result = context.commands.set(Box::new(ExitCommand {}));
+    assert!(result.is_ok());
+
+    let runtime = create_runtime(instructions, context);
+
+    let context_result = run_instructions(runtime, 0, false);
+
+    assert!(context_result.is_ok());
+    let (updated_context, end_reason) = context_result.unwrap();
+    assert_end_reason_exit_called(end_reason);
+    assert_eq!(updated_context.variables.get("out"), Some(&"0".to_string()));
+}
+
+#[test]
+fn run_instructions_exit_result_with_error_code_output() {
+    let mut instructions = vec![];
+
+    let mut script_instruction = ScriptInstruction::new();
+    script_instruction.command = Some("exit".to_string());
+    script_instruction.output = Some("out".to_string());
+    script_instruction.arguments = Some(vec!["1".to_string()]);
+    instructions.push(Instruction {
+        meta_info: InstructionMetaInfo::new(),
+        instruction_type: InstructionType::Script(script_instruction),
+    });
+    script_instruction = ScriptInstruction::new();
+    script_instruction.command = Some("bad".to_string());
+    instructions.push(Instruction {
+        meta_info: InstructionMetaInfo::new(),
+        instruction_type: InstructionType::Script(script_instruction),
+    });
+
+    let mut context = Context::new();
+    let result = context.commands.set(Box::new(ExitCommand {}));
+    assert!(result.is_ok());
+
+    let runtime = create_runtime(instructions, context);
+
+    let context_result = run_instructions(runtime, 0, false);
+
+    assert!(context_result.is_err());
 }
 
 #[test]

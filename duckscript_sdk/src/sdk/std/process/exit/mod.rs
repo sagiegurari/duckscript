@@ -31,7 +31,7 @@ impl Command for CommandImpl {
         if arguments.is_empty() {
             CommandResult::Exit(Some("0".to_string()))
         } else {
-            match arguments[0].parse::<u32>() {
+            match arguments[0].parse::<i32>() {
                 Ok(_) => CommandResult::Exit(Some(arguments[0].clone())),
                 Err(_) => {
                     CommandResult::Error(format!("Invalid exit code: {}", arguments[0]).to_string())

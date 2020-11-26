@@ -151,8 +151,29 @@ fn run_instructions(
 
         match command_result {
             CommandResult::Exit(output) => {
-                update_output(&mut runtime.context.variables, output_variable, output);
+                update_output(
+                    &mut runtime.context.variables,
+                    output_variable,
+                    output.clone(),
+                );
                 end_reason = EndReason::ExitCalled;
+
+                if repl_mode {
+                    return Ok((runtime.context, end_reason));
+                }
+
+                if let Some(exit_code_str) = output {
+                    if let Ok(exit_code) = exit_code_str.parse::<i32>() {
+                        if exit_code != 0 {
+                            return Err(ScriptError {
+                                info: ErrorInfo::Runtime(
+                                    format!("Exit with error code: {}", exit_code).to_string(),
+                                    Some(meta_info.clone()),
+                                ),
+                            });
+                        }
+                    }
+                }
 
                 break;
             }

@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.7.0
+
+* Runtime - \[Breaking Change\] Break with an error if exit code with non zero value #144
+
 ### v0.6.9 (2020-10-16)
 
 * New while loop command #138
