@@ -6,7 +6,7 @@ Exits the script with the given code stored in the output variable.
 
 #### Parameters
 
-A positive number as exit code or none for 0.
+A number as exit code or none for 0.
 
 #### Return Value
 

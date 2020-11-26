@@ -26,17 +26,8 @@ fn run_0() {
 }
 
 #[test]
-fn run_positive_number() {
-    test::run_script_and_validate(
-        vec![create("")],
-        "out = exit 10",
-        CommandValidation::Match("out".to_string(), "10".to_string()),
-    );
-}
-
-#[test]
-fn run_negative_number() {
-    test::run_script_and_error(vec![create("")], "out = exit -10", "out");
+fn run_number() {
+    test::run_script_and_crash(vec![create("")], "out = exit 1");
 }
 
 #[test]
