@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.7.0
+### v0.7.0 (2020-11-26)
 
 * Runtime - \[Breaking Change\] Break with an error if exit code with non zero value #144
 * Adding --silent flag for spawn command #142
