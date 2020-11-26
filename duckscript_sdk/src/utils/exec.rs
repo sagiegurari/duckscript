@@ -10,7 +10,7 @@ pub(crate) fn exec(
     allow_input: bool,
     start_index: usize,
 ) -> Result<(String, String, i32), String> {
-    let mut command = create_command(arguments, print_output, allow_input, start_index)?;
+    let mut command = create_command(arguments, print_output, false, allow_input, start_index)?;
 
     match command.output() {
         Ok(ref output) => {
@@ -39,7 +39,7 @@ pub(crate) fn spawn(
     allow_input: bool,
     start_index: usize,
 ) -> Result<Child, String> {
-    let mut command = create_command(arguments, print_output, allow_input, start_index)?;
+    let mut command = create_command(arguments, print_output, true, allow_input, start_index)?;
 
     match command.spawn() {
         Ok(child) => Ok(child),
@@ -50,6 +50,7 @@ pub(crate) fn spawn(
 fn create_command(
     arguments: &Vec<String>,
     print_output: bool,
+    output_blocking: bool,
     allow_input: bool,
     start_index: usize,
 ) -> Result<Command, String> {
@@ -71,6 +72,8 @@ fn create_command(
 
         if print_output {
             command.stdout(Stdio::inherit()).stderr(Stdio::inherit());
+        } else if output_blocking {
+            command.stdout(Stdio::null()).stderr(Stdio::null());
         }
 
         Ok(command)

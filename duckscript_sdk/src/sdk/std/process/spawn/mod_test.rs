@@ -20,3 +20,12 @@ fn run_valid() {
         CommandValidation::PositiveNumber("out".to_string()),
     );
 }
+
+#[test]
+fn run_valid_silent() {
+    test::run_script_and_validate(
+        vec![create("")],
+        "out = spawn --silent echo test",
+        CommandValidation::PositiveNumber("out".to_string()),
+    );
+}

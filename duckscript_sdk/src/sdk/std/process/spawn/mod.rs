@@ -28,7 +28,13 @@ impl Command for CommandImpl {
     }
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {
-        match exec::spawn(&arguments, false, false, 0) {
+        let (print_output, start_index) = if !arguments.is_empty() && arguments[0] == "--silent" {
+            (false, 1)
+        } else {
+            (true, 0)
+        };
+
+        match exec::spawn(&arguments, print_output, false, start_index) {
             Ok(child) => {
                 let pid = child.id();
 

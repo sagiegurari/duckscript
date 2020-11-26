@@ -3,6 +3,7 @@
 ### v0.7.0
 
 * Runtime - \[Breaking Change\] Break with an error if exit code with non zero value #144
+* Adding --silent flag for spawn command #142
 
 ### v0.6.9 (2020-10-16)
 
