@@ -16,6 +16,7 @@
     * [Language Goals](#lang-goals)
 * [Installation](#installation)
     * [Homebrew](#installation-homebrew)
+    * [Alpine Linux](#installation-alpine-linux)
     * [Binary Release](#installation-binary-release)
 * [Duckscript Tutorial](#tutorial)
     * [Hello World Example](#tutorial-hello-world)
@@ -68,6 +69,15 @@ cargo install --force duckscript_cli
 This will install duckscript script runner, the standard duckscript SDK and the duckscript CLI.<br>
 You should then have a **duck** executable in your ~/.cargo/bin directory.<br>
 Make sure to add ~/.cargo/bin directory to your PATH variable.
+
+<a name="installation-alpine-linux"></a>
+### Alpine Linux
+
+```sh
+apk add duckscript
+```
+
+Note: duckscript package is available since Alpine 3.13.
 
 <a name="installation-homebrew"></a>
 ### Homebrew
