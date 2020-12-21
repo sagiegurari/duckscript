@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.7.2
+
+* Upgraded rand 0.8
+
 ### v0.7.1 (2020-12-13)
 
 * Checked in Cargo.lock to help linux distributions package the duckscript CLI #146

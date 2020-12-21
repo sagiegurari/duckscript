@@ -50,6 +50,7 @@ impl Command for CommandImpl {
         let mut rng = thread_rng();
         let random_value: String = iter::repeat(())
             .map(|()| rng.sample(Alphanumeric))
+            .map(char::from)
             .take(length)
             .collect();
 

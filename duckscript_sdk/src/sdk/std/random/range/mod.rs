@@ -45,7 +45,7 @@ impl Command for CommandImpl {
 
                             let min_128: i128 = min;
                             let max_128: i128 = max;
-                            let rand_value: i128 = rng.gen_range(min_128, max_128);
+                            let rand_value: i128 = rng.gen_range(min_128..max_128);
 
                             CommandResult::Continue(Some(rand_value.to_string()))
                         }

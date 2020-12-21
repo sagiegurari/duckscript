@@ -40,6 +40,7 @@ pub(crate) fn put_handle(state: &mut HashMap<String, StateValue>, value: StateVa
     let mut rng = thread_rng();
     let mut key: String = iter::repeat(())
         .map(|()| rng.sample(Alphanumeric))
+        .map(char::from)
         .take(20)
         .collect();
     key.insert_str(0, "handle:");
