@@ -49,7 +49,7 @@ impl Command for CommandImpl {
             let result = if !path.exists() {
                 Ok(())
             } else if path.is_file() {
-                fs::remove_file(&arguments[0])
+                fs::remove_file(&path)
             } else if recursive {
                 fs::remove_dir_all(&path)
             } else {
