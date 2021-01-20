@@ -35,31 +35,35 @@ impl Command for CommandImpl {
         {
             CommandResult::Error("Path not provided.".to_string())
         } else {
-            let (path_str, recursive) = if arguments.len() == 1 {
-                (&arguments[0], false)
+            let (start_index, recursive) = if arguments.len() == 1 {
+                (0, false)
             } else if flags::is_unix_flags_argument(&arguments[0]) {
                 let recursive = flags::is_unix_flag_exists('r', &arguments[0]);
-                (&arguments[1], recursive)
+                (1, recursive)
             } else {
-                (&arguments[0], false)
+                (0, false)
             };
 
-            let path = Path::new(path_str);
+            let end_index = arguments.len();
+            for index in start_index..end_index {
+                let path = Path::new(&arguments[index]);
 
-            let result = if !path.exists() {
-                Ok(())
-            } else if path.is_file() {
-                fs::remove_file(&path)
-            } else if recursive {
-                fs::remove_dir_all(&path)
-            } else {
-                fs::remove_dir(&path)
-            };
+                let result = if !path.exists() {
+                    Ok(())
+                } else if path.is_file() {
+                    fs::remove_file(&path)
+                } else if recursive {
+                    fs::remove_dir_all(&path)
+                } else {
+                    fs::remove_dir(&path)
+                };
 
-            match result {
-                Ok(_) => CommandResult::Continue(Some("true".to_string())),
-                Err(error) => CommandResult::Error(error.to_string()),
+                if let Err(error) = result {
+                    return CommandResult::Error(error.to_string());
+                }
             }
+
+            CommandResult::Continue(Some("true".to_string()))
         }
     }
 }
