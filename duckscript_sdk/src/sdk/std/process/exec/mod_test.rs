@@ -2,6 +2,8 @@ use super::*;
 use crate::test;
 use crate::test::CommandValidation;
 
+const COMMAND_RUNNER: &str = if cfg!(windows) { "cmd /c" } else { "sh -c" };
+
 #[test]
 fn common_functions() {
     test::test_common_command_functions(create(""));
@@ -14,28 +16,35 @@ fn run_no_args() {
 
 #[test]
 fn run_no_output() {
-    test::run_script_and_validate(vec![create("")], "exec echo test", CommandValidation::None);
+    let script = format!("exec {} \"echo test\"", COMMAND_RUNNER);
+    test::run_script_and_validate(vec![create("")], &script, CommandValidation::None);
 }
 
 #[test]
 fn run_no_output_with_fail_on_error_valid() {
+    let script = format!("exec --fail-on-error {} \"echo test\"", COMMAND_RUNNER);
+
     test::run_script_and_validate(
         vec![create("")],
-        "exec --fail-on-error echo test",
+        &script,
         CommandValidation::None,
     );
 }
 
 #[test]
 fn run_no_output_with_fail_on_error_invalid() {
-    test::run_script_and_error(vec![create("")], "exec --fail-on-error badcommand", "");
+    let script = format!("exec --fail-on-error {} badcommand", COMMAND_RUNNER);
+
+    test::run_script_and_error(vec![create("")], &script, "");
 }
 
 #[test]
 fn run_with_output() {
+    let script = format!("out = exec --fail-on-error {} \"echo 1 2 3\"", COMMAND_RUNNER);
+
     let context = test::run_script_and_validate(
         vec![create("")],
-        "out = exec echo 1 2 3",
+        &script,
         CommandValidation::Match("out.code".to_string(), "0".to_string()),
     );
 
@@ -54,21 +63,12 @@ fn run_error_code_with_output() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
-fn run_get_exit_code_valid() {
-    test::run_script_and_validate(
-        vec![create("")],
-        "out = exec --get-exit-code true",
-        CommandValidation::Match("out".to_string(), "0".to_string()),
-    );
-}
+fn run_get_exit_code() {
+    let script = format!("out = exec --get-exit-code {} \"exit 42\"", COMMAND_RUNNER);
 
-#[test]
-#[cfg(target_os = "linux")]
-fn run_get_exit_code_error() {
     test::run_script_and_validate(
         vec![create("")],
-        "out = exec --get-exit-code false",
-        CommandValidation::Match("out".to_string(), "1".to_string()),
+        &script,
+        CommandValidation::Match("out".to_string(), "42".to_string()),
     );
 }

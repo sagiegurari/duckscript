@@ -1,18 +1,23 @@
+if is_windows
+    command = set "cmd /c"
+else
+    command = set "sh -c"
+end
 
 fn test_no_retries
-    count = watchdog --max-retries 0 -- echo test
+    count = watchdog --max-retries 0 -- %{command} "echo test"
 
     assert_eq ${count} 1
 end
 
 fn test_with_retries
-    count = watchdog --max-retries 3 -- echo test
+    count = watchdog --max-retries 3 -- %{command} "echo test"
 
     assert_eq ${count} 4
 end
 
 fn test_with_retries_and_interval
-    count = watchdog --max-retries 3 --interval 10 -- echo test
+    count = watchdog --max-retries 3 --interval 10 -- %{command} "echo test"
 
     assert_eq ${count} 4
 end
@@ -24,7 +29,7 @@ fn test_bad_command
 end
 
 fn test_negatived_max_retries
-    count = watchdog --max-retries -3 --interval 10 -- echo test
+    count = watchdog --max-retries -3 --interval 10 -- %{command} "echo test"
 
     assert_eq ${count} 1
 end

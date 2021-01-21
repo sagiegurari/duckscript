@@ -1,6 +1,11 @@
+if is_windows
+    command = set "cmd /c"
+else
+    command = set "sh -c"
+end
 
 fn test_echo_with_output
-    output = exec echo hello world
+    output = exec %{command} "echo hello world"
 
     stdout = trim ${output.stdout}
     stderr = trim ${output.stderr}
@@ -12,10 +17,10 @@ fn test_echo_with_output
 end
 
 fn test_echo_without_output
-    exec echo hello world
+    exec %{command} "echo hello world"
 end
 
 fn test_echo_with_fail_on_error_flag
-    exec --fail-on-error echo hello world
+    exec --fail-on-error %{command} "echo hello world"
 end
 
