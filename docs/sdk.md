@@ -3300,20 +3300,20 @@ rmdir
 <a name="std__fs__DeletePath"></a>
 ## std::fs::DeletePath
 ```sh
-var = rm [-r] path
+var = rm [-r] [path]+
 ```
 
-This command delete the requested file, empty directory or recursively deletes a directory
-and all its content (files and sub directories) if the **-r** flag is provided.
+This command delete the requested file/s, empty directories or recursively deletes directories
+and all their content (files and sub directories) if the **-r** flag is provided.
 
 #### Parameters
 
 * Optional flags (currently only -r is supported which indicates recursive deletion)
-* The path to delete
+* The path/s to delete
 
 #### Return Value
 
-**true** if the path was deleted.
+**true** if all paths were deleted.
 
 #### Examples
 
@@ -3323,6 +3323,9 @@ deleted = rm ./target
 
 # deletes a directory and all its content
 deleted = rm -r ./target
+
+# delete all provided paths
+deleted = rm -r ./dir ./somefile ./anotherdir/subdir/file
 ```
 
 

@@ -2,6 +2,8 @@
 
 ### v0.7.2
 
+* rm command support for multiple paths.
+* Fix: Command `rm` remove file with flag `-r` #158 (thanks @umaYnit)
 * Upgraded rand 0.8
 
 ### v0.7.1 (2020-12-13)

@@ -57,6 +57,22 @@ fn run_path_is_file() {
 }
 
 #[test]
+fn run_path_is_file_and_with_flag() {
+    let path = Path::new("./target/_duckscript/rm/file_with_flag.txt");
+    let result = ensure_exists("./target/_duckscript/rm/file_with_flag.txt");
+    assert!(result.is_ok());
+    assert!(path.exists());
+
+    test::run_script_and_validate(
+        vec![create("")],
+        "out = rm -r ./target/_duckscript/rm/file_with_flag.txt",
+        CommandValidation::Match("out".to_string(), "true".to_string()),
+    );
+
+    assert!(!path.exists());
+}
+
+#[test]
 fn run_path_recursive() {
     let path = Path::new("./target/_duckscript/rm/recursive/file.txt");
     let result = ensure_exists("./target/_duckscript/rm/recursive/file.txt");
@@ -70,4 +86,29 @@ fn run_path_recursive() {
     );
 
     assert!(!path.exists());
+}
+
+#[test]
+fn run_multiple_paths() {
+    let path1 = Path::new("./target/_duckscript/rm/multiple_paths/file1.txt");
+    assert!(ensure_exists("./target/_duckscript/rm/multiple_paths/file1.txt").is_ok());
+    assert!(path1.exists());
+    let path2 = Path::new("./target/_duckscript/rm/multiple_paths/file2.txt");
+    assert!(ensure_exists("./target/_duckscript/rm/multiple_paths/file2.txt").is_ok());
+    assert!(path2.exists());
+    let path3 = Path::new("./target/_duckscript/rm/multiple_paths/dir/file.txt");
+    assert!(ensure_exists("./target/_duckscript/rm/multiple_paths/dir/file.txt").is_ok());
+    assert!(path3.exists());
+
+    test::run_script_and_validate(
+        vec![create("")],
+        "out = rm -r ./target/_duckscript/rm/multiple_paths/file1.txt ./target/_duckscript/rm/multiple_paths/file2.txt ./target/_duckscript/rm/multiple_paths/dir",
+        CommandValidation::Match("out".to_string(), "true".to_string()),
+    );
+
+    assert!(!path1.exists());
+    assert!(!path2.exists());
+    assert!(!path3.exists());
+
+    fs::remove_dir_all(&Path::new("./target/_duckscript/rm/multiple_paths")).unwrap();
 }
