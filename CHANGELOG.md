@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.7.2
+### v0.7.2 (2021-01-23)
 
 * rm command support for multiple paths.
 * Fix: Command `rm` remove file with flag `-r` #158 (thanks @umaYnit)
