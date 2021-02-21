@@ -1,0 +1,6 @@
+
+fn test_hex_encode
+    result = hex_encode 255
+
+    assert_eq ${result} 0xff
+end
