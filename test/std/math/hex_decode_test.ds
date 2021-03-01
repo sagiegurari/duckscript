@@ -1,0 +1,12 @@
+
+fn test_hex_decode
+    result = hex_decode 0xff
+
+    assert_eq ${result} 255
+end
+
+fn test_hex_decode_no_prefix
+    result = hex_decode ff
+
+    assert_eq ${result} 255
+end
