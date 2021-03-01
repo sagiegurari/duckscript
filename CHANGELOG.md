@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.7.3 (2021-03-01)
+
+* New hex_decode and hex_encode command #166 (thanks @umaYnit)
+
 ### v0.7.2 (2021-01-23)
 
 * rm command support for multiple paths.

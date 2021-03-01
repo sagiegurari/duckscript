@@ -115,6 +115,8 @@
 * [std::lib::command::Remove (remove_command)](#std__lib__command__Remove)
 * [std::math::Calc (calc)](#std__math__Calc)
 * [std::math::GreaterThan (greater_than)](#std__math__GreaterThan)
+* [std::math::HexDecode (hex_decode)](#std__math__HexDecode)
+* [std::math::HexEncode (hex_encode)](#std__math__HexEncode)
 * [std::math::LessThan (less_than)](#std__math__LessThan)
 * [std::net::Hostname (hostname)](#std__net__Hostname)
 * [std::net::HttpClient (http_client)](#std__net__HttpClient)
@@ -4280,6 +4282,66 @@ result = greater_than 2 1.5
 
 #### Aliases:
 greater_than
+
+<a name="std__math__HexDecode"></a>
+## std::math::HexDecode
+```sh
+num = hex_decode str
+```
+
+Decode a hexadecimal string to the corresponding integer number.<br>
+No support for negative numbers.
+
+#### Parameters
+
+A hexadecimal string.
+
+#### Return Value
+
+The corresponding integer number.
+
+#### Examples
+
+```sh
+hex_num = set 0xff
+num = hex_decode ${hex_num}
+res = calc ${num} + 1
+
+assert_eq ${res} 256
+```
+
+
+#### Aliases:
+hex_decode
+
+<a name="std__math__HexEncode"></a>
+## std::math::HexEncode
+```sh
+str = hex_encode num
+```
+
+Converts an integer number to the corresponding hexadecimal string.<br>
+No support for negative numbers.
+
+#### Parameters
+
+An integer number.
+
+#### Return Value
+
+The corresponding hexadecimal string.
+
+#### Examples
+
+```sh
+str = hex_encode 255
+
+assert_eq ${str} 0xff
+```
+
+
+#### Aliases:
+hex_encode
 
 <a name="std__math__LessThan"></a>
 ## std::math::LessThan

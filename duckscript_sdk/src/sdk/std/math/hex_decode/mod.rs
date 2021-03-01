@@ -33,7 +33,7 @@ impl Command for CommandImpl {
         } else {
             match u64::from_str_radix(arguments[0].trim_start_matches("0x"), 16) {
                 Ok(num) => CommandResult::Continue(Some(num.to_string())),
-                Err(error) => CommandResult::Error(error.to_string())
+                Err(error) => CommandResult::Error(error.to_string()),
             }
         }
     }

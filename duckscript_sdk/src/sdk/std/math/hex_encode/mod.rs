@@ -33,7 +33,7 @@ impl Command for CommandImpl {
         } else {
             match &arguments[0].parse::<u64>() {
                 Ok(num) => CommandResult::Continue(Some(format!("{:#x}", num))),
-                Err(error) => CommandResult::Error(error.to_string())
+                Err(error) => CommandResult::Error(error.to_string()),
             }
         }
     }

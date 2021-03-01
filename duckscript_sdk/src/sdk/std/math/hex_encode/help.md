@@ -3,7 +3,7 @@ str = hex_encode num
 ```
 
 Converts an integer number to the corresponding hexadecimal string.<br>
-Not support negative numbers.
+No support for negative numbers.
 
 #### Parameters
 
@@ -18,5 +18,5 @@ The corresponding hexadecimal string.
 ```sh
 str = hex_encode 255
 
-assert_eq ${str} "0xff"
+assert_eq ${str} 0xff
 ```
