@@ -1,4 +1,5 @@
 use crate::sdk::std::flowcontrol::{end, function, get_line_key, ifelse, while_mod};
+use crate::types::scope::get_line_context_name;
 use crate::utils::state::{
     get_as_string, get_core_sub_state_for_command, get_handle, get_list, get_sub_state,
 };
@@ -27,6 +28,7 @@ struct ForInMetaInfo {
 struct CallInfo {
     pub(crate) iteration: usize,
     pub(crate) meta_info: ForInMetaInfo,
+    pub(crate) line_context_name: String,
 }
 
 fn serialize_forin_meta_info(
@@ -73,6 +75,10 @@ fn serialize_call_info(call_info: &CallInfo, sub_state: &mut HashMap<String, Sta
         "meta_info".to_string(),
         StateValue::SubState(meta_info_state),
     );
+    sub_state.insert(
+        "line_context_name".to_string(),
+        StateValue::String(call_info.line_context_name.clone()),
+    );
 }
 
 fn deserialize_call_info(sub_state: &mut HashMap<String, StateValue>) -> Option<CallInfo> {
@@ -93,10 +99,18 @@ fn deserialize_call_info(sub_state: &mut HashMap<String, StateValue>) -> Option<
         },
         None => return None,
     };
+    let line_context_name = match sub_state.get("line_context_name") {
+        Some(value) => match value {
+            StateValue::String(line_context_name) => line_context_name.clone(),
+            _ => return None,
+        },
+        None => return None,
+    };
 
     Some(CallInfo {
         iteration,
         meta_info,
+        line_context_name,
     })
 }
 
@@ -203,6 +217,7 @@ fn pop_call_info_for_line(
     state: &mut HashMap<String, StateValue>,
     recursive: bool,
 ) -> Option<CallInfo> {
+    let line_context_name = get_line_context_name(state);
     let forin_state = get_core_sub_state_for_command(state, FORIN_STATE_KEY.to_string());
     let call_info_stack = get_list(CALL_STACK_STATE_KEY.to_string(), forin_state);
 
@@ -211,7 +226,9 @@ fn pop_call_info_for_line(
             StateValue::SubState(mut call_info_state) => {
                 match deserialize_call_info(&mut call_info_state) {
                     Some(call_info) => {
-                        if call_info.meta_info.start == line || call_info.meta_info.end == line {
+                        if (call_info.meta_info.start == line || call_info.meta_info.end == line)
+                            && call_info.line_context_name == line_context_name
+                        {
                             Some(call_info)
                         } else if recursive {
                             pop_call_info_for_line(line, state, recursive)
@@ -320,10 +337,15 @@ impl Command for ForInCommand {
                     );
 
                     match forin_meta_info_result {
-                        Ok(forin_meta_info) => CallInfo {
-                            iteration: 0,
-                            meta_info: forin_meta_info,
-                        },
+                        Ok(forin_meta_info) => {
+                            let line_context_name = get_line_context_name(state);
+
+                            CallInfo {
+                                iteration: 0,
+                                meta_info: forin_meta_info,
+                                line_context_name,
+                            }
+                        }
                         Err(error) => return CommandResult::Crash(error.to_string()),
                     }
                 }
@@ -335,10 +357,13 @@ impl Command for ForInCommand {
             let handle = &arguments[2];
             match get_next_iteration(iteration, handle.to_string(), state) {
                 Some(next_value) => {
+                    let line_context_name = get_line_context_name(state);
+
                     store_call_info(
                         &CallInfo {
                             iteration: iteration + 1,
                             meta_info: forin_meta_info,
+                            line_context_name,
                         },
                         state,
                     );

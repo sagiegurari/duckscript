@@ -1,4 +1,5 @@
 use crate::sdk::std::flowcontrol::{end, forin, function, get_line_key, while_mod};
+use crate::types::scope::get_line_context_name;
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
 use crate::utils::{condition, instruction_query, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
@@ -28,6 +29,7 @@ struct CallInfo {
     pub(crate) passed: bool,
     pub(crate) else_line_index: usize,
     pub(crate) meta_info: IfElseMetaInfo,
+    pub(crate) line_context_name: String,
 }
 
 fn serialize_ifelse_meta_info(
@@ -105,6 +107,10 @@ fn serialize_call_info(call_info: &CallInfo, sub_state: &mut HashMap<String, Sta
         "meta_info".to_string(),
         StateValue::SubState(meta_info_state),
     );
+    sub_state.insert(
+        "line_context_name".to_string(),
+        StateValue::String(call_info.line_context_name.clone()),
+    );
 }
 
 fn deserialize_call_info(sub_state: &mut HashMap<String, StateValue>) -> Option<CallInfo> {
@@ -139,12 +145,20 @@ fn deserialize_call_info(sub_state: &mut HashMap<String, StateValue>) -> Option<
         },
         None => return None,
     };
+    let line_context_name = match sub_state.get("line_context_name") {
+        Some(value) => match value {
+            StateValue::String(line_context_name) => line_context_name.clone(),
+            _ => return None,
+        },
+        None => return None,
+    };
 
     Some(CallInfo {
         current,
         passed,
         else_line_index,
         meta_info,
+        line_context_name,
     })
 }
 
@@ -263,6 +277,7 @@ fn pop_call_info_for_line(
     line: usize,
     state: &mut HashMap<String, StateValue>,
 ) -> Option<CallInfo> {
+    let line_context_name = get_line_context_name(state);
     let if_state = get_core_sub_state_for_command(state, IFELSE_STATE_KEY.to_string());
     let call_info_stack = get_list(CALL_STACK_STATE_KEY.to_string(), if_state);
 
@@ -271,7 +286,9 @@ fn pop_call_info_for_line(
             StateValue::SubState(mut call_info_state) => {
                 match deserialize_call_info(&mut call_info_state) {
                     Some(call_info) => {
-                        if call_info.current == line {
+                        if call_info.current == line
+                            && call_info.line_context_name == line_context_name
+                        {
                             Some(call_info)
                         } else {
                             pop_call_info_for_line(line, state)
@@ -365,11 +382,14 @@ impl Command for IfCommand {
                                     if_else_info.else_lines[0]
                                 };
 
+                                let line_context_name = get_line_context_name(state);
+
                                 let call_info = CallInfo {
                                     current: next_line,
                                     passed,
                                     else_line_index: 0,
                                     meta_info: if_else_info.clone(),
+                                    line_context_name,
                                 };
 
                                 store_call_info(&call_info, state);
@@ -381,11 +401,14 @@ impl Command for IfCommand {
                             } else {
                                 let next_line = if_else_info.else_lines[0];
 
+                                let line_context_name = get_line_context_name(state);
+
                                 let call_info = CallInfo {
                                     current: next_line,
                                     passed: false,
                                     else_line_index: 0,
                                     meta_info: if_else_info.clone(),
+                                    line_context_name,
                                 };
 
                                 store_call_info(&call_info, state);
@@ -448,6 +471,7 @@ impl Command for ElseIfCommand {
                     CommandResult::GoTo(None, GoToValue::Line(next_line))
                 } else {
                     let if_else_info = call_info.meta_info.clone();
+                    let line_context_name = get_line_context_name(state);
                     match condition::eval_condition(arguments, instructions, state, variables, commands) {
                         Ok(passed) => {
                             if passed {
@@ -462,6 +486,7 @@ impl Command for ElseIfCommand {
                                     passed,
                                     else_line_index: call_info.else_line_index,
                                     meta_info: if_else_info,
+                                    line_context_name
                                 };
 
                                 store_call_info(&else_call_info, state);
@@ -476,6 +501,7 @@ impl Command for ElseIfCommand {
                                     passed: false,
                                     else_line_index: next_index,
                                     meta_info: if_else_info,
+                                    line_context_name
                                 };
 
                                 store_call_info(&call_info, state);

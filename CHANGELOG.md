@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.7.4 (2021-03-05)
+
+* Fix flow control commands scope handling of call info stack
+
 ### v0.7.3 (2021-03-01)
 
 * New hex_decode and hex_encode command #166 (thanks @umaYnit)

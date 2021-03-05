@@ -125,7 +125,7 @@ dependencies = [
 
 [[package]]
 name = "duckscript_cli"
-version = "0.7.3"
+version = "0.7.4"
 dependencies = [
  "duckscript",
  "duckscriptsdk",
@@ -133,7 +133,7 @@ dependencies = [
 
 [[package]]
 name = "duckscriptsdk"
-version = "0.7.3"
+version = "0.7.4"
 dependencies = [
  "attohttpc",
  "base64",
@@ -408,9 +408,9 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
 name = "libc"
-version = "0.2.86"
+version = "0.2.87"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b7282d924be3275cec7f6756ff4121987bc6481325397dde6ba3e7802b1a8b1c"
+checksum = "265d751d31d6780a3f956bb5b8022feba2d94eeee5a84ba64f4212eedca42213"
 
 [[package]]
 name = "log"
@@ -539,9 +539,9 @@ dependencies = [
 
 [[package]]
 name = "once_cell"
-version = "1.7.0"
+version = "1.7.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "10acf907b94fc1b1a152d08ef97e7759650268cf986bf127f387e602b02c7e5a"
+checksum = "af8b08b04175473088b46763e51ee54da5f9a164bc162f615b91bc179dbf15a3"
 
 [[package]]
 name = "openssl"
@@ -842,9 +842,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "1.0.60"
+version = "1.0.61"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c700597eca8a5a762beb35753ef6b94df201c81cca676604f547495a0d7f0081"
+checksum = "ed22b90a0e734a23a7610f4283ac9e5acfb96cbb30dfefa540d66f866f1c09c5"
 dependencies = [
  "proc-macro2",
  "quote",

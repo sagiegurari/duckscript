@@ -1,4 +1,5 @@
 use crate::sdk::std::flowcontrol::{end, forin, function, get_line_key, ifelse};
+use crate::types::scope::get_line_context_name;
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
 use crate::utils::{condition, instruction_query, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
@@ -24,6 +25,7 @@ struct WhileMetaInfo {
 #[derive(Debug)]
 struct CallInfo {
     pub(crate) meta_info: WhileMetaInfo,
+    pub(crate) line_context_name: String,
 }
 
 fn serialize_while_meta_info(
@@ -65,6 +67,10 @@ fn serialize_call_info(call_info: &CallInfo, sub_state: &mut HashMap<String, Sta
         "meta_info".to_string(),
         StateValue::SubState(meta_info_state),
     );
+    sub_state.insert(
+        "line_context_name".to_string(),
+        StateValue::String(call_info.line_context_name.clone()),
+    );
 }
 
 fn deserialize_call_info(sub_state: &mut HashMap<String, StateValue>) -> Option<CallInfo> {
@@ -78,8 +84,18 @@ fn deserialize_call_info(sub_state: &mut HashMap<String, StateValue>) -> Option<
         },
         None => return None,
     };
+    let line_context_name = match sub_state.get("line_context_name") {
+        Some(value) => match value {
+            StateValue::String(line_context_name) => line_context_name.clone(),
+            _ => return None,
+        },
+        None => return None,
+    };
 
-    Some(CallInfo { meta_info })
+    Some(CallInfo {
+        meta_info,
+        line_context_name,
+    })
 }
 
 fn create_while_meta_info_for_line(
@@ -184,6 +200,7 @@ fn pop_call_info_for_line(
     line: usize,
     state: &mut HashMap<String, StateValue>,
 ) -> Option<CallInfo> {
+    let line_context_name = get_line_context_name(state);
     let while_state = get_core_sub_state_for_command(state, WHILE_STATE_KEY.to_string());
     let call_info_stack = get_list(CALL_STACK_STATE_KEY.to_string(), while_state);
 
@@ -192,7 +209,9 @@ fn pop_call_info_for_line(
             StateValue::SubState(mut call_info_state) => {
                 match deserialize_call_info(&mut call_info_state) {
                     Some(call_info) => {
-                        if call_info.meta_info.end == line {
+                        if call_info.meta_info.end == line
+                            && call_info.line_context_name == line_context_name
+                        {
                             Some(call_info)
                         } else {
                             pop_call_info_for_line(line, state)
@@ -280,8 +299,11 @@ impl Command for WhileCommand {
                     ) {
                         Ok(passed) => {
                             if passed {
+                                let line_context_name = get_line_context_name(state);
+
                                 let call_info = CallInfo {
                                     meta_info: while_info.clone(),
+                                    line_context_name,
                                 };
 
                                 store_call_info(&call_info, state);
