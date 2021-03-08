@@ -8,7 +8,7 @@
 mod parser_test;
 
 use crate::preprocessor;
-use crate::types::error::{ErrorInfo, ScriptError};
+use crate::types::error::ScriptError;
 use crate::types::instruction::{
     Instruction, InstructionMetaInfo, InstructionType, PreProcessInstruction, ScriptInstruction,
 };
@@ -25,9 +25,7 @@ pub fn parse_file(file: &str) -> Result<Vec<Instruction>, ScriptError> {
 
     match read_text_file(file) {
         Ok(text) => parse_lines(&text, meta_info),
-        Err(error) => Err(ScriptError {
-            info: ErrorInfo::ErrorReadingFile(file.to_string(), Some(error)),
-        }),
+        Err(error) => Err(ScriptError::ErrorReadingFile(file.to_string(), Some(error))),
     }
 }
 
@@ -92,9 +90,7 @@ fn parse_pre_process_line(
     start_index: usize,
 ) -> Result<Instruction, ScriptError> {
     if line_text.is_empty() {
-        Err(ScriptError {
-            info: ErrorInfo::PreProcessNoCommandFound(meta_info),
-        })
+        Err(ScriptError::PreProcessNoCommandFound(meta_info))
     } else {
         let mut command = String::new();
         let mut index = start_index;
@@ -113,9 +109,7 @@ fn parse_pre_process_line(
         }
 
         if command.is_empty() {
-            Err(ScriptError {
-                info: ErrorInfo::PreProcessNoCommandFound(meta_info),
-            })
+            Err(ScriptError::PreProcessNoCommandFound(meta_info))
         } else {
             match parse_arguments(&meta_info, &line_text, index) {
                 Ok(arguments) => {
@@ -289,9 +283,7 @@ fn parse_next_value(
                             in_control = false;
                             found_variable_prefix = false;
                         } else {
-                            return Err(ScriptError {
-                                info: ErrorInfo::ControlWithoutValidValue(meta_info.clone()),
-                            });
+                            return Err(ScriptError::ControlWithoutValidValue(meta_info.clone()));
                         }
                     } else if character == '\\' || character == '"' {
                         argument.push(character);
@@ -308,9 +300,7 @@ fn parse_next_value(
                     } else if character == '$' {
                         found_variable_prefix = true;
                     } else {
-                        return Err(ScriptError {
-                            info: ErrorInfo::ControlWithoutValidValue(meta_info.clone()),
-                        });
+                        return Err(ScriptError::ControlWithoutValidValue(meta_info.clone()));
                     }
                 } else if character == '\\' {
                     if control_as_char {
@@ -319,9 +309,7 @@ fn parse_next_value(
                         in_control = true;
                         found_variable_prefix = false;
                     } else {
-                        return Err(ScriptError {
-                            info: ErrorInfo::InvalidControlLocation(meta_info.clone()),
-                        });
+                        return Err(ScriptError::InvalidControlLocation(meta_info.clone()));
                     }
                 } else if using_quotes && character == '"' {
                     found_end = true;
@@ -351,9 +339,7 @@ fn parse_next_value(
                     if allow_quotes {
                         using_quotes = true;
                     } else {
-                        return Err(ScriptError {
-                            info: ErrorInfo::InvalidQuotesLocation(meta_info.clone()),
-                        });
+                        return Err(ScriptError::InvalidQuotesLocation(meta_info.clone()));
                     }
                 } else if character == '\\' {
                     if control_as_char {
@@ -361,9 +347,7 @@ fn parse_next_value(
                     } else if allow_control {
                         in_control = true;
                     } else {
-                        return Err(ScriptError {
-                            info: ErrorInfo::InvalidControlLocation(meta_info.clone()),
-                        });
+                        return Err(ScriptError::InvalidControlLocation(meta_info.clone()));
                     }
                 } else {
                     argument.push(character);
@@ -373,13 +357,9 @@ fn parse_next_value(
 
         if in_argument && !found_end && (in_control || using_quotes) {
             if in_control {
-                Err(ScriptError {
-                    info: ErrorInfo::ControlWithoutValidValue(meta_info.clone()),
-                })
+                Err(ScriptError::ControlWithoutValidValue(meta_info.clone()))
             } else {
-                Err(ScriptError {
-                    info: ErrorInfo::MissingEndQuotes(meta_info.clone()),
-                })
+                Err(ScriptError::MissingEndQuotes(meta_info.clone()))
             }
         } else if argument.is_empty() {
             if using_quotes {
@@ -418,9 +398,7 @@ fn find_label(
                         match value {
                             Some(label_value) => {
                                 if label_value.is_empty() {
-                                    return Err(ScriptError {
-                                        info: ErrorInfo::EmptyLabel(meta_info.clone()),
-                                    });
+                                    return Err(ScriptError::EmptyLabel(meta_info.clone()));
                                 }
 
                                 let mut text = String::new();

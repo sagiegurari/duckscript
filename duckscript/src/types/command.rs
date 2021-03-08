@@ -7,7 +7,7 @@
 #[path = "./command_test.rs"]
 mod command_test;
 
-use crate::types::error::{ErrorInfo, ScriptError};
+use crate::types::error::ScriptError;
 use crate::types::instruction::Instruction;
 use crate::types::runtime::StateValue;
 use std::collections::HashMap;
@@ -123,19 +123,18 @@ impl Commands {
         let aliases = command.aliases();
 
         if self.commands.contains_key(&name) {
-            return Err(ScriptError {
-                info: ErrorInfo::Initialization(format!("Command: {} already defined.", &name)),
-            });
+            return Err(ScriptError::Initialization(format!(
+                "Command: {} already defined.",
+                &name
+            )));
         }
 
         for alias in &aliases {
             if self.aliases.contains_key(alias) {
-                return Err(ScriptError {
-                    info: ErrorInfo::Initialization(format!(
-                        "Alias: {} for command: {} already defined.",
-                        &alias, &name
-                    )),
-                });
+                return Err(ScriptError::Initialization(format!(
+                    "Alias: {} for command: {} already defined.",
+                    &alias, &name
+                )));
             }
         }
 

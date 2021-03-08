@@ -5,6 +5,7 @@
 
 use crate::types::instruction::InstructionMetaInfo;
 use fsio::error::FsIOError;
+use std::error::Error;
 use std::fmt;
 use std::fmt::Display;
 
@@ -31,7 +32,7 @@ fn format_error_message(
 
 #[derive(Debug)]
 /// Holds the error information
-pub enum ErrorInfo {
+pub enum ScriptError {
     /// Error Info Type
     ErrorReadingFile(String, Option<FsIOError>),
     /// Error Info Type
@@ -58,59 +59,74 @@ pub enum ErrorInfo {
     UnknownPreProcessorCommand(InstructionMetaInfo),
 }
 
-#[derive(Debug)]
-/// Script error struct
-pub struct ScriptError {
-    /// Holds the error information
-    pub info: ErrorInfo,
-}
-
 impl Display for ScriptError {
     /// Formats the script error using the given formatter.
     fn fmt(&self, formatter: &mut fmt::Formatter) -> Result<(), fmt::Error> {
-        match self.info {
-            ErrorInfo::ErrorReadingFile(ref file, ref cause) => {
+        match self {
+            Self::ErrorReadingFile(ref file, ref cause) => {
                 writeln!(formatter, "Error reading file: {}", file)?;
                 match cause {
                     Some(cause_err) => cause_err.fmt(formatter),
                     None => Ok(()),
                 }
             }
-            ErrorInfo::Initialization(ref message) => write!(formatter, "{}", message),
-            ErrorInfo::Runtime(ref message, ref meta_info) => {
+            Self::Initialization(ref message) => write!(formatter, "{}", message),
+            Self::Runtime(ref message, ref meta_info) => {
                 let empty_meta_data = InstructionMetaInfo::new();
                 let meta_info_value = meta_info.as_ref().unwrap_or(&empty_meta_data);
                 format_error_message(formatter, &meta_info_value, message)
             }
-            ErrorInfo::PreProcessNoCommandFound(ref meta_info) => {
+            Self::PreProcessNoCommandFound(ref meta_info) => {
                 format_error_message(formatter, &meta_info, "preprocessor is missing a command")
             }
-            ErrorInfo::ControlWithoutValidValue(ref meta_info) => format_error_message(
+            Self::ControlWithoutValidValue(ref meta_info) => format_error_message(
                 formatter,
                 &meta_info,
                 "control character found without a valid value",
             ),
-            ErrorInfo::InvalidControlLocation(ref meta_info) => {
+            Self::InvalidControlLocation(ref meta_info) => {
                 format_error_message(formatter, &meta_info, "invalid control character location")
             }
-            ErrorInfo::MissingEndQuotes(ref meta_info) => {
+            Self::MissingEndQuotes(ref meta_info) => {
                 format_error_message(formatter, &meta_info, "missing end quotes")
             }
-            ErrorInfo::MissingOutputVariableName(ref meta_info) => {
+            Self::MissingOutputVariableName(ref meta_info) => {
                 format_error_message(formatter, &meta_info, "missing variable name")
             }
-            ErrorInfo::InvalidEqualsLocation(ref meta_info) => {
+            Self::InvalidEqualsLocation(ref meta_info) => {
                 format_error_message(formatter, &meta_info, "invalid equals sign location")
             }
-            ErrorInfo::InvalidQuotesLocation(ref meta_info) => {
+            Self::InvalidQuotesLocation(ref meta_info) => {
                 format_error_message(formatter, &meta_info, "invalid quotes location")
             }
-            ErrorInfo::EmptyLabel(ref meta_info) => {
+            Self::EmptyLabel(ref meta_info) => {
                 format_error_message(formatter, &meta_info, "empty lable found")
             }
-            ErrorInfo::UnknownPreProcessorCommand(ref meta_info) => {
+            Self::UnknownPreProcessorCommand(ref meta_info) => {
                 format_error_message(formatter, &meta_info, "unknow preprocessor command")
             }
+        }
+    }
+}
+
+impl Error for ScriptError {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        match self {
+            Self::ErrorReadingFile(_, error) => error.as_ref().map(|fsio_error| {
+                let std_error: &dyn Error = fsio_error;
+                std_error
+            }),
+            Self::Initialization(_) => None,
+            Self::Runtime(_, _) => None,
+            Self::PreProcessNoCommandFound(_) => None,
+            Self::ControlWithoutValidValue(_) => None,
+            Self::InvalidControlLocation(_) => None,
+            Self::MissingEndQuotes(_) => None,
+            Self::MissingOutputVariableName(_) => None,
+            Self::InvalidEqualsLocation(_) => None,
+            Self::InvalidQuotesLocation(_) => None,
+            Self::EmptyLabel(_) => None,
+            Self::UnknownPreProcessorCommand(_) => None,
         }
     }
 }

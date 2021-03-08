@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.8.0 (2021-03-08)
+
+* Runtime - \[Breaking Change\] Make script errors chainable.
+
 ### v0.7.4 (2021-03-05)
 
 * Fix flow control commands scope handling of call info stack

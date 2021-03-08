@@ -11,7 +11,7 @@ mod mod_test;
 mod include_files_preprocessor;
 mod print_preprocessor;
 
-use crate::types::error::{ErrorInfo, ScriptError};
+use crate::types::error::ScriptError;
 use crate::types::instruction::{Instruction, InstructionType};
 
 pub(crate) fn run(instruction: &Instruction) -> Result<Vec<Instruction>, ScriptError> {
@@ -26,13 +26,13 @@ pub(crate) fn run(instruction: &Instruction) -> Result<Vec<Instruction>, ScriptE
                     &instruction_type.arguments,
                     &instruction.meta_info,
                 ),
-                _ => Err(ScriptError {
-                    info: ErrorInfo::UnknownPreProcessorCommand(instruction.meta_info.clone()),
-                }),
+                _ => Err(ScriptError::UnknownPreProcessorCommand(
+                    instruction.meta_info.clone(),
+                )),
             },
-            None => Err(ScriptError {
-                info: ErrorInfo::PreProcessNoCommandFound(instruction.meta_info.clone()),
-            }),
+            None => Err(ScriptError::PreProcessNoCommandFound(
+                instruction.meta_info.clone(),
+            )),
         },
         _ => Ok(vec![]),
     }

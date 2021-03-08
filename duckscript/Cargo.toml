@@ -1,6 +1,6 @@
 [package]
 name = "duckscript"
-version = "0.6.0"
+version = "0.7.0"
 authors = ["Sagie Gur-Ari <sagiegurari@gmail.com>"]
 description = "Simple, extendable and embeddable scripting language."
 license = "Apache-2.0"
@@ -23,7 +23,7 @@ include = [
 ]
 
 [dependencies]
-fsio = "^0.1"
+fsio = "^0.2"
 
 [badges.codecov]
 branch = "master"

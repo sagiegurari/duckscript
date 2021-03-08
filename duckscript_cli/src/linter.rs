@@ -1,5 +1,5 @@
 use duckscript::parser;
-use duckscript::types::error::{ErrorInfo, ScriptError};
+use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::{Instruction, InstructionType, ScriptInstruction};
 
 pub(crate) fn lint_file(file: &str) -> Result<(), ScriptError> {
@@ -28,9 +28,10 @@ fn lint_instructions(instructions: Vec<Instruction>) -> Result<(), ScriptError> 
 
         match result {
             Err(error) => {
-                return Err(ScriptError {
-                    info: ErrorInfo::Runtime(error, Some(instruction.meta_info.clone())),
-                })
+                return Err(ScriptError::Runtime(
+                    error,
+                    Some(instruction.meta_info.clone()),
+                ))
             }
             _ => (),
         }

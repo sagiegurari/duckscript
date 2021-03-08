@@ -10,7 +10,7 @@ mod runner_test;
 use crate::expansion::{self, ExpandedValue};
 use crate::parser;
 use crate::types::command::{CommandResult, Commands, GoToValue};
-use crate::types::error::{ErrorInfo, ScriptError};
+use crate::types::error::ScriptError;
 use crate::types::instruction::{
     Instruction, InstructionMetaInfo, InstructionType, ScriptInstruction,
 };
@@ -74,9 +74,10 @@ pub fn repl(mut context: Context) -> Result<Context, ScriptError> {
                 }
             }
             Err(error) => {
-                return Err(ScriptError {
-                    info: ErrorInfo::Runtime(error.to_string(), Some(InstructionMetaInfo::new())),
-                });
+                return Err(ScriptError::Runtime(
+                    error.to_string(),
+                    Some(InstructionMetaInfo::new()),
+                ));
             }
         };
     }
@@ -165,12 +166,10 @@ fn run_instructions(
                 if let Some(exit_code_str) = output {
                     if let Ok(exit_code) = exit_code_str.parse::<i32>() {
                         if exit_code != 0 {
-                            return Err(ScriptError {
-                                info: ErrorInfo::Runtime(
-                                    format!("Exit with error code: {}", exit_code).to_string(),
-                                    Some(meta_info.clone()),
-                                ),
-                            });
+                            return Err(ScriptError::Runtime(
+                                format!("Exit with error code: {}", exit_code).to_string(),
+                                Some(meta_info.clone()),
+                            ));
                         }
                     }
                 }
@@ -195,9 +194,7 @@ fn run_instructions(
                     meta_info.clone(),
                 ) {
                     Err(error) => {
-                        return Err(ScriptError {
-                            info: ErrorInfo::Runtime(error, Some(meta_info.clone())),
-                        });
+                        return Err(ScriptError::Runtime(error, Some(meta_info.clone())));
                     }
                     _ => (),
                 };
@@ -207,9 +204,7 @@ fn run_instructions(
                 ()
             }
             CommandResult::Crash(error) => {
-                let script_error = ScriptError {
-                    info: ErrorInfo::Runtime(error, Some(meta_info)),
-                };
+                let script_error = ScriptError::Runtime(error, Some(meta_info));
 
                 if repl_mode {
                     return Ok((runtime.context, EndReason::Crash(script_error)));
@@ -231,12 +226,10 @@ fn run_instructions(
                     GoToValue::Label(label) => match runtime.label_to_line.get(&label) {
                         Some(value) => line = *value,
                         None => {
-                            return Err(ScriptError {
-                                info: ErrorInfo::Runtime(
-                                    format!("Label: {} not found.", label),
-                                    Some(meta_info),
-                                ),
-                            });
+                            return Err(ScriptError::Runtime(
+                                format!("Label: {} not found.", label),
+                                Some(meta_info),
+                            ));
                         }
                     },
                     GoToValue::Line(line_number) => line = line_number,

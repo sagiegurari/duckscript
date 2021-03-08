@@ -1,4 +1,4 @@
-use duckscript::types::error::{ErrorInfo, ScriptError};
+use duckscript::types::error::ScriptError;
 use fsio;
 use fsio::file::{append_file, ensure_exists, read_file, write_file};
 
@@ -9,18 +9,14 @@ mod io_test;
 pub(crate) fn read_text_file(file: &str) -> Result<String, ScriptError> {
     match fsio::file::read_text_file(file) {
         Ok(content) => Ok(content),
-        Err(error) => Err(ScriptError {
-            info: ErrorInfo::ErrorReadingFile(file.to_string(), Some(error)),
-        }),
+        Err(error) => Err(ScriptError::ErrorReadingFile(file.to_string(), Some(error))),
     }
 }
 
 pub(crate) fn read_raw_file(file: &str) -> Result<Vec<u8>, ScriptError> {
     match read_file(file) {
         Ok(content) => Ok(content),
-        Err(error) => Err(ScriptError {
-            info: ErrorInfo::ErrorReadingFile(file.to_string(), Some(error)),
-        }),
+        Err(error) => Err(ScriptError::ErrorReadingFile(file.to_string(), Some(error))),
     }
 }
 
@@ -41,9 +37,7 @@ pub(crate) fn write_to_file(file: &str, data: &[u8], append: bool) -> Result<(),
 
     match result {
         Ok(content) => Ok(content),
-        Err(error) => Err(ScriptError {
-            info: ErrorInfo::Runtime(error.to_string(), None),
-        }),
+        Err(error) => Err(ScriptError::Runtime(error.to_string(), None)),
     }
 }
 
