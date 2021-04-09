@@ -23,7 +23,7 @@ include = [
 ]
 
 [dependencies]
-attohttpc = "^0.16"
+attohttpc = "^0.17"
 base64 = "^0.13"
 cfg-if = "^1.0"
 duckscript = { version = "^0.7", path = "../duckscript" }
