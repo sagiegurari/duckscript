@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.8.1
+### v0.8.1 (2021-04-09)
 
 * New gitignore_path_array command
 
