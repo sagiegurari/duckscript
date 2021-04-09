@@ -5,6 +5,7 @@ mod cp;
 mod dirname;
 mod exists;
 mod get_last_modified_time;
+mod gitignore_path_array;
 mod glob_array;
 mod is_directory;
 mod is_file;
@@ -42,6 +43,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(dirname::create(&package))?;
     commands.set(exists::create(&package))?;
     commands.set(get_last_modified_time::create(&package))?;
+    commands.set(gitignore_path_array::create(&package))?;
     commands.set(glob_array::create(&package))?;
     commands.set(is_directory::create(&package))?;
     commands.set(is_file::create(&package))?;

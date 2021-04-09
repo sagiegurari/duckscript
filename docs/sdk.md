@@ -91,6 +91,7 @@
 * [std::fs::GetFileName (basename)](#std__fs__GetFileName)
 * [std::fs::GetLastModifiedTime (get_last_modified_time)](#std__fs__GetLastModifiedTime)
 * [std::fs::GetParentDirectory (dirname)](#std__fs__GetParentDirectory)
+* [std::fs::GitIgnorePathArray (gitignore_path_array)](#std__fs__GitIgnorePathArray)
 * [std::fs::GlobArray (glob_array, globarray)](#std__fs__GlobArray)
 * [std::fs::IsDirectory (is_directory, is_dir)](#std__fs__IsDirectory)
 * [std::fs::IsFile (is_file)](#std__fs__IsFile)
@@ -3467,6 +3468,36 @@ directory = dirname ./dir/file.txt
 
 #### Aliases:
 dirname
+
+<a name="std__fs__GitIgnorePathArray"></a>
+## std::fs::GitIgnorePathArray
+```sh
+handle = gitignore_path_array path
+```
+
+Returns an array handle containing all path entries found from the provided root path that should be included based on the gitignore definitions.
+
+#### Parameters
+
+The root path.
+
+#### Return Value
+
+The array handle.
+
+#### Examples
+
+```sh
+handle = gitignore_path_array ./src
+
+for path in ${handle}
+    echo ${path}
+end
+```
+
+
+#### Aliases:
+gitignore_path_array
 
 <a name="std__fs__GlobArray"></a>
 ## std::fs::GlobArray

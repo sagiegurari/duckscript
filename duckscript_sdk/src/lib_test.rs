@@ -28,7 +28,14 @@ fn test_scripts() {
 
     assert!(!context.commands.get_all_command_names().is_empty());
 
-    let result = runner::run_script("test_directory ../test", context);
+    let result = runner::run_script(
+        r#"
+    set_env DUCKSCRIPT_TEST_RUST true
+    test_directory ../test
+    unset_env DUCKSCRIPT_TEST_RUST
+    "#,
+        context,
+    );
 
     assert!(result.is_ok());
 }

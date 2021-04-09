@@ -1,0 +1,68 @@
+
+fn test_found
+    env_value = get_env DUCKSCRIPT_TEST_RUST
+    is_from_rust = eq ${env_value} true
+    if ${is_from_rust}
+        return
+    end
+
+    handle = gitignore_path_array ./duckscript/src
+
+    size = array_length ${handle}
+    assert_eq ${size} 36
+
+    expected = map
+    map_put ${expected} ./duckscript/src true
+    map_put ${expected} ./duckscript/src/expansion_test.rs true
+
+    for path in ${handle}
+        unix_path = replace ${path} \\ /
+        map_remove ${expected} ${unix_path}
+
+        if array_is_empty ${expected}
+            release ${handle}
+        end
+    end
+
+    release ${expected}
+end
+
+fn test_with_ignored
+    env_value = get_env DUCKSCRIPT_TEST_RUST
+    is_from_rust = eq ${env_value} true
+    if ${is_from_rust}
+        return
+    end
+
+    test_dir = set ./target/_duckscript_test/gitignore_path_array
+    touch ${test_dir}/a.log
+    touch ${test_dir}/b.log
+    touch ${test_dir}/test.rs
+    touch ${test_dir}/temp/ignored_test.rs
+
+    found_dir = is_directory ./duckscript
+    if not ${found_dir}
+        cd ..
+        cd_back = cwd
+    end
+    handle = gitignore_path_array ${test_dir}
+    if is_defined cd_back
+        cd ${cd_back}
+    end
+
+    size = array_length ${handle}
+    assert_eq ${size} 2
+
+    expected = map
+    map_put ${expected} ${test_dir} true
+    map_put ${expected} ${test_dir}/test.rs true
+
+    for path in ${handle}
+        unix_path = replace ${path} \\ /
+        map_remove ${expected} ${unix_path}
+    end
+
+    release ${handle}
+    release ${expected}
+end
+

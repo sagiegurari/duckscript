@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.8.1
+
+* New gitignore_path_array command
+
 ### v0.8.0 (2021-03-08)
 
 * Runtime - \[Breaking Change\] Make script errors chainable.
