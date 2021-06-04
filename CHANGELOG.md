@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.8.2 (2021-06-04)
+
+* Upgrade dependencies #179
+
 ### v0.8.1 (2021-04-09)
 
 * New gitignore_path_array command
