@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.8.3
+
+* Fix release with recursive flag to support set data structures as well.
+
 ### v0.8.2 (2021-06-04)
 
 * Upgrade dependencies #179

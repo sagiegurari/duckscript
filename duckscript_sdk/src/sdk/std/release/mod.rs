@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use crate::utils::state::remove_handle;
+use crate::utils::state::{remove_handle, remove_handle_recursive};
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -8,41 +8,6 @@ use std::collections::HashMap;
 #[cfg(test)]
 #[path = "./mod_test.rs"]
 mod mod_test;
-
-fn remove(state: &mut HashMap<String, StateValue>, key: &str, recursive: bool) -> bool {
-    match remove_handle(state, key.to_string()) {
-        Some(state_value) => {
-            if recursive {
-                match state_value {
-                    StateValue::SubState(map) => {
-                        for (_, map_value) in map {
-                            match map_value {
-                                StateValue::String(value) => remove(state, &value, recursive),
-                                _ => true,
-                            };
-                        }
-
-                        true
-                    }
-                    StateValue::List(list) => {
-                        for value in list {
-                            match value {
-                                StateValue::String(value) => remove(state, &value, recursive),
-                                _ => true,
-                            };
-                        }
-
-                        true
-                    }
-                    _ => true,
-                }
-            } else {
-                true
-            }
-        }
-        None => false,
-    }
-}
 
 #[derive(Clone)]
 pub(crate) struct CommandImpl {
@@ -90,9 +55,13 @@ impl Command for CommandImpl {
                     (arguments[0].to_string(), false)
                 };
 
-            let removed = remove(state, &key, recursive);
+            if recursive {
+                remove_handle_recursive(state, key);
+            } else {
+                remove_handle(state, key);
+            }
 
-            CommandResult::Continue(Some(removed.to_string()))
+            CommandResult::Continue(Some(true.to_string()))
         }
     }
 }

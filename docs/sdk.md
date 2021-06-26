@@ -172,6 +172,7 @@
 * [std::time::CurrentTimeMillies (current_time)](#std__time__CurrentTimeMillies)
 * [std::var::GetAllVarNames (get_all_var_names)](#std__var__GetAllVarNames)
 * [std::var::GetByName (get_by_name)](#std__var__GetByName)
+* [std::var::IsDefined (is_defined)](#std__var__IsDefined)
 * [std::var::Set (set)](#std__var__Set)
 * [std::var::SetByName (set_by_name)](#std__var__SetByName)
 * [std::var::Unset (unset)](#std__var__Unset)
@@ -410,8 +411,8 @@ release [-r|--recursive] handle
 Releases an internal handle stored in the runtime memory.<br>
 Certain commands (such as **array**) will create a handle and the variable will only hold a reference to that handle.<br>
 In order to release those handles once they are no longer needed, the release command should be used.<br>
-By providing the recursive flag, it will also go over the data values (array items, map values, ...) and release each one of them as well
-if they are handles to other arrays/maps/...
+By providing the recursive flag, it will also go over the data values (array items, map values, set keys, ...) and release each one of them as well
+if they are handles to other arrays/maps/sets/...
 
 #### Parameters
 
@@ -6337,6 +6338,33 @@ assert_eq ${value} test
 
 #### Aliases:
 get_by_name
+
+<a name="std__var__IsDefined"></a>
+## std::var::IsDefined
+```sh
+var = is_defined key
+```
+
+Returns true if the provided variable name (not value) exists.
+
+#### Parameters
+
+The variable name.
+
+#### Return Value
+
+True if the variable is defined.
+
+#### Examples
+
+```sh
+key = set "hello world"
+exists = is_defined key
+```
+
+
+#### Aliases:
+is_defined
 
 <a name="std__var__Set"></a>
 ## std::var::Set

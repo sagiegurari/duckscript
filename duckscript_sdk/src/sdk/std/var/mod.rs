@@ -17,7 +17,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
 
     commands.set(get_all_var_names::create(&package))?;
     commands.set(get_by_name::create(&package))?;
-    commands.set(is_defined::create(PACKAGE))?;
+    commands.set(is_defined::create(&package))?;
     commands.set(set::create(&package))?;
     commands.set(set_by_name::create(&package))?;
     commands.set(unset::create(&package)?)?;
