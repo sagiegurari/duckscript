@@ -55,13 +55,14 @@ impl Command for CommandImpl {
                     (arguments[0].to_string(), false)
                 };
 
-            if recursive {
-                remove_handle_recursive(state, key);
+            let removed = if recursive {
+                remove_handle_recursive(state, key)
             } else {
-                remove_handle(state, key);
-            }
+                let old_value = remove_handle(state, key);
+                old_value.is_some()
+            };
 
-            CommandResult::Continue(Some(true.to_string()))
+            CommandResult::Continue(Some(removed.to_string()))
         }
     }
 }
