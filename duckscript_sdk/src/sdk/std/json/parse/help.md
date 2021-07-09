@@ -14,6 +14,7 @@ root.child.length
 
 In case the --collection flag is provided, it will instead create maps/array as needed and return the root handle (or primitive value) of
 the json data.
+Make sure to use the release with the recursive flag on the root object to release the entire memory once done.
 
 #### Parameters
 
@@ -57,4 +58,5 @@ assert_eq ${value} test1
 directories = map_get ${package} directories
 directory = map_get ${directories} test
 assert_eq ${directory} spec
+release --recursive ${package}
 ```

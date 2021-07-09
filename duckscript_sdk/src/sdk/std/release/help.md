@@ -10,7 +10,7 @@ if they are handles to other arrays/maps/sets/...
 
 #### Parameters
 
-* Optional recursive flag (default false)
+* Optional recursive (-r/--recursive) flag (default false)
 * The handle name.
 
 #### Return Value

@@ -44,5 +44,13 @@ fn test_all_types_as_collections
 
     directory = map_get ${directories} test
     assert_eq ${directory} spec
+
+    release --recursive ${package}
+    output = is_map ${package}
+    assert_false ${output}
+    output = is_array ${keywords_handle}
+    assert_false ${output}
+    output = is_map ${directories}
+    assert_false ${output}
 end
 
