@@ -3,6 +3,7 @@
 ### v0.8.4
 
 * New --collection flag to json_parse command which returns maps/arrays instead of variables #175
+* New --collection flag to json_encode command which encodes maps/arrays instead of variables #175
 
 ### v0.8.3
 
