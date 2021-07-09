@@ -1,5 +1,6 @@
 use crate::sdk::std::json::OBJECT_VALUE;
 use crate::utils::pckg;
+use crate::utils::state::put_handle;
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -46,6 +47,41 @@ fn create_variables(data: Value, name: &str, variables: &mut HashMap<String, Str
     };
 }
 
+fn create_structure(data: Value, state: &mut HashMap<String, StateValue>) -> Option<String> {
+    match data {
+        Value::Null => None,
+        Value::Bool(value) => Some(value.to_string()),
+        Value::Number(value) => Some(value.to_string()),
+        Value::String(value) => Some(value),
+        Value::Array(list) => {
+            let mut state_list = vec![];
+
+            for item in list {
+                if let Some(value) = create_structure(item, state) {
+                    state_list.push(StateValue::String(value));
+                }
+            }
+
+            let key = put_handle(state, StateValue::List(state_list));
+
+            Some(key)
+        }
+        Value::Object(map) => {
+            let mut state_map = HashMap::new();
+
+            for (key, value) in map {
+                if let Some(value) = create_structure(value, state) {
+                    state_map.insert(key, StateValue::String(value));
+                }
+            }
+
+            let key = put_handle(state, StateValue::SubState(state_map));
+
+            Some(key)
+        }
+    }
+}
+
 #[derive(Clone)]
 pub(crate) struct CommandImpl {
     package: String,
@@ -75,7 +111,7 @@ impl Command for CommandImpl {
     fn run_with_context(
         &self,
         arguments: Vec<String>,
-        _state: &mut HashMap<String, StateValue>,
+        state: &mut HashMap<String, StateValue>,
         variables: &mut HashMap<String, String>,
         output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
@@ -85,15 +121,25 @@ impl Command for CommandImpl {
         if arguments.is_empty() {
             CommandResult::Error("No JSON string provided.".to_string())
         } else {
-            match parse_json(&arguments[0]) {
+            let (json_index, as_state) = if arguments.len() > 1 && arguments[0] == "--collection" {
+                (1, true)
+            } else {
+                (0, false)
+            };
+
+            match parse_json(&arguments[json_index]) {
                 Ok(data) => {
                     let output = match output_variable {
                         Some(name) => {
-                            create_variables(data, &name, variables);
+                            if as_state {
+                                create_structure(data, state)
+                            } else {
+                                create_variables(data, &name, variables);
 
-                            match variables.get(&name) {
-                                Some(value) => Some(value.to_string()),
-                                None => None,
+                                match variables.get(&name) {
+                                    Some(value) => Some(value.to_string()),
+                                    None => None,
+                                }
                             }
                         }
                         None => Some("true".to_string()),
