@@ -1,13 +1,10 @@
 ## CHANGELOG
 
-### v0.8.4
-
-* New --collection flag to json_parse command which returns maps/arrays instead of variables #175
-* New --collection flag to json_encode command which encodes maps/arrays instead of variables #175
-
-### v0.8.3
+### v0.8.3 (2021-07-10)
 
 * Fix release with recursive flag to support set data structures as well.
+* New --collection flag to json_parse command which returns maps/arrays instead of variables #175
+* New --collection flag to json_encode command which encodes maps/arrays instead of variables #175
 
 ### v0.8.2 (2021-06-04)
 
