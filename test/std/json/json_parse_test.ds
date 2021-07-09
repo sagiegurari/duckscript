@@ -1,5 +1,5 @@
 
-fn test_all_types
+fn test_all_types_as_vars
     package = json_parse "{\"name\": \"my package\", \"version\": 1, \"publish\": false, \"keywords\": [\"test1\", \"test2\"], \"directories\": {\"test\": \"spec\"}}"
 
     assert_eq ${package} "[OBJECT]"
@@ -10,5 +10,47 @@ fn test_all_types
     assert_eq ${package.keywords[0]} test1
     assert_eq ${package.keywords[1]} test2
     assert_eq ${package.directories.test} spec
+end
+
+fn test_all_types_as_collections
+    package = json_parse --collection "{\"name\": \"my package\", \"version\": 1, \"publish\": false, \"keywords\": [\"test1\", \"test2\"], \"directories\": {\"test\": \"spec\"}}"
+
+    output = is_map ${package}
+    assert ${output}
+
+    name = map_get ${package} name
+    assert_eq ${name} "my package"
+
+    version = map_get ${package} version
+    assert_eq ${version} 1
+
+    public = map_get ${package} public
+    assert_false ${public}
+
+    keywords_handle = map_get ${package} keywords
+    output = is_array ${keywords_handle}
+    assert ${output}
+
+    length = array_length ${keywords_handle}
+    assert_eq ${length} 2
+    value = array_pop ${keywords_handle}
+    assert_eq ${value} test2
+    value = array_pop ${keywords_handle}
+    assert_eq ${value} test1
+
+    directories = map_get ${package} directories
+    output = is_map ${directories}
+    assert ${output}
+
+    directory = map_get ${directories} test
+    assert_eq ${directory} spec
+
+    release --recursive ${package}
+    output = is_map ${package}
+    assert_false ${output}
+    output = is_array ${keywords_handle}
+    assert_false ${output}
+    output = is_map ${directories}
+    assert_false ${output}
 end
 

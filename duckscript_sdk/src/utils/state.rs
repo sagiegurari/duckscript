@@ -68,6 +68,43 @@ pub(crate) fn remove_handle(
     handle_state.remove(&key)
 }
 
+pub(crate) fn remove_handle_recursive(
+    state: &mut HashMap<String, StateValue>,
+    key: String,
+) -> bool {
+    match remove_handle(state, key.to_string()) {
+        Some(state_value) => match state_value {
+            StateValue::List(list) => {
+                for value in list {
+                    if let StateValue::String(value) = value {
+                        remove_handle_recursive(state, value);
+                    };
+                }
+
+                true
+            }
+            StateValue::Set(set) => {
+                for value in set {
+                    remove_handle_recursive(state, value);
+                }
+
+                true
+            }
+            StateValue::SubState(map) => {
+                for (_, map_value) in map {
+                    if let StateValue::String(value) = map_value {
+                        remove_handle_recursive(state, value);
+                    };
+                }
+
+                true
+            }
+            _ => true,
+        },
+        None => false,
+    }
+}
+
 pub(crate) fn return_handle(
     state: &mut HashMap<String, StateValue>,
     key: String,

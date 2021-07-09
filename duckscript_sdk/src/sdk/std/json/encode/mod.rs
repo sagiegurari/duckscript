@@ -1,10 +1,11 @@
 use crate::sdk::std::json::OBJECT_VALUE;
 use crate::utils::pckg;
+use crate::utils::state::get_handles_sub_state;
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
 use serde_json::map::Map;
-use serde_json::Value;
+use serde_json::{Number, Value};
 use std::collections::{HashMap, HashSet};
 
 #[cfg(test)]
@@ -92,7 +93,10 @@ fn encode_any(name: &str, values: &HashMap<&str, &str>) -> Result<Value, String>
     }
 }
 
-fn encode(name: &str, variables: &HashMap<String, String>) -> Result<String, String> {
+fn encode_from_variables(
+    name: &str,
+    variables: &HashMap<String, String>,
+) -> Result<String, String> {
     let mut object_variables: HashMap<&str, &str> = HashMap::new();
 
     for (key, value) in variables {
@@ -108,6 +112,68 @@ fn encode(name: &str, variables: &HashMap<String, String>) -> Result<String, Str
             Ok(value) => Ok(value.to_string()),
             Err(error) => Err(error),
         }
+    }
+}
+
+fn encode_from_state_value(
+    state_value: &StateValue,
+    state: &HashMap<String, StateValue>,
+) -> Result<Value, String> {
+    match state_value {
+        StateValue::Boolean(value) => Ok(Value::Bool(*value)),
+        StateValue::Number(value) => Ok(Value::Number(Number::from(*value))),
+        StateValue::UnsignedNumber(value) => Ok(Value::Number(Number::from(*value))),
+        StateValue::Number32Bit(value) => Ok(Value::Number(Number::from(*value))),
+        StateValue::UnsignedNumber32Bit(value) => Ok(Value::Number(Number::from(*value))),
+        StateValue::Number64Bit(value) => Ok(Value::Number(Number::from(*value))),
+        StateValue::UnsignedNumber64Bit(value) => Ok(Value::Number(Number::from(*value))),
+        StateValue::String(value) => match state.get(value) {
+            Some(sub_state_value) => encode_from_state_value(sub_state_value, state),
+            None => Ok(Value::String(value.to_string())),
+        },
+        StateValue::List(list) => {
+            let mut items = vec![];
+
+            for item in list {
+                match encode_from_state_value(item, state) {
+                    Ok(item_value) => {
+                        items.push(item_value);
+                    }
+                    Err(error) => return Err(error),
+                };
+            }
+
+            Ok(Value::Array(items))
+        }
+        StateValue::SubState(sub_state) => {
+            let mut items = Map::new();
+
+            for (key, value) in sub_state {
+                match encode_from_state_value(value, state) {
+                    Ok(item_value) => {
+                        items.insert(key.to_string(), item_value);
+                    }
+                    Err(error) => return Err(error),
+                }
+            }
+
+            Ok(Value::Object(items))
+        }
+        StateValue::ByteArray(_) => Err("Unsupported value type.".to_string()),
+        StateValue::Set(_) => Err("Unsupported value type.".to_string()),
+        StateValue::Any(_) => Err("Unsupported value type.".to_string()),
+    }
+}
+
+fn encode_from_state(value: &str, state: &HashMap<String, StateValue>) -> Result<String, String> {
+    let json_value = match state.get(value) {
+        Some(state_value) => encode_from_state_value(state_value, state),
+        None => Ok(Value::String(value.to_string())),
+    };
+
+    match json_value {
+        Ok(json_value_obj) => Ok(json_value_obj.to_string()),
+        Err(error) => Err(error.to_string()),
     }
 }
 
@@ -140,7 +206,7 @@ impl Command for CommandImpl {
     fn run_with_context(
         &self,
         arguments: Vec<String>,
-        _state: &mut HashMap<String, StateValue>,
+        state: &mut HashMap<String, StateValue>,
         variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
         _instructions: &Vec<Instruction>,
@@ -150,9 +216,24 @@ impl Command for CommandImpl {
         if arguments.is_empty() {
             CommandResult::Error("No JSON root variable name provided.".to_string())
         } else {
-            match encode(&arguments[0], variables) {
-                Ok(output) => CommandResult::Continue(Some(output)),
-                Err(error) => CommandResult::Error(error),
+            let (start_index, as_state) = if arguments.len() > 1 && arguments[0] == "--collection" {
+                (1, true)
+            } else {
+                (0, false)
+            };
+
+            if as_state {
+                let state = get_handles_sub_state(state);
+
+                match encode_from_state(&arguments[start_index], state) {
+                    Ok(output) => CommandResult::Continue(Some(output)),
+                    Err(error) => CommandResult::Error(error),
+                }
+            } else {
+                match encode_from_variables(&arguments[start_index], variables) {
+                    Ok(output) => CommandResult::Continue(Some(output)),
+                    Err(error) => CommandResult::Error(error),
+                }
             }
         }
     }

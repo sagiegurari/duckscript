@@ -13,7 +13,7 @@ fn run_no_args() {
 }
 
 #[test]
-fn run_all_types() {
+fn run_all_types_as_vars() {
     let context = test::run_script_and_validate(
         vec![create("")],
         r#"
