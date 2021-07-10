@@ -1,13 +1,16 @@
 The json module provides json parsing and encoding capabilities.<br>
-When parsing a JSON string, the structure will be represented by simple variables.<br>
+Parsing and encoding JSONs can be do to/from simple variables or to collections (maps/arrays).<br>
+By default, when parsing a JSON string, the structure will be represented by simple variables.<br>
 The root object (or simple value) will be set in the json_parse output variable and any sub structure will be
 defined as variables with prefix of the root variable name.<br>
 Object nodes, will have the value of: **[OBJECT]**.<br>
 Array nodes will have a length variable defined, for example: **arr.length**<br>
+If the --collections flag is provided, parsing will return the JSON value or a handle to a collection which will hold the values (or sub collections).<br>
+These collections are better way to handling unknown json structures but must be released with the **release --recursive** command.
 
 Because duckscript variables have no type, the json_encode will define every boolean/numeric value as JSON string.<br>
 
-Below is a simple example showing how to parse and encode values of all types.
+Below is a simple example showing how to parse and encode values of all types when using the default behaviour of storing to variables.
 
 ```sh
 fn test_simple_types

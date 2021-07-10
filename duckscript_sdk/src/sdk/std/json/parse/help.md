@@ -1,5 +1,5 @@
 ```sh
-var = json_parse string
+var = json_parse [--collection] string
 ```
 
 This function will parse the provided JSON string and will create variables based on the parsed data.<br>

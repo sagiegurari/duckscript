@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.8.4
+
+* Docs - update --collection documentation for json_parse and json_encode commands #175
+
 ### v0.8.3 (2021-07-10)
 
 * Fix release with recursive flag to support set data structures as well.

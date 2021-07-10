@@ -1,5 +1,5 @@
 ```sh
-string = json_encode var_name
+string = json_encode (--collection handle | var_name)
 ```
 
 This function will encode all variables, starting from the root variable as a JSON string.<br>
