@@ -5744,6 +5744,34 @@ len = length "Hello World"
 #### Aliases:
 length, strlen
 
+
+<a name="std__string__Length"></a>
+## std::string::Length
+```sh
+var = lowercase text
+```
+
+Converts the provided string into lowercase.
+
+#### Parameters
+
+The string to convert.
+
+#### Return Value
+
+The converted string.
+
+#### Examples
+
+```sh
+string = lowercase "Hello World"
+assert_eq ${string} "hello world"
+```
+
+#### Aliases:
+lowercase
+
+
 <a name="std__string__Replace"></a>
 ## std::string::Replace
 ```sh
@@ -6044,6 +6072,34 @@ trimmed = trim_start "  some  text   "
 
 #### Aliases:
 trim_start
+
+
+<a name="std__string__Uppercase"></a>
+## std::string::Uppercase
+```sh
+var = uppercase text
+```
+
+Converts the provided string into uppercase.
+
+#### Parameters
+
+The string to convert.
+
+#### Return Value
+
+The converted string.
+
+#### Examples
+
+```sh
+string = uppercase "Hello World"
+assert_eq ${string} "HELLO WORLD"
+```
+
+#### Aliases:
+uppercase
+
 
 <a name="std__test__Assert"></a>
 ## std::test::Assert

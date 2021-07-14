@@ -11,6 +11,7 @@ mod indexof;
 mod is_empty;
 mod last_indexof;
 mod length;
+mod lowercase;
 mod replace;
 mod snake_case;
 mod split;
@@ -20,6 +21,7 @@ mod substring;
 mod trim;
 mod trim_end;
 mod trim_start;
+mod uppercase;
 
 use crate::utils::pckg;
 use duckscript::types::command::Commands;
@@ -43,6 +45,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(is_empty::create(&package))?;
     commands.set(last_indexof::create(&package))?;
     commands.set(length::create(&package))?;
+    commands.set(lowercase::create(&package))?;
     commands.set(replace::create(&package))?;
     commands.set(snake_case::create(&package))?;
     commands.set(split::create(&package))?;
@@ -52,6 +55,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(trim::create(&package))?;
     commands.set(trim_start::create(&package))?;
     commands.set(trim_end::create(&package))?;
+    commands.set(uppercase::create(&package))?;
 
     Ok(())
 }
