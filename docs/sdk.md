@@ -145,6 +145,7 @@
 * [std::string::Base64Decode (base64_decode)](#std__string__Base64Decode)
 * [std::string::Base64Encode (base64_encode)](#std__string__Base64Encode)
 * [std::string::BytesToString (bytes_to_string)](#std__string__BytesToString)
+* [std::string::CamelCase (camel_case)](#std__string__CamelCase)
 * [std::string::Concat (concat)](#std__string__Concat)
 * [std::string::Contains (contains)](#std__string__Contains)
 * [std::string::EndsWith (ends_with)](#std__string__EndsWith)
@@ -154,6 +155,7 @@
 * [std::string::LastIndexOf (last_indexof)](#std__string__LastIndexOf)
 * [std::string::Length (length, strlen)](#std__string__Length)
 * [std::string::Replace (replace)](#std__string__Replace)
+* [std::string::SnakeCase (snake_case)](#std__string__SnakeCase)
 * [std::string::Split (split)](#std__string__Split)
 * [std::string::StartsWith (starts_with)](#std__string__StartsWith)
 * [std::string::StringToBytes (string_to_bytes)](#std__string__StringToBytes)
@@ -5455,6 +5457,36 @@ assert_eq ${text} "hello world"
 #### Aliases:
 bytes_to_string
 
+
+<a name="std__string__CamelCase"></a>
+## std::string::CamelCase
+```sh
+var = camel_case text
+```
+
+Converts the provided string into camel case.
+All non-alphanumeric characters are ignored.
+
+#### Parameters
+
+The string to convert.
+
+#### Return Value
+
+The converted string.
+
+#### Examples
+
+```sh
+string = camel_case "hello, world!"
+assert_eq ${string} "HelloWorld"
+```
+
+
+#### Aliases:
+camel_case
+
+
 <a name="std__string__Concat"></a>
 ## std::string::Concat
 
@@ -5742,6 +5774,36 @@ assert_eq ${updated} "my large stuff value with lots of stuff"
 
 #### Aliases:
 replace
+
+
+<a name="std__string__SnakeCase"></a>
+## std::string::SnakeCase
+```sh
+var = snake_case text
+```
+
+Converts the provided string into snake case.
+All non-alphanumeric characters are ignored.
+
+#### Parameters
+
+The string to convert.
+
+#### Return Value
+
+The converted string.
+
+#### Examples
+
+```sh
+string = snake_case "Hello, World!"
+assert_eq ${string} "hello_world"
+```
+
+
+#### Aliases:
+snake_case
+
 
 <a name="std__string__Split"></a>
 ## std::string::Split
