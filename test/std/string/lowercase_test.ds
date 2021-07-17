@@ -1,0 +1,6 @@
+
+fn test_conversion
+    output = lowercase "Hello World"
+
+    assert_eq ${output} "hello world"
+end

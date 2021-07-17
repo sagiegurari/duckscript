@@ -145,15 +145,18 @@
 * [std::string::Base64Decode (base64_decode)](#std__string__Base64Decode)
 * [std::string::Base64Encode (base64_encode)](#std__string__Base64Encode)
 * [std::string::BytesToString (bytes_to_string)](#std__string__BytesToString)
+* [std::string::CamelCase (camelcase)](#std__string__CamelCase)
 * [std::string::Concat (concat)](#std__string__Concat)
 * [std::string::Contains (contains)](#std__string__Contains)
 * [std::string::EndsWith (ends_with)](#std__string__EndsWith)
 * [std::string::Equals (equals, eq)](#std__string__Equals)
 * [std::string::IndexOf (indexof)](#std__string__IndexOf)
 * [std::string::IsEmpty (is_empty)](#std__string__IsEmpty)
+* [std::string::KebabCase (kebabcase)](#std__string__KebabCase)
 * [std::string::LastIndexOf (last_indexof)](#std__string__LastIndexOf)
 * [std::string::Length (length, strlen)](#std__string__Length)
 * [std::string::Replace (replace)](#std__string__Replace)
+* [std::string::SnakeCase (snakecase)](#std__string__SnakeCase)
 * [std::string::Split (split)](#std__string__Split)
 * [std::string::StartsWith (starts_with)](#std__string__StartsWith)
 * [std::string::StringToBytes (string_to_bytes)](#std__string__StringToBytes)
@@ -5455,6 +5458,36 @@ assert_eq ${text} "hello world"
 #### Aliases:
 bytes_to_string
 
+
+<a name="std__string__CamelCase"></a>
+## std::string::CamelCase
+```sh
+var = camelcase text
+```
+
+Converts the provided string into camel case.
+All non-alphanumeric characters are ignored.
+
+#### Parameters
+
+The string to convert.
+
+#### Return Value
+
+The converted string.
+
+#### Examples
+
+```sh
+string = camelcase "hello, world!"
+assert_eq ${string} "HelloWorld"
+```
+
+
+#### Aliases:
+camelcase
+
+
 <a name="std__string__Concat"></a>
 ## std::string::Concat
 
@@ -5686,6 +5719,35 @@ index = last_indexof "    some  text   " some
 #### Aliases:
 last_indexof
 
+
+<a name="std__string__KebabCase"></a>
+## std::string::KebabCase
+```sh
+var = kebabcase text
+```
+
+Converts the provided string into kebab case.
+All non-alphanumeric characters are ignored.
+
+#### Parameters
+
+The string to convert.
+
+#### Return Value
+
+The converted string.
+
+#### Examples
+
+```sh
+string = kebabcase "hello, world!"
+assert_eq ${string} "hello-world"
+```
+
+
+#### Aliases:
+kebabcase
+
 <a name="std__string__Length"></a>
 ## std::string::Length
 ```sh
@@ -5711,6 +5773,34 @@ len = length "Hello World"
 
 #### Aliases:
 length, strlen
+
+
+<a name="std__string__Length"></a>
+## std::string::Length
+```sh
+var = lowercase text
+```
+
+Converts the provided string into lowercase.
+
+#### Parameters
+
+The string to convert.
+
+#### Return Value
+
+The converted string.
+
+#### Examples
+
+```sh
+string = lowercase "Hello World"
+assert_eq ${string} "hello world"
+```
+
+#### Aliases:
+lowercase
+
 
 <a name="std__string__Replace"></a>
 ## std::string::Replace
@@ -5742,6 +5832,36 @@ assert_eq ${updated} "my large stuff value with lots of stuff"
 
 #### Aliases:
 replace
+
+
+<a name="std__string__SnakeCase"></a>
+## std::string::SnakeCase
+```sh
+var = snakecase text
+```
+
+Converts the provided string into snake case.
+All non-alphanumeric characters are ignored.
+
+#### Parameters
+
+The string to convert.
+
+#### Return Value
+
+The converted string.
+
+#### Examples
+
+```sh
+string = snakecase "Hello, World!"
+assert_eq ${string} "hello_world"
+```
+
+
+#### Aliases:
+snakecase
+
 
 <a name="std__string__Split"></a>
 ## std::string::Split
@@ -5982,6 +6102,34 @@ trimmed = trim_start "  some  text   "
 
 #### Aliases:
 trim_start
+
+
+<a name="std__string__Uppercase"></a>
+## std::string::Uppercase
+```sh
+var = uppercase text
+```
+
+Converts the provided string into uppercase.
+
+#### Parameters
+
+The string to convert.
+
+#### Return Value
+
+The converted string.
+
+#### Examples
+
+```sh
+string = uppercase "Hello World"
+assert_eq ${string} "HELLO WORLD"
+```
+
+#### Aliases:
+uppercase
+
 
 <a name="std__test__Assert"></a>
 ## std::test::Assert
