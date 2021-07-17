@@ -1,5 +1,5 @@
 ```sh
-var = snake_case text
+var = snakecase text
 ```
 
 Converts the provided string into snake case.
@@ -16,6 +16,7 @@ The converted string.
 #### Examples
 
 ```sh
-string = snake_case "Hello, World!"
+string = snakecase "Hello, World!"
 assert_eq ${string} "hello_world"
 ```
+

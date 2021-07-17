@@ -145,17 +145,18 @@
 * [std::string::Base64Decode (base64_decode)](#std__string__Base64Decode)
 * [std::string::Base64Encode (base64_encode)](#std__string__Base64Encode)
 * [std::string::BytesToString (bytes_to_string)](#std__string__BytesToString)
-* [std::string::CamelCase (camel_case)](#std__string__CamelCase)
+* [std::string::CamelCase (camelcase)](#std__string__CamelCase)
 * [std::string::Concat (concat)](#std__string__Concat)
 * [std::string::Contains (contains)](#std__string__Contains)
 * [std::string::EndsWith (ends_with)](#std__string__EndsWith)
 * [std::string::Equals (equals, eq)](#std__string__Equals)
 * [std::string::IndexOf (indexof)](#std__string__IndexOf)
 * [std::string::IsEmpty (is_empty)](#std__string__IsEmpty)
+* [std::string::KebabCase (kebabcase)](#std__string__KebabCase)
 * [std::string::LastIndexOf (last_indexof)](#std__string__LastIndexOf)
 * [std::string::Length (length, strlen)](#std__string__Length)
 * [std::string::Replace (replace)](#std__string__Replace)
-* [std::string::SnakeCase (snake_case)](#std__string__SnakeCase)
+* [std::string::SnakeCase (snakecase)](#std__string__SnakeCase)
 * [std::string::Split (split)](#std__string__Split)
 * [std::string::StartsWith (starts_with)](#std__string__StartsWith)
 * [std::string::StringToBytes (string_to_bytes)](#std__string__StringToBytes)
@@ -5461,7 +5462,7 @@ bytes_to_string
 <a name="std__string__CamelCase"></a>
 ## std::string::CamelCase
 ```sh
-var = camel_case text
+var = camelcase text
 ```
 
 Converts the provided string into camel case.
@@ -5478,13 +5479,13 @@ The converted string.
 #### Examples
 
 ```sh
-string = camel_case "hello, world!"
+string = camelcase "hello, world!"
 assert_eq ${string} "HelloWorld"
 ```
 
 
 #### Aliases:
-camel_case
+camelcase
 
 
 <a name="std__string__Concat"></a>
@@ -5718,6 +5719,35 @@ index = last_indexof "    some  text   " some
 #### Aliases:
 last_indexof
 
+
+<a name="std__string__KebabCase"></a>
+## std::string::KebabCase
+```sh
+var = kebabcase text
+```
+
+Converts the provided string into kebab case.
+All non-alphanumeric characters are ignored.
+
+#### Parameters
+
+The string to convert.
+
+#### Return Value
+
+The converted string.
+
+#### Examples
+
+```sh
+string = kebabcase "hello, world!"
+assert_eq ${string} "hello-world"
+```
+
+
+#### Aliases:
+kebabcase
+
 <a name="std__string__Length"></a>
 ## std::string::Length
 ```sh
@@ -5807,7 +5837,7 @@ replace
 <a name="std__string__SnakeCase"></a>
 ## std::string::SnakeCase
 ```sh
-var = snake_case text
+var = snakecase text
 ```
 
 Converts the provided string into snake case.
@@ -5824,13 +5854,13 @@ The converted string.
 #### Examples
 
 ```sh
-string = snake_case "Hello, World!"
+string = snakecase "Hello, World!"
 assert_eq ${string} "hello_world"
 ```
 
 
 #### Aliases:
-snake_case
+snakecase
 
 
 <a name="std__string__Split"></a>

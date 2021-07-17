@@ -1,12 +1,12 @@
 
 fn test_without_symbols
-    output = snake_case "hello world 22"
+    output = snakecase "Hello world 22"
 
     assert_eq ${output} "hello_world_22"
 end
 
 fn test_with_symbols
-    output = snake_case "hello!@#$% world^&*()[]{}22"
+    output = snakecase "Hello!@#$% world^&*()[]{}22"
 
     assert_eq ${output} "hello_world_22"
 end

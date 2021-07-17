@@ -18,3 +18,4 @@ The converted string.
 string = uppercase "Hello World"
 assert_eq ${string} "HELLO WORLD"
 ```
+

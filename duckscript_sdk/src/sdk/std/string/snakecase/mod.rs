@@ -16,7 +16,7 @@ impl Command for CommandImpl {
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["snake_case".to_string()]
+        vec!["snakecase".to_string()]
     }
 
     fn help(&self) -> String {
@@ -31,8 +31,8 @@ impl Command for CommandImpl {
         if arguments.is_empty() {
             CommandResult::Error("No arguments provided.".to_string())
         } else {
-            let snake_case = heck::SnakeCase::to_snake_case(arguments[0].as_str());
-            CommandResult::Continue(Some(snake_case))
+            let value = heck::SnakeCase::to_snake_case(arguments[0].as_str());
+            CommandResult::Continue(Some(value))
         }
     }
 }

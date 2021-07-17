@@ -1,0 +1,12 @@
+
+fn test_without_symbols
+    output = kebabcase "Hello World 22"
+
+    assert_eq ${output} "hello-world-22"
+end
+
+fn test_with_symbols
+    output = kebabcase "hello!@#$% world^&*()[]{}22"
+
+    assert_eq ${output} "hello-world-22"
+end

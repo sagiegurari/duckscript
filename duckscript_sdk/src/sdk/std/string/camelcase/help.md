@@ -1,5 +1,5 @@
 ```sh
-var = camel_case text
+var = camelcase text
 ```
 
 Converts the provided string into camel case.
@@ -16,6 +16,7 @@ The converted string.
 #### Examples
 
 ```sh
-string = camel_case "hello, world!"
+string = camelcase "hello, world!"
 assert_eq ${string} "HelloWorld"
 ```
+

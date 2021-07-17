@@ -12,11 +12,11 @@ pub(crate) struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "Uppercase")
+        pckg::concat(&self.package, "KebabCase")
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["uppercase".to_string()]
+        vec!["kebabcase".to_string()]
     }
 
     fn help(&self) -> String {
@@ -31,7 +31,7 @@ impl Command for CommandImpl {
         if arguments.is_empty() {
             CommandResult::Error("No arguments provided.".to_string())
         } else {
-            let value = arguments[0].to_uppercase();
+            let value = heck::KebabCase::to_kebab_case(arguments[0].as_str());
             CommandResult::Continue(Some(value))
         }
     }

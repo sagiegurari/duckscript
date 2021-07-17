@@ -31,8 +31,8 @@ impl Command for CommandImpl {
         if arguments.is_empty() {
             CommandResult::Error("No arguments provided.".to_string())
         } else {
-            let lowercase = arguments[0].to_lowercase();
-            CommandResult::Continue(Some(lowercase))
+            let value = arguments[0].to_lowercase();
+            CommandResult::Continue(Some(value))
         }
     }
 }
