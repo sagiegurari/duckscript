@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.8.4
+-## v0.8.4 (2021-21-07)
 
 * New lowercase command #183 (thanks @asvln)
 * New uppercase command #183 (thanks @asvln)
