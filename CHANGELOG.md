@@ -2,6 +2,11 @@
 
 ### v0.8.4
 
+* New lowercase command #183 (thanks @asvln)
+* New uppercase command #183 (thanks @asvln)
+* New camelcase command #183 (thanks @asvln)
+* New snakecase command #183 (thanks @asvln)
+* New kebabcase command #183 (thanks @asvln)
 * Docs - update --collection documentation for json_parse and json_encode commands #175
 
 ### v0.8.3 (2021-07-10)
