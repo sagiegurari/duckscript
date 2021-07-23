@@ -20,4 +20,3 @@ fn run_single_argument() {
         CommandValidation::Match("out".to_string(), "HelloWorld".to_string()),
     );
 }
-

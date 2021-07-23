@@ -244,7 +244,7 @@ pub(crate) fn run_script_and_error(
 
             context
         }
-        Err(error) => panic!(error.to_string()),
+        Err(error) => panic!("{}", error.to_string()),
     }
 }
 
@@ -313,7 +313,7 @@ pub(crate) fn run_script_and_validate(
 
             context
         }
-        Err(error) => panic!(error.to_string()),
+        Err(error) => panic!("{}", error.to_string()),
     }
 }
 
