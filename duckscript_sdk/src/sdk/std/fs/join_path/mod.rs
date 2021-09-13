@@ -8,14 +8,14 @@ use duckscript::types::error::ScriptError;
 mod mod_test;
 
 pub(crate) fn create(package: &str) -> Result<Box<dyn Command>, ScriptError> {
-    let name = pckg::concat(package, "SetModeGlob");
+    let name = pckg::concat(package, "JoinPath");
     let command = create_alias_command(
         name,
-        vec!["glob_chmod".to_string(), "chmod_glob".to_string()],
+        vec!["join_path".to_string()],
         include_str!("help.md").to_string(),
-        "glob_chmod".to_string(),
+        "join_path".to_string(),
         include_str!("script.ds").to_string(),
-        2,
+        1,
     )?;
 
     Ok(Box::new(command))

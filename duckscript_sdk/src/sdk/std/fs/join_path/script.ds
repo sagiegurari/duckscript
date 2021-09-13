@@ -1,0 +1,16 @@
+scope::join_path::added = set false
+
+for scope::join_path::path in ${scope::join_path::arguments}
+    if ${scope::join_path::added}
+        scope::join_path::output = set "${scope::join_path::output}/${scope::join_path::path}"
+    else
+        scope::join_path::output = set ${scope::join_path::path}
+        scope::join_path::added = set true
+    end
+end
+
+while contains ${scope::join_path::output} //
+    scope::join_path::output = replace ${scope::join_path::output} // /
+end
+
+set ${scope::join_path::output}

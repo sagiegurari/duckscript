@@ -1,0 +1,22 @@
+
+windows = is_windows
+
+fn test_cp
+    writefile ./target/_duckscript_test/glob_cp/file1.txt 1
+    writefile ./target/_duckscript_test/glob_cp/file2.txt 2
+    writefile ./target/_duckscript_test/glob_cp/log.log log
+    writefile ./target/_duckscript_test/glob_cp/dir/dir/file3.txt 3
+
+    cd ./target/_duckscript_test/glob_cp
+    count = glob_cp ./**/*.txt ../glob_cp_target
+    cd ../../../
+    assert_eq ${count} 3
+
+    text = readfile ./target/_duckscript_test/glob_cp_target/file1.txt
+    assert_eq ${text} 1
+    text = readfile ./target/_duckscript_test/glob_cp_target/file2.txt
+    assert_eq ${text} 2
+    text = readfile ./target/_duckscript_test/glob_cp_target/dir/dir/file3.txt
+    assert_eq ${text} 3
+end
+

@@ -1,0 +1,19 @@
+
+scope::glob_cp::handle = glob_array ${scope::glob_cp::argument::1}
+scope::glob_cp::output = set 0
+scope::glob_cp::target = set ${scope::glob_cp::argument::2}
+
+for scope::glob_cp::entry in ${scope::glob_cp::handle}
+    scope::glob_cp::is_file = is_file ${scope::glob_cp::entry}
+
+    if ${scope::glob_cp::is_file}
+        scope::glob_cp::target_file = join_path ${scope::glob_cp::target} ${scope::glob_cp::entry}
+        cp ${scope::glob_cp::entry} ${scope::glob_cp::target_file}
+
+        scope::glob_cp::output = calc ${scope::glob_cp::output} + 1
+    end
+end
+
+release ${scope::glob_cp::handle}
+
+set ${scope::glob_cp::output}
