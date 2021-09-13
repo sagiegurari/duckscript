@@ -20,6 +20,7 @@ fn load_valid() {
 }
 
 #[test]
+#[ignore]
 fn test_scripts() {
     let mut context = Context::new();
     let result = load(&mut context.commands);

@@ -1,6 +1,12 @@
 ## CHANGELOG
 
--## v0.8.4 (2021-21-07)
+### v0.8.5
+
+* New join_path command.
+* New glob_cp command #192
+* set_env command now accepts a map handle and sets all env vars from the map
+
+### v0.8.4 (2021-21-07)
 
 * New lowercase command #183 (thanks @asvln)
 * New uppercase command #183 (thanks @asvln)

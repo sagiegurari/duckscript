@@ -8,4 +8,36 @@ fn test_set_get_unset
     assert ${value}
     value = get_env TEST_SET_GET_UNSET
     assert_eq ${value} "test value"
+
+    handle = map
+    map_put ${handle} TEST_SET_GET_UNSET "map value"
+    map_put ${handle} mapkey1 mapvalue1
+
+    value = set_env --handle ${handle}
+    assert ${value}
+    value = get_env TEST_SET_GET_UNSET
+    assert_eq ${value} "map value"
+    value = get_env mapkey1
+    assert_eq ${value} mapvalue1
+
+    release ${handle}
 end
+
+fn test_set_all_from_file
+    writefile ./target/_duckscript_test/vars_test/test.env envfile1=value1\nenvfile2=value2
+
+    text = readfile ./target/_duckscript_test/vars_test/test.env
+    handle = map
+    result = map_load_properties ${handle} ${text}
+    assert_eq ${result} true
+
+    value = set_env --handle ${handle}
+    assert ${value}
+    value = get_env envfile1
+    assert_eq ${value} value1
+    value = get_env envfile2
+    assert_eq ${value} value2
+
+    release ${handle}
+end
+

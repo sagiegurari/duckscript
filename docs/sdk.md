@@ -81,6 +81,7 @@
 * [std::flowcontrol::If (if)](#std__flowcontrol__If)
 * [std::flowcontrol::While (while)](#std__flowcontrol__While)
 * [std::fs::Append (appendfile)](#std__fs__Append)
+* [std::fs::CPGlob (glob_cp, cp_glob)](#std__fs__CPGlob)
 * [std::fs::CopyPath (cp)](#std__fs__CopyPath)
 * [std::fs::CreateDirectory (mkdir)](#std__fs__CreateDirectory)
 * [std::fs::CreateEmptyFile (touch)](#std__fs__CreateEmptyFile)
@@ -97,13 +98,14 @@
 * [std::fs::IsFile (is_file)](#std__fs__IsFile)
 * [std::fs::IsPathNewer (is_path_newer)](#std__fs__IsPathNewer)
 * [std::fs::IsReadonly (is_readonly)](#std__fs__IsReadonly)
+* [std::fs::JoinPath (join_path)](#std__fs__JoinPath)
 * [std::fs::List (ls)](#std__fs__List)
 * [std::fs::MovePath (mv)](#std__fs__MovePath)
 * [std::fs::Print (cat)](#std__fs__Print)
 * [std::fs::ReadBytes (readbinfile, read_binary_file)](#std__fs__ReadBytes)
 * [std::fs::ReadText (readfile, read_text_file)](#std__fs__ReadText)
 * [std::fs::SetMode (chmod)](#std__fs__SetMode)
-* [std::fs::SetModeGlob (glob_chmod)](#std__fs__SetModeGlob)
+* [std::fs::SetModeGlob (glob_chmod, chmod_glob)](#std__fs__SetModeGlob)
 * [std::fs::TempDirectory (temp_dir)](#std__fs__TempDirectory)
 * [std::fs::TempFile (temp_file)](#std__fs__TempFile)
 * [std::fs::WriteBytes (writebinfile, write_binary_file)](#std__fs__WriteBytes)
@@ -2513,17 +2515,21 @@ cd, set_current_dir, set_current_directory
 <a name="std__env__SetVar"></a>
 ## std::env::SetVar
 ```sh
-var = set_env key value
+var = set_env (key value | --handle map_handle)
 ```
 
-Sets the environment variable defined by the provided key to the provided value.
+Sets the environment variable defined by the provided key to the provided value.<br>
+If --handle is provided, the second arg will be used as a handle to a map and all keys/values in the map will be set.
 
 #### Parameters
 
-Two arguments are required:
-
-* key - The name of the environment variable to set
-* value - The new environment variable value
+The function can be invoked in the following ways:
+* Key/Value pair - Two arguments are required:
+  * key - The name of the environment variable to set
+  * value - The new environment variable value
+* Map handle - Two arguments are required:
+  * --handle
+  * The map handle
 
 #### Return Value
 
@@ -2533,6 +2539,17 @@ true if successful
 
 ```sh
 set_env HOME /usr/me
+
+handle = map
+map_put ${handle} mapkey1 mapvalue1
+map_put ${handle} mapkey2 mapvalue2
+set_env --handle ${handle}
+
+# load env file
+text = readfile ./test.env
+handle = map
+map_load_properties ${handle} ${text}
+set_env --handle ${handle}
 ```
 
 
@@ -3193,6 +3210,60 @@ out = appendfile ./target/tests/writefile.txt "line 1\nline 2"
 #### Aliases:
 appendfile
 
+<a name="std__fs__CPGlob"></a>
+## std::fs::CPGlob
+
+```sh
+result = glob_cp source_glob target
+```
+
+This command will copy all files that match the given glob.
+
+#### Parameters
+
+* The source glob, for example ./*.txt
+* The target path
+
+#### Return Value
+
+The amount of paths (files) copied or false in case of any error.
+
+#### Examples
+
+```sh
+count = glob_cp ./**/*.txt ../target
+```
+
+
+#### Source:
+
+```sh
+
+scope::glob_cp::handle = glob_array ${scope::glob_cp::argument::1}
+scope::glob_cp::output = set 0
+scope::glob_cp::target = set ${scope::glob_cp::argument::2}
+
+for scope::glob_cp::entry in ${scope::glob_cp::handle}
+    scope::glob_cp::is_file = is_file ${scope::glob_cp::entry}
+
+    if ${scope::glob_cp::is_file}
+        scope::glob_cp::target_file = join_path ${scope::glob_cp::target} ${scope::glob_cp::entry}
+        cp ${scope::glob_cp::entry} ${scope::glob_cp::target_file}
+
+        scope::glob_cp::output = calc ${scope::glob_cp::output} + 1
+    end
+end
+
+release ${scope::glob_cp::handle}
+
+set ${scope::glob_cp::output}
+
+```
+
+
+#### Aliases:
+glob_cp, cp_glob
+
 <a name="std__fs__CopyPath"></a>
 ## std::fs::CopyPath
 ```sh
@@ -3642,6 +3713,58 @@ readonly = is_readonly ./dir/somefile.txt
 #### Aliases:
 is_readonly
 
+<a name="std__fs__JoinPath"></a>
+## std::fs::JoinPath
+
+```sh
+result = join_path path [path]*
+```
+
+Concats all paths and makes sure there is a / character between each path element.
+
+#### Parameters
+
+* A list of paths to join
+
+#### Return Value
+
+The joined path
+
+#### Examples
+
+```sh
+joined = join_path /test /dir1 /dir2 dir3 //dir4// /dir5
+
+assert_eq ${joined} /test/dir1/dir2/dir3/dir4/dir5
+```
+
+
+#### Source:
+
+```sh
+scope::join_path::added = set false
+
+for scope::join_path::path in ${scope::join_path::arguments}
+    if ${scope::join_path::added}
+        scope::join_path::output = set "${scope::join_path::output}/${scope::join_path::path}"
+    else
+        scope::join_path::output = set ${scope::join_path::path}
+        scope::join_path::added = set true
+    end
+end
+
+while contains ${scope::join_path::output} //
+    scope::join_path::output = replace ${scope::join_path::output} // /
+end
+
+set ${scope::join_path::output}
+
+```
+
+
+#### Aliases:
+join_path
+
 <a name="std__fs__List"></a>
 ## std::fs::List
 ```sh
@@ -3908,7 +4031,7 @@ set ${scope::glob_chmod::output}
 
 
 #### Aliases:
-glob_chmod
+glob_chmod, chmod_glob
 
 <a name="std__fs__TempDirectory"></a>
 ## std::fs::TempDirectory
