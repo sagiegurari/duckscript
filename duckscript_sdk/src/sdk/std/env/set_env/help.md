@@ -23,4 +23,15 @@ true if successful
 
 ```sh
 set_env HOME /usr/me
+
+handle = map
+map_put ${handle} mapkey1 mapvalue1
+map_put ${handle} mapkey2 mapvalue2
+set_env --handle ${handle}
+
+# load env file
+text = readfile ./test.env
+handle = map
+map_load_properties ${handle} ${text}
+set_env --handle ${handle}
 ```

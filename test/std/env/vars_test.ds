@@ -22,3 +22,22 @@ fn test_set_get_unset
 
     release ${handle}
 end
+
+fn test_set_all_from_file
+    writefile ./target/_duckscript_test/vars_test/test.env envfile1=value1\nenvfile2=value2
+
+    text = readfile ./target/_duckscript_test/vars_test/test.env
+    handle = map
+    result = map_load_properties ${handle} ${text}
+    assert_eq ${result} true
+
+    value = set_env --handle ${handle}
+    assert ${value}
+    value = get_env envfile1
+    assert_eq ${value} value1
+    value = get_env envfile2
+    assert_eq ${value} value2
+
+    release ${handle}
+end
+
