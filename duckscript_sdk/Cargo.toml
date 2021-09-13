@@ -1,6 +1,6 @@
 [package]
 name = "duckscriptsdk"
-version = "0.8.4"
+version = "0.8.5"
 authors = ["Sagie Gur-Ari <sagiegurari@gmail.com>"]
 description = "The duckscript SDK."
 license = "Apache-2.0"
@@ -26,9 +26,9 @@ include = [
 attohttpc = "^0.17"
 base64 = "^0.13"
 cfg-if = "^1.0"
-duckscript = { version = "^0.7", path = "../duckscript" }
+duckscript = { version = "^0.7.1", path = "../duckscript" }
 fs_extra = "^1"
-fsio = { version = "^0.2", features = ["temp-path"] }
+fsio = { version = "^0.3", features = ["temp-path"] }
 ftp = "^3"
 glob = "^0.3"
 heck = "^0.3"

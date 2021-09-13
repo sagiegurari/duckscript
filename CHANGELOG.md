@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.8.5
+### v0.8.5 (2021-09-13)
 
 * New join_path command.
 * New glob_cp command #192
