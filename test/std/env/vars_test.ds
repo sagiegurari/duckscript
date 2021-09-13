@@ -8,4 +8,17 @@ fn test_set_get_unset
     assert ${value}
     value = get_env TEST_SET_GET_UNSET
     assert_eq ${value} "test value"
+
+    handle = map
+    map_put ${handle} TEST_SET_GET_UNSET "map value"
+    map_put ${handle} mapkey1 mapvalue1
+
+    value = set_env --handle ${handle}
+    assert ${value}
+    value = get_env TEST_SET_GET_UNSET
+    assert_eq ${value} "map value"
+    value = get_env mapkey1
+    assert_eq ${value} mapvalue1
+
+    release ${handle}
 end
