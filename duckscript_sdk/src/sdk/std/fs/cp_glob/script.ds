@@ -1,19 +1,54 @@
 
-scope::glob_cp::handle = glob_array ${scope::glob_cp::argument::1}
-scope::glob_cp::output = set 0
+scope::glob_cp::contains_glob = contains ${scope::glob_cp::argument::1} *
 scope::glob_cp::target = set ${scope::glob_cp::argument::2}
+scope::glob_cp::output = set 0
 
-for scope::glob_cp::entry in ${scope::glob_cp::handle}
-    scope::glob_cp::is_file = is_file ${scope::glob_cp::entry}
+if ${scope::glob_cp::contains_glob}
+    scope::glob_cp::handle = glob_array ${scope::glob_cp::argument::1}
+    scope::glob_cp::glob_empty = array_is_empty ${scope::glob_cp::handle}
+
+    if not ${scope::glob_cp::glob_empty}
+        scope::glob_cp::is_relative = starts_with ${scope::glob_cp::argument::1} .
+        if not ${scope::glob_cp::is_relative}
+            scope::glob_cp::top_dir_without_glob = set ${scope::glob_cp::argument::1}
+            while contains ${scope::glob_cp::top_dir_without_glob} *
+                scope::glob_cp::top_dir_without_glob = dirname ${scope::glob_cp::top_dir_without_glob}
+            end
+
+            scope::glob_cp::absolute_prefix_length = strlen ${scope::glob_cp::top_dir_without_glob}
+        end
+
+        for scope::glob_cp::entry in ${scope::glob_cp::handle}
+            scope::glob_cp::is_file = is_file ${scope::glob_cp::entry}
+
+            if ${scope::glob_cp::is_file}
+                if ${scope::glob_cp::is_relative}
+                    scope::glob_cp::target_file = join_path ${scope::glob_cp::target} ${scope::glob_cp::entry}
+                else
+                    scope::glob_cp::target_file = substring ${scope::glob_cp::entry} ${scope::glob_cp::absolute_prefix_length}
+                    scope::glob_cp::target_file = join_path ${scope::glob_cp::target} ${scope::glob_cp::target_file}
+                end
+
+                scope::glob_cp::done = cp ${scope::glob_cp::entry} ${scope::glob_cp::target_file}
+
+                if ${scope::glob_cp::done}
+                    scope::glob_cp::output = calc ${scope::glob_cp::output} + 1
+                end
+            end
+        end
+    end
+
+    release ${scope::glob_cp::handle}
+else
+    scope::glob_cp::is_file = is_file ${scope::glob_cp::argument::1}
 
     if ${scope::glob_cp::is_file}
-        scope::glob_cp::target_file = join_path ${scope::glob_cp::target} ${scope::glob_cp::entry}
-        cp ${scope::glob_cp::entry} ${scope::glob_cp::target_file}
-
-        scope::glob_cp::output = calc ${scope::glob_cp::output} + 1
+        scope::glob_cp::filename = basename ${scope::glob_cp::argument::1}
+        scope::glob_cp::done = cp ${scope::glob_cp::argument::1} ${scope::glob_cp::target}/${scope::glob_cp::filename}
+        if ${scope::glob_cp::done}
+            scope::glob_cp::output = set 1
+        end
     end
 end
-
-release ${scope::glob_cp::handle}
 
 set ${scope::glob_cp::output}

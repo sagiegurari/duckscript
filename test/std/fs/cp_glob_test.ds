@@ -1,22 +1,76 @@
 
 windows = is_windows
 
-fn test_cp
-    writefile ./target/_duckscript_test/glob_cp/file1.txt 1
-    writefile ./target/_duckscript_test/glob_cp/file2.txt 2
-    writefile ./target/_duckscript_test/glob_cp/log.log log
-    writefile ./target/_duckscript_test/glob_cp/dir/dir/file3.txt 3
+fn test_cp_relative
+    writefile ./target/_duckscript_test/glob_cp/relative/file1.txt 1
+    writefile ./target/_duckscript_test/glob_cp/relative/file2.txt 2
+    writefile ./target/_duckscript_test/glob_cp/relative/log.log log
+    writefile ./target/_duckscript_test/glob_cp/relative/dir/dir/file3.txt 3
 
-    cd ./target/_duckscript_test/glob_cp
-    count = glob_cp ./**/*.txt ../glob_cp_target
-    cd ../../../
+    cd ./target/_duckscript_test/glob_cp/relative
+    count = glob_cp ./**/*.txt ../../glob_cp_relative_target
+    cd ../../../../
     assert_eq ${count} 3
 
-    text = readfile ./target/_duckscript_test/glob_cp_target/file1.txt
+    text = readfile ./target/_duckscript_test/glob_cp_relative_target/file1.txt
     assert_eq ${text} 1
-    text = readfile ./target/_duckscript_test/glob_cp_target/file2.txt
+    text = readfile ./target/_duckscript_test/glob_cp_relative_target/file2.txt
     assert_eq ${text} 2
-    text = readfile ./target/_duckscript_test/glob_cp_target/dir/dir/file3.txt
+    text = readfile ./target/_duckscript_test/glob_cp_relative_target/dir/dir/file3.txt
     assert_eq ${text} 3
+end
+
+fn test_cp_absolute
+    writefile ./target/_duckscript_test/glob_cp/absolute/file1.txt 1
+    writefile ./target/_duckscript_test/glob_cp/absolute/file2.txt 2
+    writefile ./target/_duckscript_test/glob_cp/absolute/log.log log
+    writefile ./target/_duckscript_test/glob_cp/absolute/dir/dir/file3.txt 3
+    cd ./target/_duckscript_test/glob_cp/absolute
+    cp_dir = pwd
+    cd ../../../../
+
+    cd ./target/_duckscript_test/glob_cp/absolute
+    count = glob_cp ${cp_dir}/**/*.txt ../../glob_cp_absolute_target
+    cd ../../../../
+    assert_eq ${count} 3
+
+    text = readfile ./target/_duckscript_test/glob_cp_absolute_target/file1.txt
+    assert_eq ${text} 1
+    text = readfile ./target/_duckscript_test/glob_cp_absolute_target/file2.txt
+    assert_eq ${text} 2
+    text = readfile ./target/_duckscript_test/glob_cp_absolute_target/dir/dir/file3.txt
+    assert_eq ${text} 3
+end
+
+fn test_cp_no_glob
+    writefile ./target/_duckscript_test/glob_cp/noglob/file1.txt 1
+    writefile ./target/_duckscript_test/glob_cp/noglob/file2.txt 2
+
+    cd ./target/_duckscript_test/glob_cp/noglob
+    count = glob_cp ./file1.txt ../../glob_cp_noglob_target
+    cd ../../../../
+    assert_eq ${count} 1
+
+    text = readfile ./target/_duckscript_test/glob_cp_noglob_target/file1.txt
+    assert_eq ${text} 1
+    exists = is_path_exists .target/_duckscript_test/glob_cp_noglob_target/file2.txt
+    assert_false ${exists}
+end
+
+fn test_cp_no_glob_not_found
+    writefile ./target/_duckscript_test/glob_cp/notfound/file1.txt 1
+    writefile ./target/_duckscript_test/glob_cp/notfound/file2.txt 2
+
+    cd ./target/_duckscript_test/glob_cp/notfound
+    count = glob_cp ./file3.txt ../../glob_cp_notfound_target
+    cd ../../../../
+    assert_eq ${count} 0
+
+    exists = is_path_exists .target/_duckscript_test/glob_cp_notfound_target/file1.txt
+    assert_false ${exists}
+    exists = is_path_exists .target/_duckscript_test/glob_cp_notfound_target/file2.txt
+    assert_false ${exists}
+    exists = is_path_exists .target/_duckscript_test/glob_cp_notfound_target/file3.txt
+    assert_false ${exists}
 end
 

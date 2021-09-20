@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.8.6 (2021-09-20)
+
+* Fix glob_cp command to support absolute paths #197
+
 ### v0.8.5 (2021-09-13)
 
 * New join_path command.

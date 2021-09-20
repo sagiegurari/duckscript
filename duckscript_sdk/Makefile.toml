@@ -20,6 +20,11 @@ dependencies = ["clean-target"]
 [tasks.test-custom]
 alias = "test-scripts"
 
+[tasks.test-script]
+cwd = ".."
+command = "cargo"
+args = ["make", "--no-workspace", "test-script", "${@}"]
+
 [tasks.test-scripts]
 cwd = ".."
 command = "cargo"
