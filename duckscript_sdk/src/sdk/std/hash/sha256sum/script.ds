@@ -1,0 +1,3 @@
+
+scope::sha256sum::output = digest --algo sha256 --file ${scope::sha256sum::argument::1}
+scope::sha256sum::output = lowercase ${scope::sha256sum::output}

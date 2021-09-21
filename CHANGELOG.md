@@ -1,5 +1,11 @@
 ## CHANGELOG
 
+### v0.8.7
+
+* New digest command #196
+* New sha256sum command #196
+* New sha512sum command #196
+
 ### v0.8.6 (2021-09-20)
 
 * Fix glob_cp command to support absolute paths #197

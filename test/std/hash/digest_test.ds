@@ -1,0 +1,29 @@
+
+fn test_sha256_string
+    hashed = digest --algo sha256 "hello world\n"
+
+    assert_eq ${hashed} A948904F2F0F479B8F8197694B30184B0D2ED1C1CD2A1EC0FB85D299A192A447
+end
+
+fn test_sha256_file
+    file = set ./target/_duckscript_test/hash/digest/sha256
+    writefile ${file} "hello world\n"
+    hashed = digest --algo sha256 --file ${file}
+
+    assert_eq ${hashed} A948904F2F0F479B8F8197694B30184B0D2ED1C1CD2A1EC0FB85D299A192A447
+end
+
+fn test_sha512_string
+    hashed = digest --algo sha512 "hello world\n"
+
+    assert_eq ${hashed} DB3974A97F2407B7CAE1AE637C0030687A11913274D578492558E39C16C017DE84EACDC8C62FE34EE4E12B4B1428817F09B6A2760C3F8A664CEAE94D2434A593
+end
+
+fn test_sha512_file
+    file = set ./target/_duckscript_test/hash/digest/sha512
+    writefile ${file} "hello world\n"
+    hashed = digest --algo sha512 --file ${file}
+
+    assert_eq ${hashed} DB3974A97F2407B7CAE1AE637C0030687A11913274D578492558E39C16C017DE84EACDC8C62FE34EE4E12B4B1428817F09B6A2760C3F8A664CEAE94D2434A593
+end
+

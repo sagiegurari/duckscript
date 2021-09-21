@@ -1,0 +1,3 @@
+
+scope::sha512sum::output = digest --algo sha512 --file ${scope::sha512sum::argument::1}
+scope::sha512sum::output = lowercase ${scope::sha512sum::output}

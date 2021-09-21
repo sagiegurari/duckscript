@@ -18,7 +18,7 @@ mod mkdir;
 mod mv;
 mod print;
 mod read_bytes;
-mod read_text;
+pub(crate) mod read_text;
 mod rm;
 mod rmdir;
 mod set_mode;
