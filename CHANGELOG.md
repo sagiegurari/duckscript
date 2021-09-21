@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.8.7
+### v0.8.7 (2021-09-21)
 
 * New digest command #196
 * New sha256sum command #196
