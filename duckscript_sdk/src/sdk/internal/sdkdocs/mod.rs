@@ -124,7 +124,7 @@ impl Command for CommandImpl {
                         };
 
                         buffer.push_str(&format!(
-                            "\n<a name=\"{}\"></a>\n## {}\n{}{}\n",
+                            "\n<a name=\"{}\"></a>\n## `{}`\n{}{}\n",
                             name.replace(":", "_"),
                             name,
                             help,

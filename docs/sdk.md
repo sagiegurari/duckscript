@@ -190,7 +190,7 @@
 
 
 <a name="std__Echo"></a>
-## std::Echo
+## `std::Echo`
 ```sh
 echo [arg]*
 ```
@@ -221,7 +221,7 @@ echo "hello    world"
 echo
 
 <a name="std__Eval"></a>
-## std::Eval
+## `std::Eval`
 ```sh
 eval command arguments
 ```
@@ -249,7 +249,7 @@ eval ${command} hello world
 eval
 
 <a name="std__IsCommandDefined"></a>
-## std::IsCommandDefined
+## `std::IsCommandDefined`
 ```sh
 var = is_command_defined key
 ```
@@ -275,7 +275,7 @@ exists = is_command_defined exec
 is_command_defined
 
 <a name="std__Noop"></a>
-## std::Noop
+## `std::Noop`
 ```sh
 noop
 ```
@@ -301,7 +301,7 @@ noop
 noop
 
 <a name="std__Not"></a>
-## std::Not
+## `std::Not`
 ```sh
 output = not [command|value|condition]
 ```
@@ -379,7 +379,7 @@ end
 not
 
 <a name="std__ReadUserInput"></a>
-## std::ReadUserInput
+## `std::ReadUserInput`
 ```sh
 var = read
 ```
@@ -413,7 +413,7 @@ end
 read
 
 <a name="std__Release"></a>
-## std::Release
+## `std::Release`
 ```sh
 release [-r|--recursive] handle
 ```
@@ -445,7 +445,7 @@ release ${array_handle}
 release
 
 <a name="std__ShowCommandDocumentation"></a>
-## std::ShowCommandDocumentation
+## `std::ShowCommandDocumentation`
 ```sh
 var = man command
 ```
@@ -471,7 +471,7 @@ man set
 man
 
 <a name="std__collections"></a>
-## std::collections
+## `std::collections`
 The collections module contains commands which enable to interact with different data models such as arrays, sets and maps.
 
 * Arrays are simple ordered list of items
@@ -486,7 +486,7 @@ Once done with a specific data structure, you must release it via release comman
 
 
 <a name="std__collections__Array"></a>
-## std::collections::Array
+## `std::collections::Array`
 ```sh
 handle = array value1 value2 value3 ...
 ```
@@ -517,7 +517,7 @@ release ${handle}
 array
 
 <a name="std__collections__ArrayClear"></a>
-## std::collections::ArrayClear
+## `std::collections::ArrayClear`
 ```sh
 result = array_clear handle
 ```
@@ -556,7 +556,7 @@ release ${handle}
 array_clear
 
 <a name="std__collections__ArrayConcat"></a>
-## std::collections::ArrayConcat
+## `std::collections::ArrayConcat`
 
 ```sh
 handle = array_concat [handle]*
@@ -615,7 +615,7 @@ set ${scope::array_concat::array}
 array_concat
 
 <a name="std__collections__ArrayContains"></a>
-## std::collections::ArrayContains
+## `std::collections::ArrayContains`
 
 ```sh
 var = array_contains handle value
@@ -673,7 +673,7 @@ set ${scope::array_contains::index}
 array_contains
 
 <a name="std__collections__ArrayGet"></a>
-## std::collections::ArrayGet
+## `std::collections::ArrayGet`
 ```sh
 var = array_get handle index
 ```
@@ -702,7 +702,7 @@ assert_eq ${element} 3
 array_get
 
 <a name="std__collections__ArrayIsEmpty"></a>
-## std::collections::ArrayIsEmpty
+## `std::collections::ArrayIsEmpty`
 
 ```sh
 var = array_is_empty handle
@@ -744,7 +744,7 @@ equals 0 ${scope::array_is_empty::length}
 array_is_empty
 
 <a name="std__collections__ArrayJoin"></a>
-## std::collections::ArrayJoin
+## `std::collections::ArrayJoin`
 
 ```sh
 var = array_join handle separator
@@ -827,7 +827,7 @@ set ${scope::array_join::string}
 array_join
 
 <a name="std__collections__ArrayLength"></a>
-## std::collections::ArrayLength
+## `std::collections::ArrayLength`
 ```sh
 var = array_length handle
 ```
@@ -861,7 +861,7 @@ echo Array length: ${len} released: ${released}
 array_length, arrlen, array_size
 
 <a name="std__collections__ArrayPop"></a>
-## std::collections::ArrayPop
+## `std::collections::ArrayPop`
 ```sh
 var = array_pop handle
 ```
@@ -889,7 +889,7 @@ assert_eq ${last_element} 3
 array_pop
 
 <a name="std__collections__ArrayPush"></a>
-## std::collections::ArrayPush
+## `std::collections::ArrayPush`
 ```sh
 var = array_push handle value
 ```
@@ -918,7 +918,7 @@ assert_eq ${last_element} 4
 array_push, array_add, array_put
 
 <a name="std__collections__ArrayRemove"></a>
-## std::collections::ArrayRemove
+## `std::collections::ArrayRemove`
 ```sh
 result = array_remove handle index
 ```
@@ -956,7 +956,7 @@ assert ${empty}
 array_remove
 
 <a name="std__collections__ArraySet"></a>
-## std::collections::ArraySet
+## `std::collections::ArraySet`
 ```sh
 result = array_set handle index value
 ```
@@ -995,7 +995,7 @@ assert_eq ${element} new
 array_set
 
 <a name="std__collections__IsArray"></a>
-## std::collections::IsArray
+## `std::collections::IsArray`
 ```sh
 var = is_array handle
 ```
@@ -1027,7 +1027,7 @@ assert ${released}
 is_array
 
 <a name="std__collections__IsMap"></a>
-## std::collections::IsMap
+## `std::collections::IsMap`
 ```sh
 var = is_map handle
 ```
@@ -1059,7 +1059,7 @@ assert ${released}
 is_map
 
 <a name="std__collections__IsSet"></a>
-## std::collections::IsSet
+## `std::collections::IsSet`
 ```sh
 var = is_set handle
 ```
@@ -1091,7 +1091,7 @@ assert ${released}
 is_set
 
 <a name="std__collections__Map"></a>
-## std::collections::Map
+## `std::collections::Map`
 ```sh
 handle = map
 ```
@@ -1122,7 +1122,7 @@ release ${handle}
 map
 
 <a name="std__collections__MapClear"></a>
-## std::collections::MapClear
+## `std::collections::MapClear`
 ```sh
 result = map_clear handle
 ```
@@ -1161,7 +1161,7 @@ release ${handle}
 map_clear
 
 <a name="std__collections__MapContainsKey"></a>
-## std::collections::MapContainsKey
+## `std::collections::MapContainsKey`
 
 ```sh
 var = map_contains_key handle key
@@ -1205,7 +1205,7 @@ is_defined scope::map_contains_key::value
 map_contains_key
 
 <a name="std__collections__MapContainsValue"></a>
-## std::collections::MapContainsValue
+## `std::collections::MapContainsValue`
 
 ```sh
 var = map_contains_value handle value
@@ -1266,7 +1266,7 @@ set ${scope::map_contains_value::found}
 map_contains_value
 
 <a name="std__collections__MapGet"></a>
-## std::collections::MapGet
+## `std::collections::MapGet`
 ```sh
 value = map_get handle key
 ```
@@ -1301,7 +1301,7 @@ release ${handle}
 map_get
 
 <a name="std__collections__MapIsEmpty"></a>
-## std::collections::MapIsEmpty
+## `std::collections::MapIsEmpty`
 
 ```sh
 var = map_is_empty handle
@@ -1344,7 +1344,7 @@ equals 0 ${scope::map_is_empty::length}
 map_is_empty
 
 <a name="std__collections__MapKeys"></a>
-## std::collections::MapKeys
+## `std::collections::MapKeys`
 ```sh
 keys = map_keys handle
 ```
@@ -1384,7 +1384,7 @@ release ${keys}
 map_keys
 
 <a name="std__collections__MapLoadProperties"></a>
-## std::collections::MapLoadProperties
+## `std::collections::MapLoadProperties`
 ```sh
 var = map_load_properties [--prefix prefix] handle text
 ```
@@ -1420,7 +1420,7 @@ release ${handle}
 map_load_properties
 
 <a name="std__collections__MapPut"></a>
-## std::collections::MapPut
+## `std::collections::MapPut`
 ```sh
 var = map_put handle key value
 ```
@@ -1456,7 +1456,7 @@ release ${handle}
 map_put, map_add
 
 <a name="std__collections__MapRemove"></a>
-## std::collections::MapRemove
+## `std::collections::MapRemove`
 ```sh
 value = map_remove handle key
 ```
@@ -1491,7 +1491,7 @@ release ${handle}
 map_remove
 
 <a name="std__collections__MapSize"></a>
-## std::collections::MapSize
+## `std::collections::MapSize`
 ```sh
 var = map_size handle
 ```
@@ -1526,7 +1526,7 @@ release ${handle}
 map_size
 
 <a name="std__collections__MapToProperties"></a>
-## std::collections::MapToProperties
+## `std::collections::MapToProperties`
 ```sh
 text = map_to_properties [--prefix prefix] handle
 ```
@@ -1558,7 +1558,7 @@ text = map_to_properties ${handle}
 map_to_properties
 
 <a name="std__collections__Range"></a>
-## std::collections::Range
+## `std::collections::Range`
 ```sh
 handle = range start end
 ```
@@ -1590,7 +1590,7 @@ release ${handle}
 range
 
 <a name="std__collections__ReadProperties"></a>
-## std::collections::ReadProperties
+## `std::collections::ReadProperties`
 ```sh
 count = read_properties [--prefix key] text
 ```
@@ -1631,7 +1631,7 @@ assert_eq ${config.a.b.c} 3
 read_properties
 
 <a name="std__collections__Set"></a>
-## std::collections::Set
+## `std::collections::Set`
 ```sh
 handle = set_new value1 value2 value3 ...
 ```
@@ -1662,7 +1662,7 @@ release ${handle}
 set_new
 
 <a name="std__collections__SetClear"></a>
-## std::collections::SetClear
+## `std::collections::SetClear`
 ```sh
 result = set_clear handle
 ```
@@ -1701,7 +1701,7 @@ release ${handle}
 set_clear
 
 <a name="std__collections__SetContains"></a>
-## std::collections::SetContains
+## `std::collections::SetContains`
 ```sh
 var = set_contains handle value
 ```
@@ -1729,7 +1729,7 @@ found = set_contains ${handle} value2
 set_contains
 
 <a name="std__collections__SetFromArray"></a>
-## std::collections::SetFromArray
+## `std::collections::SetFromArray`
 
 ```sh
 set_handle = set_from_array array_handle
@@ -1779,7 +1779,7 @@ set ${scope::set_from_array::set}
 set_from_array
 
 <a name="std__collections__SetIsEmpty"></a>
-## std::collections::SetIsEmpty
+## `std::collections::SetIsEmpty`
 
 ```sh
 var = set_is_empty handle
@@ -1822,7 +1822,7 @@ equals 0 ${scope::set_is_empty::length}
 set_is_empty
 
 <a name="std__collections__SetPut"></a>
-## std::collections::SetPut
+## `std::collections::SetPut`
 ```sh
 var = set_put handle value
 ```
@@ -1851,7 +1851,7 @@ assert_eq ${size} 4
 set_put, set_add
 
 <a name="std__collections__SetRemove"></a>
-## std::collections::SetRemove
+## `std::collections::SetRemove`
 ```sh
 removed = set_remove handle value
 ```
@@ -1886,7 +1886,7 @@ release ${handle}
 set_remove
 
 <a name="std__collections__SetSize"></a>
-## std::collections::SetSize
+## `std::collections::SetSize`
 ```sh
 var = set_size handle
 ```
@@ -1921,7 +1921,7 @@ release ${handle}
 set_size
 
 <a name="std__collections__SetToArray"></a>
-## std::collections::SetToArray
+## `std::collections::SetToArray`
 ```sh
 array_handle = set_to_array set_handle
 ```
@@ -1948,7 +1948,7 @@ array_handle = set_to_array ${set_handle}
 set_to_array
 
 <a name="std__collections__WriteProperties"></a>
-## std::collections::WriteProperties
+## `std::collections::WriteProperties`
 ```sh
 text = write_properties [--prefix prefix] [names]
 ```
@@ -1989,7 +1989,7 @@ text = write_properties --prefix P a b a.b.c
 write_properties
 
 <a name="std__debug__DuckscriptSDKVersion"></a>
-## std::debug::DuckscriptSDKVersion
+## `std::debug::DuckscriptSDKVersion`
 ```sh
 var = duckscript_sdk_version
 ```
@@ -2015,7 +2015,7 @@ version = duckscript_sdk_version
 duckscript_sdk_version
 
 <a name="std__debug__DuckscriptVersion"></a>
-## std::debug::DuckscriptVersion
+## `std::debug::DuckscriptVersion`
 ```sh
 var = duckscript_version
 ```
@@ -2041,7 +2041,7 @@ version = duckscript_version
 duckscript_version
 
 <a name="std__debug__DumpInstructions"></a>
-## std::debug::DumpInstructions
+## `std::debug::DumpInstructions`
 ```sh
 value = dump_instructions
 ```
@@ -2069,7 +2069,7 @@ assert found
 dump_instructions
 
 <a name="std__debug__DumpState"></a>
-## std::debug::DumpState
+## `std::debug::DumpState`
 ```sh
 value = dump_state
 ```
@@ -2099,7 +2099,7 @@ assert found
 dump_state
 
 <a name="std__debug__DumpVariables"></a>
-## std::debug::DumpVariables
+## `std::debug::DumpVariables`
 ```sh
 value = dump_variables
 ```
@@ -2136,7 +2136,7 @@ assert found
 dump_variables
 
 <a name="std__env__EnvToMap"></a>
-## std::env::EnvToMap
+## `std::env::EnvToMap`
 ```sh
 handle = env_to_map
 ```
@@ -2169,7 +2169,7 @@ release ${handle}
 env_to_map
 
 <a name="std__env__FindExecutable"></a>
-## std::env::FindExecutable
+## `std::env::FindExecutable`
 ```sh
 var = which executable
 ```
@@ -2196,7 +2196,7 @@ path = which echo
 which
 
 <a name="std__env__GetCpuCount"></a>
-## std::env::GetCpuCount
+## `std::env::GetCpuCount`
 ```sh
 var = cpu_count
 ```
@@ -2222,7 +2222,7 @@ count = cpu_count
 cpu_count, get_cpu_count
 
 <a name="std__env__GetHomeDirectory"></a>
-## std::env::GetHomeDirectory
+## `std::env::GetHomeDirectory`
 ```sh
 var = get_home_dir
 ```
@@ -2249,7 +2249,7 @@ directory = get_home_dir
 get_home_dir
 
 <a name="std__env__GetOSFamily"></a>
-## std::env::GetOSFamily
+## `std::env::GetOSFamily`
 ```sh
 var = os_family
 ```
@@ -2275,7 +2275,7 @@ name = os_family
 os_family
 
 <a name="std__env__GetOSName"></a>
-## std::env::GetOSName
+## `std::env::GetOSName`
 ```sh
 var = os_name
 ```
@@ -2301,7 +2301,7 @@ name = os_name
 os_name
 
 <a name="std__env__GetOSRelease"></a>
-## std::env::GetOSRelease
+## `std::env::GetOSRelease`
 ```sh
 var = os_release
 ```
@@ -2328,7 +2328,7 @@ release = os_release
 os_release
 
 <a name="std__env__GetOSVersion"></a>
-## std::env::GetOSVersion
+## `std::env::GetOSVersion`
 ```sh
 var = os_version
 ```
@@ -2355,7 +2355,7 @@ version = os_version
 os_version
 
 <a name="std__env__GetUserName"></a>
-## std::env::GetUserName
+## `std::env::GetUserName`
 ```sh
 var = whoami
 ```
@@ -2381,7 +2381,7 @@ name = whoami
 whoami, get_user_name
 
 <a name="std__env__GetVar"></a>
-## std::env::GetVar
+## `std::env::GetVar`
 ```sh
 var = get_env key
 ```
@@ -2407,7 +2407,7 @@ home = get_env HOME
 get_env
 
 <a name="std__env__IsWindows"></a>
-## std::env::IsWindows
+## `std::env::IsWindows`
 
 ```sh
 var = is_windows
@@ -2448,7 +2448,7 @@ equals ${scope::is_windows::os} windows
 is_windows
 
 <a name="std__env__PrintCurrentDirectory"></a>
-## std::env::PrintCurrentDirectory
+## `std::env::PrintCurrentDirectory`
 ```sh
 var = pwd
 ```
@@ -2478,7 +2478,7 @@ directory = pwd
 pwd, print_current_directory
 
 <a name="std__env__PrintEnv"></a>
-## std::env::PrintEnv
+## `std::env::PrintEnv`
 
 ```sh
 var = printenv
@@ -2528,7 +2528,7 @@ set ${scope::print_env::text}
 print_env, printenv
 
 <a name="std__env__SetCurrentDirectory"></a>
-## std::env::SetCurrentDirectory
+## `std::env::SetCurrentDirectory`
 ```sh
 cd path
 ```
@@ -2560,7 +2560,7 @@ cd ./scripts
 cd, set_current_dir, set_current_directory
 
 <a name="std__env__SetVar"></a>
-## std::env::SetVar
+## `std::env::SetVar`
 ```sh
 var = set_env (key value | --handle map_handle)
 ```
@@ -2604,7 +2604,7 @@ set_env --handle ${handle}
 set_env
 
 <a name="std__env__UName"></a>
-## std::env::UName
+## `std::env::UName`
 
 ```sh
 var = uname [-a]
@@ -2655,7 +2655,7 @@ set ${scope::uname::info}
 uname
 
 <a name="std__env__UnsetVar"></a>
-## std::env::UnsetVar
+## `std::env::UnsetVar`
 ```sh
 unset_env key
 ```
@@ -2681,7 +2681,7 @@ unset_env HOME
 unset_env
 
 <a name="std__error__GetLastError"></a>
-## std::error::GetLastError
+## `std::error::GetLastError`
 ```sh
 var = get_last_error
 ```
@@ -2711,7 +2711,7 @@ echo Error Message: ${error}
 get_last_error
 
 <a name="std__error__GetLastErrorLine"></a>
-## std::error::GetLastErrorLine
+## `std::error::GetLastErrorLine`
 ```sh
 var = get_last_error_line
 ```
@@ -2741,7 +2741,7 @@ echo Error Line: ${line}
 get_last_error_line
 
 <a name="std__error__GetLastErrorSource"></a>
-## std::error::GetLastErrorSource
+## `std::error::GetLastErrorSource`
 ```sh
 var = get_last_error_source
 ```
@@ -2771,7 +2771,7 @@ echo Error Source File: ${source}
 get_last_error_source
 
 <a name="std__error__SetError"></a>
-## std::error::SetError
+## `std::error::SetError`
 ```sh
 set_error message
 ```
@@ -2802,7 +2802,7 @@ assert_eq ${error} "my error message"
 set_error
 
 <a name="std__error__SetExitOnError"></a>
-## std::error::SetExitOnError
+## `std::error::SetExitOnError`
 ```sh
 var = exit_on_error value
 ```
@@ -2837,7 +2837,7 @@ echo Current state: ${will_exit}
 exit_on_error, set_exit_on_error
 
 <a name="std__error__TriggerError"></a>
-## std::error::TriggerError
+## `std::error::TriggerError`
 ```sh
 trigger_error [message]
 ```
@@ -2865,7 +2865,7 @@ assert_eq ${error} "my error message"
 trigger_error
 
 <a name="std__flowcontrol__ForIn"></a>
-## std::flowcontrol::ForIn
+## `std::flowcontrol::ForIn`
 ```sh
 args = array a b c
 for arg in ${args}
@@ -2916,7 +2916,7 @@ end
 for
 
 <a name="std__flowcontrol__Function"></a>
-## std::flowcontrol::Function
+## `std::flowcontrol::Function`
 ```sh
 fn my_function
     # function content
@@ -3021,7 +3021,7 @@ echo ${output}
 function, fn
 
 <a name="std__flowcontrol__GoTo"></a>
-## std::flowcontrol::GoTo
+## `std::flowcontrol::GoTo`
 ```sh
 goto :label
 ```
@@ -3051,7 +3051,7 @@ echo bad
 goto
 
 <a name="std__flowcontrol__If"></a>
-## std::flowcontrol::If
+## `std::flowcontrol::If`
 ```sh
 if [command|value|condition]
     # commands
@@ -3164,7 +3164,7 @@ end
 if
 
 <a name="std__flowcontrol__While"></a>
-## std::flowcontrol::While
+## `std::flowcontrol::While`
 ```sh
 while [command|value|condition]
     # commands
@@ -3232,7 +3232,7 @@ assert_eq ${counter} 100
 while
 
 <a name="std__fs__Append"></a>
-## std::fs::Append
+## `std::fs::Append`
 ```sh
 result = appendfile file text
 ```
@@ -3262,7 +3262,7 @@ out = appendfile ./target/tests/writefile.txt "line 1\nline 2"
 appendfile
 
 <a name="std__fs__CPGlob"></a>
-## std::fs::CPGlob
+## `std::fs::CPGlob`
 
 ```sh
 result = glob_cp source_glob target
@@ -3355,7 +3355,7 @@ set ${scope::glob_cp::output}
 glob_cp, cp_glob
 
 <a name="std__fs__CopyPath"></a>
-## std::fs::CopyPath
+## `std::fs::CopyPath`
 ```sh
 var = cp source target
 ```
@@ -3387,7 +3387,7 @@ copied = cp ./source ./target
 cp
 
 <a name="std__fs__CreateDirectory"></a>
-## std::fs::CreateDirectory
+## `std::fs::CreateDirectory`
 ```sh
 var = mkdir directory
 ```
@@ -3413,7 +3413,7 @@ exists = mkdir ./dir/subdir
 mkdir
 
 <a name="std__fs__CreateEmptyFile"></a>
-## std::fs::CreateEmptyFile
+## `std::fs::CreateEmptyFile`
 ```sh
 var = touch file
 ```
@@ -3441,7 +3441,7 @@ exists = touch ./dir/file.txt
 touch
 
 <a name="std__fs__DeleteEmptyDirectory"></a>
-## std::fs::DeleteEmptyDirectory
+## `std::fs::DeleteEmptyDirectory`
 ```sh
 var = rmdir path
 ```
@@ -3468,7 +3468,7 @@ deleted = rmdir ./mydir
 rmdir
 
 <a name="std__fs__DeletePath"></a>
-## std::fs::DeletePath
+## `std::fs::DeletePath`
 ```sh
 var = rm [-r] [path]+
 ```
@@ -3503,7 +3503,7 @@ deleted = rm -r ./dir ./somefile ./anotherdir/subdir/file
 rm
 
 <a name="std__fs__Exists"></a>
-## std::fs::Exists
+## `std::fs::Exists`
 ```sh
 var = is_path_exists path
 ```
@@ -3530,7 +3530,7 @@ existing = is_path_exists ./dir/somefile.txt
 is_path_exists
 
 <a name="std__fs__GetCanonicalPath"></a>
-## std::fs::GetCanonicalPath
+## `std::fs::GetCanonicalPath`
 ```sh
 var = canonicalize path
 ```
@@ -3557,7 +3557,7 @@ path = canonicalize ./target
 canonicalize
 
 <a name="std__fs__GetFileName"></a>
-## std::fs::GetFileName
+## `std::fs::GetFileName`
 ```sh
 var = basename path
 ```
@@ -3584,7 +3584,7 @@ file = basename ./dir/file.txt
 basename
 
 <a name="std__fs__GetLastModifiedTime"></a>
-## std::fs::GetLastModifiedTime
+## `std::fs::GetLastModifiedTime`
 ```sh
 var = get_last_modified_time path
 ```
@@ -3610,7 +3610,7 @@ time = get_last_modified_time ./dir/somefile.txt
 get_last_modified_time
 
 <a name="std__fs__GetParentDirectory"></a>
-## std::fs::GetParentDirectory
+## `std::fs::GetParentDirectory`
 ```sh
 var = dirname path
 ```
@@ -3637,7 +3637,7 @@ directory = dirname ./dir/file.txt
 dirname
 
 <a name="std__fs__GitIgnorePathArray"></a>
-## std::fs::GitIgnorePathArray
+## `std::fs::GitIgnorePathArray`
 ```sh
 handle = gitignore_path_array path
 ```
@@ -3667,7 +3667,7 @@ end
 gitignore_path_array
 
 <a name="std__fs__GlobArray"></a>
-## std::fs::GlobArray
+## `std::fs::GlobArray`
 ```sh
 handle = glob_array pattern
 ```
@@ -3698,7 +3698,7 @@ end
 glob_array, globarray
 
 <a name="std__fs__IsDirectory"></a>
-## std::fs::IsDirectory
+## `std::fs::IsDirectory`
 ```sh
 var = is_dir path
 ```
@@ -3724,7 +3724,7 @@ existing_dir = is_dir ./dir
 is_directory, is_dir
 
 <a name="std__fs__IsFile"></a>
-## std::fs::IsFile
+## `std::fs::IsFile`
 ```sh
 var = is_file path
 ```
@@ -3750,7 +3750,7 @@ existing_file = is_file ./dir/somefile.txt
 is_file
 
 <a name="std__fs__IsPathNewer"></a>
-## std::fs::IsPathNewer
+## `std::fs::IsPathNewer`
 ```sh
 var = is_path_newer newer older
 ```
@@ -3778,7 +3778,7 @@ newer = is_path_newer ./new_file.txt ./old_file.txt
 is_path_newer
 
 <a name="std__fs__IsReadonly"></a>
-## std::fs::IsReadonly
+## `std::fs::IsReadonly`
 ```sh
 var = is_readonly path
 ```
@@ -3804,7 +3804,7 @@ readonly = is_readonly ./dir/somefile.txt
 is_readonly
 
 <a name="std__fs__JoinPath"></a>
-## std::fs::JoinPath
+## `std::fs::JoinPath`
 
 ```sh
 result = join_path path [path]*
@@ -3860,7 +3860,7 @@ set ${scope::join_path::output}
 join_path
 
 <a name="std__fs__List"></a>
-## std::fs::List
+## `std::fs::List`
 ```sh
 var = ls [flags] [path]
 ```
@@ -3910,7 +3910,7 @@ ls -l ./examples/ls.ds
 ls
 
 <a name="std__fs__MovePath"></a>
-## std::fs::MovePath
+## `std::fs::MovePath`
 ```sh
 var = mv source target
 ```
@@ -3949,7 +3949,7 @@ moved = mv ./source ./target/subdir
 mv
 
 <a name="std__fs__Print"></a>
-## std::fs::Print
+## `std::fs::Print`
 ```sh
 var = cat [file]+
 ```
@@ -3976,7 +3976,7 @@ cat ./docs/sdk.md
 cat
 
 <a name="std__fs__ReadBytes"></a>
-## std::fs::ReadBytes
+## `std::fs::ReadBytes`
 ```sh
 handle = read_binary_file file
 ```
@@ -4003,7 +4003,7 @@ text = bytes_to_string ${handle}
 readbinfile, read_binary_file
 
 <a name="std__fs__ReadText"></a>
-## std::fs::ReadText
+## `std::fs::ReadText`
 ```sh
 var = readfile file
 ```
@@ -4029,7 +4029,7 @@ text = readfile ./Cargo.toml
 readfile, read_text_file
 
 <a name="std__fs__SetMode"></a>
-## std::fs::SetMode
+## `std::fs::SetMode`
 ```sh
 result = chmod mode path
 ```
@@ -4057,7 +4057,7 @@ chmod 777 ./myfile.txt
 chmod
 
 <a name="std__fs__SetModeGlob"></a>
-## std::fs::SetModeGlob
+## `std::fs::SetModeGlob`
 
 ```sh
 result = glob_chmod mode glob
@@ -4132,7 +4132,7 @@ set ${scope::glob_chmod::output}
 glob_chmod, chmod_glob
 
 <a name="std__fs__TempDirectory"></a>
-## std::fs::TempDirectory
+## `std::fs::TempDirectory`
 ```sh
 path = temp_dir
 ```
@@ -4160,7 +4160,7 @@ echo ${path}
 temp_dir
 
 <a name="std__fs__TempFile"></a>
-## std::fs::TempFile
+## `std::fs::TempFile`
 ```sh
 path = temp_file [extension]
 ```
@@ -4188,7 +4188,7 @@ echo ${path}
 temp_file
 
 <a name="std__fs__WriteBytes"></a>
-## std::fs::WriteBytes
+## `std::fs::WriteBytes`
 ```sh
 result = write_binary_file file handle
 ```
@@ -4217,7 +4217,7 @@ result = write_binary_file ./target/tests/data.bin ${handle}
 writebinfile, write_binary_file
 
 <a name="std__fs__WriteText"></a>
-## std::fs::WriteText
+## `std::fs::WriteText`
 ```sh
 result = writefile file text
 ```
@@ -4245,7 +4245,7 @@ result = writefile ./target/tests/writefile.txt "line 1\nline 2"
 writefile, write_text_file
 
 <a name="std__hash__Digest"></a>
-## std::hash::Digest
+## `std::hash::Digest`
 ```sh
 var = digest --algo (sha256|sha512) (--file path|content)
 ```
@@ -4276,7 +4276,7 @@ hashed = digest --algo sha512 --file ./myfile.txt
 digest
 
 <a name="std__hash__Sha256Sum"></a>
-## std::hash::Sha256Sum
+## `std::hash::Sha256Sum`
 
 ```sh
 var = sha256sum file
@@ -4318,7 +4318,7 @@ scope::sha256sum::output = lowercase ${scope::sha256sum::output}
 sha256sum, sha256sum
 
 <a name="std__hash__Sha512Sum"></a>
-## std::hash::Sha512Sum
+## `std::hash::Sha512Sum`
 
 ```sh
 var = sha512sum file
@@ -4360,7 +4360,7 @@ scope::sha512sum::output = lowercase ${scope::sha512sum::output}
 sha512sum, sha512sum
 
 <a name="std__json"></a>
-## std::json
+## `std::json`
 The json module provides json parsing and encoding capabilities.<br>
 Parsing and encoding JSONs can be do to/from simple variables or to collections (maps/arrays).<br>
 By default, when parsing a JSON string, the structure will be represented by simple variables.<br>
@@ -4443,7 +4443,7 @@ end
 
 
 <a name="std__json__Encode"></a>
-## std::json::Encode
+## `std::json::Encode`
 ```sh
 string = json_encode (--collection handle | var_name)
 ```
@@ -4479,7 +4479,7 @@ jsonstring = json_encode --collection ${package}
 json_encode
 
 <a name="std__json__Parse"></a>
-## std::json::Parse
+## `std::json::Parse`
 ```sh
 var = json_parse [--collection] string
 ```
@@ -4548,7 +4548,7 @@ release --recursive ${package}
 json_parse
 
 <a name="std__lib__alias__Set"></a>
-## std::lib::alias::Set
+## `std::lib::alias::Set`
 ```sh
 var = alias command arguments
 ```
@@ -4579,7 +4579,7 @@ created = my_echo hello world
 alias
 
 <a name="std__lib__alias__Unset"></a>
-## std::lib::alias::Unset
+## `std::lib::alias::Unset`
 ```sh
 unalias name
 ```
@@ -4614,7 +4614,7 @@ my_echo hello world
 unalias
 
 <a name="std__lib__command__Remove"></a>
-## std::lib::command::Remove
+## `std::lib::command::Remove`
 ```sh
 remove_command name
 ```
@@ -4640,7 +4640,7 @@ remove_command set
 remove_command
 
 <a name="std__math__Calc"></a>
-## std::math::Calc
+## `std::math::Calc`
 ```sh
 var = calc [operation]
 ```
@@ -4668,7 +4668,7 @@ result = calc 1 + 5 * 7
 calc
 
 <a name="std__math__GreaterThan"></a>
-## std::math::GreaterThan
+## `std::math::GreaterThan`
 ```sh
 var = greater_than left right
 ```
@@ -4694,7 +4694,7 @@ result = greater_than 2 1.5
 greater_than
 
 <a name="std__math__HexDecode"></a>
-## std::math::HexDecode
+## `std::math::HexDecode`
 ```sh
 num = hex_decode str
 ```
@@ -4725,7 +4725,7 @@ assert_eq ${res} 256
 hex_decode
 
 <a name="std__math__HexEncode"></a>
-## std::math::HexEncode
+## `std::math::HexEncode`
 ```sh
 str = hex_encode num
 ```
@@ -4754,7 +4754,7 @@ assert_eq ${str} 0xff
 hex_encode
 
 <a name="std__math__LessThan"></a>
-## std::math::LessThan
+## `std::math::LessThan`
 ```sh
 var = less_than left right
 ```
@@ -4780,7 +4780,7 @@ result = less_than 1 1.5
 less_than
 
 <a name="std__net__Hostname"></a>
-## std::net::Hostname
+## `std::net::Hostname`
 ```sh
 var = hostname
 ```
@@ -4806,7 +4806,7 @@ name = hostname
 hostname
 
 <a name="std__net__HttpClient"></a>
-## std::net::HttpClient
+## `std::net::HttpClient`
 ```sh
 var = http_client [--method method] [--payload payload] [--output-file file] URL
 ```
@@ -4870,7 +4870,7 @@ end
 http_client
 
 <a name="std__net__WGet"></a>
-## std::net::WGet
+## `std::net::WGet`
 
 ```sh
 var = wget [--method=HTTP-method] [--post-data=payload] [-O file] URL
@@ -4970,7 +4970,7 @@ http_client --method "${scope::wget::method}" --output-file "${scope::wget::file
 wget
 
 <a name="std__net__ftp__Get"></a>
-## std::net::ftp::Get
+## `std::net::ftp::Get`
 ```sh
 result = ftp_get --host <hostname> [--port 21] [--username <user name>] [--password <password>] [--path <path>] [--type <A/I>] --remote-file <file name> --local-file <file name>
 ```
@@ -5003,7 +5003,7 @@ ftp_get --host myhost --username someuser --password 12345 --remote-file README.
 ftp_get
 
 <a name="std__net__ftp__GetInMemory"></a>
-## std::net::ftp::GetInMemory
+## `std::net::ftp::GetInMemory`
 ```sh
 handle = ftp_get_in_memory --host <hostname> [--port 21] [--username <user name>] [--password <password>] [--path <path>] [--type <A/I>] --remote-file <file name>
 ```
@@ -5036,7 +5036,7 @@ text = bytes_to_string ${handle}
 ftp_get_in_memory
 
 <a name="std__net__ftp__List"></a>
-## std::net::ftp::List
+## `std::net::ftp::List`
 ```sh
 handle = ftp_list --host <hostname> [--port 21] [--username <user name>] [--password <password>] [--path <path>]
 ```
@@ -5071,7 +5071,7 @@ end
 ftp_list
 
 <a name="std__net__ftp__NLst"></a>
-## std::net::ftp::NLst
+## `std::net::ftp::NLst`
 ```sh
 handle = ftp_nlst --host <hostname> [--port 21] [--username <user name>] [--password <password>] [--path <path>]
 ```
@@ -5106,7 +5106,7 @@ end
 ftp_nlst
 
 <a name="std__net__ftp__Put"></a>
-## std::net::ftp::Put
+## `std::net::ftp::Put`
 ```sh
 result = ftp_put --host <hostname> [--port 21] [--username <user name>] [--password <password>] [--path <path>] [--type <A/I>] --remote-file <file name> --local-file <file name>
 ```
@@ -5139,7 +5139,7 @@ ftp_put --host myhost --username someuser --password 12345 --remote-file README.
 ftp_put
 
 <a name="std__net__ftp__PutInMemory"></a>
-## std::net::ftp::PutInMemory
+## `std::net::ftp::PutInMemory`
 ```sh
 result = ftp_put_in_memory --host <hostname> [--port 21] [--username <user name>] [--password <password>] [--path <path>] [--type <A/I>] --remote-file <file name> --content <content>
 ```
@@ -5172,7 +5172,7 @@ ftp_put_in_memory --host myhost --username someuser --password 12345 --remote-fi
 ftp_put_in_memory
 
 <a name="std__process__Execute"></a>
-## std::process::Execute
+## `std::process::Execute`
 ```sh
 exec [--fail-on-error] command [args]*
 
@@ -5229,7 +5229,7 @@ echo exit code: ${exit_code}
 exec
 
 <a name="std__process__Exit"></a>
-## std::process::Exit
+## `std::process::Exit`
 ```sh
 code = exit [code]
 ```
@@ -5259,7 +5259,7 @@ code = exit 1
 exit, quit, q
 
 <a name="std__process__ProcessID"></a>
-## std::process::ProcessID
+## `std::process::ProcessID`
 ```sh
 var = pid
 ```
@@ -5285,7 +5285,7 @@ id = pid
 pid, process_id
 
 <a name="std__process__Spawn"></a>
-## std::process::Spawn
+## `std::process::Spawn`
 ```sh
 pid = spawn [--silent] command [args]*
 ```
@@ -5315,7 +5315,7 @@ echo PID: ${pid}
 spawn
 
 <a name="std__process__Watchdog"></a>
-## std::process::Watchdog
+## `std::process::Watchdog`
 ```sh
 count = watchdog [--max-retries value] [--interval value] -- command [arguments]*
 ```
@@ -5351,7 +5351,7 @@ assert_eq ${count} 4
 watchdog
 
 <a name="std__random__Range"></a>
-## std::random::Range
+## `std::random::Range`
 ```sh
 output = random_range min max
 ```
@@ -5379,7 +5379,7 @@ echo ${value}
 random_range, rand_range
 
 <a name="std__random__Text"></a>
-## std::random::Text
+## `std::random::Text`
 ```sh
 output = random_text [length]
 ```
@@ -5406,7 +5406,7 @@ echo ${value}
 random_text, rand_text
 
 <a name="std__scope__Clear"></a>
-## std::scope::Clear
+## `std::scope::Clear`
 ```sh
 clear_scope name
 ```
@@ -5452,7 +5452,7 @@ assert_false ${defined}
 clear_scope
 
 <a name="std__scope__PopStack"></a>
-## std::scope::PopStack
+## `std::scope::PopStack`
 ```sh
 scope_pop_stack [--copy name1 name2 ...]
 ```
@@ -5502,7 +5502,7 @@ echo ${defined}
 scope_pop_stack
 
 <a name="std__scope__PushStack"></a>
-## std::scope::PushStack
+## `std::scope::PushStack`
 ```sh
 scope_push_stack [--copy name1 name2 ...]
 ```
@@ -5538,7 +5538,7 @@ echo ${defined}
 scope_push_stack
 
 <a name="std__semver__IsEqual"></a>
-## std::semver::IsEqual
+## `std::semver::IsEqual`
 ```sh
 output = semver_is_equal value1 value2
 ```
@@ -5568,7 +5568,7 @@ assert_false ${equal}
 semver_is_equal
 
 <a name="std__semver__IsNewer"></a>
-## std::semver::IsNewer
+## `std::semver::IsNewer`
 ```sh
 output = semver_is_newer newer older
 ```
@@ -5602,7 +5602,7 @@ assert_false ${newer}
 semver_is_newer
 
 <a name="std__semver__Parse"></a>
-## std::semver::Parse
+## `std::semver::Parse`
 ```sh
 base = semver_parse value
 ```
@@ -5637,7 +5637,7 @@ echo ${version.patch}
 semver_parse
 
 <a name="std__string__Base64"></a>
-## std::string::Base64
+## `std::string::Base64`
 
 ```sh
 var = base64 [-e] [-encode] [-d] [-decode] value
@@ -5710,7 +5710,7 @@ scope::base64::output = set ${scope::base64::output}
 base64
 
 <a name="std__string__Base64Decode"></a>
-## std::string::Base64Decode
+## `std::string::Base64Decode`
 ```sh
 text = base64_encode handle
 ```
@@ -5742,7 +5742,7 @@ assert_eq ${text} "hello world"
 base64_decode
 
 <a name="std__string__Base64Encode"></a>
-## std::string::Base64Encode
+## `std::string::Base64Encode`
 ```sh
 text = base64_encode handle
 ```
@@ -5774,7 +5774,7 @@ assert_eq ${text} "hello world"
 base64_encode
 
 <a name="std__string__BytesToString"></a>
-## std::string::BytesToString
+## `std::string::BytesToString`
 ```sh
 text = bytes_to_string handle
 ```
@@ -5805,7 +5805,7 @@ assert_eq ${text} "hello world"
 bytes_to_string
 
 <a name="std__string__CamelCase"></a>
-## std::string::CamelCase
+## `std::string::CamelCase`
 ```sh
 var = camelcase text
 ```
@@ -5834,7 +5834,7 @@ assert_eq ${string} "HelloWorld"
 camelcase
 
 <a name="std__string__Concat"></a>
-## std::string::Concat
+## `std::string::Concat`
 
 ```sh
 var = concat [value]*
@@ -5883,7 +5883,7 @@ set ${scope::concat::output}
 concat
 
 <a name="std__string__Contains"></a>
-## std::string::Contains
+## `std::string::Contains`
 ```sh
 var = contains all partial
 ```
@@ -5917,7 +5917,7 @@ result = contains abcd b1c
 contains
 
 <a name="std__string__EndsWith"></a>
-## std::string::EndsWith
+## `std::string::EndsWith`
 ```sh
 var = ends_with all partial
 ```
@@ -5951,7 +5951,7 @@ result = ends_with abcd abc
 ends_with
 
 <a name="std__string__Equals"></a>
-## std::string::Equals
+## `std::string::Equals`
 ```sh
 var = eq value1 value2
 ```
@@ -5985,7 +5985,7 @@ is_same = eq 1 2
 equals, eq
 
 <a name="std__string__IndexOf"></a>
-## std::string::IndexOf
+## `std::string::IndexOf`
 ```sh
 var = indexof full_text text_to_find
 ```
@@ -6013,7 +6013,7 @@ index = indexof "    some  text   " some
 indexof
 
 <a name="std__string__IsEmpty"></a>
-## std::string::IsEmpty
+## `std::string::IsEmpty`
 ```sh
 var = is_empty value
 ```
@@ -6040,7 +6040,7 @@ empty = is_empty ${value}
 is_empty
 
 <a name="std__string__KebabCase"></a>
-## std::string::KebabCase
+## `std::string::KebabCase`
 ```sh
 var = kebobcase text
 ```
@@ -6069,7 +6069,7 @@ assert_eq ${string} "hello-world"
 kebabcase
 
 <a name="std__string__LastIndexOf"></a>
-## std::string::LastIndexOf
+## `std::string::LastIndexOf`
 ```sh
 var = last_indexof full_text text_to_find
 ```
@@ -6098,7 +6098,7 @@ index = last_indexof "    some  text   " some
 last_indexof
 
 <a name="std__string__Length"></a>
-## std::string::Length
+## `std::string::Length`
 ```sh
 var = length text
 ```
@@ -6124,7 +6124,7 @@ len = length "Hello World"
 length, strlen
 
 <a name="std__string__Lowercase"></a>
-## std::string::Lowercase
+## `std::string::Lowercase`
 ```sh
 var = lowercase text
 ```
@@ -6152,7 +6152,7 @@ assert_eq ${string} "hello world"
 lowercase
 
 <a name="std__string__Replace"></a>
-## std::string::Replace
+## `std::string::Replace`
 ```sh
 var = replace text from to
 ```
@@ -6183,7 +6183,7 @@ assert_eq ${updated} "my large stuff value with lots of stuff"
 replace
 
 <a name="std__string__SnakeCase"></a>
-## std::string::SnakeCase
+## `std::string::SnakeCase`
 ```sh
 var = snakecase text
 ```
@@ -6212,7 +6212,7 @@ assert_eq ${string} "hello_world"
 snakecase
 
 <a name="std__string__Split"></a>
-## std::string::Split
+## `std::string::Split`
 ```sh
 handle = split text pattern
 ```
@@ -6257,7 +6257,7 @@ assert_eq ${len} 5
 split
 
 <a name="std__string__StartsWith"></a>
-## std::string::StartsWith
+## `std::string::StartsWith`
 ```sh
 var = starts_with all partial
 ```
@@ -6291,7 +6291,7 @@ result = starts_with abcd bcd
 starts_with
 
 <a name="std__string__StringToBytes"></a>
-## std::string::StringToBytes
+## `std::string::StringToBytes`
 ```sh
 handle = string_to_bytes text
 ```
@@ -6322,7 +6322,7 @@ assert_eq ${text} "hello world"
 string_to_bytes
 
 <a name="std__string__SubString"></a>
-## std::string::SubString
+## `std::string::SubString`
 ```sh
 var = substring text
 var = substring text start end
@@ -6371,7 +6371,7 @@ echo ${string}
 substring
 
 <a name="std__string__Trim"></a>
-## std::string::Trim
+## `std::string::Trim`
 ```sh
 var = trim value
 ```
@@ -6398,7 +6398,7 @@ trimmed = trim "  some  text   "
 trim
 
 <a name="std__string__TrimEnd"></a>
-## std::string::TrimEnd
+## `std::string::TrimEnd`
 ```sh
 var = trim_end value
 ```
@@ -6425,7 +6425,7 @@ trimmed = trim_end "  some  text   "
 trim_end
 
 <a name="std__string__TrimStart"></a>
-## std::string::TrimStart
+## `std::string::TrimStart`
 ```sh
 var = trim_start value
 ```
@@ -6452,7 +6452,7 @@ trimmed = trim_start "  some  text   "
 trim_start
 
 <a name="std__string__Uppercase"></a>
-## std::string::Uppercase
+## `std::string::Uppercase`
 ```sh
 var = uppercase text
 ```
@@ -6480,7 +6480,7 @@ assert_eq ${string} "HELLO WORLD"
 uppercase
 
 <a name="std__test__Assert"></a>
-## std::test::Assert
+## `std::test::Assert`
 ```sh
 assert value [error message]
 ```
@@ -6528,7 +6528,7 @@ assert false "This is my error message"
 assert
 
 <a name="std__test__AssertEquals"></a>
-## std::test::AssertEquals
+## `std::test::AssertEquals`
 ```sh
 assert_eq value1 value2 [error message]
 ```
@@ -6565,7 +6565,7 @@ assert_eq 1 2 "This is my error message"
 assert_eq
 
 <a name="std__test__AssertError"></a>
-## std::test::AssertError
+## `std::test::AssertError`
 ```sh
 assert_error [error message]
 ```
@@ -6594,7 +6594,7 @@ assert_error "This is my error message"
 assert_error
 
 <a name="std__test__AssertFail"></a>
-## std::test::AssertFail
+## `std::test::AssertFail`
 ```sh
 assert_fail [error message]
 ```
@@ -6623,7 +6623,7 @@ assert_fail "This is my error message"
 assert_fail
 
 <a name="std__test__AssertFalse"></a>
-## std::test::AssertFalse
+## `std::test::AssertFalse`
 ```sh
 assert_false value [error message]
 ```
@@ -6671,7 +6671,7 @@ assert_false ${value}
 assert_false
 
 <a name="std__test__TestDirectory"></a>
-## std::test::TestDirectory
+## `std::test::TestDirectory`
 ```sh
 test_directory directory [pattern]
 ```
@@ -6712,7 +6712,7 @@ end
 test_directory
 
 <a name="std__test__TestFile"></a>
-## std::test::TestFile
+## `std::test::TestFile`
 ```sh
 test_file file [test name]
 ```
@@ -6752,7 +6752,7 @@ end
 test_file
 
 <a name="std__thread__Sleep"></a>
-## std::thread::Sleep
+## `std::thread::Sleep`
 ```sh
 sleep millies
 ```
@@ -6781,7 +6781,7 @@ echo Waited for ${time} milliseconds.
 sleep
 
 <a name="std__time__CurrentTimeMillies"></a>
-## std::time::CurrentTimeMillies
+## `std::time::CurrentTimeMillies`
 ```sh
 var = current_time
 ```
@@ -6808,7 +6808,7 @@ echo ${result}
 current_time
 
 <a name="std__var__GetAllVarNames"></a>
-## std::var::GetAllVarNames
+## `std::var::GetAllVarNames`
 ```sh
 handle = get_all_var_names
 ```
@@ -6837,7 +6837,7 @@ release ${handle}
 get_all_var_names
 
 <a name="std__var__GetByName"></a>
-## std::var::GetByName
+## `std::var::GetByName`
 ```sh
 var = get_by_name name
 ```
@@ -6873,7 +6873,7 @@ assert_eq ${value} test
 get_by_name
 
 <a name="std__var__IsDefined"></a>
-## std::var::IsDefined
+## `std::var::IsDefined`
 ```sh
 var = is_defined key
 ```
@@ -6900,7 +6900,7 @@ exists = is_defined key
 is_defined
 
 <a name="std__var__Set"></a>
-## std::var::Set
+## `std::var::Set`
 ```sh
 var = set arg [or arg]*
 ```
@@ -6944,7 +6944,7 @@ assert_eq ${value} FALSE
 set
 
 <a name="std__var__SetByName"></a>
-## std::var::SetByName
+## `std::var::SetByName`
 ```sh
 var = set_by_name name [value]
 ```
@@ -6981,7 +6981,7 @@ assert_eq ${value} test
 set_by_name
 
 <a name="std__var__Unset"></a>
-## std::var::Unset
+## `std::var::Unset`
 
 ```sh
 unset [names]*
@@ -7028,7 +7028,7 @@ end
 unset
 
 <a name="std__var__UnsetAllVars"></a>
-## std::var::UnsetAllVars
+## `std::var::UnsetAllVars`
 ```sh
 handle = unset_all_vars [--prefix value]
 ```
