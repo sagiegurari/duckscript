@@ -217,7 +217,7 @@ echo "hello    world"
 ```
 
 
-#### Aliases:
+### Aliases:
 echo
 
 <a name="std__Eval"></a>
@@ -245,7 +245,7 @@ eval ${command} hello world
 ```
 
 
-#### Aliases:
+### Aliases:
 eval
 
 <a name="std__IsCommandDefined"></a>
@@ -271,7 +271,7 @@ exists = is_command_defined exec
 ```
 
 
-#### Aliases:
+### Aliases:
 is_command_defined
 
 <a name="std__Noop"></a>
@@ -297,7 +297,7 @@ noop
 ```
 
 
-#### Aliases:
+### Aliases:
 noop
 
 <a name="std__Not"></a>
@@ -375,7 +375,7 @@ end
 ```
 
 
-#### Aliases:
+### Aliases:
 not
 
 <a name="std__ReadUserInput"></a>
@@ -409,7 +409,7 @@ end
 ```
 
 
-#### Aliases:
+### Aliases:
 read
 
 <a name="std__Release"></a>
@@ -441,7 +441,7 @@ release ${array_handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 release
 
 <a name="std__ShowCommandDocumentation"></a>
@@ -467,7 +467,7 @@ man set
 ```
 
 
-#### Aliases:
+### Aliases:
 man
 
 <a name="std__collections"></a>
@@ -513,7 +513,7 @@ release ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 array
 
 <a name="std__collections__ArrayClear"></a>
@@ -552,7 +552,7 @@ release ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 array_clear
 
 <a name="std__collections__ArrayConcat"></a>
@@ -611,7 +611,7 @@ set ${scope::array_concat::array}
 
 
 
-#### Aliases:
+### Aliases:
 array_concat
 
 <a name="std__collections__ArrayContains"></a>
@@ -669,7 +669,7 @@ set ${scope::array_contains::index}
 
 
 
-#### Aliases:
+### Aliases:
 array_contains
 
 <a name="std__collections__ArrayGet"></a>
@@ -698,7 +698,7 @@ assert_eq ${element} 3
 ```
 
 
-#### Aliases:
+### Aliases:
 array_get
 
 <a name="std__collections__ArrayIsEmpty"></a>
@@ -740,7 +740,7 @@ equals 0 ${scope::array_is_empty::length}
 
 
 
-#### Aliases:
+### Aliases:
 array_is_empty
 
 <a name="std__collections__ArrayJoin"></a>
@@ -823,7 +823,7 @@ set ${scope::array_join::string}
 
 
 
-#### Aliases:
+### Aliases:
 array_join
 
 <a name="std__collections__ArrayLength"></a>
@@ -857,7 +857,7 @@ echo Array length: ${len} released: ${released}
 ```
 
 
-#### Aliases:
+### Aliases:
 array_length, arrlen, array_size
 
 <a name="std__collections__ArrayPop"></a>
@@ -885,7 +885,7 @@ assert_eq ${last_element} 3
 ```
 
 
-#### Aliases:
+### Aliases:
 array_pop
 
 <a name="std__collections__ArrayPush"></a>
@@ -914,7 +914,7 @@ assert_eq ${last_element} 4
 ```
 
 
-#### Aliases:
+### Aliases:
 array_push, array_add, array_put
 
 <a name="std__collections__ArrayRemove"></a>
@@ -952,7 +952,7 @@ assert ${empty}
 ```
 
 
-#### Aliases:
+### Aliases:
 array_remove
 
 <a name="std__collections__ArraySet"></a>
@@ -991,7 +991,7 @@ assert_eq ${element} new
 ```
 
 
-#### Aliases:
+### Aliases:
 array_set
 
 <a name="std__collections__IsArray"></a>
@@ -1023,7 +1023,7 @@ assert ${released}
 ```
 
 
-#### Aliases:
+### Aliases:
 is_array
 
 <a name="std__collections__IsMap"></a>
@@ -1055,7 +1055,7 @@ assert ${released}
 ```
 
 
-#### Aliases:
+### Aliases:
 is_map
 
 <a name="std__collections__IsSet"></a>
@@ -1087,7 +1087,7 @@ assert ${released}
 ```
 
 
-#### Aliases:
+### Aliases:
 is_set
 
 <a name="std__collections__Map"></a>
@@ -1118,7 +1118,7 @@ release ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 map
 
 <a name="std__collections__MapClear"></a>
@@ -1157,7 +1157,7 @@ release ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 map_clear
 
 <a name="std__collections__MapContainsKey"></a>
@@ -1201,7 +1201,7 @@ is_defined scope::map_contains_key::value
 
 
 
-#### Aliases:
+### Aliases:
 map_contains_key
 
 <a name="std__collections__MapContainsValue"></a>
@@ -1262,7 +1262,7 @@ set ${scope::map_contains_value::found}
 
 
 
-#### Aliases:
+### Aliases:
 map_contains_value
 
 <a name="std__collections__MapGet"></a>
@@ -1297,7 +1297,7 @@ release ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 map_get
 
 <a name="std__collections__MapIsEmpty"></a>
@@ -1340,7 +1340,7 @@ equals 0 ${scope::map_is_empty::length}
 
 
 
-#### Aliases:
+### Aliases:
 map_is_empty
 
 <a name="std__collections__MapKeys"></a>
@@ -1380,7 +1380,7 @@ release ${keys}
 ```
 
 
-#### Aliases:
+### Aliases:
 map_keys
 
 <a name="std__collections__MapLoadProperties"></a>
@@ -1416,7 +1416,7 @@ release ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 map_load_properties
 
 <a name="std__collections__MapPut"></a>
@@ -1452,7 +1452,7 @@ release ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 map_put, map_add
 
 <a name="std__collections__MapRemove"></a>
@@ -1487,7 +1487,7 @@ release ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 map_remove
 
 <a name="std__collections__MapSize"></a>
@@ -1522,7 +1522,7 @@ release ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 map_size
 
 <a name="std__collections__MapToProperties"></a>
@@ -1554,7 +1554,7 @@ text = map_to_properties ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 map_to_properties
 
 <a name="std__collections__Range"></a>
@@ -1586,7 +1586,7 @@ release ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 range
 
 <a name="std__collections__ReadProperties"></a>
@@ -1627,7 +1627,7 @@ assert_eq ${config.a.b.c} 3
 ```
 
 
-#### Aliases:
+### Aliases:
 read_properties
 
 <a name="std__collections__Set"></a>
@@ -1658,7 +1658,7 @@ release ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 set_new
 
 <a name="std__collections__SetClear"></a>
@@ -1697,7 +1697,7 @@ release ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 set_clear
 
 <a name="std__collections__SetContains"></a>
@@ -1725,7 +1725,7 @@ found = set_contains ${handle} value2
 ```
 
 
-#### Aliases:
+### Aliases:
 set_contains
 
 <a name="std__collections__SetFromArray"></a>
@@ -1775,7 +1775,7 @@ set ${scope::set_from_array::set}
 
 
 
-#### Aliases:
+### Aliases:
 set_from_array
 
 <a name="std__collections__SetIsEmpty"></a>
@@ -1818,7 +1818,7 @@ equals 0 ${scope::set_is_empty::length}
 
 
 
-#### Aliases:
+### Aliases:
 set_is_empty
 
 <a name="std__collections__SetPut"></a>
@@ -1847,7 +1847,7 @@ assert_eq ${size} 4
 ```
 
 
-#### Aliases:
+### Aliases:
 set_put, set_add
 
 <a name="std__collections__SetRemove"></a>
@@ -1882,7 +1882,7 @@ release ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 set_remove
 
 <a name="std__collections__SetSize"></a>
@@ -1917,7 +1917,7 @@ release ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 set_size
 
 <a name="std__collections__SetToArray"></a>
@@ -1944,7 +1944,7 @@ array_handle = set_to_array ${set_handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 set_to_array
 
 <a name="std__collections__WriteProperties"></a>
@@ -1985,7 +1985,7 @@ text = write_properties --prefix P a b a.b.c
 ```
 
 
-#### Aliases:
+### Aliases:
 write_properties
 
 <a name="std__debug__DuckscriptSDKVersion"></a>
@@ -2011,7 +2011,7 @@ version = duckscript_sdk_version
 ```
 
 
-#### Aliases:
+### Aliases:
 duckscript_sdk_version
 
 <a name="std__debug__DuckscriptVersion"></a>
@@ -2037,7 +2037,7 @@ version = duckscript_version
 ```
 
 
-#### Aliases:
+### Aliases:
 duckscript_version
 
 <a name="std__debug__DumpInstructions"></a>
@@ -2065,7 +2065,7 @@ assert found
 ```
 
 
-#### Aliases:
+### Aliases:
 dump_instructions
 
 <a name="std__debug__DumpState"></a>
@@ -2095,7 +2095,7 @@ assert found
 ```
 
 
-#### Aliases:
+### Aliases:
 dump_state
 
 <a name="std__debug__DumpVariables"></a>
@@ -2132,7 +2132,7 @@ assert found
 ```
 
 
-#### Aliases:
+### Aliases:
 dump_variables
 
 <a name="std__env__EnvToMap"></a>
@@ -2165,7 +2165,7 @@ release ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 env_to_map
 
 <a name="std__env__FindExecutable"></a>
@@ -2192,7 +2192,7 @@ path = which echo
 ```
 
 
-#### Aliases:
+### Aliases:
 which
 
 <a name="std__env__GetCpuCount"></a>
@@ -2218,7 +2218,7 @@ count = cpu_count
 ```
 
 
-#### Aliases:
+### Aliases:
 cpu_count, get_cpu_count
 
 <a name="std__env__GetHomeDirectory"></a>
@@ -2245,7 +2245,7 @@ directory = get_home_dir
 ```
 
 
-#### Aliases:
+### Aliases:
 get_home_dir
 
 <a name="std__env__GetOSFamily"></a>
@@ -2271,7 +2271,7 @@ name = os_family
 ```
 
 
-#### Aliases:
+### Aliases:
 os_family
 
 <a name="std__env__GetOSName"></a>
@@ -2297,7 +2297,7 @@ name = os_name
 ```
 
 
-#### Aliases:
+### Aliases:
 os_name
 
 <a name="std__env__GetOSRelease"></a>
@@ -2324,7 +2324,7 @@ release = os_release
 ```
 
 
-#### Aliases:
+### Aliases:
 os_release
 
 <a name="std__env__GetOSVersion"></a>
@@ -2351,7 +2351,7 @@ version = os_version
 ```
 
 
-#### Aliases:
+### Aliases:
 os_version
 
 <a name="std__env__GetUserName"></a>
@@ -2377,7 +2377,7 @@ name = whoami
 ```
 
 
-#### Aliases:
+### Aliases:
 whoami, get_user_name
 
 <a name="std__env__GetVar"></a>
@@ -2403,7 +2403,7 @@ home = get_env HOME
 ```
 
 
-#### Aliases:
+### Aliases:
 get_env
 
 <a name="std__env__IsWindows"></a>
@@ -2444,7 +2444,7 @@ equals ${scope::is_windows::os} windows
 
 
 
-#### Aliases:
+### Aliases:
 is_windows
 
 <a name="std__env__PrintCurrentDirectory"></a>
@@ -2474,7 +2474,7 @@ directory = pwd
 ```
 
 
-#### Aliases:
+### Aliases:
 pwd, print_current_directory
 
 <a name="std__env__PrintEnv"></a>
@@ -2524,7 +2524,7 @@ set ${scope::print_env::text}
 
 
 
-#### Aliases:
+### Aliases:
 print_env, printenv
 
 <a name="std__env__SetCurrentDirectory"></a>
@@ -2556,7 +2556,7 @@ cd ./scripts
 ```
 
 
-#### Aliases:
+### Aliases:
 cd, set_current_dir, set_current_directory
 
 <a name="std__env__SetVar"></a>
@@ -2600,7 +2600,7 @@ set_env --handle ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 set_env
 
 <a name="std__env__UName"></a>
@@ -2651,7 +2651,7 @@ set ${scope::uname::info}
 
 
 
-#### Aliases:
+### Aliases:
 uname
 
 <a name="std__env__UnsetVar"></a>
@@ -2677,7 +2677,7 @@ unset_env HOME
 ```
 
 
-#### Aliases:
+### Aliases:
 unset_env
 
 <a name="std__error__GetLastError"></a>
@@ -2707,7 +2707,7 @@ echo Error Message: ${error}
 ```
 
 
-#### Aliases:
+### Aliases:
 get_last_error
 
 <a name="std__error__GetLastErrorLine"></a>
@@ -2737,7 +2737,7 @@ echo Error Line: ${line}
 ```
 
 
-#### Aliases:
+### Aliases:
 get_last_error_line
 
 <a name="std__error__GetLastErrorSource"></a>
@@ -2767,7 +2767,7 @@ echo Error Source File: ${source}
 ```
 
 
-#### Aliases:
+### Aliases:
 get_last_error_source
 
 <a name="std__error__SetError"></a>
@@ -2798,7 +2798,7 @@ assert_eq ${error} "my error message"
 ```
 
 
-#### Aliases:
+### Aliases:
 set_error
 
 <a name="std__error__SetExitOnError"></a>
@@ -2833,7 +2833,7 @@ echo Current state: ${will_exit}
 ```
 
 
-#### Aliases:
+### Aliases:
 exit_on_error, set_exit_on_error
 
 <a name="std__error__TriggerError"></a>
@@ -2861,7 +2861,7 @@ assert_eq ${error} "my error message"
 ```
 
 
-#### Aliases:
+### Aliases:
 trigger_error
 
 <a name="std__flowcontrol__ForIn"></a>
@@ -2912,7 +2912,7 @@ end
 ```
 
 
-#### Aliases:
+### Aliases:
 for
 
 <a name="std__flowcontrol__Function"></a>
@@ -3017,7 +3017,7 @@ echo ${output}
 ```
 
 
-#### Aliases:
+### Aliases:
 function, fn
 
 <a name="std__flowcontrol__GoTo"></a>
@@ -3047,7 +3047,7 @@ echo bad
 ```
 
 
-#### Aliases:
+### Aliases:
 goto
 
 <a name="std__flowcontrol__If"></a>
@@ -3160,7 +3160,7 @@ end
 ```
 
 
-#### Aliases:
+### Aliases:
 if
 
 <a name="std__flowcontrol__While"></a>
@@ -3228,7 +3228,7 @@ assert_eq ${counter} 100
 ```
 
 
-#### Aliases:
+### Aliases:
 while
 
 <a name="std__fs__Append"></a>
@@ -3258,7 +3258,7 @@ out = appendfile ./target/tests/writefile.txt "line 1\nline 2"
 ```
 
 
-#### Aliases:
+### Aliases:
 appendfile
 
 <a name="std__fs__CPGlob"></a>
@@ -3351,7 +3351,7 @@ set ${scope::glob_cp::output}
 
 
 
-#### Aliases:
+### Aliases:
 glob_cp, cp_glob
 
 <a name="std__fs__CopyPath"></a>
@@ -3383,7 +3383,7 @@ copied = cp ./source ./target
 ```
 
 
-#### Aliases:
+### Aliases:
 cp
 
 <a name="std__fs__CreateDirectory"></a>
@@ -3409,7 +3409,7 @@ exists = mkdir ./dir/subdir
 ```
 
 
-#### Aliases:
+### Aliases:
 mkdir
 
 <a name="std__fs__CreateEmptyFile"></a>
@@ -3437,7 +3437,7 @@ exists = touch ./dir/file.txt
 ```
 
 
-#### Aliases:
+### Aliases:
 touch
 
 <a name="std__fs__DeleteEmptyDirectory"></a>
@@ -3464,7 +3464,7 @@ deleted = rmdir ./mydir
 ```
 
 
-#### Aliases:
+### Aliases:
 rmdir
 
 <a name="std__fs__DeletePath"></a>
@@ -3499,7 +3499,7 @@ deleted = rm -r ./dir ./somefile ./anotherdir/subdir/file
 ```
 
 
-#### Aliases:
+### Aliases:
 rm
 
 <a name="std__fs__Exists"></a>
@@ -3526,7 +3526,7 @@ existing = is_path_exists ./dir/somefile.txt
 ```
 
 
-#### Aliases:
+### Aliases:
 is_path_exists
 
 <a name="std__fs__GetCanonicalPath"></a>
@@ -3553,7 +3553,7 @@ path = canonicalize ./target
 ```
 
 
-#### Aliases:
+### Aliases:
 canonicalize
 
 <a name="std__fs__GetFileName"></a>
@@ -3580,7 +3580,7 @@ file = basename ./dir/file.txt
 ```
 
 
-#### Aliases:
+### Aliases:
 basename
 
 <a name="std__fs__GetLastModifiedTime"></a>
@@ -3606,7 +3606,7 @@ time = get_last_modified_time ./dir/somefile.txt
 ```
 
 
-#### Aliases:
+### Aliases:
 get_last_modified_time
 
 <a name="std__fs__GetParentDirectory"></a>
@@ -3633,7 +3633,7 @@ directory = dirname ./dir/file.txt
 ```
 
 
-#### Aliases:
+### Aliases:
 dirname
 
 <a name="std__fs__GitIgnorePathArray"></a>
@@ -3663,7 +3663,7 @@ end
 ```
 
 
-#### Aliases:
+### Aliases:
 gitignore_path_array
 
 <a name="std__fs__GlobArray"></a>
@@ -3694,7 +3694,7 @@ end
 ```
 
 
-#### Aliases:
+### Aliases:
 glob_array, globarray
 
 <a name="std__fs__IsDirectory"></a>
@@ -3720,7 +3720,7 @@ existing_dir = is_dir ./dir
 ```
 
 
-#### Aliases:
+### Aliases:
 is_directory, is_dir
 
 <a name="std__fs__IsFile"></a>
@@ -3746,7 +3746,7 @@ existing_file = is_file ./dir/somefile.txt
 ```
 
 
-#### Aliases:
+### Aliases:
 is_file
 
 <a name="std__fs__IsPathNewer"></a>
@@ -3774,7 +3774,7 @@ newer = is_path_newer ./new_file.txt ./old_file.txt
 ```
 
 
-#### Aliases:
+### Aliases:
 is_path_newer
 
 <a name="std__fs__IsReadonly"></a>
@@ -3800,7 +3800,7 @@ readonly = is_readonly ./dir/somefile.txt
 ```
 
 
-#### Aliases:
+### Aliases:
 is_readonly
 
 <a name="std__fs__JoinPath"></a>
@@ -3856,7 +3856,7 @@ set ${scope::join_path::output}
 
 
 
-#### Aliases:
+### Aliases:
 join_path
 
 <a name="std__fs__List"></a>
@@ -3906,7 +3906,7 @@ ls -l ./examples/ls.ds
 ```
 
 
-#### Aliases:
+### Aliases:
 ls
 
 <a name="std__fs__MovePath"></a>
@@ -3945,7 +3945,7 @@ moved = mv ./source ./target/subdir
 ```
 
 
-#### Aliases:
+### Aliases:
 mv
 
 <a name="std__fs__Print"></a>
@@ -3972,7 +3972,7 @@ cat ./docs/sdk.md
 ```
 
 
-#### Aliases:
+### Aliases:
 cat
 
 <a name="std__fs__ReadBytes"></a>
@@ -3999,7 +3999,7 @@ text = bytes_to_string ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 readbinfile, read_binary_file
 
 <a name="std__fs__ReadText"></a>
@@ -4025,7 +4025,7 @@ text = readfile ./Cargo.toml
 ```
 
 
-#### Aliases:
+### Aliases:
 readfile, read_text_file
 
 <a name="std__fs__SetMode"></a>
@@ -4053,7 +4053,7 @@ chmod 777 ./myfile.txt
 ```
 
 
-#### Aliases:
+### Aliases:
 chmod
 
 <a name="std__fs__SetModeGlob"></a>
@@ -4128,7 +4128,7 @@ set ${scope::glob_chmod::output}
 
 
 
-#### Aliases:
+### Aliases:
 glob_chmod, chmod_glob
 
 <a name="std__fs__TempDirectory"></a>
@@ -4156,7 +4156,7 @@ echo ${path}
 ```
 
 
-#### Aliases:
+### Aliases:
 temp_dir
 
 <a name="std__fs__TempFile"></a>
@@ -4184,7 +4184,7 @@ echo ${path}
 ```
 
 
-#### Aliases:
+### Aliases:
 temp_file
 
 <a name="std__fs__WriteBytes"></a>
@@ -4213,7 +4213,7 @@ result = write_binary_file ./target/tests/data.bin ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 writebinfile, write_binary_file
 
 <a name="std__fs__WriteText"></a>
@@ -4241,7 +4241,7 @@ result = writefile ./target/tests/writefile.txt "line 1\nline 2"
 ```
 
 
-#### Aliases:
+### Aliases:
 writefile, write_text_file
 
 <a name="std__hash__Digest"></a>
@@ -4272,7 +4272,7 @@ hashed = digest --algo sha512 --file ./myfile.txt
 ```
 
 
-#### Aliases:
+### Aliases:
 digest
 
 <a name="std__hash__Sha256Sum"></a>
@@ -4314,7 +4314,7 @@ scope::sha256sum::output = lowercase ${scope::sha256sum::output}
 
 
 
-#### Aliases:
+### Aliases:
 sha256sum, sha256sum
 
 <a name="std__hash__Sha512Sum"></a>
@@ -4356,7 +4356,7 @@ scope::sha512sum::output = lowercase ${scope::sha512sum::output}
 
 
 
-#### Aliases:
+### Aliases:
 sha512sum, sha512sum
 
 <a name="std__json"></a>
@@ -4475,7 +4475,7 @@ jsonstring = json_encode --collection ${package}
 ```
 
 
-#### Aliases:
+### Aliases:
 json_encode
 
 <a name="std__json__Parse"></a>
@@ -4544,7 +4544,7 @@ release --recursive ${package}
 ```
 
 
-#### Aliases:
+### Aliases:
 json_parse
 
 <a name="std__lib__alias__Set"></a>
@@ -4575,7 +4575,7 @@ created = my_echo hello world
 ```
 
 
-#### Aliases:
+### Aliases:
 alias
 
 <a name="std__lib__alias__Unset"></a>
@@ -4610,7 +4610,7 @@ my_echo hello world
 ```
 
 
-#### Aliases:
+### Aliases:
 unalias
 
 <a name="std__lib__command__Remove"></a>
@@ -4636,7 +4636,7 @@ remove_command set
 ```
 
 
-#### Aliases:
+### Aliases:
 remove_command
 
 <a name="std__math__Calc"></a>
@@ -4664,7 +4664,7 @@ result = calc 1 + 5 * 7
 ```
 
 
-#### Aliases:
+### Aliases:
 calc
 
 <a name="std__math__GreaterThan"></a>
@@ -4690,7 +4690,7 @@ result = greater_than 2 1.5
 ```
 
 
-#### Aliases:
+### Aliases:
 greater_than
 
 <a name="std__math__HexDecode"></a>
@@ -4721,7 +4721,7 @@ assert_eq ${res} 256
 ```
 
 
-#### Aliases:
+### Aliases:
 hex_decode
 
 <a name="std__math__HexEncode"></a>
@@ -4750,7 +4750,7 @@ assert_eq ${str} 0xff
 ```
 
 
-#### Aliases:
+### Aliases:
 hex_encode
 
 <a name="std__math__LessThan"></a>
@@ -4776,7 +4776,7 @@ result = less_than 1 1.5
 ```
 
 
-#### Aliases:
+### Aliases:
 less_than
 
 <a name="std__net__Hostname"></a>
@@ -4802,7 +4802,7 @@ name = hostname
 ```
 
 
-#### Aliases:
+### Aliases:
 hostname
 
 <a name="std__net__HttpClient"></a>
@@ -4866,7 +4866,7 @@ end
 ```
 
 
-#### Aliases:
+### Aliases:
 http_client
 
 <a name="std__net__WGet"></a>
@@ -4966,7 +4966,7 @@ http_client --method "${scope::wget::method}" --output-file "${scope::wget::file
 
 
 
-#### Aliases:
+### Aliases:
 wget
 
 <a name="std__net__ftp__Get"></a>
@@ -4999,7 +4999,7 @@ ftp_get --host myhost --username someuser --password 12345 --remote-file README.
 ```
 
 
-#### Aliases:
+### Aliases:
 ftp_get
 
 <a name="std__net__ftp__GetInMemory"></a>
@@ -5032,7 +5032,7 @@ text = bytes_to_string ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 ftp_get_in_memory
 
 <a name="std__net__ftp__List"></a>
@@ -5067,7 +5067,7 @@ end
 ```
 
 
-#### Aliases:
+### Aliases:
 ftp_list
 
 <a name="std__net__ftp__NLst"></a>
@@ -5102,7 +5102,7 @@ end
 ```
 
 
-#### Aliases:
+### Aliases:
 ftp_nlst
 
 <a name="std__net__ftp__Put"></a>
@@ -5135,7 +5135,7 @@ ftp_put --host myhost --username someuser --password 12345 --remote-file README.
 ```
 
 
-#### Aliases:
+### Aliases:
 ftp_put
 
 <a name="std__net__ftp__PutInMemory"></a>
@@ -5168,7 +5168,7 @@ ftp_put_in_memory --host myhost --username someuser --password 12345 --remote-fi
 ```
 
 
-#### Aliases:
+### Aliases:
 ftp_put_in_memory
 
 <a name="std__process__Execute"></a>
@@ -5225,7 +5225,7 @@ echo exit code: ${exit_code}
 ```
 
 
-#### Aliases:
+### Aliases:
 exec
 
 <a name="std__process__Exit"></a>
@@ -5255,7 +5255,7 @@ code = exit 1
 ```
 
 
-#### Aliases:
+### Aliases:
 exit, quit, q
 
 <a name="std__process__ProcessID"></a>
@@ -5281,7 +5281,7 @@ id = pid
 ```
 
 
-#### Aliases:
+### Aliases:
 pid, process_id
 
 <a name="std__process__Spawn"></a>
@@ -5311,7 +5311,7 @@ echo PID: ${pid}
 ```
 
 
-#### Aliases:
+### Aliases:
 spawn
 
 <a name="std__process__Watchdog"></a>
@@ -5347,7 +5347,7 @@ assert_eq ${count} 4
 ```
 
 
-#### Aliases:
+### Aliases:
 watchdog
 
 <a name="std__random__Range"></a>
@@ -5375,7 +5375,7 @@ echo ${value}
 ```
 
 
-#### Aliases:
+### Aliases:
 random_range, rand_range
 
 <a name="std__random__Text"></a>
@@ -5402,7 +5402,7 @@ echo ${value}
 ```
 
 
-#### Aliases:
+### Aliases:
 random_text, rand_text
 
 <a name="std__scope__Clear"></a>
@@ -5448,7 +5448,7 @@ assert_false ${defined}
 ```
 
 
-#### Aliases:
+### Aliases:
 clear_scope
 
 <a name="std__scope__PopStack"></a>
@@ -5498,7 +5498,7 @@ echo ${defined}
 ```
 
 
-#### Aliases:
+### Aliases:
 scope_pop_stack
 
 <a name="std__scope__PushStack"></a>
@@ -5534,7 +5534,7 @@ echo ${defined}
 ```
 
 
-#### Aliases:
+### Aliases:
 scope_push_stack
 
 <a name="std__semver__IsEqual"></a>
@@ -5564,7 +5564,7 @@ assert_false ${equal}
 ```
 
 
-#### Aliases:
+### Aliases:
 semver_is_equal
 
 <a name="std__semver__IsNewer"></a>
@@ -5598,7 +5598,7 @@ assert_false ${newer}
 ```
 
 
-#### Aliases:
+### Aliases:
 semver_is_newer
 
 <a name="std__semver__Parse"></a>
@@ -5633,7 +5633,7 @@ echo ${version.patch}
 ```
 
 
-#### Aliases:
+### Aliases:
 semver_parse
 
 <a name="std__string__Base64"></a>
@@ -5706,7 +5706,7 @@ scope::base64::output = set ${scope::base64::output}
 
 
 
-#### Aliases:
+### Aliases:
 base64
 
 <a name="std__string__Base64Decode"></a>
@@ -5738,7 +5738,7 @@ assert_eq ${text} "hello world"
 ```
 
 
-#### Aliases:
+### Aliases:
 base64_decode
 
 <a name="std__string__Base64Encode"></a>
@@ -5770,7 +5770,7 @@ assert_eq ${text} "hello world"
 ```
 
 
-#### Aliases:
+### Aliases:
 base64_encode
 
 <a name="std__string__BytesToString"></a>
@@ -5801,7 +5801,7 @@ assert_eq ${text} "hello world"
 ```
 
 
-#### Aliases:
+### Aliases:
 bytes_to_string
 
 <a name="std__string__CamelCase"></a>
@@ -5830,7 +5830,7 @@ assert_eq ${string} "HelloWorld"
 
 
 
-#### Aliases:
+### Aliases:
 camelcase
 
 <a name="std__string__Concat"></a>
@@ -5879,7 +5879,7 @@ set ${scope::concat::output}
 
 
 
-#### Aliases:
+### Aliases:
 concat
 
 <a name="std__string__Contains"></a>
@@ -5913,7 +5913,7 @@ result = contains abcd b1c
 ```
 
 
-#### Aliases:
+### Aliases:
 contains
 
 <a name="std__string__EndsWith"></a>
@@ -5947,7 +5947,7 @@ result = ends_with abcd abc
 ```
 
 
-#### Aliases:
+### Aliases:
 ends_with
 
 <a name="std__string__Equals"></a>
@@ -5981,7 +5981,7 @@ is_same = eq 1 2
 ```
 
 
-#### Aliases:
+### Aliases:
 equals, eq
 
 <a name="std__string__IndexOf"></a>
@@ -6009,7 +6009,7 @@ index = indexof "    some  text   " some
 ```
 
 
-#### Aliases:
+### Aliases:
 indexof
 
 <a name="std__string__IsEmpty"></a>
@@ -6036,7 +6036,7 @@ empty = is_empty ${value}
 ```
 
 
-#### Aliases:
+### Aliases:
 is_empty
 
 <a name="std__string__KebabCase"></a>
@@ -6065,7 +6065,7 @@ assert_eq ${string} "hello-world"
 
 
 
-#### Aliases:
+### Aliases:
 kebabcase
 
 <a name="std__string__LastIndexOf"></a>
@@ -6094,7 +6094,7 @@ index = last_indexof "    some  text   " some
 ```
 
 
-#### Aliases:
+### Aliases:
 last_indexof
 
 <a name="std__string__Length"></a>
@@ -6120,7 +6120,7 @@ len = length "Hello World"
 ```
 
 
-#### Aliases:
+### Aliases:
 length, strlen
 
 <a name="std__string__Lowercase"></a>
@@ -6148,7 +6148,7 @@ assert_eq ${string} "hello world"
 
 
 
-#### Aliases:
+### Aliases:
 lowercase
 
 <a name="std__string__Replace"></a>
@@ -6179,7 +6179,7 @@ assert_eq ${updated} "my large stuff value with lots of stuff"
 ```
 
 
-#### Aliases:
+### Aliases:
 replace
 
 <a name="std__string__SnakeCase"></a>
@@ -6208,7 +6208,7 @@ assert_eq ${string} "hello_world"
 
 
 
-#### Aliases:
+### Aliases:
 snakecase
 
 <a name="std__string__Split"></a>
@@ -6253,7 +6253,7 @@ assert_eq ${len} 5
 ```
 
 
-#### Aliases:
+### Aliases:
 split
 
 <a name="std__string__StartsWith"></a>
@@ -6287,7 +6287,7 @@ result = starts_with abcd bcd
 ```
 
 
-#### Aliases:
+### Aliases:
 starts_with
 
 <a name="std__string__StringToBytes"></a>
@@ -6318,7 +6318,7 @@ assert_eq ${text} "hello world"
 ```
 
 
-#### Aliases:
+### Aliases:
 string_to_bytes
 
 <a name="std__string__SubString"></a>
@@ -6367,7 +6367,7 @@ echo ${string}
 ```
 
 
-#### Aliases:
+### Aliases:
 substring
 
 <a name="std__string__Trim"></a>
@@ -6394,7 +6394,7 @@ trimmed = trim "  some  text   "
 ```
 
 
-#### Aliases:
+### Aliases:
 trim
 
 <a name="std__string__TrimEnd"></a>
@@ -6421,7 +6421,7 @@ trimmed = trim_end "  some  text   "
 ```
 
 
-#### Aliases:
+### Aliases:
 trim_end
 
 <a name="std__string__TrimStart"></a>
@@ -6448,7 +6448,7 @@ trimmed = trim_start "  some  text   "
 ```
 
 
-#### Aliases:
+### Aliases:
 trim_start
 
 <a name="std__string__Uppercase"></a>
@@ -6476,7 +6476,7 @@ assert_eq ${string} "HELLO WORLD"
 
 
 
-#### Aliases:
+### Aliases:
 uppercase
 
 <a name="std__test__Assert"></a>
@@ -6524,7 +6524,7 @@ assert false "This is my error message"
 ```
 
 
-#### Aliases:
+### Aliases:
 assert
 
 <a name="std__test__AssertEquals"></a>
@@ -6561,7 +6561,7 @@ assert_eq 1 2 "This is my error message"
 ```
 
 
-#### Aliases:
+### Aliases:
 assert_eq
 
 <a name="std__test__AssertError"></a>
@@ -6590,7 +6590,7 @@ assert_error "This is my error message"
 ```
 
 
-#### Aliases:
+### Aliases:
 assert_error
 
 <a name="std__test__AssertFail"></a>
@@ -6619,7 +6619,7 @@ assert_fail "This is my error message"
 ```
 
 
-#### Aliases:
+### Aliases:
 assert_fail
 
 <a name="std__test__AssertFalse"></a>
@@ -6667,7 +6667,7 @@ assert_false ${value}
 ```
 
 
-#### Aliases:
+### Aliases:
 assert_false
 
 <a name="std__test__TestDirectory"></a>
@@ -6708,7 +6708,7 @@ end
 ```
 
 
-#### Aliases:
+### Aliases:
 test_directory
 
 <a name="std__test__TestFile"></a>
@@ -6748,7 +6748,7 @@ end
 ```
 
 
-#### Aliases:
+### Aliases:
 test_file
 
 <a name="std__thread__Sleep"></a>
@@ -6777,7 +6777,7 @@ echo Waited for ${time} milliseconds.
 ```
 
 
-#### Aliases:
+### Aliases:
 sleep
 
 <a name="std__time__CurrentTimeMillies"></a>
@@ -6804,7 +6804,7 @@ echo ${result}
 ```
 
 
-#### Aliases:
+### Aliases:
 current_time
 
 <a name="std__var__GetAllVarNames"></a>
@@ -6833,7 +6833,7 @@ release ${handle}
 ```
 
 
-#### Aliases:
+### Aliases:
 get_all_var_names
 
 <a name="std__var__GetByName"></a>
@@ -6869,7 +6869,7 @@ assert_eq ${value} test
 ```
 
 
-#### Aliases:
+### Aliases:
 get_by_name
 
 <a name="std__var__IsDefined"></a>
@@ -6896,7 +6896,7 @@ exists = is_defined key
 ```
 
 
-#### Aliases:
+### Aliases:
 is_defined
 
 <a name="std__var__Set"></a>
@@ -6940,7 +6940,7 @@ assert_eq ${value} FALSE
 ```
 
 
-#### Aliases:
+### Aliases:
 set
 
 <a name="std__var__SetByName"></a>
@@ -6977,7 +6977,7 @@ assert_eq ${value} test
 ```
 
 
-#### Aliases:
+### Aliases:
 set_by_name
 
 <a name="std__var__Unset"></a>
@@ -7024,7 +7024,7 @@ end
 
 
 
-#### Aliases:
+### Aliases:
 unset
 
 <a name="std__var__UnsetAllVars"></a>
@@ -7094,7 +7094,7 @@ end
 ```
 
 
-#### Aliases:
+### Aliases:
 unset_all_vars
 
 ### License
