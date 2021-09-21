@@ -585,6 +585,8 @@ arr = array_concat ${input1} ${input2} ${input3}
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -605,6 +607,8 @@ end
 set ${scope::array_concat::array}
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -638,6 +642,8 @@ index = array_contains ${handle} value2
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -659,6 +665,8 @@ end
 set ${scope::array_contains::index}
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -719,6 +727,8 @@ out = array_is_empty ${values}
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -726,6 +736,8 @@ scope::array_is_empty::length = array_length ${scope::array_is_empty::argument::
 equals 0 ${scope::array_is_empty::length}
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -782,6 +794,8 @@ end
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -805,6 +819,8 @@ end
 set ${scope::array_join::string}
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -1172,6 +1188,8 @@ found = map_contains_key ${handle} key
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -1179,6 +1197,8 @@ scope::map_contains_key::value = map_get ${scope::map_contains_key::argument::1}
 is_defined scope::map_contains_key::value
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -1212,6 +1232,8 @@ found = map_contains_value ${handle} value
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -1236,6 +1258,8 @@ release ${scope::map_contains_value::key_array_handle}
 set ${scope::map_contains_value::found}
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -1303,6 +1327,8 @@ empty = map_is_empty ${handle}
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -1310,6 +1336,8 @@ scope::map_is_empty::length = map_size ${scope::map_is_empty::argument::1}
 equals 0 ${scope::map_is_empty::length}
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -1726,6 +1754,8 @@ set_handle = set_from_array ${handle}
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -1741,6 +1771,8 @@ end
 set ${scope::set_from_array::set}
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -1773,6 +1805,8 @@ empty = set_is_empty ${handle}
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -1780,6 +1814,8 @@ scope::set_is_empty::length = set_size ${scope::set_is_empty::argument::1}
 equals 0 ${scope::set_is_empty::length}
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -2395,6 +2431,8 @@ windows = is_windows
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -2402,6 +2440,8 @@ scope::is_windows::os = os_family
 equals ${scope::is_windows::os} windows
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -2467,6 +2507,8 @@ assert ${valid}
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -2478,6 +2520,8 @@ echo ${scope::print_env::text}
 set ${scope::print_env::text}
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -2584,6 +2628,8 @@ value = uname -a
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -2601,6 +2647,8 @@ end
 set ${scope::uname::info}
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -3239,6 +3287,8 @@ count = glob_cp ./**/*.txt ../target
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -3297,6 +3347,8 @@ end
 set ${scope::glob_cp::output}
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -3778,6 +3830,8 @@ assert_eq ${joined} /test/dir1/dir2/dir3/dir4/dir5
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 scope::join_path::added = set false
@@ -3798,6 +3852,8 @@ end
 set ${scope::join_path::output}
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -4046,6 +4102,8 @@ assert ${readonly}
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -4066,6 +4124,8 @@ release ${scope::glob_chmod::handle}
 set ${scope::glob_chmod::output}
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -4241,6 +4301,8 @@ hashed = sha256sum ./myfile.txt
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -4248,6 +4310,8 @@ scope::sha256sum::output = digest --algo sha256 --file ${scope::sha256sum::argum
 scope::sha256sum::output = lowercase ${scope::sha256sum::output}
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -4279,6 +4343,8 @@ hashed = sha512sum ./myfile.txt
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -4286,6 +4352,8 @@ scope::sha512sum::output = digest --algo sha512 --file ${scope::sha512sum::argum
 scope::sha512sum::output = lowercase ${scope::sha512sum::output}
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -4864,6 +4932,8 @@ end
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -4892,6 +4962,8 @@ end
 http_client --method "${scope::wget::method}" --output-file "${scope::wget::file}" --payload "${scope::wget::payload}" ${scope::wget::url}
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -5601,6 +5673,8 @@ assert_eq ${text} "hello world"
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -5628,6 +5702,8 @@ end
 scope::base64::output = set ${scope::base64::output}
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -5786,6 +5862,8 @@ assert_eq ${output} "12 34"
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -5797,6 +5875,8 @@ end
 set ${scope::concat::output}
 
 ```
+</details>
+
 
 
 #### Aliases:
@@ -6930,6 +7010,8 @@ assert_false ${defined}
 
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 
@@ -6938,6 +7020,8 @@ for scope::unset::name in ${scope::unset::arguments}
 end
 
 ```
+</details>
+
 
 
 #### Aliases:

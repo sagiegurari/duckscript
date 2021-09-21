@@ -61,10 +61,14 @@ impl Command for AliasCommand {
 {}
 
 #### Source:
+<details>
+  <summary>Show Source</summary>
 
 ```sh
 {}
 ```
+</details>
+
 "#,
             &self.help, &self.raw_command
         )
