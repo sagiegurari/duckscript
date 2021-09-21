@@ -4,15 +4,15 @@ var = is_windows
 
 Returns true if the current OS family is windows.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 True if the current OS family is windows.
 
-#### Examples
+### Examples
 
 ```sh
 windows = is_windows

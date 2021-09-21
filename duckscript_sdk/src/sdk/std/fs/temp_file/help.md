@@ -4,15 +4,15 @@ path = temp_file [extension]
 
 This command will create a new empty temporary file and return its path.
 
-#### Parameters
+### Parameters
 
 Optional file extension.
 
-#### Return Value
+### Return Value
 
 The file path.
 
-#### Examples
+### Examples
 
 ```sh
 path = temp_file toml

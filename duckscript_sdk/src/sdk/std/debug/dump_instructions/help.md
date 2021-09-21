@@ -4,15 +4,15 @@ value = dump_instructions
 
 Returns all script instructions structure (not script text) in textual form.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The script instructions.
 
-#### Examples
+### Examples
 
 ```sh
 value = dump_instructions

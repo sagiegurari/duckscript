@@ -4,15 +4,15 @@ code = exit [code]
 
 Exits the script with the given code stored in the output variable.
 
-#### Parameters
+### Parameters
 
 A number as exit code or none for 0.
 
-#### Return Value
+### Return Value
 
 The exit code.
 
-#### Examples
+### Examples
 
 ```sh
 # exit with code '0'

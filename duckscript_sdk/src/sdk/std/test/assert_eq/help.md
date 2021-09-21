@@ -5,16 +5,16 @@ assert_eq value1 value2 [error message]
 Used to validate the input is the same.<br>
 If they are not, the command will exist with an error.
 
-#### Parameters
+### Parameters
 
 * Two values to evaluate if they are equal
 * Optional error message
 
-#### Return Value
+### Return Value
 
 **true** if equal.
 
-#### Examples
+### Examples
 
 ```sh
 # valid conditions

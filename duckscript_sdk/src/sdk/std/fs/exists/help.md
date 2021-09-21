@@ -4,15 +4,15 @@ var = is_path_exists path
 
 This command will return true/false based if the provided path points to an existing file system entry.
 
-#### Parameters
+### Parameters
 
 The path to check.
 
-#### Return Value
+### Return Value
 
 True if the path points to an existing file system entry.
 
-#### Examples
+### Examples
 
 ```sh
 existing = is_path_exists ./dir

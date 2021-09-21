@@ -5,15 +5,15 @@ var = rmdir path
 This command delete the requested empty directory and returns true if successful.<br>
 If the path leads to a file or a directory which is not empty, this command will fail.
 
-#### Parameters
+### Parameters
 
 A single parameter holding the directory path.
 
-#### Return Value
+### Return Value
 
 **true** if the directory was deleted.
 
-#### Examples
+### Examples
 
 ```sh
 deleted = rmdir ./mydir

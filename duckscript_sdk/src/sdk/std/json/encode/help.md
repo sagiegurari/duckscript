@@ -7,16 +7,16 @@ Since duckscript is untyped, all boolean and numeric values will be encoded as s
 If --collection is passed, the provided value is considered as string or a map/array handle which is used to fetch
 the tree data and create the json string.
 
-#### Parameters
+### Parameters
 
 * Option --collection flag to make the encoding use the maps/arrays and values
 * The root variable name (or a handle/value in case --collection is provided)
 
-#### Return Value
+### Return Value
 
 The JSON string
 
-#### Examples
+### Examples
 
 ```sh
 # will parse and encode to plain variables

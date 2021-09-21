@@ -4,17 +4,17 @@ var = map_put handle key value
 
 Inserts a key-value pair into the map.
 
-#### Parameters
+### Parameters
 
 * The map handle.
 * The key.
 * The new value.
 
-#### Return Value
+### Return Value
 
 True if a new value was inserted.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map

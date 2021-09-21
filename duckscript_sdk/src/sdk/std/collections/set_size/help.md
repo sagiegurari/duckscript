@@ -4,15 +4,15 @@ var = set_size handle
 
 Returns the set size based on the provided set handle.
 
-#### Parameters
+### Parameters
 
 The set handle.
 
-#### Return Value
+### Return Value
 
 The set size.
 
-#### Examples
+### Examples
 
 ```sh
 handle = set

@@ -4,15 +4,15 @@ var = uppercase text
 
 Converts the provided string into uppercase.
 
-#### Parameters
+### Parameters
 
 The string to convert.
 
-#### Return Value
+### Return Value
 
 The converted string.
 
-#### Examples
+### Examples
 
 ```sh
 string = uppercase "Hello World"

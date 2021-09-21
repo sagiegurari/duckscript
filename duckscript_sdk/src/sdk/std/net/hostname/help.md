@@ -4,15 +4,15 @@ var = hostname
 
 Returns the hostname.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The hostname
 
-#### Examples
+### Examples
 
 ```sh
 name = hostname

@@ -4,15 +4,15 @@ var = readfile file
 
 The readfile command will read the requested file and return the value to the output variable.
 
-#### Parameters
+### Parameters
 
 A single parameter holding the file path.
 
-#### Return Value
+### Return Value
 
 The file content or none in case file does not exist.
 
-#### Examples
+### Examples
 
 ```sh
 text = readfile ./Cargo.toml

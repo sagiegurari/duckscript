@@ -4,7 +4,7 @@ handle = ftp_get_in_memory --host <hostname> [--port 21] [--username <user name>
 
 Invokes the FTP GET command from the given connection and file details.
 
-#### Parameters
+### Parameters
 
 * --host - The host name or IP to connect to
 * --port - Optional port number to use (by default 21)
@@ -14,11 +14,11 @@ Invokes the FTP GET command from the given connection and file details.
 * --type - Optional setting of the transfer type as A (ascii) I (image, binary)
 * --remote-file - The remote file to download
 
-#### Return Value
+### Return Value
 
 The binary data handle.
 
-#### Examples
+### Examples
 
 ```sh
 handle = ftp_get_in_memory --host myhost --username someuser --password 12345 --remote-file README.md

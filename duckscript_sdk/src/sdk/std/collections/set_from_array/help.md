@@ -4,15 +4,15 @@ set_handle = set_from_array array_handle
 
 Returns a set handle created from the provided array values.
 
-#### Parameters
+### Parameters
 
 The array handle.
 
-#### Return Value
+### Return Value
 
 The new set handle.
 
-#### Examples
+### Examples
 
 ```sh
 array_handle = array value1 value2 value3

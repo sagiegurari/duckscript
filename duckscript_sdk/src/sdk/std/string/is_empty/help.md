@@ -4,15 +4,15 @@ var = is_empty value
 
 Returns true if the provided value is none or an empty string.
 
-#### Parameters
+### Parameters
 
 The value to validate.
 
-#### Return Value
+### Return Value
 
 True if the provided value is none or an empty string.
 
-#### Examples
+### Examples
 
 ```sh
 value = set "hello world"

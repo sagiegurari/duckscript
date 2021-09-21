@@ -4,15 +4,15 @@ var = current_time
 
 Returns the current time in milliseconds (from January 1, 1970 UTC).
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The current time in milliseconds.
 
-#### Examples
+### Examples
 
 ```sh
 result = current_time

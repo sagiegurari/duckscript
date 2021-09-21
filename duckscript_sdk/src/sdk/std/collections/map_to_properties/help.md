@@ -4,16 +4,16 @@ text = map_to_properties [--prefix prefix] handle
 
 Converts the provided map to properties text.
 
-#### Parameters
+### Parameters
 
 * Optional --prefix and the prefix value
 * The map handle.
 
-#### Return Value
+### Return Value
 
 The properties text.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map

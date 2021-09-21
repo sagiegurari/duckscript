@@ -5,15 +5,15 @@ var = kebobcase text
 Converts the provided string into kebob case.
 All non-alphanumeric characters are ignored.
 
-#### Parameters
+### Parameters
 
 The string to convert.
 
-#### Return Value
+### Return Value
 
 The converted string.
 
-#### Examples
+### Examples
 
 ```sh
 string = kebobcase "Hello, World!"

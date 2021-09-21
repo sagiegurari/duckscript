@@ -4,15 +4,15 @@ var = eq value1 value2
 
 Returns true if both provided values are equal.
 
-#### Parameters
+### Parameters
 
 Two values to evaluate if they are equal
 
-#### Return Value
+### Return Value
 
 **true** if equal.
 
-#### Examples
+### Examples
 
 ```sh
 # valid conditions

@@ -4,16 +4,16 @@ var = starts_with all partial
 
 Returns true if the first argument starts with the value of the second argument.
 
-#### Parameters
+### Parameters
 
 * The full text to search in
 * The prefix text to search for
 
-#### Return Value
+### Return Value
 
 **true** if starts with.
 
-#### Examples
+### Examples
 
 ```sh
 # valid conditions

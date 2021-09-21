@@ -5,15 +5,15 @@ handle = glob_array pattern
 Returns an array handle containing all path entries found from the provided glob pattern.<br>
 The pattern can be a relative path from current directory or an absolute path.
 
-#### Parameters
+### Parameters
 
 The glob pattern.
 
-#### Return Value
+### Return Value
 
 The array handle.
 
-#### Examples
+### Examples
 
 ```sh
 handle = glob_array ./somedir/**/*.txt

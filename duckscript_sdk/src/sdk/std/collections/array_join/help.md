@@ -4,16 +4,16 @@ var = array_join handle separator
 
 Joins all values in the provided array with the provided separator in between each value.
 
-#### Parameters
+### Parameters
 
 * An array handle
 * The separator to put between each item pair
 
-#### Return Value
+### Return Value
 
 The joined string value
 
-#### Examples
+### Examples
 
 ```sh
 function test_to_string

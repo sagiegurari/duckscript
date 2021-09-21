@@ -4,15 +4,15 @@ var = array_length handle
 
 Returns the array length based on the provided array handle.
 
-#### Parameters
+### Parameters
 
 The array handle.
 
-#### Return Value
+### Return Value
 
 The array length.
 
-#### Examples
+### Examples
 
 ```sh
 handle = array a b c "d e"

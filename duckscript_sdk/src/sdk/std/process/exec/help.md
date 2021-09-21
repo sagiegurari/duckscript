@@ -21,17 +21,17 @@ The actual output variable name will not be modified, instead new variables will
 
 If an output variable is set and the --get-exit-code flag is provided, the output will only contain the exit code.
 
-#### Parameters
+### Parameters
 
 * --fail-on-error - If no output variable is provided, it will cause an error in case the executed process exits with an error exit code.
 * --get-exit-code - If an output variable is provided, it will contain the exit code.
 * The command to execute and its arguments.
 
-#### Return Value
+### Return Value
 
 Optionally a base name to access the process stout, stderr and exit code information.
 
-#### Examples
+### Examples
 
 ```sh
 # Example of running a command and flushing its output to the parent process.

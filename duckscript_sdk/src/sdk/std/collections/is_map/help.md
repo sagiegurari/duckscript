@@ -4,15 +4,15 @@ var = is_map handle
 
 Returns true if the provided value is a map handle.
 
-#### Parameters
+### Parameters
 
 The map handle.
 
-#### Return Value
+### Return Value
 
 True if the provided value is a map handle.
 
-#### Examples
+### Examples
 
 ```sh
 map_handle = map

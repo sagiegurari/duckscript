@@ -4,17 +4,17 @@ var = map_load_properties [--prefix prefix] handle text
 
 Parsers and loads all properties to the provided map.
 
-#### Parameters
+### Parameters
 
 * Optional --prefix and the prefix value
 * The map handle.
 * The properties text.
 
-#### Return Value
+### Return Value
 
 True if successful.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map

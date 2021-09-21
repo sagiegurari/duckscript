@@ -5,15 +5,15 @@ handle = unset_all_vars [--prefix value]
 Removes all known variables.<br>
 If the prefix is provided, only variables starting with the prefix value will be removed.
 
-#### Parameters
+### Parameters
 
 * Optional variable name prefix
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 fn test_remove_all

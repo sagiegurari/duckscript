@@ -4,16 +4,16 @@ var = map_contains_value handle value
 
 Returns true if the provided value was found in the map.
 
-#### Parameters
+### Parameters
 
 * The map handle.
 * The value
 
-#### Return Value
+### Return Value
 
 True if the value was found in the map.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map

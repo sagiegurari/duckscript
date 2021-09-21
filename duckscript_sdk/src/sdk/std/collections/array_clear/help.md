@@ -4,15 +4,15 @@ result = array_clear handle
 
 Clears the provided array.
 
-#### Parameters
+### Parameters
 
 The array handle.
 
-#### Return Value
+### Return Value
 
 True if successful.
 
-#### Examples
+### Examples
 
 ```sh
 handle = array

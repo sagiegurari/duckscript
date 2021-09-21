@@ -4,15 +4,15 @@ var = array_pop handle
 
 Returns the last element of the array or none if the array is empty.
 
-#### Parameters
+### Parameters
 
 The array handle.
 
-#### Return Value
+### Return Value
 
 The last element of the array or none if the array is empty.
 
-#### Examples
+### Examples
 
 ```sh
 handle = array 1 2 3

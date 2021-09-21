@@ -5,15 +5,15 @@ set_error message
 Sets the last error which is accessible via get_last_error.<br>
 This command will not trigger the on_error command flow.
 
-#### Parameters
+### Parameters
 
 The error message.
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 set_error "my error message"

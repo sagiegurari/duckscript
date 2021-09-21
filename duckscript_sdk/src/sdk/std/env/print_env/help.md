@@ -4,15 +4,15 @@ var = printenv
 
 Prints and returns all environment variables.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 All environment variables printout text.
 
-#### Examples
+### Examples
 
 ```sh
 set_env TEST_PRINT_ENV TRUE

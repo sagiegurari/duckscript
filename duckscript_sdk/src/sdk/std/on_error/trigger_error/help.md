@@ -4,15 +4,15 @@ trigger_error [message]
 
 Triggers an error that will trigger the on_error flow.
 
-#### Parameters
+### Parameters
 
 Optional error message.
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 trigger_error "my error message"

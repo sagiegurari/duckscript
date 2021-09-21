@@ -16,16 +16,16 @@ In case the --collection flag is provided, it will instead create maps/array as 
 the json data.
 Make sure to use the release with the recursive flag on the root object to release the entire memory once done.
 
-#### Parameters
+### Parameters
 
 * Optional --collection flag to parse and return value/map/array
 * The JSON string to parse.
 
-#### Return Value
+### Return Value
 
 The root value/handle.
 
-#### Examples
+### Examples
 
 ```sh
 # parse to simple variables

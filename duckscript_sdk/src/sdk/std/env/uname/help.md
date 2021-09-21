@@ -4,15 +4,15 @@ var = uname [-a]
 
 Acts similar to uname on unix like systems.
 
-#### Parameters
+### Parameters
 
 * Optional -a for extended information (not supported on windows).
 
-#### Return Value
+### Return Value
 
 The OS name and optionally extra information.
 
-#### Examples
+### Examples
 
 ```sh
 value = uname -a

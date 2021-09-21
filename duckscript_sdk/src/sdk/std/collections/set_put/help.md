@@ -4,15 +4,15 @@ var = set_put handle value
 
 Pushes an additional value to an existing set.
 
-#### Parameters
+### Parameters
 
 The set handle.
 
-#### Return Value
+### Return Value
 
 True if a new value was pushed.
 
-#### Examples
+### Examples
 
 ```sh
 handle = set_new 1 2 3

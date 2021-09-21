@@ -10,7 +10,7 @@ The for/in command enables to iterate over an array (see [array command](#std__c
 The first argument will contain the current iteration value from the array.<br>
 Once all values have been read, it will exit the loop.
 
-#### Parameters
+### Parameters
 
 * for
   * The variable name which will hold the current iteration value
@@ -18,11 +18,11 @@ Once all values have been read, it will exit the loop.
   * The handle to the array of values to iterate
 * end - no parameters
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 # Simple example iteration over the list of letters:

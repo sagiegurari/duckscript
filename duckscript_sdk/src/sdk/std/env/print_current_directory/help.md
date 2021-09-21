@@ -4,15 +4,15 @@ var = pwd
 
 Prints and also returns the current directory.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The current directory path.
 
-#### Examples
+### Examples
 
 ```sh
 # Print the current directory:

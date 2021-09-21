@@ -4,16 +4,16 @@ var = map_contains_key handle key
 
 Returns true if the provided key was found in the map.
 
-#### Parameters
+### Parameters
 
 * The map handle.
 * The key
 
-#### Return Value
+### Return Value
 
 True if the key was found in the map.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map

@@ -6,15 +6,15 @@ Creates a new set from the input arguments and returns a handle to that set.<br>
 This handle can be passed to other commands which support sets using handles.<br>
 Once the set is no longer used, it should be released using the **release** command.
 
-#### Parameters
+### Parameters
 
 Any number of arguments which will construct the set.
 
-#### Return Value
+### Return Value
 
 A handle to the set.
 
-#### Examples
+### Examples
 
 ```sh
 handle = set_new ${var} "hello world" 5 ${another_var}

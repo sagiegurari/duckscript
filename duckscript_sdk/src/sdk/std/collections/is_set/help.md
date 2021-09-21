@@ -4,15 +4,15 @@ var = is_set handle
 
 Returns true if the provided value is a set handle.
 
-#### Parameters
+### Parameters
 
 The set handle.
 
-#### Return Value
+### Return Value
 
 True if the provided value is a set handle.
 
-#### Examples
+### Examples
 
 ```sh
 handle = set_new 1 2 3

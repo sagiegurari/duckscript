@@ -22,15 +22,15 @@ It will return true, otherwise it will return false.
 A condition statement is made up of values, or/and keywords and '('/')' groups.<br>
 Each must be separated with a space character.
 
-#### Parameters
+### Parameters
 
 A command and its arguments to invoke and evaluate its output, if a single value is provided an no such command exists, it is evaluated as a value.
 
-#### Return Value
+### Return Value
 
 The switched value of the input.
 
-#### Examples
+### Examples
 
 ```sh
 fn test_not_true

@@ -4,16 +4,16 @@ removed = set_remove handle value
 
 Removes a the value from the set and returns true/false if it was removed.
 
-#### Parameters
+### Parameters
 
 * The set handle.
 * The value to remove.
 
-#### Return Value
+### Return Value
 
 True if the value was found and removed from the set.
 
-#### Examples
+### Examples
 
 ```sh
 handle = set_new

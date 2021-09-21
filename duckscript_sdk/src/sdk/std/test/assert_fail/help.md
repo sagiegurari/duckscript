@@ -5,15 +5,15 @@ assert_fail [error message]
 This command will exist with an error.<br>
 If error message is provided, it will be used as part of the error output.
 
-#### Parameters
+### Parameters
 
 Optional error message.
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 assert_fail

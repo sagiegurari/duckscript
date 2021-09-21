@@ -4,15 +4,15 @@ var = get_last_error_source
 
 In case of any runtime error, this function will return the error source (such as file name) if available.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The last error source or none
 
-#### Examples
+### Examples
 
 ```sh
 # This will trigger an error

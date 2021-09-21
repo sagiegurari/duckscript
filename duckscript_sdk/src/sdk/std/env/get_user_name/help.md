@@ -4,15 +4,15 @@ var = whoami
 
 Returns the current user name.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The current user name.
 
-#### Examples
+### Examples
 
 ```sh
 name = whoami

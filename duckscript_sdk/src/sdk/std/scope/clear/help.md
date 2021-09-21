@@ -5,15 +5,15 @@ clear_scope name
 Clears all variables which are prefixed with the provided name + ::.<br>
 For example, if the value provided is **my_scope** all variables that start with **my_scope::** will be removed.
 
-#### Parameters
+### Parameters
 
 The scope name.
 
-#### Return Value
+### Return Value
 
 None.
 
-#### Examples
+### Examples
 
 ```sh
 testscope = set true

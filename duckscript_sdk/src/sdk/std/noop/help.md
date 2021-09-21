@@ -4,15 +4,15 @@ noop
 
 Empty function that does nothing and returns none.
 
-#### Parameters
+### Parameters
 
 All parameters are ignored
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 noop

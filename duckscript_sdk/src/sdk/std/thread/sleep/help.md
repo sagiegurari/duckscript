@@ -5,15 +5,15 @@ sleep millies
 Will cause the script execution to half for the given amount of milliseconds.<br>
 The command will also return the amount of milliseconds waited.
 
-#### Parameters
+### Parameters
 
 A positive numeric value.
 
-#### Return Value
+### Return Value
 
 The amount of milliseconds waited.
 
-#### Examples
+### Examples
 
 ```sh
 # will sleep for 10 milliseconds

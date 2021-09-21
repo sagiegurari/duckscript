@@ -5,15 +5,15 @@ var = os_release
 Returns the OS release.<br>
 **This command is not supported on windows.**
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The OS release.
 
-#### Examples
+### Examples
 
 ```sh
 release = os_release

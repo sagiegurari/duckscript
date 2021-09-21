@@ -6,15 +6,15 @@ Removes all known variables except for the variables provided by the optional --
 previously pushed stack.<br>
 Functions with the **<scope>** annotation will automatically invoke this command when they end or return a value.
 
-#### Parameters
+### Parameters
 
 Optional variable names to keep.
 
-#### Return Value
+### Return Value
 
 None.
 
-#### Examples
+### Examples
 
 ```sh
 var1 = set 1

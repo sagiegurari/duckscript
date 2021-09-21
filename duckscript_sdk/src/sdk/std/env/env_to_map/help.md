@@ -4,15 +4,15 @@ handle = env_to_map
 
 Converts all environment variables to a map and returns the map handle.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The map handle.
 
-#### Examples
+### Examples
 
 ```sh
 set_env env_to_map_test test_value

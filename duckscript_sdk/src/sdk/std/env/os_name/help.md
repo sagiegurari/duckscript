@@ -4,15 +4,15 @@ var = os_name
 
 Returns the OS name.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The OS name.
 
-#### Examples
+### Examples
 
 ```sh
 name = os_name

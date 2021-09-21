@@ -4,15 +4,15 @@ var = concat [value]*
 
 Concats the provided input into a single string and returns it.
 
-#### Parameters
+### Parameters
 
 Any number of values to concat.
 
-#### Return Value
+### Return Value
 
 The result of the concatenation of all input values.
 
-#### Examples
+### Examples
 
 ```sh
 output = concat 1 2 3 4

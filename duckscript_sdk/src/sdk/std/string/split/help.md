@@ -5,16 +5,16 @@ handle = split text pattern
 Splits the provided text based on the provided pattern and return a handle the
 created array with all the splitted values.
 
-#### Parameters
+### Parameters
 
 * The text to split
 * The pattern to split by
 
-#### Return Value
+### Return Value
 
 A handle to the values array.
 
-#### Examples
+### Examples
 
 ```sh
 handle = split a23b23c23d23e 23

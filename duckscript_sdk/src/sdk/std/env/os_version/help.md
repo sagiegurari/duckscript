@@ -5,15 +5,15 @@ var = os_version
 Returns the OS version.<br>
 **This command is not supported on windows.**
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The OS version.
 
-#### Examples
+### Examples
 
 ```sh
 version = os_version

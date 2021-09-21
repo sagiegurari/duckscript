@@ -6,15 +6,15 @@ Removes all known variables except for the variables provided by the optional --
 Functions with the **<scope>** annotation will automatically invoke this command and keep only the relevant
 function arguments in the new scope.
 
-#### Parameters
+### Parameters
 
 Optional variable names to keep.
 
-#### Return Value
+### Return Value
 
 None.
 
-#### Examples
+### Examples
 
 ```sh
 var1 = set 1

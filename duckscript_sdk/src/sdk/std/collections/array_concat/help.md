@@ -4,15 +4,15 @@ handle = array_concat [handle]*
 
 Concats all provided arrays and returns a handle to a new array with all items.
 
-#### Parameters
+### Parameters
 
 Any number of array handles.
 
-#### Return Value
+### Return Value
 
 A handle to the new array.
 
-#### Examples
+### Examples
 
 ```sh
 input1 = range 1 4

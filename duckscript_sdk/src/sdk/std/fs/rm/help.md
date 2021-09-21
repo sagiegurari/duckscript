@@ -5,16 +5,16 @@ var = rm [-r] [path]+
 This command delete the requested file/s, empty directories or recursively deletes directories
 and all their content (files and sub directories) if the **-r** flag is provided.
 
-#### Parameters
+### Parameters
 
 * Optional flags (currently only -r is supported which indicates recursive deletion)
 * The path/s to delete
 
-#### Return Value
+### Return Value
 
 **true** if all paths were deleted.
 
-#### Examples
+### Examples
 
 ```sh
 # delete a file or empty directory

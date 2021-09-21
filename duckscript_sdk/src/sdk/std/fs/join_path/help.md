@@ -4,15 +4,15 @@ result = join_path path [path]*
 
 Concats all paths and makes sure there is a / character between each path element.
 
-#### Parameters
+### Parameters
 
 * A list of paths to join
 
-#### Return Value
+### Return Value
 
 The joined path
 
-#### Examples
+### Examples
 
 ```sh
 joined = join_path /test /dir1 /dir2 dir3 //dir4// /dir5

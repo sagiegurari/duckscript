@@ -4,15 +4,15 @@ unset [names]*
 
 Undefines all the variable names provided.
 
-#### Parameters
+### Parameters
 
 A list of variable names to undefine.
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 var = set 1

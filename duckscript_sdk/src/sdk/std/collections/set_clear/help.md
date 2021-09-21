@@ -4,15 +4,15 @@ result = set_clear handle
 
 Clears the provided set.
 
-#### Parameters
+### Parameters
 
 The set handle.
 
-#### Return Value
+### Return Value
 
 True if successful.
 
-#### Examples
+### Examples
 
 ```sh
 handle = set

@@ -5,15 +5,15 @@ var = cat [file]+
 The cat command will print out the requested file/s.<br>
 In addition it will also return the value to the output variable.
 
-#### Parameters
+### Parameters
 
 Multiple file paths.
 
-#### Return Value
+### Return Value
 
 The file content or none if the file does not exist.
 
-#### Examples
+### Examples
 
 ```sh
 cat ./docs/sdk.md

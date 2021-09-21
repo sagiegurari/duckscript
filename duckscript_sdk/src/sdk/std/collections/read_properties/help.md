@@ -6,16 +6,16 @@ Parses the properties (based on java properties format) text and sets them as va
 This command will also return the count of properties read.<br>
 If prefix is provided, all properties read, will be stored as variables with the **prefix.** as their prefix.
 
-#### Parameters
+### Parameters
 
 * Optional --prefix and the prefix value
 * The text to parse.
 
-#### Return Value
+### Return Value
 
 The properties count.
 
-#### Examples
+### Examples
 
 ```sh
 count = read_properties "a=1\nb=2\na.b.c=3"

@@ -4,15 +4,15 @@ output = semver_is_equal value1 value2
 
 Returns true if both semver values are valid and equal.
 
-#### Parameters
+### Parameters
 
 Two semver values to compare.
 
-#### Return Value
+### Return Value
 
 True if both semver values are valid and equal, else false.
 
-#### Examples
+### Examples
 
 ```sh
 equal = semver_is_equal 1.2.3 1.2.3

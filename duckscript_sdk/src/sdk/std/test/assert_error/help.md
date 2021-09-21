@@ -5,15 +5,15 @@ assert_error [error message]
 This command will cause a runtime error which will not stop the script execution.<br>
 If error message is provided, it will be used as part of the error output.
 
-#### Parameters
+### Parameters
 
 Optional error message.
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 assert_error

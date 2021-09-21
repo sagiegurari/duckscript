@@ -4,16 +4,16 @@ output = semver_is_newer newer older
 
 Returns true if both semver values are valid and first value is newer.
 
-#### Parameters
+### Parameters
 
 * The expected newer value
 * The expected older value
 
-#### Return Value
+### Return Value
 
 True if both semver values are valid and first value is newer, else false.
 
-#### Examples
+### Examples
 
 ```sh
 newer = semver_is_newer 3.2.3 2.2.3

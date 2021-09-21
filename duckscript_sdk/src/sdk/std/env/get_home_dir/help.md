@@ -5,15 +5,15 @@ var = get_home_dir
 Returns the user home directory path.<br>
 In case of any error, false will be returned.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The user home directory path or false in case of any error.
 
-#### Examples
+### Examples
 
 ```sh
 directory = get_home_dir

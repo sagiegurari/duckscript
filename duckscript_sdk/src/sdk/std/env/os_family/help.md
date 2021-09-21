@@ -4,15 +4,15 @@ var = os_family
 
 Returns the OS family (windows, linux, mac).
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The OS family (windows, linux, mac).
 
-#### Examples
+### Examples
 
 ```sh
 name = os_family

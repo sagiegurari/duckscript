@@ -6,17 +6,17 @@ Updates the array at a given index with the provided value.<br>
 If the array is not found or the index is greater than the array size, this command will return false.<br>
 Otherwise it will return true.
 
-#### Parameters
+### Parameters
 
 * The array handle.
 * The element index.
 * The element value.
 
-#### Return Value
+### Return Value
 
 True if successful.
 
-#### Examples
+### Examples
 
 ```sh
 arr = array old

@@ -4,15 +4,15 @@ var = array_is_empty handle
 
 Returns true if the provided array handle is an empty array.
 
-#### Parameters
+### Parameters
 
 The array handle.
 
-#### Return Value
+### Return Value
 
 True if the provided handle belongs to an empty array.
 
-#### Examples
+### Examples
 
 ```sh
 values = array

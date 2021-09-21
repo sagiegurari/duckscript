@@ -5,15 +5,15 @@ var = camelcase text
 Converts the provided string into camel case.
 All non-alphanumeric characters are ignored.
 
-#### Parameters
+### Parameters
 
 The string to convert.
 
-#### Return Value
+### Return Value
 
 The converted string.
 
-#### Examples
+### Examples
 
 ```sh
 string = camelcase "hello, world!"

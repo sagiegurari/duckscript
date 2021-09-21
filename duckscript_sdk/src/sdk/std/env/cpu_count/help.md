@@ -4,15 +4,15 @@ var = cpu_count
 
 Returns the number of CPUs.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The CPU count.
 
-#### Examples
+### Examples
 
 ```sh
 count = cpu_count

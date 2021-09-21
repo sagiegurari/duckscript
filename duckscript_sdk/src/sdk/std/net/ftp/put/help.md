@@ -4,7 +4,7 @@ result = ftp_put --host <hostname> [--port 21] [--username <user name>] [--passw
 
 Invokes the FTP PUT command from the given connection and file details.
 
-#### Parameters
+### Parameters
 
 * --host - The host name or IP to connect to
 * --port - Optional port number to use (by default 21)
@@ -15,11 +15,11 @@ Invokes the FTP PUT command from the given connection and file details.
 * --remote-file - The remote file to upload
 * --local-file - The source local file to upload
 
-#### Return Value
+### Return Value
 
 true if operation was completed.
 
-#### Examples
+### Examples
 
 ```sh
 ftp_put --host myhost --username someuser --password 12345 --remote-file README.md --local-file README.md

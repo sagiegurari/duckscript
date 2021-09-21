@@ -4,15 +4,15 @@ var = map_is_empty handle
 
 Returns true if the provided map handle is an empty map.
 
-#### Parameters
+### Parameters
 
 The map handle.
 
-#### Return Value
+### Return Value
 
 True if the provided handle belongs to an empty map.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map

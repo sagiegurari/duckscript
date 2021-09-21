@@ -4,15 +4,15 @@ var = array_push handle value
 
 Pushes an additional value to an existing array.
 
-#### Parameters
+### Parameters
 
 The array handle.
 
-#### Return Value
+### Return Value
 
 True if a new value was pushed.
 
-#### Examples
+### Examples
 
 ```sh
 handle = array 1 2 3

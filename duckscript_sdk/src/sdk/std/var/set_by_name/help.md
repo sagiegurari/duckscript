@@ -9,16 +9,16 @@ name = set ${value}
 ```
 However, it allows for a dynamic variable name.
 
-#### Parameters
+### Parameters
 
 * The variable name.
 * The new variable value, if not provided, the variable will be unset.
 
-#### Return Value
+### Return Value
 
 The new variable value.
 
-#### Examples
+### Examples
 
 ```sh
 var = set test

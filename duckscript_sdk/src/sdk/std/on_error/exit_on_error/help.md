@@ -6,16 +6,16 @@ Enables to cause the script execution to stop in case of any error.<br>
 By default all errors simply trigger the on_error command which the default SDK stores and provides access to.<br>
 However, with this command you can change the on_error command to instead stop the script execution.
 
-#### Parameters
+### Parameters
 
 If no argument is provided, it will return the current state.<br>
 If an argument is provided, it will modify the state and return it as true/false.
 
-#### Return Value
+### Return Value
 
 The current/updated state as true/false value
 
-#### Examples
+### Examples
 
 ```sh
 # Get current state

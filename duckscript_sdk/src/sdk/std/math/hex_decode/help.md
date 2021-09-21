@@ -5,15 +5,15 @@ num = hex_decode str
 Decode a hexadecimal string to the corresponding integer number.<br>
 No support for negative numbers.
 
-#### Parameters
+### Parameters
 
 A hexadecimal string.
 
-#### Return Value
+### Return Value
 
 The corresponding integer number.
 
-#### Examples
+### Examples
 
 ```sh
 hex_num = set 0xff

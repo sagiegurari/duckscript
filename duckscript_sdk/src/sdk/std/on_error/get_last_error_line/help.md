@@ -4,15 +4,15 @@ var = get_last_error_line
 
 In case of any runtime error, this function will return the error line (if available).
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The last error line or none
 
-#### Examples
+### Examples
 
 ```sh
 # This will trigger an error

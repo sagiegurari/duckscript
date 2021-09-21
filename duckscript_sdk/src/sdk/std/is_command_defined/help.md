@@ -4,15 +4,15 @@ var = is_command_defined key
 
 Returns true if the provided command name exists.
 
-#### Parameters
+### Parameters
 
 The command name.
 
-#### Return Value
+### Return Value
 
 True if the command exists.
 
-#### Examples
+### Examples
 
 ```sh
 exists = is_command_defined exec

@@ -4,15 +4,15 @@ var = man command
 
 Prints and returns the help documentation of the provided command.
 
-#### Parameters
+### Parameters
 
 The command name.
 
-#### Return Value
+### Return Value
 
 The help documentation or if not found, none.
 
-#### Examples
+### Examples
 
 ```sh
 man set

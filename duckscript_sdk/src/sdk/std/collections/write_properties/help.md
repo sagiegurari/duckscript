@@ -4,16 +4,16 @@ text = write_properties [--prefix prefix] [names]
 
 Creates a properties string from the provided list of variable names (not values).
 
-#### Parameters
+### Parameters
 
 * Optional prefix which will be added to all written properties.
 * A list of variable names.
 
-#### Return Value
+### Return Value
 
 The properties text value.
 
-#### Examples
+### Examples
 
 ```sh
 a = set 1

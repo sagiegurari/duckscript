@@ -4,17 +4,17 @@ var = replace text from to
 
 Returns new value of text after replacing all from values to the provided to values.
 
-#### Parameters
+### Parameters
 
 * The full text
 * The from text
 * The to text
 
-#### Return Value
+### Return Value
 
 The updated text.
 
-#### Examples
+### Examples
 
 ```sh
 text = set "my large text value with lots of text"

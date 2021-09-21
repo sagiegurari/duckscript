@@ -7,7 +7,7 @@ var = substring text -end
 
 The substring command will create a new string value from the text provided in the range requested.
 
-#### Parameters
+### Parameters
 
 * The text to substring from
 * Additional parameters
@@ -17,11 +17,11 @@ The substring command will create a new string value from the text provided in t
         * If >= 0 it defines the start index and end index is the text length
         * If < 0 it defines the end index going backwards from the end of the text. Start index is 0.
 
-#### Return Value
+### Return Value
 
 The substring value or false in case of error.
 
-#### Examples
+### Examples
 
 ```sh
 # string is 'Hello World'

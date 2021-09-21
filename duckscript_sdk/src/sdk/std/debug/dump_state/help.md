@@ -4,15 +4,15 @@ value = dump_state
 
 Returns all script state in textual form.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The script state.
 
-#### Examples
+### Examples
 
 ```sh
 numbers = range -5 15

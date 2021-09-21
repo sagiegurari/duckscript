@@ -4,15 +4,15 @@ value = dump_variables
 
 Returns all script variables in textual form.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The script variables.
 
-#### Examples
+### Examples
 
 ```sh
 one = set 1

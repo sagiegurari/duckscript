@@ -4,15 +4,15 @@ var = lowercase text
 
 Converts the provided string into lowercase.
 
-#### Parameters
+### Parameters
 
 The string to convert.
 
-#### Return Value
+### Return Value
 
 The converted string.
 
-#### Examples
+### Examples
 
 ```sh
 string = lowercase "Hello World"

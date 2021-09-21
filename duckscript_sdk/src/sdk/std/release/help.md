@@ -8,17 +8,17 @@ In order to release those handles once they are no longer needed, the release co
 By providing the recursive flag, it will also go over the data values (array items, map values, set keys, ...) and release each one of them as well
 if they are handles to other arrays/maps/sets/...
 
-#### Parameters
+### Parameters
 
 * Optional recursive (-r/--recursive) flag (default false)
 * The handle name.
 
-#### Return Value
+### Return Value
 
 * true - If a handle was found and removed
 * false - If no handle was found
 
-#### Examples
+### Examples
 
 ```sh
 release ${array_handle}

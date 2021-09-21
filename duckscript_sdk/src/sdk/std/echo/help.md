@@ -5,15 +5,15 @@ echo [arg]*
 The echo command will printout all provided arguments.<br>
 After all input is done, an end of line will be printed as well.
 
-#### Parameters
+### Parameters
 
 Any number of arguments may be provided and will be printed.
 
-#### Return Value
+### Return Value
 
 The amount of arguments printed.
 
-#### Examples
+### Examples
 
 ```sh
 # Print multiple arguments:

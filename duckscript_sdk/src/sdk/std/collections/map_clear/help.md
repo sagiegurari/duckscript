@@ -4,15 +4,15 @@ result = map_clear handle
 
 Clears the provided map.
 
-#### Parameters
+### Parameters
 
 The map handle.
 
-#### Return Value
+### Return Value
 
 True if successful.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map

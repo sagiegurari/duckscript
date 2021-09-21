@@ -5,15 +5,15 @@ var = read
 Reads the user input into the output variable.<br>
 If the user didn't insert any input, none will be returned.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The user input or none if no input was entered.
 
-#### Examples
+### Examples
 
 ```sh
 echo Enter Full Name:

@@ -4,15 +4,15 @@ unset_env key
 
 Removes the environment variable defined by the provided key.
 
-#### Parameters
+### Parameters
 
 The name of the environment variable to remove
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 unset_env HOME

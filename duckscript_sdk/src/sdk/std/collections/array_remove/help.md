@@ -6,16 +6,16 @@ Removes the item from the array at the given index.<br>
 If the array is not found or the index is greater than the array size, this command will return false.<br>
 Otherwise it will return true.
 
-#### Parameters
+### Parameters
 
 * The array handle.
 * The element index.
 
-#### Return Value
+### Return Value
 
 True if successful.
 
-#### Examples
+### Examples
 
 ```sh
 arr = array old

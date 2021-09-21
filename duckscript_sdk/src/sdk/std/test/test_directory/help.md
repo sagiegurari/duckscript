@@ -7,16 +7,16 @@ It will run all duckscript files in the directory tree ending with **test.ds** a
 all functions that start with **test_**.<br>
 Each such function is considered as a test and can run any type of code and check itself using assert commands.
 
-#### Parameters
+### Parameters
 
 * The root directory of all test files (all files ending with **test.ds** in the directory tree will be checked)
 * Optional pattern for the file name or test function to limit invocation of only those tests.
 
-#### Return Value
+### Return Value
 
 **true** if successful.
 
-#### Examples
+### Examples
 
 This is an example of a test function:
 

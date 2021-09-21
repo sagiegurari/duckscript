@@ -4,15 +4,15 @@ var = mkdir directory
 
 This command will create the requested directory (and needed parent directories) and return true/false if it was successful.
 
-#### Parameters
+### Parameters
 
 The directory name to create.
 
-#### Return Value
+### Return Value
 
 The operation success value - true if directory exists, else false.
 
-#### Examples
+### Examples
 
 ```sh
 exists = mkdir ./dir/subdir

@@ -4,16 +4,16 @@ var = ends_with all partial
 
 Returns true if the first argument ends with the value of the second argument.
 
-#### Parameters
+### Parameters
 
 * The full text to search in
 * The suffix text to search for
 
-#### Return Value
+### Return Value
 
 **true** if ends with.
 
-#### Examples
+### Examples
 
 ```sh
 # valid conditions

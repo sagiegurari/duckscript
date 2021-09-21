@@ -198,15 +198,15 @@ echo [arg]*
 The echo command will printout all provided arguments.<br>
 After all input is done, an end of line will be printed as well.
 
-#### Parameters
+### Parameters
 
 Any number of arguments may be provided and will be printed.
 
-#### Return Value
+### Return Value
 
 The amount of arguments printed.
 
-#### Examples
+### Examples
 
 ```sh
 # Print multiple arguments:
@@ -229,15 +229,15 @@ eval command arguments
 The eval command enables to run dynamically created commands.<br>
 The command and arguments passed can be variables in the form of ${name}.
 
-#### Parameters
+### Parameters
 
 Any number of arguments which will construct a line to evaluate and execute.
 
-#### Return Value
+### Return Value
 
 The result of the evaluated line.
 
-#### Examples
+### Examples
 
 ```sh
 command = set echo
@@ -256,15 +256,15 @@ var = is_command_defined key
 
 Returns true if the provided command name exists.
 
-#### Parameters
+### Parameters
 
 The command name.
 
-#### Return Value
+### Return Value
 
 True if the command exists.
 
-#### Examples
+### Examples
 
 ```sh
 exists = is_command_defined exec
@@ -282,15 +282,15 @@ noop
 
 Empty function that does nothing and returns none.
 
-#### Parameters
+### Parameters
 
 All parameters are ignored
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 noop
@@ -326,15 +326,15 @@ It will return true, otherwise it will return false.
 A condition statement is made up of values, or/and keywords and '('/')' groups.<br>
 Each must be separated with a space character.
 
-#### Parameters
+### Parameters
 
 A command and its arguments to invoke and evaluate its output, if a single value is provided an no such command exists, it is evaluated as a value.
 
-#### Return Value
+### Return Value
 
 The switched value of the input.
 
-#### Examples
+### Examples
 
 ```sh
 fn test_not_true
@@ -387,15 +387,15 @@ var = read
 Reads the user input into the output variable.<br>
 If the user didn't insert any input, none will be returned.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The user input or none if no input was entered.
 
-#### Examples
+### Examples
 
 ```sh
 echo Enter Full Name:
@@ -424,17 +424,17 @@ In order to release those handles once they are no longer needed, the release co
 By providing the recursive flag, it will also go over the data values (array items, map values, set keys, ...) and release each one of them as well
 if they are handles to other arrays/maps/sets/...
 
-#### Parameters
+### Parameters
 
 * Optional recursive (-r/--recursive) flag (default false)
 * The handle name.
 
-#### Return Value
+### Return Value
 
 * true - If a handle was found and removed
 * false - If no handle was found
 
-#### Examples
+### Examples
 
 ```sh
 release ${array_handle}
@@ -452,15 +452,15 @@ var = man command
 
 Prints and returns the help documentation of the provided command.
 
-#### Parameters
+### Parameters
 
 The command name.
 
-#### Return Value
+### Return Value
 
 The help documentation or if not found, none.
 
-#### Examples
+### Examples
 
 ```sh
 man set
@@ -495,15 +495,15 @@ Creates an array from the input arguments and returns a handle to that array.<br
 This handle can be passed to other commands which support arrays using handles.<br>
 Once the array is no longer used, it should be released using the **release** command.
 
-#### Parameters
+### Parameters
 
 Any number of arguments which will construct the array.
 
-#### Return Value
+### Return Value
 
 A handle to the array.
 
-#### Examples
+### Examples
 
 ```sh
 handle = array ${var} "hello world" 5 ${another_var}
@@ -524,15 +524,15 @@ result = array_clear handle
 
 Clears the provided array.
 
-#### Parameters
+### Parameters
 
 The array handle.
 
-#### Return Value
+### Return Value
 
 True if successful.
 
-#### Examples
+### Examples
 
 ```sh
 handle = array
@@ -564,15 +564,15 @@ handle = array_concat [handle]*
 
 Concats all provided arrays and returns a handle to a new array with all items.
 
-#### Parameters
+### Parameters
 
 Any number of array handles.
 
-#### Return Value
+### Return Value
 
 A handle to the new array.
 
-#### Examples
+### Examples
 
 ```sh
 input1 = range 1 4
@@ -624,16 +624,16 @@ var = array_contains handle value
 Returns the first index of the array with the same value as provided.<br>
 If not found, false will be returned.
 
-#### Parameters
+### Parameters
 
 * The array handle.
 * The value
 
-#### Return Value
+### Return Value
 
 The value index in the array or false if not found.
 
-#### Examples
+### Examples
 
 ```sh
 handle = array value1 value2 value3
@@ -680,16 +680,16 @@ var = array_get handle index
 
 Returns the element from the array at a given index or none if the index is bigger than the array length.
 
-#### Parameters
+### Parameters
 
 * The array handle.
 * The element index.
 
-#### Return Value
+### Return Value
 
 The element at the given index from the array or none.
 
-#### Examples
+### Examples
 
 ```sh
 handle = array 1 2 3
@@ -710,15 +710,15 @@ var = array_is_empty handle
 
 Returns true if the provided array handle is an empty array.
 
-#### Parameters
+### Parameters
 
 The array handle.
 
-#### Return Value
+### Return Value
 
 True if the provided handle belongs to an empty array.
 
-#### Examples
+### Examples
 
 ```sh
 values = array
@@ -752,16 +752,16 @@ var = array_join handle separator
 
 Joins all values in the provided array with the provided separator in between each value.
 
-#### Parameters
+### Parameters
 
 * An array handle
 * The separator to put between each item pair
 
-#### Return Value
+### Return Value
 
 The joined string value
 
-#### Examples
+### Examples
 
 ```sh
 function test_to_string
@@ -834,15 +834,15 @@ var = array_length handle
 
 Returns the array length based on the provided array handle.
 
-#### Parameters
+### Parameters
 
 The array handle.
 
-#### Return Value
+### Return Value
 
 The array length.
 
-#### Examples
+### Examples
 
 ```sh
 handle = array a b c "d e"
@@ -868,15 +868,15 @@ var = array_pop handle
 
 Returns the last element of the array or none if the array is empty.
 
-#### Parameters
+### Parameters
 
 The array handle.
 
-#### Return Value
+### Return Value
 
 The last element of the array or none if the array is empty.
 
-#### Examples
+### Examples
 
 ```sh
 handle = array 1 2 3
@@ -896,15 +896,15 @@ var = array_push handle value
 
 Pushes an additional value to an existing array.
 
-#### Parameters
+### Parameters
 
 The array handle.
 
-#### Return Value
+### Return Value
 
 True if a new value was pushed.
 
-#### Examples
+### Examples
 
 ```sh
 handle = array 1 2 3
@@ -927,16 +927,16 @@ Removes the item from the array at the given index.<br>
 If the array is not found or the index is greater than the array size, this command will return false.<br>
 Otherwise it will return true.
 
-#### Parameters
+### Parameters
 
 * The array handle.
 * The element index.
 
-#### Return Value
+### Return Value
 
 True if successful.
 
-#### Examples
+### Examples
 
 ```sh
 arr = array old
@@ -965,17 +965,17 @@ Updates the array at a given index with the provided value.<br>
 If the array is not found or the index is greater than the array size, this command will return false.<br>
 Otherwise it will return true.
 
-#### Parameters
+### Parameters
 
 * The array handle.
 * The element index.
 * The element value.
 
-#### Return Value
+### Return Value
 
 True if successful.
 
-#### Examples
+### Examples
 
 ```sh
 arr = array old
@@ -1002,15 +1002,15 @@ var = is_array handle
 
 Returns true if the provided value is an array handle.
 
-#### Parameters
+### Parameters
 
 The array handle.
 
-#### Return Value
+### Return Value
 
 True if the provided value is an array handle.
 
-#### Examples
+### Examples
 
 ```sh
 arr = array 1 2 3
@@ -1034,15 +1034,15 @@ var = is_map handle
 
 Returns true if the provided value is a map handle.
 
-#### Parameters
+### Parameters
 
 The map handle.
 
-#### Return Value
+### Return Value
 
 True if the provided value is a map handle.
 
-#### Examples
+### Examples
 
 ```sh
 map_handle = map
@@ -1066,15 +1066,15 @@ var = is_set handle
 
 Returns true if the provided value is a set handle.
 
-#### Parameters
+### Parameters
 
 The set handle.
 
-#### Return Value
+### Return Value
 
 True if the provided value is a set handle.
 
-#### Examples
+### Examples
 
 ```sh
 handle = set_new 1 2 3
@@ -1100,15 +1100,15 @@ Creates an empty map and returns a handle to that array.<br>
 This handle can be passed to other commands which support maps using handles.<br>
 Once the map is no longer used, it should be released using the **release** command.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 A handle to the map.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map
@@ -1129,15 +1129,15 @@ result = map_clear handle
 
 Clears the provided map.
 
-#### Parameters
+### Parameters
 
 The map handle.
 
-#### Return Value
+### Return Value
 
 True if successful.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map
@@ -1169,16 +1169,16 @@ var = map_contains_key handle key
 
 Returns true if the provided key was found in the map.
 
-#### Parameters
+### Parameters
 
 * The map handle.
 * The key
 
-#### Return Value
+### Return Value
 
 True if the key was found in the map.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map
@@ -1213,16 +1213,16 @@ var = map_contains_value handle value
 
 Returns true if the provided value was found in the map.
 
-#### Parameters
+### Parameters
 
 * The map handle.
 * The value
 
-#### Return Value
+### Return Value
 
 True if the value was found in the map.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map
@@ -1273,16 +1273,16 @@ value = map_get handle key
 
 Returns a the value corresponding to the key from the map.
 
-#### Parameters
+### Parameters
 
 * The map handle.
 * The key.
 
-#### Return Value
+### Return Value
 
 The value corresponding to the key from the map.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map
@@ -1309,15 +1309,15 @@ var = map_is_empty handle
 
 Returns true if the provided map handle is an empty map.
 
-#### Parameters
+### Parameters
 
 The map handle.
 
-#### Return Value
+### Return Value
 
 True if the provided handle belongs to an empty map.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map
@@ -1351,15 +1351,15 @@ keys = map_keys handle
 
 Returns a handle to an array holding all keys in the provided map handle.
 
-#### Parameters
+### Parameters
 
 * The map handle.
 
-#### Return Value
+### Return Value
 
 A handle to an array holding all map keys.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map
@@ -1391,17 +1391,17 @@ var = map_load_properties [--prefix prefix] handle text
 
 Parsers and loads all properties to the provided map.
 
-#### Parameters
+### Parameters
 
 * Optional --prefix and the prefix value
 * The map handle.
 * The properties text.
 
-#### Return Value
+### Return Value
 
 True if successful.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map
@@ -1427,17 +1427,17 @@ var = map_put handle key value
 
 Inserts a key-value pair into the map.
 
-#### Parameters
+### Parameters
 
 * The map handle.
 * The key.
 * The new value.
 
-#### Return Value
+### Return Value
 
 True if a new value was inserted.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map
@@ -1463,16 +1463,16 @@ value = map_remove handle key
 
 Removes a the value corresponding to the key from the map and returns it.
 
-#### Parameters
+### Parameters
 
 * The map handle.
 * The key.
 
-#### Return Value
+### Return Value
 
 The value corresponding to the key from the map.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map
@@ -1498,15 +1498,15 @@ var = map_size handle
 
 Returns the map size based on the provided map handle.
 
-#### Parameters
+### Parameters
 
 The map handle.
 
-#### Return Value
+### Return Value
 
 The map size.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map
@@ -1533,16 +1533,16 @@ text = map_to_properties [--prefix prefix] handle
 
 Converts the provided map to properties text.
 
-#### Parameters
+### Parameters
 
 * Optional --prefix and the prefix value
 * The map handle.
 
-#### Return Value
+### Return Value
 
 The properties text.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map
@@ -1567,16 +1567,16 @@ Creates an array from the input start and end range values and returns a handle 
 This handle can be passed to other commands which support arrays using handles.<br>
 Once the array is no longer used, it should be released using the **release** command.
 
-#### Parameters
+### Parameters
 
 * The start numeric value
 * The end numeric value which cannot be smaller than the start value.
 
-#### Return Value
+### Return Value
 
 A handle to the array.
 
-#### Examples
+### Examples
 
 ```sh
 handle = range 1 10
@@ -1599,16 +1599,16 @@ Parses the properties (based on java properties format) text and sets them as va
 This command will also return the count of properties read.<br>
 If prefix is provided, all properties read, will be stored as variables with the **prefix.** as their prefix.
 
-#### Parameters
+### Parameters
 
 * Optional --prefix and the prefix value
 * The text to parse.
 
-#### Return Value
+### Return Value
 
 The properties count.
 
-#### Examples
+### Examples
 
 ```sh
 count = read_properties "a=1\nb=2\na.b.c=3"
@@ -1640,15 +1640,15 @@ Creates a new set from the input arguments and returns a handle to that set.<br>
 This handle can be passed to other commands which support sets using handles.<br>
 Once the set is no longer used, it should be released using the **release** command.
 
-#### Parameters
+### Parameters
 
 Any number of arguments which will construct the set.
 
-#### Return Value
+### Return Value
 
 A handle to the set.
 
-#### Examples
+### Examples
 
 ```sh
 handle = set_new ${var} "hello world" 5 ${another_var}
@@ -1669,15 +1669,15 @@ result = set_clear handle
 
 Clears the provided set.
 
-#### Parameters
+### Parameters
 
 The set handle.
 
-#### Return Value
+### Return Value
 
 True if successful.
 
-#### Examples
+### Examples
 
 ```sh
 handle = set
@@ -1708,16 +1708,16 @@ var = set_contains handle value
 
 Returns true if the set contains the provided value.
 
-#### Parameters
+### Parameters
 
 * The set handle.
 * The value
 
-#### Return Value
+### Return Value
 
 True if the value was found in the set.
 
-#### Examples
+### Examples
 
 ```sh
 handle = set_new value1 value2 value3
@@ -1737,15 +1737,15 @@ set_handle = set_from_array array_handle
 
 Returns a set handle created from the provided array values.
 
-#### Parameters
+### Parameters
 
 The array handle.
 
-#### Return Value
+### Return Value
 
 The new set handle.
 
-#### Examples
+### Examples
 
 ```sh
 array_handle = array value1 value2 value3
@@ -1787,15 +1787,15 @@ var = set_is_empty handle
 
 Returns true if the provided set handle is an empty set.
 
-#### Parameters
+### Parameters
 
 The set handle.
 
-#### Return Value
+### Return Value
 
 True if the provided handle belongs to an empty set.
 
-#### Examples
+### Examples
 
 ```sh
 handle = set
@@ -1829,15 +1829,15 @@ var = set_put handle value
 
 Pushes an additional value to an existing set.
 
-#### Parameters
+### Parameters
 
 The set handle.
 
-#### Return Value
+### Return Value
 
 True if a new value was pushed.
 
-#### Examples
+### Examples
 
 ```sh
 handle = set_new 1 2 3
@@ -1858,16 +1858,16 @@ removed = set_remove handle value
 
 Removes a the value from the set and returns true/false if it was removed.
 
-#### Parameters
+### Parameters
 
 * The set handle.
 * The value to remove.
 
-#### Return Value
+### Return Value
 
 True if the value was found and removed from the set.
 
-#### Examples
+### Examples
 
 ```sh
 handle = set_new
@@ -1893,15 +1893,15 @@ var = set_size handle
 
 Returns the set size based on the provided set handle.
 
-#### Parameters
+### Parameters
 
 The set handle.
 
-#### Return Value
+### Return Value
 
 The set size.
 
-#### Examples
+### Examples
 
 ```sh
 handle = set
@@ -1928,15 +1928,15 @@ array_handle = set_to_array set_handle
 
 Converts the provided set to an array and returns the new array handle.
 
-#### Parameters
+### Parameters
 
 The set handle.
 
-#### Return Value
+### Return Value
 
 The array handle or false in case of error.
 
-#### Examples
+### Examples
 
 ```sh
 set_handle = set_new value1 value2 value3
@@ -1955,16 +1955,16 @@ text = write_properties [--prefix prefix] [names]
 
 Creates a properties string from the provided list of variable names (not values).
 
-#### Parameters
+### Parameters
 
 * Optional prefix which will be added to all written properties.
 * A list of variable names.
 
-#### Return Value
+### Return Value
 
 The properties text value.
 
-#### Examples
+### Examples
 
 ```sh
 a = set 1
@@ -1996,15 +1996,15 @@ var = duckscript_sdk_version
 
 Returns the duckscript SDK version.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The duckscript SDK version.
 
-#### Examples
+### Examples
 
 ```sh
 version = duckscript_sdk_version 
@@ -2022,15 +2022,15 @@ var = duckscript_version
 
 Returns the duckscript runtime version.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The duckscript runtime version.
 
-#### Examples
+### Examples
 
 ```sh
 version = duckscript_version 
@@ -2048,15 +2048,15 @@ value = dump_instructions
 
 Returns all script instructions structure (not script text) in textual form.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The script instructions.
 
-#### Examples
+### Examples
 
 ```sh
 value = dump_instructions
@@ -2076,15 +2076,15 @@ value = dump_state
 
 Returns all script state in textual form.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The script state.
 
-#### Examples
+### Examples
 
 ```sh
 numbers = range -5 15
@@ -2106,15 +2106,15 @@ value = dump_variables
 
 Returns all script variables in textual form.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The script variables.
 
-#### Examples
+### Examples
 
 ```sh
 one = set 1
@@ -2143,15 +2143,15 @@ handle = env_to_map
 
 Converts all environment variables to a map and returns the map handle.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The map handle.
 
-#### Examples
+### Examples
 
 ```sh
 set_env env_to_map_test test_value
@@ -2177,15 +2177,15 @@ var = which executable
 Returns the path to the executable if it exists.<br>
 If not found it will return an empty string.
 
-#### Parameters
+### Parameters
 
 The executable to find.
 
-#### Return Value
+### Return Value
 
 The executable path or empty string if not found.
 
-#### Examples
+### Examples
 
 ```sh
 path = which echo
@@ -2203,15 +2203,15 @@ var = cpu_count
 
 Returns the number of CPUs.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The CPU count.
 
-#### Examples
+### Examples
 
 ```sh
 count = cpu_count
@@ -2230,15 +2230,15 @@ var = get_home_dir
 Returns the user home directory path.<br>
 In case of any error, false will be returned.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The user home directory path or false in case of any error.
 
-#### Examples
+### Examples
 
 ```sh
 directory = get_home_dir
@@ -2256,15 +2256,15 @@ var = os_family
 
 Returns the OS family (windows, linux, mac).
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The OS family (windows, linux, mac).
 
-#### Examples
+### Examples
 
 ```sh
 name = os_family
@@ -2282,15 +2282,15 @@ var = os_name
 
 Returns the OS name.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The OS name.
 
-#### Examples
+### Examples
 
 ```sh
 name = os_name
@@ -2309,15 +2309,15 @@ var = os_release
 Returns the OS release.<br>
 **This command is not supported on windows.**
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The OS release.
 
-#### Examples
+### Examples
 
 ```sh
 release = os_release
@@ -2336,15 +2336,15 @@ var = os_version
 Returns the OS version.<br>
 **This command is not supported on windows.**
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The OS version.
 
-#### Examples
+### Examples
 
 ```sh
 version = os_version
@@ -2362,15 +2362,15 @@ var = whoami
 
 Returns the current user name.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The current user name.
 
-#### Examples
+### Examples
 
 ```sh
 name = whoami
@@ -2388,15 +2388,15 @@ var = get_env key
 
 Returns the environment variable value for the provided key.
 
-#### Parameters
+### Parameters
 
 First argument is the environment variable key.
 
-#### Return Value
+### Return Value
 
 The environment variable value.
 
-#### Examples
+### Examples
 
 ```sh
 home = get_env HOME
@@ -2415,15 +2415,15 @@ var = is_windows
 
 Returns true if the current OS family is windows.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 True if the current OS family is windows.
 
-#### Examples
+### Examples
 
 ```sh
 windows = is_windows
@@ -2455,15 +2455,15 @@ var = pwd
 
 Prints and also returns the current directory.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The current directory path.
 
-#### Examples
+### Examples
 
 ```sh
 # Print the current directory:
@@ -2486,15 +2486,15 @@ var = printenv
 
 Prints and returns all environment variables.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 All environment variables printout text.
 
-#### Examples
+### Examples
 
 ```sh
 set_env TEST_PRINT_ENV TRUE
@@ -2537,15 +2537,15 @@ Sets the current directory based on the input path.<br>
 If no path is provided, it will default to the user home directory.<br>
 If the path does not exist, it will return none.
 
-#### Parameters
+### Parameters
 
 The new current directory.
 
-#### Return Value
+### Return Value
 
 The new current directory or none in case of any error such as target directory not found.
 
-#### Examples
+### Examples
 
 ```sh
 # Move to user home directory and store the path in the home variable
@@ -2568,7 +2568,7 @@ var = set_env (key value | --handle map_handle)
 Sets the environment variable defined by the provided key to the provided value.<br>
 If --handle is provided, the second arg will be used as a handle to a map and all keys/values in the map will be set.
 
-#### Parameters
+### Parameters
 
 The function can be invoked in the following ways:
 * Key/Value pair - Two arguments are required:
@@ -2578,11 +2578,11 @@ The function can be invoked in the following ways:
   * --handle
   * The map handle
 
-#### Return Value
+### Return Value
 
 true if successful
 
-#### Examples
+### Examples
 
 ```sh
 set_env HOME /usr/me
@@ -2612,15 +2612,15 @@ var = uname [-a]
 
 Acts similar to uname on unix like systems.
 
-#### Parameters
+### Parameters
 
 * Optional -a for extended information (not supported on windows).
 
-#### Return Value
+### Return Value
 
 The OS name and optionally extra information.
 
-#### Examples
+### Examples
 
 ```sh
 value = uname -a
@@ -2662,15 +2662,15 @@ unset_env key
 
 Removes the environment variable defined by the provided key.
 
-#### Parameters
+### Parameters
 
 The name of the environment variable to remove
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 unset_env HOME
@@ -2688,15 +2688,15 @@ var = get_last_error
 
 In case of any runtime error, this function will return the error message.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The last error message or none
 
-#### Examples
+### Examples
 
 ```sh
 # This will trigger an error
@@ -2718,15 +2718,15 @@ var = get_last_error_line
 
 In case of any runtime error, this function will return the error line (if available).
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The last error line or none
 
-#### Examples
+### Examples
 
 ```sh
 # This will trigger an error
@@ -2748,15 +2748,15 @@ var = get_last_error_source
 
 In case of any runtime error, this function will return the error source (such as file name) if available.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The last error source or none
 
-#### Examples
+### Examples
 
 ```sh
 # This will trigger an error
@@ -2779,15 +2779,15 @@ set_error message
 Sets the last error which is accessible via get_last_error.<br>
 This command will not trigger the on_error command flow.
 
-#### Parameters
+### Parameters
 
 The error message.
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 set_error "my error message"
@@ -2811,16 +2811,16 @@ Enables to cause the script execution to stop in case of any error.<br>
 By default all errors simply trigger the on_error command which the default SDK stores and provides access to.<br>
 However, with this command you can change the on_error command to instead stop the script execution.
 
-#### Parameters
+### Parameters
 
 If no argument is provided, it will return the current state.<br>
 If an argument is provided, it will modify the state and return it as true/false.
 
-#### Return Value
+### Return Value
 
 The current/updated state as true/false value
 
-#### Examples
+### Examples
 
 ```sh
 # Get current state
@@ -2844,15 +2844,15 @@ trigger_error [message]
 
 Triggers an error that will trigger the on_error flow.
 
-#### Parameters
+### Parameters
 
 Optional error message.
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 trigger_error "my error message"
@@ -2878,7 +2878,7 @@ The for/in command enables to iterate over an array (see [array command](#std__c
 The first argument will contain the current iteration value from the array.<br>
 Once all values have been read, it will exit the loop.
 
-#### Parameters
+### Parameters
 
 * for
   * The variable name which will hold the current iteration value
@@ -2886,11 +2886,11 @@ Once all values have been read, it will exit the loop.
   * The handle to the array of values to iterate
 * end - no parameters
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 # Simple example iteration over the list of letters:
@@ -2953,7 +2953,7 @@ All variables defined will not be available except the variables provided to the
 All variables created during the function invocation will be deleted once the function ends, except the return value.<br>
 This enables a clean function invocation without impacting the global variables.
 
-#### Parameters
+### Parameters
 
 * function - The function name used later on to invoke the function
 * end - no parameters
@@ -2961,11 +2961,11 @@ This enables a clean function invocation without impacting the global variables.
 * *&lt;scope&gt;* - Optional annotation which enables to use a new scope during the function invocation.
 * *function name* - Any number of arguments which will automatically be set as global variables: ${1}, ${2}, ... as so on.
 
-#### Return Value
+### Return Value
 
 The function invocation returns the output provided by the return command.
 
-#### Examples
+### Examples
 
 ```sh
 # Simple example of a function definition which echo 'hello world' and exits.
@@ -3028,15 +3028,15 @@ goto :label
 
 The goto command enables you to jump to any position in the script, if that position has a label value.
 
-#### Parameters
+### Parameters
 
 A single valid label value.
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 goto :good
@@ -3092,16 +3092,16 @@ if blocks can be nested in other if blocks (see examples).
 A condition statement is made up of values, or/and keywords and '('/')' groups.<br>
 Each must be separated with a space character.
 
-#### Parameters
+### Parameters
 
 * if/elseif - A command and its arguments to invoke and evaluate its output, if a single value is provided an no such command exists, it is evaluated as a value.
 * else/end - no parameters
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 # Simple example of an if statement that evaluates the argument value as true and echos "in if"
@@ -3199,16 +3199,16 @@ while blocks can be nested in other while blocks (see examples).
 A condition statement is made up of values, or/and keywords and '('/')' groups.<br>
 Each must be separated with a space character.
 
-#### Parameters
+### Parameters
 
 * while - A command and its arguments to invoke and evaluate its output, if a single value is provided an no such command exists, it is evaluated as a value.
 * end - no parameters
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 top_count = set 0
@@ -3242,16 +3242,16 @@ It will return true/false value based if it was able to write the text to the fi
 In case the file doesn't exist, it will create it.<br>
 If the file exists, it will append the text to it.
 
-#### Parameters
+### Parameters
 
 * The target file
 * The text content to write
 
-#### Return Value
+### Return Value
 
 true/false based if it was able to write the text to the file.
 
-#### Examples
+### Examples
 
 ```sh
 out = appendfile ./target/tests/writefile.txt "line 1\nline 2"
@@ -3270,16 +3270,16 @@ result = glob_cp source_glob target
 
 This command will copy all files that match the given glob.
 
-#### Parameters
+### Parameters
 
 * The source glob, for example ./*.txt
 * The target path
 
-#### Return Value
+### Return Value
 
 The amount of paths (files) copied or false in case of any error.
 
-#### Examples
+### Examples
 
 ```sh
 count = glob_cp ./**/*.txt ../target
@@ -3363,16 +3363,16 @@ var = cp source target
 This command copies the requested file or directory to the target location.<br>
 If the source directory is not empty, its entire contents will be copied as well.
 
-#### Parameters
+### Parameters
 
 * The source path to copy
 * The target path
 
-#### Return Value
+### Return Value
 
 **true** if the path was copied.
 
-#### Examples
+### Examples
 
 ```sh
 # copy a single file
@@ -3394,15 +3394,15 @@ var = mkdir directory
 
 This command will create the requested directory (and needed parent directories) and return true/false if it was successful.
 
-#### Parameters
+### Parameters
 
 The directory name to create.
 
-#### Return Value
+### Return Value
 
 The operation success value - true if directory exists, else false.
 
-#### Examples
+### Examples
 
 ```sh
 exists = mkdir ./dir/subdir
@@ -3421,16 +3421,16 @@ var = touch file
 This command will create an empty file and return true/false if the file exists.<br>
 If file exits, it will not be modified.
 
-#### Parameters
+### Parameters
 
 The file path.
 
-#### Return Value
+### Return Value
 
 If the file exists after the command, it will return true.<br>
 In case of any error, it will return false.
 
-#### Examples
+### Examples
 
 ```sh
 exists = touch ./dir/file.txt
@@ -3449,15 +3449,15 @@ var = rmdir path
 This command delete the requested empty directory and returns true if successful.<br>
 If the path leads to a file or a directory which is not empty, this command will fail.
 
-#### Parameters
+### Parameters
 
 A single parameter holding the directory path.
 
-#### Return Value
+### Return Value
 
 **true** if the directory was deleted.
 
-#### Examples
+### Examples
 
 ```sh
 deleted = rmdir ./mydir
@@ -3476,16 +3476,16 @@ var = rm [-r] [path]+
 This command delete the requested file/s, empty directories or recursively deletes directories
 and all their content (files and sub directories) if the **-r** flag is provided.
 
-#### Parameters
+### Parameters
 
 * Optional flags (currently only -r is supported which indicates recursive deletion)
 * The path/s to delete
 
-#### Return Value
+### Return Value
 
 **true** if all paths were deleted.
 
-#### Examples
+### Examples
 
 ```sh
 # delete a file or empty directory
@@ -3510,15 +3510,15 @@ var = is_path_exists path
 
 This command will return true/false based if the provided path points to an existing file system entry.
 
-#### Parameters
+### Parameters
 
 The path to check.
 
-#### Return Value
+### Return Value
 
 True if the path points to an existing file system entry.
 
-#### Examples
+### Examples
 
 ```sh
 existing = is_path_exists ./dir
@@ -3538,15 +3538,15 @@ var = canonicalize path
 This command will return the c path for the provided input.<br>
 In case unable, it will return the original input.
 
-#### Parameters
+### Parameters
 
 The file/directory path to canonicalize.
 
-#### Return Value
+### Return Value
 
 The canonicalized path, or if unsuccessful, the original path.
 
-#### Examples
+### Examples
 
 ```sh
 path = canonicalize ./target
@@ -3565,15 +3565,15 @@ var = basename path
 This command will return the last path element of the provided path.<br>
 If unable, it will return none.
 
-#### Parameters
+### Parameters
 
 The path to extract the last element from.
 
-#### Return Value
+### Return Value
 
 The last path element or none if unsuccessful.
 
-#### Examples
+### Examples
 
 ```sh
 file = basename ./dir/file.txt
@@ -3591,15 +3591,15 @@ var = get_last_modified_time path
 
 This command will return the last modified time in millies from unix epoch.
 
-#### Parameters
+### Parameters
 
 The path to check.
 
-#### Return Value
+### Return Value
 
 The last modified time in millies from unix epoch or false in case path does not exist.
 
-#### Examples
+### Examples
 
 ```sh
 time = get_last_modified_time ./dir/somefile.txt
@@ -3618,15 +3618,15 @@ var = dirname path
 This command will return the parent path of the provided path.<br>
 If the parent path is empty, it will return none.
 
-#### Parameters
+### Parameters
 
 The path to extract the parent path from.
 
-#### Return Value
+### Return Value
 
 The parent path or none.
 
-#### Examples
+### Examples
 
 ```sh
 directory = dirname ./dir/file.txt
@@ -3644,15 +3644,15 @@ handle = gitignore_path_array path
 
 Returns an array handle containing all path entries found from the provided root path that should be included based on the gitignore definitions.
 
-#### Parameters
+### Parameters
 
 The root path.
 
-#### Return Value
+### Return Value
 
 The array handle.
 
-#### Examples
+### Examples
 
 ```sh
 handle = gitignore_path_array ./src
@@ -3675,15 +3675,15 @@ handle = glob_array pattern
 Returns an array handle containing all path entries found from the provided glob pattern.<br>
 The pattern can be a relative path from current directory or an absolute path.
 
-#### Parameters
+### Parameters
 
 The glob pattern.
 
-#### Return Value
+### Return Value
 
 The array handle.
 
-#### Examples
+### Examples
 
 ```sh
 handle = glob_array ./somedir/**/*.txt
@@ -3705,15 +3705,15 @@ var = is_dir path
 
 This command will return true/false based if the provided path points to an existing directory.
 
-#### Parameters
+### Parameters
 
 The path to check.
 
-#### Return Value
+### Return Value
 
 True if the path points to an existing directory.
 
-#### Examples
+### Examples
 
 ```sh
 existing_dir = is_dir ./dir
@@ -3731,15 +3731,15 @@ var = is_file path
 
 This command will return true/false based if the provided path points to an existing file.
 
-#### Parameters
+### Parameters
 
 The path to check.
 
-#### Return Value
+### Return Value
 
 True if the path points to an existing file.
 
-#### Examples
+### Examples
 
 ```sh
 existing_file = is_file ./dir/somefile.txt
@@ -3757,17 +3757,17 @@ var = is_path_newer newer older
 
 This command will return true if the 'newer' path last modified time is after the 'older' path last modified time.
 
-#### Parameters
+### Parameters
 
 * newer - The file/directory path to check.
 * older - The file/directory path to check.
 
-#### Return Value
+### Return Value
 
 True if the 'newer' path last modified time is after the 'older' path last modified time.
 Otherwise or in case of an error, false will be returned.
 
-#### Examples
+### Examples
 
 ```sh
 newer = is_path_newer ./new_file.txt ./old_file.txt
@@ -3785,15 +3785,15 @@ var = is_readonly path
 
 This command will return true/false based if the provided path exists and is set to readonly.
 
-#### Parameters
+### Parameters
 
 The path to check.
 
-#### Return Value
+### Return Value
 
 True if the provided path exists and is set to readonly.
 
-#### Examples
+### Examples
 
 ```sh
 readonly = is_readonly ./dir/somefile.txt
@@ -3812,15 +3812,15 @@ result = join_path path [path]*
 
 Concats all paths and makes sure there is a / character between each path element.
 
-#### Parameters
+### Parameters
 
 * A list of paths to join
 
-#### Return Value
+### Return Value
 
 The joined path
 
-#### Examples
+### Examples
 
 ```sh
 joined = join_path /test /dir1 /dir2 dir3 //dir4// /dir5
@@ -3871,16 +3871,16 @@ The supported flags are:
 
 * -l - Shows extended information
 
-#### Parameters
+### Parameters
 
 * Optional flags (currently only -l is supported)
 * Optional path (if not provided, current working directory is used)
 
-#### Return Value
+### Return Value
 
 **true** is operation was successful.
 
-#### Examples
+### Examples
 
 ```sh
 # prints current directory content
@@ -3922,16 +3922,16 @@ This command moves the requested source path to the target path.
 
 All missing parent directories in the target path will be created as needed.
 
-#### Parameters
+### Parameters
 
 * The source path to copy
 * The target path
 
-#### Return Value
+### Return Value
 
 **true** if the move was successful.
 
-#### Examples
+### Examples
 
 ```sh
 # move a single file
@@ -3957,15 +3957,15 @@ var = cat [file]+
 The cat command will print out the requested file/s.<br>
 In addition it will also return the value to the output variable.
 
-#### Parameters
+### Parameters
 
 Multiple file paths.
 
-#### Return Value
+### Return Value
 
 The file content or none if the file does not exist.
 
-#### Examples
+### Examples
 
 ```sh
 cat ./docs/sdk.md
@@ -3983,15 +3983,15 @@ handle = read_binary_file file
 
 Reads a raw file and returns a handle to the binary data.
 
-#### Parameters
+### Parameters
 
 A single parameter holding the file path.
 
-#### Return Value
+### Return Value
 
 The binary data handle.
 
-#### Examples
+### Examples
 
 ```sh
 handle = read_binary_file ./Cargo.toml
@@ -4010,15 +4010,15 @@ var = readfile file
 
 The readfile command will read the requested file and return the value to the output variable.
 
-#### Parameters
+### Parameters
 
 A single parameter holding the file path.
 
-#### Return Value
+### Return Value
 
 The file content or none in case file does not exist.
 
-#### Examples
+### Examples
 
 ```sh
 text = readfile ./Cargo.toml
@@ -4037,16 +4037,16 @@ result = chmod mode path
 This command will update the mode for the given path.<br>
 **This command is currently only available for unix like systems and will return false for all others such as windows.**
 
-#### Parameters
+### Parameters
 
 * The new mode, for example 755
 * The path
 
-#### Return Value
+### Return Value
 
 The new mode as decimal number or false in case of any error.
 
-#### Examples
+### Examples
 
 ```sh
 chmod 777 ./myfile.txt
@@ -4066,16 +4066,16 @@ result = glob_chmod mode glob
 This command will update the mode for the given glob pattern.<br>
 **This command is currently only available for unix like systems and will return false for all others such as windows.**
 
-#### Parameters
+### Parameters
 
 * The new mode, for example 755
 * The path glob
 
-#### Return Value
+### Return Value
 
 The amount of path entries affected by the operation or false in case of any error.
 
-#### Examples
+### Examples
 
 ```sh
 file1 = set ./target/_duckscript_test/glob_chmod/modify1.txt
@@ -4139,15 +4139,15 @@ path = temp_dir
 
 This command will return the system temporary directory path.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The directory path.
 
-#### Examples
+### Examples
 
 ```sh
 path = temp_dir
@@ -4167,15 +4167,15 @@ path = temp_file [extension]
 
 This command will create a new empty temporary file and return its path.
 
-#### Parameters
+### Parameters
 
 Optional file extension.
 
-#### Return Value
+### Return Value
 
 The file path.
 
-#### Examples
+### Examples
 
 ```sh
 path = temp_file toml
@@ -4196,16 +4196,16 @@ result = write_binary_file file handle
 This command enables to write binary data of the provided binary handle into the requested file.<br>
 It will return true/false value based if it was able to write the binary data to the file.
 
-#### Parameters
+### Parameters
 
 * The target file
 * The binary data handle
 
-#### Return Value
+### Return Value
 
 true/false based if it was able to write the binary data to the file.
 
-#### Examples
+### Examples
 
 ```sh
 handle = string_to_bytes "some text"
@@ -4225,16 +4225,16 @@ result = writefile file text
 This command enables to write the provided text into the requested file.<br>
 It will return true/false value based if it was able to write the text to the file.
 
-#### Parameters
+### Parameters
 
 * The target file
 * The text content to write
 
-#### Return Value
+### Return Value
 
 true/false based if it was able to write the text to the file.
 
-#### Examples
+### Examples
 
 ```sh
 result = writefile ./target/tests/writefile.txt "line 1\nline 2"
@@ -4252,17 +4252,17 @@ var = digest --algo (sha256|sha512) (--file path|content)
 
 Runs the requested hash on the provided file or string content and returns the hashed value in hex.
 
-#### Parameters
+### Parameters
 
 * --algo and algorithm to use (currently sha256 and sha512 are supported)
 * Optional --file and file path
 * Optional the string content to hash (if file is not provided)
 
-#### Return Value
+### Return Value
 
 The hash value in hex or false in case of error.
 
-#### Examples
+### Examples
 
 ```sh
 hashed = digest --algo sha256 "hello world\n"
@@ -4284,16 +4284,16 @@ var = sha256sum file
 
 Runs SHA-256 hash on the provided file returns the hashed value in hex.
 
-#### Parameters
+### Parameters
 
 The file to hash
 
-#### Return Value
+### Return Value
 
 The hash value in hex or false in case of error.
 The result will be in lowercase, same as with the core utils with the same name.
 
-#### Examples
+### Examples
 
 ```sh
 hashed = sha256sum ./myfile.txt
@@ -4326,16 +4326,16 @@ var = sha512sum file
 
 Runs SHA-512 hash on the provided file returns the hashed value in hex.
 
-#### Parameters
+### Parameters
 
 The file to hash
 
-#### Return Value
+### Return Value
 
 The hash value in hex or false in case of error.
 The result will be in lowercase, same as with the core utils with the same name.
 
-#### Examples
+### Examples
 
 ```sh
 hashed = sha512sum ./myfile.txt
@@ -4453,16 +4453,16 @@ Since duckscript is untyped, all boolean and numeric values will be encoded as s
 If --collection is passed, the provided value is considered as string or a map/array handle which is used to fetch
 the tree data and create the json string.
 
-#### Parameters
+### Parameters
 
 * Option --collection flag to make the encoding use the maps/arrays and values
 * The root variable name (or a handle/value in case --collection is provided)
 
-#### Return Value
+### Return Value
 
 The JSON string
 
-#### Examples
+### Examples
 
 ```sh
 # will parse and encode to plain variables
@@ -4498,16 +4498,16 @@ In case the --collection flag is provided, it will instead create maps/array as 
 the json data.
 Make sure to use the release with the recursive flag on the root object to release the entire memory once done.
 
-#### Parameters
+### Parameters
 
 * Optional --collection flag to parse and return value/map/array
 * The JSON string to parse.
 
-#### Return Value
+### Return Value
 
 The root value/handle.
 
-#### Examples
+### Examples
 
 ```sh
 # parse to simple variables
@@ -4556,15 +4556,15 @@ var = alias command arguments
 This command enables to define new commands with default arguments.<br>
 The new alias can be invoked with additional arguments that will be appended to the default set.
 
-#### Parameters
+### Parameters
 
 Any number of arguments which will be added to the already defined arguments set during the aliasing.
 
-#### Return Value
+### Return Value
 
 **true** if the alias was created, else **false**.
 
-#### Examples
+### Examples
 
 ```sh
 # This example creates a new **my_echo** alias that will print the prefix before the requested arguments.
@@ -4586,15 +4586,15 @@ unalias name
 
 Removes previously defined alias and return true/false based if an alias was actually removed.
 
-#### Parameters
+### Parameters
 
 The alias name to remove.
 
-#### Return Value
+### Return Value
 
 A true/false value in case an alias with the provided name existed.
 
-#### Examples
+### Examples
 
 ```sh
 alias my_echo echo [ECHO]
@@ -4621,15 +4621,15 @@ remove_command name
 
 Removes a command and all its aliases.
 
-#### Parameters
+### Parameters
 
 The command or alias name to remove.
 
-#### Return Value
+### Return Value
 
 A true/false value in case a command was removed.
 
-#### Examples
+### Examples
 
 ```sh
 remove_command set
@@ -4648,15 +4648,15 @@ var = calc [operation]
 The calc command accepts multiple arguments which make up a mathematical operation which will be
 calculated and its result will be returned.
 
-#### Parameters
+### Parameters
 
 Any number of arguments which will construct a line to calculate.
 
-#### Return Value
+### Return Value
 
 The result of the mathematical calculation.
 
-#### Examples
+### Examples
 
 ```sh
 # result is 36
@@ -4675,15 +4675,15 @@ var = greater_than left right
 
 This command returns true/false based on left > right calculation.
 
-#### Parameters
+### Parameters
 
 Two numeric values to compare.
 
-#### Return Value
+### Return Value
 
 True if first argument is bigger than second argument.
 
-#### Examples
+### Examples
 
 ```sh
 result = greater_than 2 1.5
@@ -4702,15 +4702,15 @@ num = hex_decode str
 Decode a hexadecimal string to the corresponding integer number.<br>
 No support for negative numbers.
 
-#### Parameters
+### Parameters
 
 A hexadecimal string.
 
-#### Return Value
+### Return Value
 
 The corresponding integer number.
 
-#### Examples
+### Examples
 
 ```sh
 hex_num = set 0xff
@@ -4733,15 +4733,15 @@ str = hex_encode num
 Converts an integer number to the corresponding hexadecimal string.<br>
 No support for negative numbers.
 
-#### Parameters
+### Parameters
 
 An integer number.
 
-#### Return Value
+### Return Value
 
 The corresponding hexadecimal string.
 
-#### Examples
+### Examples
 
 ```sh
 str = hex_encode 255
@@ -4761,15 +4761,15 @@ var = less_than left right
 
 This command returns true/false based on left < right calculation.
 
-#### Parameters
+### Parameters
 
 Two numeric values to compare.
 
-#### Return Value
+### Return Value
 
 True if first argument is smaller than second argument.
 
-#### Examples
+### Examples
 
 ```sh
 result = less_than 1 1.5
@@ -4787,15 +4787,15 @@ var = hostname
 
 Returns the hostname.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The hostname
 
-#### Examples
+### Examples
 
 ```sh
 name = hostname
@@ -4819,19 +4819,19 @@ When redirecting to file, the output would be the response size.<br>
 The ```--payload``` parameter enables to pass a payload to POST http requests.<br>
 In case of errors or error HTTP response codes, false will be returned.
 
-#### Parameters
+### Parameters
 
 * Optional HTTP Method, for example ```--method GET``` or ```--method POST``` (currently only GET and POST are supported).
 * Optional post payload via ```--payload``` parameter.
 * Optional redirection of output to file via ```--output-file``` parameter.
 * The target URL
 
-#### Return Value
+### Return Value
 
 The response text or in case of output redirection to file, the response size.<br>
 In case of errors, it will return false.
 
-#### Examples
+### Examples
 
 ```sh
 function test_get
@@ -4884,19 +4884,19 @@ When redirecting to file, the output would be the response size.<br>
 The ```--post-data``` parameter enables to pass a payload to POST http requests.<br>
 In case of errors or error HTTP response codes, false will be returned.
 
-#### Parameters
+### Parameters
 
 * Optional HTTP Method, for example --method=HTTP-GET or --method=HTTP-POST (currently only GET and POST are supported).
 * Optional post payload via ```--post-data``` parameter.
 * Optional redirection of output to file via ```-O``` parameter.
 * The target URL
 
-#### Return Value
+### Return Value
 
 The response text or in case of output redirection to file, the response size.<br>
 In case of errors, it will return false.
 
-#### Examples
+### Examples
 
 ```sh
 function test_get
@@ -4977,7 +4977,7 @@ result = ftp_get --host <hostname> [--port 21] [--username <user name>] [--passw
 
 Invokes the FTP GET command from the given connection and file details.
 
-#### Parameters
+### Parameters
 
 * --host - The host name or IP to connect to
 * --port - Optional port number to use (by default 21)
@@ -4988,11 +4988,11 @@ Invokes the FTP GET command from the given connection and file details.
 * --remote-file - The remote file to download
 * --local-file - The target local file name
 
-#### Return Value
+### Return Value
 
 true if operation was completed.
 
-#### Examples
+### Examples
 
 ```sh
 ftp_get --host myhost --username someuser --password 12345 --remote-file README.md --local-file README.md
@@ -5010,7 +5010,7 @@ handle = ftp_get_in_memory --host <hostname> [--port 21] [--username <user name>
 
 Invokes the FTP GET command from the given connection and file details.
 
-#### Parameters
+### Parameters
 
 * --host - The host name or IP to connect to
 * --port - Optional port number to use (by default 21)
@@ -5020,11 +5020,11 @@ Invokes the FTP GET command from the given connection and file details.
 * --type - Optional setting of the transfer type as A (ascii) I (image, binary)
 * --remote-file - The remote file to download
 
-#### Return Value
+### Return Value
 
 The binary data handle.
 
-#### Examples
+### Examples
 
 ```sh
 handle = ftp_get_in_memory --host myhost --username someuser --password 12345 --remote-file README.md
@@ -5044,7 +5044,7 @@ handle = ftp_list --host <hostname> [--port 21] [--username <user name>] [--pass
 Invokes the FTP LIST command from the given connection details and path.<br>
 Returns a handle to an array of all response entries.
 
-#### Parameters
+### Parameters
 
 * --host - The host name or IP to connect to
 * --port - Optional port number to use (by default 21)
@@ -5052,11 +5052,11 @@ Returns a handle to an array of all response entries.
 * --password - Optional password used to login (if not user or password provided, no login operation will be invoked)
 * --path - Optional path on the remote server to invoke operation on
 
-#### Return Value
+### Return Value
 
 A handle to an array holding all entries.
 
-#### Examples
+### Examples
 
 ```sh
 handle = ftp_list --host myhost --username someuser --password 12345
@@ -5079,7 +5079,7 @@ handle = ftp_nlst --host <hostname> [--port 21] [--username <user name>] [--pass
 Invokes the FTP NLST command from the given connection details and path.<br>
 Returns a handle to an array of all response entries.
 
-#### Parameters
+### Parameters
 
 * --host - The host name or IP to connect to
 * --port - Optional port number to use (by default 21)
@@ -5087,11 +5087,11 @@ Returns a handle to an array of all response entries.
 * --password - Optional password used to login (if not user or password provided, no login operation will be invoked)
 * --path - Optional path on the remote server to invoke operation on
 
-#### Return Value
+### Return Value
 
 A handle to an array holding all entries.
 
-#### Examples
+### Examples
 
 ```sh
 handle = ftp_nlst --host myhost --username someuser --password 12345
@@ -5113,7 +5113,7 @@ result = ftp_put --host <hostname> [--port 21] [--username <user name>] [--passw
 
 Invokes the FTP PUT command from the given connection and file details.
 
-#### Parameters
+### Parameters
 
 * --host - The host name or IP to connect to
 * --port - Optional port number to use (by default 21)
@@ -5124,11 +5124,11 @@ Invokes the FTP PUT command from the given connection and file details.
 * --remote-file - The remote file to upload
 * --local-file - The source local file to upload
 
-#### Return Value
+### Return Value
 
 true if operation was completed.
 
-#### Examples
+### Examples
 
 ```sh
 ftp_put --host myhost --username someuser --password 12345 --remote-file README.md --local-file README.md
@@ -5146,7 +5146,7 @@ result = ftp_put_in_memory --host <hostname> [--port 21] [--username <user name>
 
 Invokes the FTP PUT command from the given connection and file details.
 
-#### Parameters
+### Parameters
 
 * --host - The host name or IP to connect to
 * --port - Optional port number to use (by default 21)
@@ -5157,11 +5157,11 @@ Invokes the FTP PUT command from the given connection and file details.
 * --remote-file - The remote file to upload
 * --content - The textual content to upload
 
-#### Return Value
+### Return Value
 
 true if operation was completed.
 
-#### Examples
+### Examples
 
 ```sh
 ftp_put_in_memory --host myhost --username someuser --password 12345 --remote-file README.md --content "This is the README content"
@@ -5196,17 +5196,17 @@ The actual output variable name will not be modified, instead new variables will
 
 If an output variable is set and the --get-exit-code flag is provided, the output will only contain the exit code.
 
-#### Parameters
+### Parameters
 
 * --fail-on-error - If no output variable is provided, it will cause an error in case the executed process exits with an error exit code.
 * --get-exit-code - If an output variable is provided, it will contain the exit code.
 * The command to execute and its arguments.
 
-#### Return Value
+### Return Value
 
 Optionally a base name to access the process stout, stderr and exit code information.
 
-#### Examples
+### Examples
 
 ```sh
 # Example of running a command and flushing its output to the parent process.
@@ -5236,15 +5236,15 @@ code = exit [code]
 
 Exits the script with the given code stored in the output variable.
 
-#### Parameters
+### Parameters
 
 A number as exit code or none for 0.
 
-#### Return Value
+### Return Value
 
 The exit code.
 
-#### Examples
+### Examples
 
 ```sh
 # exit with code '0'
@@ -5266,15 +5266,15 @@ var = pid
 
 Returns the current process ID.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The current process ID.
 
-#### Examples
+### Examples
 
 ```sh
 id = pid
@@ -5293,16 +5293,16 @@ pid = spawn [--silent] command [args]*
 Executes the provided native command and arguments.<br>
 It will not wait for the process to finish and will return the process pid.
 
-#### Parameters
+### Parameters
 
 * Option --silent flag to suppress any output.
 * The command to execute and its arguments.
 
-#### Return Value
+### Return Value
 
 The process pid.
 
-#### Examples
+### Examples
 
 ```sh
 pid = spawn echo test
@@ -5325,18 +5325,18 @@ In case the command exited it will be executed again up to the max retries provi
 The watchdog will wait the specified interval in milliseconds between invocations.<br>
 In case of an invalid command, the watchdog will not reattempt the invocation and will exit without retries.
 
-#### Parameters
+### Parameters
 
 * --max-retries - Positive value of max retries (excluding the first invocation). value <= 0 for unlimited retries. Default is unlimited.
 * --interval - The amount in milliseconds between retries. 0 for no waiting between invocations. Default is no wait.
 * The command to execute (preceded by a **--** separator).
 * The command arguments.
 
-#### Return Value
+### Return Value
 
 The amount of invocations or false in case of any error.
 
-#### Examples
+### Examples
 
 ```sh
 count = watchdog --max-retries 0 -- echo test
@@ -5358,16 +5358,16 @@ output = random_range min max
 
 Generate a random value in the range of min and max values provided, i.e. inclusive of min and exclusive of max.
 
-#### Parameters
+### Parameters
 
 * min - The min range value (inclusive)
 * max - The max range value (exclusive)
 
-#### Return Value
+### Return Value
 
 The generated numeric value.
 
-#### Examples
+### Examples
 
 ```sh
 value = random_range -10 10
@@ -5386,15 +5386,15 @@ output = random_text [length]
 
 Generates random alphanumeric text with the requested length (length is 1 if not provided).
 
-#### Parameters
+### Parameters
 
 Optional text length. Length is defaulted to 1 if not provided.
 
-#### Return Value
+### Return Value
 
 The generated alphanumeric value.
 
-#### Examples
+### Examples
 
 ```sh
 value = random_text 50
@@ -5414,15 +5414,15 @@ clear_scope name
 Clears all variables which are prefixed with the provided name + ::.<br>
 For example, if the value provided is **my_scope** all variables that start with **my_scope::** will be removed.
 
-#### Parameters
+### Parameters
 
 The scope name.
 
-#### Return Value
+### Return Value
 
 None.
 
-#### Examples
+### Examples
 
 ```sh
 testscope = set true
@@ -5461,15 +5461,15 @@ Removes all known variables except for the variables provided by the optional --
 previously pushed stack.<br>
 Functions with the **<scope>** annotation will automatically invoke this command when they end or return a value.
 
-#### Parameters
+### Parameters
 
 Optional variable names to keep.
 
-#### Return Value
+### Return Value
 
 None.
 
-#### Examples
+### Examples
 
 ```sh
 var1 = set 1
@@ -5511,15 +5511,15 @@ Removes all known variables except for the variables provided by the optional --
 Functions with the **<scope>** annotation will automatically invoke this command and keep only the relevant
 function arguments in the new scope.
 
-#### Parameters
+### Parameters
 
 Optional variable names to keep.
 
-#### Return Value
+### Return Value
 
 None.
 
-#### Examples
+### Examples
 
 ```sh
 var1 = set 1
@@ -5545,15 +5545,15 @@ output = semver_is_equal value1 value2
 
 Returns true if both semver values are valid and equal.
 
-#### Parameters
+### Parameters
 
 Two semver values to compare.
 
-#### Return Value
+### Return Value
 
 True if both semver values are valid and equal, else false.
 
-#### Examples
+### Examples
 
 ```sh
 equal = semver_is_equal 1.2.3 1.2.3
@@ -5575,16 +5575,16 @@ output = semver_is_newer newer older
 
 Returns true if both semver values are valid and first value is newer.
 
-#### Parameters
+### Parameters
 
 * The expected newer value
 * The expected older value
 
-#### Return Value
+### Return Value
 
 True if both semver values are valid and first value is newer, else false.
 
-#### Examples
+### Examples
 
 ```sh
 newer = semver_is_newer 3.2.3 2.2.3
@@ -5614,15 +5614,15 @@ The variable names are based on the output variable name, for example if the out
 * out.minor - Holds the output minor version
 * out.patch - Holds the output patch version
 
-#### Parameters
+### Parameters
 
 The semver value.
 
-#### Return Value
+### Return Value
 
 The major, minor and patch values.
 
-#### Examples
+### Examples
 
 ```sh
 version = semver_parse 1.2.3
@@ -5646,18 +5646,18 @@ var = base64 [-e] [-encode] [-d] [-decode] value
 Invokes the base64 encode/decode command with the provided value.<br>
 This command allows for a more similar cli command which wraps the base64_encode and base64_decode commands.
 
-#### Parameters
+### Parameters
 
 * Optional -e or -encode flags to set the mode to encode (default)
 * Optional -d or -decode flags to set the mode to decode
 * The value, in case of encoding this is the binary handle, in case of decoding this is the base64 textual value.
 
-#### Return Value
+### Return Value
 
 * In case of encoding, the base64 textual value will be returned.
 * In case of decoding, a handle to the binary data will be returned.
 
-#### Examples
+### Examples
 
 ```sh
 handle = string_to_bytes "hello world"
@@ -5718,15 +5718,15 @@ text = base64_encode handle
 Encodes using base64 the provided binary data and returns the encoded text value.<br>
 The binary data is provided as a handle.
 
-#### Parameters
+### Parameters
 
 The handle to the binary data to encode.
 
-#### Return Value
+### Return Value
 
 The encoded textual value.
 
-#### Examples
+### Examples
 
 ```sh
 handle = string_to_bytes "hello world"
@@ -5750,15 +5750,15 @@ text = base64_encode handle
 Encodes using base64 the provided binary data and returns the encoded text value.<br>
 The binary data is provided as a handle.
 
-#### Parameters
+### Parameters
 
 The handle to the binary data to encode.
 
-#### Return Value
+### Return Value
 
 The encoded textual value.
 
-#### Examples
+### Examples
 
 ```sh
 handle = string_to_bytes "hello world"
@@ -5781,15 +5781,15 @@ text = bytes_to_string handle
 
 Converts the provided UTF-8 binary array to string and returns it.
 
-#### Parameters
+### Parameters
 
 A handle to a binary array holding UTF-8 text.
 
-#### Return Value
+### Return Value
 
 The textual data.
 
-#### Examples
+### Examples
 
 ```sh
 handle = string_to_bytes "hello world"
@@ -5813,15 +5813,15 @@ var = camelcase text
 Converts the provided string into camel case.
 All non-alphanumeric characters are ignored.
 
-#### Parameters
+### Parameters
 
 The string to convert.
 
-#### Return Value
+### Return Value
 
 The converted string.
 
-#### Examples
+### Examples
 
 ```sh
 string = camelcase "hello, world!"
@@ -5842,15 +5842,15 @@ var = concat [value]*
 
 Concats the provided input into a single string and returns it.
 
-#### Parameters
+### Parameters
 
 Any number of values to concat.
 
-#### Return Value
+### Return Value
 
 The result of the concatenation of all input values.
 
-#### Examples
+### Examples
 
 ```sh
 output = concat 1 2 3 4
@@ -5890,16 +5890,16 @@ var = contains all partial
 
 Returns true if the first argument contains the value of the second argument.
 
-#### Parameters
+### Parameters
 
 * The full text to search in
 * The text to search for
 
-#### Return Value
+### Return Value
 
 **true** if contains.
 
-#### Examples
+### Examples
 
 ```sh
 # valid conditions
@@ -5924,16 +5924,16 @@ var = ends_with all partial
 
 Returns true if the first argument ends with the value of the second argument.
 
-#### Parameters
+### Parameters
 
 * The full text to search in
 * The suffix text to search for
 
-#### Return Value
+### Return Value
 
 **true** if ends with.
 
-#### Examples
+### Examples
 
 ```sh
 # valid conditions
@@ -5958,15 +5958,15 @@ var = eq value1 value2
 
 Returns true if both provided values are equal.
 
-#### Parameters
+### Parameters
 
 Two values to evaluate if they are equal
 
-#### Return Value
+### Return Value
 
 **true** if equal.
 
-#### Examples
+### Examples
 
 ```sh
 # valid conditions
@@ -5993,16 +5993,16 @@ var = indexof full_text text_to_find
 This command will attempt to find the text from the second argument inside the text in the first argument.<br>
 If found, an index value will be returned, otherwise none is returned.
 
-#### Parameters
+### Parameters
 
 * The text to search in
 * The text to find
 
-#### Return Value
+### Return Value
 
 The index of the text found or none if not found.
 
-#### Examples
+### Examples
 
 ```sh
 index = indexof "    some  text   " some 
@@ -6020,15 +6020,15 @@ var = is_empty value
 
 Returns true if the provided value is none or an empty string.
 
-#### Parameters
+### Parameters
 
 The value to validate.
 
-#### Return Value
+### Return Value
 
 True if the provided value is none or an empty string.
 
-#### Examples
+### Examples
 
 ```sh
 value = set "hello world"
@@ -6048,15 +6048,15 @@ var = kebobcase text
 Converts the provided string into kebob case.
 All non-alphanumeric characters are ignored.
 
-#### Parameters
+### Parameters
 
 The string to convert.
 
-#### Return Value
+### Return Value
 
 The converted string.
 
-#### Examples
+### Examples
 
 ```sh
 string = kebobcase "Hello, World!"
@@ -6078,16 +6078,16 @@ This command will attempt to find the text from the second argument inside the t
 If found, an index value will be returned, otherwise none is returned.<br>
 Unlike the **indexof** command, this command will search for text starting at the end, going backwards.
 
-#### Parameters
+### Parameters
 
 * The text to search in
 * The text to find
 
-#### Return Value
+### Return Value
 
 The index of the text found or none if not found.
 
-#### Examples
+### Examples
 
 ```sh
 index = last_indexof "    some  text   " some
@@ -6105,15 +6105,15 @@ var = length text
 
 Returns the text length.
 
-#### Parameters
+### Parameters
 
 The text to extract the length from.
 
-#### Return Value
+### Return Value
 
 The text length value.
 
-#### Examples
+### Examples
 
 ```sh
 len = length "Hello World"
@@ -6131,15 +6131,15 @@ var = lowercase text
 
 Converts the provided string into lowercase.
 
-#### Parameters
+### Parameters
 
 The string to convert.
 
-#### Return Value
+### Return Value
 
 The converted string.
 
-#### Examples
+### Examples
 
 ```sh
 string = lowercase "Hello World"
@@ -6159,17 +6159,17 @@ var = replace text from to
 
 Returns new value of text after replacing all from values to the provided to values.
 
-#### Parameters
+### Parameters
 
 * The full text
 * The from text
 * The to text
 
-#### Return Value
+### Return Value
 
 The updated text.
 
-#### Examples
+### Examples
 
 ```sh
 text = set "my large text value with lots of text"
@@ -6191,15 +6191,15 @@ var = snakecase text
 Converts the provided string into snake case.
 All non-alphanumeric characters are ignored.
 
-#### Parameters
+### Parameters
 
 The string to convert.
 
-#### Return Value
+### Return Value
 
 The converted string.
 
-#### Examples
+### Examples
 
 ```sh
 string = snakecase "Hello, World!"
@@ -6220,16 +6220,16 @@ handle = split text pattern
 Splits the provided text based on the provided pattern and return a handle the
 created array with all the splitted values.
 
-#### Parameters
+### Parameters
 
 * The text to split
 * The pattern to split by
 
-#### Return Value
+### Return Value
 
 A handle to the values array.
 
-#### Examples
+### Examples
 
 ```sh
 handle = split a23b23c23d23e 23
@@ -6264,16 +6264,16 @@ var = starts_with all partial
 
 Returns true if the first argument starts with the value of the second argument.
 
-#### Parameters
+### Parameters
 
 * The full text to search in
 * The prefix text to search for
 
-#### Return Value
+### Return Value
 
 **true** if starts with.
 
-#### Examples
+### Examples
 
 ```sh
 # valid conditions
@@ -6298,15 +6298,15 @@ handle = string_to_bytes text
 
 Converts the provided string into binary format and returns a handle to the binary data.
 
-#### Parameters
+### Parameters
 
 The text to convert.
 
-#### Return Value
+### Return Value
 
 A handle to the binary data.
 
-#### Examples
+### Examples
 
 ```sh
 handle = string_to_bytes "hello world"
@@ -6332,7 +6332,7 @@ var = substring text -end
 
 The substring command will create a new string value from the text provided in the range requested.
 
-#### Parameters
+### Parameters
 
 * The text to substring from
 * Additional parameters
@@ -6342,11 +6342,11 @@ The substring command will create a new string value from the text provided in t
         * If >= 0 it defines the start index and end index is the text length
         * If < 0 it defines the end index going backwards from the end of the text. Start index is 0.
 
-#### Return Value
+### Return Value
 
 The substring value or false in case of error.
 
-#### Examples
+### Examples
 
 ```sh
 # string is 'Hello World'
@@ -6378,15 +6378,15 @@ var = trim value
 
 Returns the provided value with leading and trailing whitespace removed.
 
-#### Parameters
+### Parameters
 
 The value to trim.
 
-#### Return Value
+### Return Value
 
 The trimmed value. If no input provided, this command will return none.
 
-#### Examples
+### Examples
 
 ```sh
 # trimmed will now hold "some  text"
@@ -6405,15 +6405,15 @@ var = trim_end value
 
 Returns the provided value with trailing whitespace removed.
 
-#### Parameters
+### Parameters
 
 The value to trim.
 
-#### Return Value
+### Return Value
 
 The trimmed value. If no input provided, this command will return none.
 
-#### Examples
+### Examples
 
 ```sh
 # trimmed will now hold "  some  text"
@@ -6432,15 +6432,15 @@ var = trim_start value
 
 Returns the provided value with leading whitespace removed.
 
-#### Parameters
+### Parameters
 
 The value to trim.
 
-#### Return Value
+### Return Value
 
 The trimmed value. If no input provided, this command will return none.
 
-#### Examples
+### Examples
 
 ```sh
 # trimmed will now hold "some  text   "
@@ -6459,15 +6459,15 @@ var = uppercase text
 
 Converts the provided string into uppercase.
 
-#### Parameters
+### Parameters
 
 The string to convert.
 
-#### Return Value
+### Return Value
 
 The converted string.
 
-#### Examples
+### Examples
 
 ```sh
 string = uppercase "Hello World"
@@ -6496,16 +6496,16 @@ If the value is one of the following:
 
 It is considered falsy and will exist with an error.
 
-#### Parameters
+### Parameters
 
 * The value to evaluate
 * Optional error message
 
-#### Return Value
+### Return Value
 
 **true** if truthy.
 
-#### Examples
+### Examples
 
 ```sh
 # valid conditions
@@ -6536,16 +6536,16 @@ assert_eq value1 value2 [error message]
 Used to validate the input is the same.<br>
 If they are not, the command will exist with an error.
 
-#### Parameters
+### Parameters
 
 * Two values to evaluate if they are equal
 * Optional error message
 
-#### Return Value
+### Return Value
 
 **true** if equal.
 
-#### Examples
+### Examples
 
 ```sh
 # valid conditions
@@ -6573,15 +6573,15 @@ assert_error [error message]
 This command will cause a runtime error which will not stop the script execution.<br>
 If error message is provided, it will be used as part of the error output.
 
-#### Parameters
+### Parameters
 
 Optional error message.
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 assert_error
@@ -6602,15 +6602,15 @@ assert_fail [error message]
 This command will exist with an error.<br>
 If error message is provided, it will be used as part of the error output.
 
-#### Parameters
+### Parameters
 
 Optional error message.
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 assert_fail
@@ -6639,16 +6639,16 @@ If the value is one of the following:
 
 It is considered falsy.
 
-#### Parameters
+### Parameters
 
 * The value to evaluate
 * Optional error message
 
-#### Return Value
+### Return Value
 
 **true** if falsy.
 
-#### Examples
+### Examples
 
 ```sh
 # valid conditions
@@ -6681,16 +6681,16 @@ It will run all duckscript files in the directory tree ending with **test.ds** a
 all functions that start with **test_**.<br>
 Each such function is considered as a test and can run any type of code and check itself using assert commands.
 
-#### Parameters
+### Parameters
 
 * The root directory of all test files (all files ending with **test.ds** in the directory tree will be checked)
 * Optional pattern for the file name or test function to limit invocation of only those tests.
 
-#### Return Value
+### Return Value
 
 **true** if successful.
 
-#### Examples
+### Examples
 
 This is an example of a test function:
 
@@ -6721,16 +6721,16 @@ This command can be used to run unit tests written in duckscript.<br>
 It will run all test functions that start with **test_** in the given file.<br>
 Each such function is considered as a test and can run any type of code and check itself using assert commands.
 
-#### Parameters
+### Parameters
 
 * The file name containing the test functions.
 * Optional pattern for the test function to limit invocation of only those tests.
 
-#### Return Value
+### Return Value
 
 **true** if successful.
 
-#### Examples
+### Examples
 
 This is an example of a test function:
 
@@ -6760,15 +6760,15 @@ sleep millies
 Will cause the script execution to half for the given amount of milliseconds.<br>
 The command will also return the amount of milliseconds waited.
 
-#### Parameters
+### Parameters
 
 A positive numeric value.
 
-#### Return Value
+### Return Value
 
 The amount of milliseconds waited.
 
-#### Examples
+### Examples
 
 ```sh
 # will sleep for 10 milliseconds
@@ -6788,15 +6788,15 @@ var = current_time
 
 Returns the current time in milliseconds (from January 1, 1970 UTC).
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The current time in milliseconds.
 
-#### Examples
+### Examples
 
 ```sh
 result = current_time
@@ -6815,15 +6815,15 @@ handle = get_all_var_names
 
 Creates an array holding all currently known variable names and returns the array handle.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 A handle to the array.
 
-#### Examples
+### Examples
 
 ```sh
 handle = get_all_var_names
@@ -6849,15 +6849,15 @@ var = set ${name}
 ```
 However, it allows for a dynamic variable name.
 
-#### Parameters
+### Parameters
 
 The variable name.
 
-#### Return Value
+### Return Value
 
 The variable value or none if no such variable exists.
 
-#### Examples
+### Examples
 
 ```sh
 var = set test
@@ -6880,15 +6880,15 @@ var = is_defined key
 
 Returns true if the provided variable name (not value) exists.
 
-#### Parameters
+### Parameters
 
 The variable name.
 
-#### Return Value
+### Return Value
 
 True if the variable is defined.
 
-#### Examples
+### Examples
 
 ```sh
 key = set "hello world"
@@ -6915,15 +6915,15 @@ A value is considered falsy if it is one of the following:
 * no (case insensitive)
 * Empty value
 
-#### Parameters
+### Parameters
 
 The argument to set or an 'or' conditional arguments.
 
-#### Return Value
+### Return Value
 
 The first truthy value
 
-#### Examples
+### Examples
 
 ```sh
 # Return simple 'hello' text value
@@ -6956,16 +6956,16 @@ name = set ${value}
 ```
 However, it allows for a dynamic variable name.
 
-#### Parameters
+### Parameters
 
 * The variable name.
 * The new variable value, if not provided, the variable will be unset.
 
-#### Return Value
+### Return Value
 
 The new variable value.
 
-#### Examples
+### Examples
 
 ```sh
 var = set test
@@ -6989,15 +6989,15 @@ unset [names]*
 
 Undefines all the variable names provided.
 
-#### Parameters
+### Parameters
 
 A list of variable names to undefine.
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 var = set 1
@@ -7036,15 +7036,15 @@ handle = unset_all_vars [--prefix value]
 Removes all known variables.<br>
 If the prefix is provided, only variables starting with the prefix value will be removed.
 
-#### Parameters
+### Parameters
 
 * Optional variable name prefix
 
-#### Return Value
+### Return Value
 
 None
 
-#### Examples
+### Examples
 
 ```sh
 fn test_remove_all

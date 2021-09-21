@@ -4,15 +4,15 @@ var = length text
 
 Returns the text length.
 
-#### Parameters
+### Parameters
 
 The text to extract the length from.
 
-#### Return Value
+### Return Value
 
 The text length value.
 
-#### Examples
+### Examples
 
 ```sh
 len = length "Hello World"

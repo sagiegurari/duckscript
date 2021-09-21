@@ -13,16 +13,16 @@ If the value is one of the following:
 
 It is considered falsy and will exist with an error.
 
-#### Parameters
+### Parameters
 
 * The value to evaluate
 * Optional error message
 
-#### Return Value
+### Return Value
 
 **true** if truthy.
 
-#### Examples
+### Examples
 
 ```sh
 # valid conditions

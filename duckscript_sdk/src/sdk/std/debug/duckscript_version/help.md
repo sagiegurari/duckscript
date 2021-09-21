@@ -4,15 +4,15 @@ var = duckscript_version
 
 Returns the duckscript runtime version.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 The duckscript runtime version.
 
-#### Examples
+### Examples
 
 ```sh
 version = duckscript_version 

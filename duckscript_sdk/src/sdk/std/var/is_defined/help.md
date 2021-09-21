@@ -4,15 +4,15 @@ var = is_defined key
 
 Returns true if the provided variable name (not value) exists.
 
-#### Parameters
+### Parameters
 
 The variable name.
 
-#### Return Value
+### Return Value
 
 True if the variable is defined.
 
-#### Examples
+### Examples
 
 ```sh
 key = set "hello world"

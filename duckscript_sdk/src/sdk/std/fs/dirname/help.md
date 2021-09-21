@@ -5,15 +5,15 @@ var = dirname path
 This command will return the parent path of the provided path.<br>
 If the parent path is empty, it will return none.
 
-#### Parameters
+### Parameters
 
 The path to extract the parent path from.
 
-#### Return Value
+### Return Value
 
 The parent path or none.
 
-#### Examples
+### Examples
 
 ```sh
 directory = dirname ./dir/file.txt

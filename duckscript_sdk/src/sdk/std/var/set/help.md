@@ -12,15 +12,15 @@ A value is considered falsy if it is one of the following:
 * no (case insensitive)
 * Empty value
 
-#### Parameters
+### Parameters
 
 The argument to set or an 'or' conditional arguments.
 
-#### Return Value
+### Return Value
 
 The first truthy value
 
-#### Examples
+### Examples
 
 ```sh
 # Return simple 'hello' text value

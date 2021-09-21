@@ -5,15 +5,15 @@ str = hex_encode num
 Converts an integer number to the corresponding hexadecimal string.<br>
 No support for negative numbers.
 
-#### Parameters
+### Parameters
 
 An integer number.
 
-#### Return Value
+### Return Value
 
 The corresponding hexadecimal string.
 
-#### Examples
+### Examples
 
 ```sh
 str = hex_encode 255

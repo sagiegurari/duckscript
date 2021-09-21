@@ -34,7 +34,7 @@ All variables defined will not be available except the variables provided to the
 All variables created during the function invocation will be deleted once the function ends, except the return value.<br>
 This enables a clean function invocation without impacting the global variables.
 
-#### Parameters
+### Parameters
 
 * function - The function name used later on to invoke the function
 * end - no parameters
@@ -42,11 +42,11 @@ This enables a clean function invocation without impacting the global variables.
 * *&lt;scope&gt;* - Optional annotation which enables to use a new scope during the function invocation.
 * *function name* - Any number of arguments which will automatically be set as global variables: ${1}, ${2}, ... as so on.
 
-#### Return Value
+### Return Value
 
 The function invocation returns the output provided by the return command.
 
-#### Examples
+### Examples
 
 ```sh
 # Simple example of a function definition which echo 'hello world' and exits.

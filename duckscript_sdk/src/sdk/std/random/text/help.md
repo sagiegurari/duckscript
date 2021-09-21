@@ -4,15 +4,15 @@ output = random_text [length]
 
 Generates random alphanumeric text with the requested length (length is 1 if not provided).
 
-#### Parameters
+### Parameters
 
 Optional text length. Length is defaulted to 1 if not provided.
 
-#### Return Value
+### Return Value
 
 The generated alphanumeric value.
 
-#### Examples
+### Examples
 
 ```sh
 value = random_text 50

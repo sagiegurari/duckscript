@@ -4,15 +4,15 @@ handle = string_to_bytes text
 
 Converts the provided string into binary format and returns a handle to the binary data.
 
-#### Parameters
+### Parameters
 
 The text to convert.
 
-#### Return Value
+### Return Value
 
 A handle to the binary data.
 
-#### Examples
+### Examples
 
 ```sh
 handle = string_to_bytes "hello world"

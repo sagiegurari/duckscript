@@ -9,15 +9,15 @@ The variable names are based on the output variable name, for example if the out
 * out.minor - Holds the output minor version
 * out.patch - Holds the output patch version
 
-#### Parameters
+### Parameters
 
 The semver value.
 
-#### Return Value
+### Return Value
 
 The major, minor and patch values.
 
-#### Examples
+### Examples
 
 ```sh
 version = semver_parse 1.2.3

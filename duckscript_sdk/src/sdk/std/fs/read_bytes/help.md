@@ -4,15 +4,15 @@ handle = read_binary_file file
 
 Reads a raw file and returns a handle to the binary data.
 
-#### Parameters
+### Parameters
 
 A single parameter holding the file path.
 
-#### Return Value
+### Return Value
 
 The binary data handle.
 
-#### Examples
+### Examples
 
 ```sh
 handle = read_binary_file ./Cargo.toml

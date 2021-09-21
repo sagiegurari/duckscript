@@ -4,15 +4,15 @@ var = set_is_empty handle
 
 Returns true if the provided set handle is an empty set.
 
-#### Parameters
+### Parameters
 
 The set handle.
 
-#### Return Value
+### Return Value
 
 True if the provided handle belongs to an empty set.
 
-#### Examples
+### Examples
 
 ```sh
 handle = set

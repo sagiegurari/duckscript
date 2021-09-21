@@ -4,16 +4,16 @@ value = map_remove handle key
 
 Removes a the value corresponding to the key from the map and returns it.
 
-#### Parameters
+### Parameters
 
 * The map handle.
 * The key.
 
-#### Return Value
+### Return Value
 
 The value corresponding to the key from the map.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map

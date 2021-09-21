@@ -4,15 +4,15 @@ unalias name
 
 Removes previously defined alias and return true/false based if an alias was actually removed.
 
-#### Parameters
+### Parameters
 
 The alias name to remove.
 
-#### Return Value
+### Return Value
 
 A true/false value in case an alias with the provided name existed.
 
-#### Examples
+### Examples
 
 ```sh
 alias my_echo echo [ECHO]

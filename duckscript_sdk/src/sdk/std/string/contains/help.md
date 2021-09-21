@@ -4,16 +4,16 @@ var = contains all partial
 
 Returns true if the first argument contains the value of the second argument.
 
-#### Parameters
+### Parameters
 
 * The full text to search in
 * The text to search for
 
-#### Return Value
+### Return Value
 
 **true** if contains.
 
-#### Examples
+### Examples
 
 ```sh
 # valid conditions

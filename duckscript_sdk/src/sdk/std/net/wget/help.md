@@ -10,19 +10,19 @@ When redirecting to file, the output would be the response size.<br>
 The ```--post-data``` parameter enables to pass a payload to POST http requests.<br>
 In case of errors or error HTTP response codes, false will be returned.
 
-#### Parameters
+### Parameters
 
 * Optional HTTP Method, for example --method=HTTP-GET or --method=HTTP-POST (currently only GET and POST are supported).
 * Optional post payload via ```--post-data``` parameter.
 * Optional redirection of output to file via ```-O``` parameter.
 * The target URL
 
-#### Return Value
+### Return Value
 
 The response text or in case of output redirection to file, the response size.<br>
 In case of errors, it will return false.
 
-#### Examples
+### Examples
 
 ```sh
 function test_get

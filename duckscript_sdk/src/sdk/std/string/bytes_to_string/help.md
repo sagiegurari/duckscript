@@ -4,15 +4,15 @@ text = bytes_to_string handle
 
 Converts the provided UTF-8 binary array to string and returns it.
 
-#### Parameters
+### Parameters
 
 A handle to a binary array holding UTF-8 text.
 
-#### Return Value
+### Return Value
 
 The textual data.
 
-#### Examples
+### Examples
 
 ```sh
 handle = string_to_bytes "hello world"

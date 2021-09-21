@@ -4,15 +4,15 @@ var = less_than left right
 
 This command returns true/false based on left < right calculation.
 
-#### Parameters
+### Parameters
 
 Two numeric values to compare.
 
-#### Return Value
+### Return Value
 
 True if first argument is smaller than second argument.
 
-#### Examples
+### Examples
 
 ```sh
 result = less_than 1 1.5

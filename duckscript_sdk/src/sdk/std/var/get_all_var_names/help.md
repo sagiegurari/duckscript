@@ -4,15 +4,15 @@ handle = get_all_var_names
 
 Creates an array holding all currently known variable names and returns the array handle.
 
-#### Parameters
+### Parameters
 
 None
 
-#### Return Value
+### Return Value
 
 A handle to the array.
 
-#### Examples
+### Examples
 
 ```sh
 handle = get_all_var_names

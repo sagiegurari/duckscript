@@ -8,16 +8,16 @@ The supported flags are:
 
 * -l - Shows extended information
 
-#### Parameters
+### Parameters
 
 * Optional flags (currently only -l is supported)
 * Optional path (if not provided, current working directory is used)
 
-#### Return Value
+### Return Value
 
 **true** is operation was successful.
 
-#### Examples
+### Examples
 
 ```sh
 # prints current directory content

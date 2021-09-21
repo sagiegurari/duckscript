@@ -4,15 +4,15 @@ var = is_array handle
 
 Returns true if the provided value is an array handle.
 
-#### Parameters
+### Parameters
 
 The array handle.
 
-#### Return Value
+### Return Value
 
 True if the provided value is an array handle.
 
-#### Examples
+### Examples
 
 ```sh
 arr = array 1 2 3

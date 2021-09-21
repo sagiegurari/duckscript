@@ -4,15 +4,15 @@ var = map_size handle
 
 Returns the map size based on the provided map handle.
 
-#### Parameters
+### Parameters
 
 The map handle.
 
-#### Return Value
+### Return Value
 
 The map size.
 
-#### Examples
+### Examples
 
 ```sh
 handle = map
