@@ -73,7 +73,7 @@ impl Command for CommandImpl {
                                 };
 
                                 buffer.push_str(&format!(
-                                    "* [{}{}](#{})\n",
+                                    "* [{}{}](#`{}`)\n",
                                     name,
                                     aliases_line,
                                     name.replace(":", "_"),
