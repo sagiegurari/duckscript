@@ -110,6 +110,9 @@
 * [std::fs::TempFile (temp_file)](#std__fs__TempFile)
 * [std::fs::WriteBytes (writebinfile, write_binary_file)](#std__fs__WriteBytes)
 * [std::fs::WriteText (writefile, write_text_file)](#std__fs__WriteText)
+* [std::hash::Digest (digest)](#std__hash__Digest)
+* [std::hash::Sha256Sum (sha256sum, sha256sum)](#std__hash__Sha256Sum)
+* [std::hash::Sha512Sum (sha512sum, sha512sum)](#std__hash__Sha512Sum)
 * [std::json](#std__json)
 * [std::json::Encode (json_encode)](#std__json__Encode)
 * [std::json::Parse (json_parse)](#std__json__Parse)
@@ -4180,6 +4183,113 @@ result = writefile ./target/tests/writefile.txt "line 1\nline 2"
 
 #### Aliases:
 writefile, write_text_file
+
+<a name="std__hash__Digest"></a>
+## std::hash::Digest
+```sh
+var = digest --algo (sha256|sha512) (--file path|content)
+```
+
+Runs the requested hash on the provided file or string content and returns the hashed value in hex.
+
+#### Parameters
+
+* --algo and algorithm to use (currently sha256 and sha512 are supported)
+* Optional --file and file path
+* Optional the string content to hash (if file is not provided)
+
+#### Return Value
+
+The hash value in hex or false in case of error.
+
+#### Examples
+
+```sh
+hashed = digest --algo sha256 "hello world\n"
+assert_eq ${hashed} A948904F2F0F479B8F8197694B30184B0D2ED1C1CD2A1EC0FB85D299A192A447
+
+hashed = digest --algo sha512 --file ./myfile.txt
+```
+
+
+#### Aliases:
+digest
+
+<a name="std__hash__Sha256Sum"></a>
+## std::hash::Sha256Sum
+
+```sh
+var = sha256sum file
+```
+
+Runs SHA-256 hash on the provided file returns the hashed value in hex.
+
+#### Parameters
+
+The file to hash
+
+#### Return Value
+
+The hash value in hex or false in case of error.
+The result will be in lowercase, same as with the core utils with the same name.
+
+#### Examples
+
+```sh
+hashed = sha256sum ./myfile.txt
+```
+
+
+#### Source:
+
+```sh
+
+scope::sha256sum::output = digest --algo sha256 --file ${scope::sha256sum::argument::1}
+scope::sha256sum::output = lowercase ${scope::sha256sum::output}
+
+```
+
+
+#### Aliases:
+sha256sum, sha256sum
+
+<a name="std__hash__Sha512Sum"></a>
+## std::hash::Sha512Sum
+
+```sh
+var = sha512sum file
+```
+
+Runs SHA-512 hash on the provided file returns the hashed value in hex.
+
+#### Parameters
+
+The file to hash
+
+#### Return Value
+
+The hash value in hex or false in case of error.
+The result will be in lowercase, same as with the core utils with the same name.
+
+#### Examples
+
+```sh
+hashed = sha512sum ./myfile.txt
+```
+
+
+#### Source:
+
+```sh
+
+scope::sha512sum::output = digest --algo sha512 --file ${scope::sha512sum::argument::1}
+scope::sha512sum::output = lowercase ${scope::sha512sum::output}
+
+```
+
+
+#### Aliases:
+sha512sum, sha512sum
 
 <a name="std__json"></a>
 ## std::json
