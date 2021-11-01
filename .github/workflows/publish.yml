@@ -47,7 +47,7 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: make
-        args: --no-workspace zip-release-ci-flow --env CARGO_MAKE_RELEASE_FLOW_TARGET=${{ matrix.binary_target }}
+        args: --no-workspace --env CARGO_MAKE_RELEASE_FLOW_TARGET=${{ matrix.binary_target }} zip-release-ci-flow
     - name: Upload Binaries
       uses: svenstaro/upload-release-action@v1-release
       with:
