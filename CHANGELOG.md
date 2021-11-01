@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.8.8 (2021-11-01)
+
+* New print and println commands which support styled output (color and style) #203
+
 ### v0.8.7 (2021-09-21)
 
 * New digest command #196

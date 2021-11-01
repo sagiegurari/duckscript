@@ -1,0 +1,25 @@
+
+fn test_no_style
+    count = print hello world "1 2 3"
+    echo
+
+    assert_eq ${count} 3
+end
+
+fn test_with_style
+    count = print -s bold -s underline -s italic -s dimmed -s blink --style strikethrough --color bright_green --background-color red bright_green red
+    echo
+    assert_eq ${count} 2
+
+    colors = array black red green yellow blue magenta cyan white
+    for color in ${colors}
+        count = print -c ${color} -bgc ${color} ${color}
+        echo
+        assert_eq ${count} 1
+        count = print --color bright_${color} --background-color bright_${color} bright_${color}
+        echo
+        assert_eq ${count} 1
+    end
+    release ${colors}
+end
+
