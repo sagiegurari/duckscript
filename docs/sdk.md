@@ -454,9 +454,7 @@ println "hello    world"
 
 # Print with style/color values
 println --style underline --color red My Bold Red Text
-echo
 println -s underline -s bold -c bright_green -bgc red Hellow World
-echo
 ```
 
 
