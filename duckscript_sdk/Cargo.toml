@@ -44,7 +44,7 @@ serde_json = "^1"
 sha2 = "^0.9"
 walkdir = "^2"
 which = { version = "^4", default-features = false }
-whoami = "^1.2"
+whoami = "^1"
 
 [target.'cfg(not(windows))'.dependencies]
 uname = "^0.1"
