@@ -31,7 +31,7 @@ impl Command for CommandImpl {
         if arguments.is_empty() {
             CommandResult::Error("No arguments provided.".to_string())
         } else {
-            let value = heck::SnakeCase::to_snake_case(arguments[0].as_str());
+            let value = heck::ToSnakeCase::to_snake_case(arguments[0].as_str());
             CommandResult::Continue(Some(value))
         }
     }

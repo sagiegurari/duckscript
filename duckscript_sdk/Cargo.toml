@@ -23,16 +23,18 @@ include = [
 ]
 
 [dependencies]
-attohttpc = "^0.18"
+attohttpc = { version = "^0.18", default-features = false, features = [
+  "compress",
+] }
 base64 = "^0.13"
-cfg-if = "^1.0"
+cfg-if = "^1"
 colored = "^2"
 duckscript = { version = "^0.7.1", path = "../duckscript" }
 fs_extra = "^1"
 fsio = { version = "^0.3", features = ["temp-path"] }
 ftp = "^3"
 glob = "^0.3"
-heck = "^0.3"
+heck = "^0.4"
 home = "^0.5"
 ignore = "^0.4"
 java-properties = "^1"
@@ -48,6 +50,10 @@ whoami = "^1"
 
 [target.'cfg(not(windows))'.dependencies]
 uname = "^0.1"
+
+[features]
+tls = ["attohttpc/tls"]
+default = ["tls"]
 
 [badges.codecov]
 branch = "master"
