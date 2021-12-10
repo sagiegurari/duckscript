@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.8.10
+
+* Update dependencies
+
 ### v0.8.9 (2021-11-01)
 
 * Fix publish flow
