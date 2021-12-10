@@ -28,7 +28,11 @@ path = "src/main.rs"
 
 [dependencies]
 duckscript = { version = "^0.7.1", path = "../duckscript" }
-duckscriptsdk = { version = "^0.8.8", path = "../duckscript_sdk" }
+duckscriptsdk = { version = "^0.8.8", path = "../duckscript_sdk", default-features = false }
+
+[features]
+tls = ["duckscriptsdk/tls"]
+default = ["tls"]
 
 [badges.codecov]
 branch = "master"

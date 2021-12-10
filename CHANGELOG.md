@@ -1,7 +1,8 @@
 ## CHANGELOG
 
-### v0.8.10
+### v0.8.10 (2021-12-10)
 
+* New SDK and cli tls feature to enable usage without tls support (by default enabled)
 * Update dependencies
 
 ### v0.8.9 (2021-11-01)
