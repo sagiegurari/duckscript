@@ -78,7 +78,7 @@ enum LookingFor {
 
 pub(crate) fn run_with_connection(
     arguments: &Vec<String>,
-    func: &mut FnMut(&Options, &mut FtpStream) -> CommandResult,
+    func: &mut dyn FnMut(&Options, &mut FtpStream) -> CommandResult,
 ) -> CommandResult {
     validate_and_run_with_connection(
         arguments,
@@ -89,8 +89,8 @@ pub(crate) fn run_with_connection(
 
 pub(crate) fn validate_and_run_with_connection(
     arguments: &Vec<String>,
-    validate_input: &Fn(&Options) -> Result<(), String>,
-    func: &mut FnMut(&Options, &mut FtpStream) -> CommandResult,
+    validate_input: &dyn Fn(&Options) -> Result<(), String>,
+    func: &mut dyn FnMut(&Options, &mut FtpStream) -> CommandResult,
 ) -> CommandResult {
     match parse_common_options(&arguments) {
         Ok(options) => match validate_input(&options) {
@@ -196,7 +196,7 @@ fn parse_common_options(arguments: &Vec<String>) -> Result<Options, String> {
 
 fn run_in_ftp_connection_context(
     options: &Options,
-    func: &mut FnMut(&mut FtpStream) -> CommandResult,
+    func: &mut dyn FnMut(&mut FtpStream) -> CommandResult,
 ) -> CommandResult {
     match options.host {
         Some(ref host) => {
