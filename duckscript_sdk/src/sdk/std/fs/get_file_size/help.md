@@ -10,7 +10,7 @@ The path to check.
 
 ### Return Value
 
-The size of the file in bytes or false in case path does not exist.
+The size of the file in bytes or false in case path is a directory or does not exist.
 
 ### Examples
 
