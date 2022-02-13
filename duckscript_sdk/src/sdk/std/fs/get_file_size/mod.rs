@@ -16,7 +16,7 @@ impl Command for CommandImpl {
     }
 
     fn aliases(&self) -> Vec<String> {
-        vec!["get_file_size".to_string()]
+        vec!["get_file_size".to_string(), "filesize".to_string()]
     }
 
     fn help(&self) -> String {
@@ -32,7 +32,7 @@ impl Command for CommandImpl {
             CommandResult::Error("Path not provided.".to_string())
         } else {
             match io::get_file_size(&arguments[0]) {
-                Ok(time) => CommandResult::Continue(Some(time.to_string())),
+                Ok(size) => CommandResult::Continue(Some(size.to_string())),
                 Err(error) => CommandResult::Error(error),
             }
         }
