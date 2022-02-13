@@ -54,3 +54,14 @@ pub(crate) fn get_last_modified_time(path: &str) -> Result<u128, String> {
         Err(error) => Err(error.to_string()),
     }
 }
+
+pub(crate) fn get_file_size(path: &str) -> Result<u64, String> {
+    match std::fs::metadata(path) {
+        Ok(metadata) => if metadata.is_file() {
+            Ok(metadata.len())
+        } else {
+            Err("The provided path is not a file.".to_string())
+        },
+        Err(_error) => Err("Unable to extract metadata for path.".to_string()),
+    }
+}

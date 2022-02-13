@@ -99,3 +99,25 @@ fn create_empty_file_exists() {
     let result = create_empty_file(path);
     assert!(result.is_ok());
 }
+
+#[test]
+fn get_file_size_exists() {
+    let size = get_file_size("Cargo.toml");
+
+    assert!(size.is_ok());
+    assert!(size.unwrap() > 0);
+}
+
+#[test]
+fn get_file_size_not_exists() {
+    let size = get_file_size("Cargo.toml2");
+
+    assert!(size.is_err());
+}
+
+#[test]
+fn get_dir_size() {
+    let size = get_file_size("src");
+
+    assert!(size.is_err());
+}
