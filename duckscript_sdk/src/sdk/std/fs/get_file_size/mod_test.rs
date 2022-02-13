@@ -9,11 +9,7 @@ fn common_functions() {
 
 #[test]
 fn run_no_path_provided() {
-    test::run_script_and_error(
-        vec![create("")],
-        "out = get_file_size",
-        "out"
-    );
+    test::run_script_and_error(vec![create("")], "out = get_file_size", "out");
 }
 
 #[test]
@@ -27,18 +23,10 @@ fn run_file() {
 
 #[test]
 fn run_directory() {
-    test::run_script_and_error(
-        vec![create("")],
-        "out = get_file_size ./src",
-        "out",
-    );
+    test::run_script_and_error(vec![create("")], "out = get_file_size ./src", "out");
 }
 
 #[test]
 fn run_not_found() {
-    test::run_script_and_error(
-        vec![create("")],
-        "out = get_file_size ./badpath",
-        "out",
-    );
+    test::run_script_and_error(vec![create("")], "out = get_file_size ./badpath", "out");
 }
