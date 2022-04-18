@@ -3746,7 +3746,7 @@ dirname
 <a name="std__fs__GitIgnorePathArray"></a>
 ## `std::fs::GitIgnorePathArray`
 ```sh
-handle = gitignore_path_array path
+handle = gitignore_path_array [--no-hidden] path
 ```
 
 Returns an array handle containing all path entries found from the provided root path that should be included based on the gitignore definitions.
@@ -3754,6 +3754,8 @@ Returns an array handle containing all path entries found from the provided root
 ### Parameters
 
 The root path.
+
+Optional `--no-hidden` flag to indicate that hidden files / folders should be excluded.
 
 ### Return Value
 
@@ -3776,7 +3778,7 @@ gitignore_path_array
 <a name="std__fs__GlobArray"></a>
 ## `std::fs::GlobArray`
 ```sh
-handle = glob_array pattern [bool]
+handle = glob_array pattern
 ```
 
 Returns an array handle containing all path entries found from the provided glob pattern.<br>
@@ -3785,8 +3787,6 @@ The pattern can be a relative path from current directory or an absolute path.
 ### Parameters
 
 The glob pattern.
-
-Optional bool, `true` if hidden files / folders should be included.
 
 ### Return Value
 
