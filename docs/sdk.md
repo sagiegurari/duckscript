@@ -3776,7 +3776,7 @@ gitignore_path_array
 <a name="std__fs__GlobArray"></a>
 ## `std::fs::GlobArray`
 ```sh
-handle = glob_array pattern
+handle = glob_array pattern [bool]
 ```
 
 Returns an array handle containing all path entries found from the provided glob pattern.<br>
@@ -3785,6 +3785,8 @@ The pattern can be a relative path from current directory or an absolute path.
 ### Parameters
 
 The glob pattern.
+
+Optional bool, `true` if hidden files / folders should be included.
 
 ### Return Value
 
