@@ -1131,6 +1131,38 @@ fn run_instruction_script_instruction_error_result() {
 }
 
 #[test]
+fn run_instruction_control_characters() {
+    let mut script_instruction = ScriptInstruction::new();
+    script_instruction.command = Some("set".to_string());
+    script_instruction.output = Some("out".to_string());
+    script_instruction.arguments = Some(vec!["\\\\".to_string()]);
+
+    let instruction = Instruction {
+        meta_info: InstructionMetaInfo::new(),
+        instruction_type: InstructionType::Script(script_instruction),
+    };
+
+    let mut context = Context::new();
+    let result = context.commands.set(Box::new(SetCommand {}));
+    assert!(result.is_ok());
+
+    let (command_result, output_variable) = run_instruction(
+        &mut context.commands,
+        &mut context.variables,
+        &mut HashMap::new(),
+        &vec![],
+        instruction,
+        0,
+    );
+
+    assert!(output_variable.is_some());
+    assert!(test::validate_continue_result(
+        &command_result,
+        Some("\\\\".to_string())
+    ));
+}
+
+#[test]
 fn run_on_error_instruction_no_command() {
     let mut commands = Commands::new();
     let mut variables = HashMap::new();

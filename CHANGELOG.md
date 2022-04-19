@@ -2,6 +2,7 @@
 
 ### v0.8.11
 
+* Fix: Runtime - fix control characters '\' parsing and expansion #237
 * Enhancement: New get_file_size/filesize command #222
 
 ### v0.8.10 (2021-12-10)
