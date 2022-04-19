@@ -52,7 +52,7 @@ impl Command for CommandImpl {
         } else {
             let mut array = vec![];
             
-            let (path_index, no_hidden) = if arguments.len() > 1 && arguments[0] == "--no-hidden" {
+            let (path_index, include_hidden) = if arguments.len() > 1 && arguments[0] == "--include-hidden" {
                 (1, true)
             } else {
                 (0, false)
@@ -60,7 +60,7 @@ impl Command for CommandImpl {
 
 
             for entry in WalkBuilder::new(&arguments[path_index])
-                .hidden(no_hidden)
+                .hidden(!include_hidden)
                 .parents(true)
                 .git_ignore(true)
                 .git_exclude(true)
