@@ -199,14 +199,14 @@ dependencies = [
 
 [[package]]
 name = "duckscript"
-version = "0.7.1"
+version = "0.7.2"
 dependencies = [
  "fsio",
 ]
 
 [[package]]
 name = "duckscript_cli"
-version = "0.8.10"
+version = "0.8.11"
 dependencies = [
  "duckscript",
  "duckscriptsdk",
@@ -214,7 +214,7 @@ dependencies = [
 
 [[package]]
 name = "duckscriptsdk"
-version = "0.8.10"
+version = "0.8.11"
 dependencies = [
  "attohttpc",
  "base64",

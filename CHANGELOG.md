@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.8.11
+### v0.8.11 (2022-04-20)
 
 * Fix: Runtime - fix control characters '\' parsing and expansion #237
 * Enhancement: New get_file_size/filesize command #222
