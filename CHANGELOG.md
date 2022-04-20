@@ -4,6 +4,7 @@
 
 * Fix: Runtime - fix control characters '\' parsing and expansion #237
 * Enhancement: New get_file_size/filesize command #222
+* Enhancement: Add include hidden files option for gitignore_path_array command #236 (thanks @Blightbuster)
 
 ### v0.8.10 (2021-12-10)
 

@@ -51,13 +51,13 @@ impl Command for CommandImpl {
             CommandResult::Error("Root directory not provided.".to_string())
         } else {
             let mut array = vec![];
-            
-            let (path_index, include_hidden) = if arguments.len() > 1 && arguments[0] == "--include-hidden" {
-                (1, true)
-            } else {
-                (0, false)
-            };
 
+            let (path_index, include_hidden) =
+                if arguments.len() > 1 && arguments[0] == "--include-hidden" {
+                    (1, true)
+                } else {
+                    (0, false)
+                };
 
             for entry in WalkBuilder::new(&arguments[path_index])
                 .hidden(!include_hidden)
