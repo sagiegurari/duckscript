@@ -92,6 +92,7 @@
 * [`std::fs::Exists` (is_path_exists)](#std__fs__Exists)
 * [`std::fs::GetCanonicalPath` (canonicalize)](#std__fs__GetCanonicalPath)
 * [`std::fs::GetFileName` (basename)](#std__fs__GetFileName)
+* [`std::fs::GetFileSize` (get_file_size, filesize)](#std__fs__GetFileSize)
 * [`std::fs::GetLastModifiedTime` (get_last_modified_time)](#std__fs__GetLastModifiedTime)
 * [`std::fs::GetParentDirectory` (dirname)](#std__fs__GetParentDirectory)
 * [`std::fs::GitIgnorePathArray` (gitignore_path_array)](#std__fs__GitIgnorePathArray)
@@ -3690,6 +3691,32 @@ file = basename ./dir/file.txt
 ### Aliases:
 basename
 
+<a name="std__fs__GetFileSize"></a>
+## `std::fs::GetFileSize`
+```sh
+var = get_file_size path
+```
+
+This command will return the size of the file in bytes.
+
+### Parameters
+
+The path to check.
+
+### Return Value
+
+The size of the file in bytes or false in case path is a directory or does not exist.
+
+### Examples
+
+```sh
+size = get_file_size ./dir/somefile.txt
+```
+
+
+### Aliases:
+get_file_size, filesize
+
 <a name="std__fs__GetLastModifiedTime"></a>
 ## `std::fs::GetLastModifiedTime`
 ```sh
@@ -3746,7 +3773,7 @@ dirname
 <a name="std__fs__GitIgnorePathArray"></a>
 ## `std::fs::GitIgnorePathArray`
 ```sh
-handle = gitignore_path_array [--include-hidden] path
+handle = gitignore_path_array path
 ```
 
 Returns an array handle containing all path entries found from the provided root path that should be included based on the gitignore definitions.
@@ -3754,8 +3781,6 @@ Returns an array handle containing all path entries found from the provided root
 ### Parameters
 
 The root path.
-
-Optional `--include-hidden` flag to indicate that hidden files / folders should be included.
 
 ### Return Value
 
