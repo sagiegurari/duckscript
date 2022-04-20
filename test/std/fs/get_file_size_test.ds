@@ -1,0 +1,19 @@
+
+fn test_file
+    size = get_file_size ./Cargo.toml
+    positive = greater_than ${size} 0
+
+    assert ${positive}
+end
+
+fn test_directory
+    size = get_file_size ./src
+
+    assert_false ${size}
+end
+
+fn test_not_found
+    size = get_file_size ./badfile
+
+    assert_false ${size}
+end

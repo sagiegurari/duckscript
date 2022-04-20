@@ -47,14 +47,14 @@ pub(crate) fn expand_by_wrapper(
     let mut single_type = true;
     for next_char in value.chars() {
         if !found_prefix {
-            if next_char == '\\' && prefix_index == 0 {
-                force_push = true
-            } else if force_push {
+            if force_push {
                 if next_char != '$' && next_char != '%' {
                     value_string.push('\\');
                 }
                 value_string.push(next_char);
                 force_push = false;
+            } else if next_char == '\\' && prefix_index == 0 {
+                force_push = true
             } else if prefix_index == 0 && (next_char == '$' || next_char == '%') {
                 prefix_index = 1;
 

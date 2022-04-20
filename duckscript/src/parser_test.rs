@@ -825,7 +825,7 @@ fn parse_lines_all() {
     let text = r#"
 !print test pre process line
 
-:label_test variable_test = command_test arg1 arg2 "  arg3 arg3 arg3  " #some comment
+:label_test variable_test = command_test arg1 arg2 "  arg3 arg3 arg3  " \\\\ #some comment
 
 #comment
 !print test
@@ -865,7 +865,7 @@ fn parse_lines_all() {
     assert_eq!(script_instruction.command.unwrap(), "command_test");
     assert_eq!(
         script_instruction.arguments.unwrap(),
-        vec!["arg1", "arg2", "  arg3 arg3 arg3  "]
+        vec!["arg1", "arg2", "  arg3 arg3 arg3  ", "\\\\"]
     );
 }
 
