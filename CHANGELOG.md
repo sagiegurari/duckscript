@@ -1,8 +1,9 @@
 ## CHANGELOG
 
-### v0.8.12
+### v0.8.12 (2022-05-25)
 
 * Enhancement: Add support for stdin input passing to child process in exec, watchdog and spawn commands #247
+* Enhancement: Replace native TLS support via openssl with pure rust TLS
 * Update dependencies
 
 ### v0.8.11 (2022-04-20)
