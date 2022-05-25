@@ -60,10 +60,7 @@ pub(crate) fn spawn(
         Ok(mut child) => match input {
             ExecInput::Text(value) => match child.stdin.as_mut() {
                 Some(stdin) => match stdin.write_all(value.as_bytes()) {
-                    Ok(_) => {
-                        drop(stdin);
-                        Ok(child)
-                    }
+                    Ok(_) => Ok(child),
                     Err(error) => Err(error.to_string()),
                 },
                 None => Err("Unable to write input to process".to_string()),
