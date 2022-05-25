@@ -1,3 +1,4 @@
+use crate::utils::exec::ExecInput;
 use crate::utils::{exec, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
@@ -7,6 +8,11 @@ use std::collections::HashMap;
 #[cfg(test)]
 #[path = "./mod_test.rs"]
 mod mod_test;
+
+enum LookingFor {
+    Flag,
+    Input,
+}
 
 #[derive(Clone)]
 pub(crate) struct CommandImpl {
@@ -44,22 +50,48 @@ impl Command for CommandImpl {
         _commands: &mut Commands,
         _line: usize,
     ) -> CommandResult {
-        let allow_input = output_variable.is_some();
-        let (print_output, start_index, fail_on_error, exit_code_output) =
-            if !arguments.is_empty() && arguments[0] == "--fail-on-error" {
-                (
-                    output_variable.is_none(),
-                    1,
-                    output_variable.is_none(),
-                    false,
-                )
-            } else if !arguments.is_empty() && arguments[0] == "--get-exit-code" {
-                (true, 1, false, true)
-            } else {
-                (output_variable.is_none(), 0, false, false)
-            };
+        let mut input = if output_variable.is_some() {
+            ExecInput::External
+        } else {
+            ExecInput::None
+        };
+        let mut command_start_index = 0;
+        let mut print_output = output_variable.is_none();
+        let mut fail_on_error = false;
+        let mut exit_code_output = false;
 
-        match exec::exec(&arguments, print_output, allow_input, start_index) {
+        let mut index = 0;
+        let mut looking_for = LookingFor::Flag;
+        for argument in &arguments {
+            index = index + 1;
+
+            match looking_for {
+                LookingFor::Flag => match argument.as_str() {
+                    "--fail-on-error" => {
+                        fail_on_error = output_variable.is_none();
+                        command_start_index = command_start_index + 1;
+                    }
+                    "--get-exit-code" => {
+                        exit_code_output = true;
+                        print_output = true;
+                        command_start_index = command_start_index + 1;
+                    }
+                    "--input" => {
+                        looking_for = LookingFor::Input;
+                        command_start_index = command_start_index + 1;
+                    }
+                    _ => break,
+                },
+                LookingFor::Input => {
+                    input = ExecInput::Text(argument.to_string());
+                    command_start_index = command_start_index + 1;
+
+                    looking_for = LookingFor::Flag;
+                }
+            }
+        }
+
+        match exec::exec(&arguments, print_output, input, command_start_index) {
             Ok((stdout, stderr, exit_code)) => match output_variable {
                 Some(name) => {
                     if exit_code_output {

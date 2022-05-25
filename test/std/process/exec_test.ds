@@ -11,6 +11,20 @@ fn test_echo_with_output
     assert_eq ${exit_code} 0
 end
 
+fn test_echo_with_input
+    if not is_windows
+        output = exec --input "1 2 3" cat
+
+        stdout = trim ${output.stdout}
+        stderr = trim ${output.stderr}
+        exit_code = set ${output.code}
+
+        assert_eq ${stdout} "1 2 3"
+        assert_eq ${stderr} ""
+        assert_eq ${exit_code} 0
+    end
+end
+
 fn test_echo_without_output
     exec echo hello world
 end

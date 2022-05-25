@@ -40,6 +40,16 @@ fn run_with_retries() {
 }
 
 #[test]
+#[cfg(target_os = "linux")]
+fn run_with_input() {
+    test::run_script_and_validate(
+        vec![create("")],
+        "out = watchdog --max-retries 0 --interval 0 --input test -- cat",
+        CommandValidation::Match("out".to_string(), "1".to_string()),
+    );
+}
+
+#[test]
 fn run_error_code_with_output() {
     test::run_script_and_error(vec![create("")], "out = watchdog badcommand", "out");
 }

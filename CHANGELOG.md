@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### v0.8.12
+
+* Enhancement: Add support for stdin input passing to child process in exec, watchdog and spawn commands #247
+* Update dependencies
+
 ### v0.8.11 (2022-04-20)
 
 * Fix: Runtime - fix control characters '\' parsing and expansion #237
