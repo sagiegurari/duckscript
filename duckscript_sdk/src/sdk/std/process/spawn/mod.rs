@@ -1,9 +1,15 @@
+use crate::utils::exec::ExecInput;
 use crate::utils::{exec, pckg};
 use duckscript::types::command::{Command, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
 mod mod_test;
+
+enum LookingFor {
+    Flag,
+    Input,
+}
 
 #[derive(Clone)]
 pub(crate) struct CommandImpl {
@@ -28,13 +34,37 @@ impl Command for CommandImpl {
     }
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {
-        let (print_output, start_index) = if !arguments.is_empty() && arguments[0] == "--silent" {
-            (false, 1)
-        } else {
-            (true, 0)
-        };
+        let mut print_output = true;
+        let mut input = ExecInput::None;
+        let mut command_start_index = 0;
 
-        match exec::spawn(&arguments, print_output, false, start_index) {
+        let mut index = 0;
+        let mut looking_for = LookingFor::Flag;
+        for argument in &arguments {
+            index = index + 1;
+
+            match looking_for {
+                LookingFor::Flag => match argument.as_str() {
+                    "--silent" => {
+                        print_output = false;
+                        command_start_index = command_start_index + 1;
+                    }
+                    "--input" => {
+                        looking_for = LookingFor::Input;
+                        command_start_index = command_start_index + 1;
+                    }
+                    _ => break,
+                },
+                LookingFor::Input => {
+                    input = ExecInput::Text(argument.to_string());
+                    command_start_index = command_start_index + 1;
+
+                    looking_for = LookingFor::Flag;
+                }
+            }
+        }
+
+        match exec::spawn(&arguments, print_output, true, input, command_start_index) {
             Ok(child) => {
                 let pid = child.id();
 

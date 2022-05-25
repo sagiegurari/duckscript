@@ -17,13 +17,21 @@ fn test_with_retries_and_interval
     assert_eq ${count} 4
 end
 
+fn test_with_input
+    if not is_windows
+        count = watchdog --max-retries 0 --input 1 -- cat
+
+        assert_eq ${count} 1
+    end
+end
+
 fn test_bad_command
     count = watchdog --max-retries 3 --interval 10 -- badcommand
 
     assert_eq ${count} false
 end
 
-fn test_negatived_max_retries
+fn test_negative_max_retries
     count = watchdog --max-retries -3 --interval 10 -- echo test
 
     assert_eq ${count} 1

@@ -1,5 +1,5 @@
 ```sh
-exec [--fail-on-error] command [args]*
+exec [--fail-on-error|--get-exit-code] [--input value] command [args]*
 
 output = exec command [args]*
 stdout = set ${output.stdout}
@@ -25,6 +25,7 @@ If an output variable is set and the --get-exit-code flag is provided, the outpu
 
 * --fail-on-error - If no output variable is provided, it will cause an error in case the executed process exits with an error exit code.
 * --get-exit-code - If an output variable is provided, it will contain the exit code.
+* --input - Optional content to be sent to the child process input stream.
 * The command to execute and its arguments.
 
 ### Return Value

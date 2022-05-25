@@ -49,6 +49,24 @@ fn run_with_output() {
 }
 
 #[test]
+#[cfg(target_os = "linux")]
+fn run_with_input() {
+    let context = test::run_script_and_validate(
+        vec![create("")],
+        "out = exec --input test cat",
+        CommandValidation::Match("out.code".to_string(), "0".to_string()),
+    );
+
+    let stdout = context.variables.get("out.stdout").unwrap();
+    let stderr = context.variables.get("out.stderr").unwrap();
+    let exit_code = context.variables.get("out.code").unwrap();
+
+    assert!(stdout.contains("test"));
+    assert!(stderr.is_empty());
+    assert_eq!(exit_code, "0");
+}
+
+#[test]
 fn run_error_code_with_output() {
     test::run_script_and_error(vec![create("")], "out = exec badcommand", "out");
 }

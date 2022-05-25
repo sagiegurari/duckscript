@@ -29,3 +29,13 @@ fn run_valid_silent() {
         CommandValidation::PositiveNumber("out".to_string()),
     );
 }
+
+#[test]
+#[cfg(target_os = "linux")]
+fn run_valid_with_input() {
+    test::run_script_and_validate(
+        vec![create("")],
+        "out = spawn --input test cat",
+        CommandValidation::PositiveNumber("out".to_string()),
+    );
+}

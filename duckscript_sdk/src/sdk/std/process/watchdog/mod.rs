@@ -1,3 +1,4 @@
+use crate::utils::exec::ExecInput;
 use crate::utils::{exec, pckg};
 use duckscript::types::command::{Command, CommandResult};
 use std::thread;
@@ -11,6 +12,7 @@ enum LookingFor {
     Flag,
     MaxRetries,
     Interval,
+    Input,
 }
 
 #[derive(Clone)]
@@ -41,6 +43,7 @@ impl Command for CommandImpl {
         } else {
             let mut max_retries: isize = -1;
             let mut interval: u64 = 0;
+            let mut input = ExecInput::None;
             let mut command_start_index = 0;
 
             let mut index = 0;
@@ -56,6 +59,7 @@ impl Command for CommandImpl {
                         }
                         "--max-retries" => looking_for = LookingFor::MaxRetries,
                         "--interval" => looking_for = LookingFor::Interval,
+                        "--input" => looking_for = LookingFor::Input,
                         _ => {
                             return CommandResult::Error(
                                 format!("Unexpected argument: {} found", argument).to_string(),
@@ -94,6 +98,10 @@ impl Command for CommandImpl {
 
                         looking_for = LookingFor::Flag;
                     }
+                    LookingFor::Input => {
+                        input = ExecInput::Text(argument.to_string());
+                        looking_for = LookingFor::Flag;
+                    }
                 }
             }
 
@@ -106,7 +114,7 @@ impl Command for CommandImpl {
                 loop {
                     attempt = attempt + 1;
 
-                    match exec::exec(&arguments, false, false, command_start_index) {
+                    match exec::exec(&arguments, false, input.clone(), command_start_index) {
                         Ok(_) => (),
                         Err(error) => return CommandResult::Error(error),
                     }
