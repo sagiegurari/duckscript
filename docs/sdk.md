@@ -415,7 +415,7 @@ print "hello    world"
 # Print with style/color values
 print --style underline --color red My Bold Red Text
 echo
-print -s underline -s bold -c bright_green -bgc red Hellow World
+print -s underline -s bold -c bright_green -bgc red Hello World
 echo
 ```
 
@@ -455,7 +455,7 @@ println "hello    world"
 
 # Print with style/color values
 println --style underline --color red My Bold Red Text
-println -s underline -s bold -c bright_green -bgc red Hellow World
+println -s underline -s bold -c bright_green -bgc red Hello World
 ```
 
 
@@ -6355,7 +6355,7 @@ handle = split text pattern
 ```
 
 Splits the provided text based on the provided pattern and return a handle the
-created array with all the splitted values.
+created array with all the split values.
 
 ### Parameters
 

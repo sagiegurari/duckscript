@@ -27,5 +27,5 @@ println "hello    world"
 
 # Print with style/color values
 println --style underline --color red My Bold Red Text
-println -s underline -s bold -c bright_green -bgc red Hellow World
+println -s underline -s bold -c bright_green -bgc red Hello World
 ```

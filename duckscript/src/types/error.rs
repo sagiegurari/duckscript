@@ -100,10 +100,10 @@ impl Display for ScriptError {
                 format_error_message(formatter, &meta_info, "invalid quotes location")
             }
             Self::EmptyLabel(ref meta_info) => {
-                format_error_message(formatter, &meta_info, "empty lable found")
+                format_error_message(formatter, &meta_info, "empty label found")
             }
             Self::UnknownPreProcessorCommand(ref meta_info) => {
-                format_error_message(formatter, &meta_info, "unknow preprocessor command")
+                format_error_message(formatter, &meta_info, "unknown preprocessor command")
             }
         }
     }

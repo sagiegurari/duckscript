@@ -3,7 +3,7 @@ handle = split text pattern
 ```
 
 Splits the provided text based on the provided pattern and return a handle the
-created array with all the splitted values.
+created array with all the split values.
 
 ### Parameters
 
