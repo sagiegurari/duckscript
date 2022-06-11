@@ -30,6 +30,6 @@ print "hello    world"
 # Print with style/color values
 print --style underline --color red My Bold Red Text
 echo
-print -s underline -s bold -c bright_green -bgc red Hellow World
+print -s underline -s bold -c bright_green -bgc red Hello World
 echo
 ```
