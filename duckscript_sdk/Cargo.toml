@@ -52,8 +52,10 @@ whoami = "^1"
 uname = "^0.1"
 
 [features]
-tls = ["attohttpc/rustls"]
-default = ["tls"]
+tls-rustls = ["attohttpc/rustls"]
+tls-native = ["attohttpc/tls"]
+tls = ["tls-rustls"]  # alias for backward compatibility
+default = ["tls-rustls"]
 
 [badges.codecov]
 branch = "master"
