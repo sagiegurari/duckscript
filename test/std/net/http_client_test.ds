@@ -22,9 +22,9 @@ end
 
 fn test_post
     payload = set {\"login\":\"login\",\"password\":\"password\"}
-    response = http_client --method POST --payload ${payload} https://reqbin.com/echo/post/json
+    response = http_client --method POST --payload ${payload} https://httpbin.org/post
 
-    found = contains ${response} success
+    found = contains ${response} origin
 
     assert ${found}
 end
@@ -39,6 +39,6 @@ fn test_invalid_url
     error = get_last_error
     empty = is_empty ${error}
     assert_false ${empty}
-    
+
     assert_false ${response}
 end

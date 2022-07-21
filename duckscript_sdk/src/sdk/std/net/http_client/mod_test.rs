@@ -47,9 +47,9 @@ fn run_post() {
         vec![create(""), Box::new(SetCommand {})],
         r#"
         payload = test_set {\"login\":\"login\",\"password\":\"password\"}
-        out = http_client --method POST --payload {payload} https://reqbin.com/echo/post/json
+        out = http_client --method POST --payload {payload} https://httpbin.org/post
         "#,
-        CommandValidation::Contains("out".to_string(), "success".to_string()),
+        CommandValidation::Contains("out".to_string(), "origin".to_string()),
     );
 }
 

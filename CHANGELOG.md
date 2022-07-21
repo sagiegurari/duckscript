@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### v0.8.13 (2022-07-21)
+
+* Enhancement: Runtime - Enable to clone duckscript context #253 (thanks waterlens)
+* Enhancement: Support both native TLS via openssl and pure rust TLS #258 (thanks @jirutka)
+
 ### v0.8.12 (2022-05-25)
 
 * Enhancement: Add support for stdin input passing to child process in exec, watchdog and spawn commands #247
