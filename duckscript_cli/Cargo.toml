@@ -31,8 +31,10 @@ duckscript = { version = "^0.7.2", path = "../duckscript" }
 duckscriptsdk = { version = "^0.8.12", path = "../duckscript_sdk", default-features = false }
 
 [features]
-tls = ["duckscriptsdk/tls"]
-default = ["tls"]
+tls-rustls = ["duckscriptsdk/tls-rustls"]
+tls-native = ["duckscriptsdk/tls-native"]
+tls = ["tls-rustls"]  # alias for backward compatibility
+default = ["tls-rustls"]
 
 [badges.codecov]
 branch = "master"
