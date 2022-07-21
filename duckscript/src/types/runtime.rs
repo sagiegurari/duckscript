@@ -46,6 +46,7 @@ pub enum StateValue {
 }
 
 /// The context structure
+#[derive(Clone)]
 pub struct Context {
     /// The runtime variables
     pub variables: HashMap<String, String>,
