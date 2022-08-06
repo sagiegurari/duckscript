@@ -32,7 +32,6 @@ colored = "^2"
 duckscript = { version = "^0.7.3", path = "../duckscript" }
 fs_extra = "^1"
 fsio = { version = "^0.4", features = ["temp-path"] }
-ftp = "^3"
 glob = "^0.3"
 heck = "^0.4"
 home = "^0.5"
@@ -44,6 +43,7 @@ rand = "^0.8"
 semver = "^1"
 serde_json = "^1"
 sha2 = "^0.10"
+suppaftp = "^4.4"
 walkdir = "^2"
 which = { version = "^4", default-features = false }
 whoami = "^1"
