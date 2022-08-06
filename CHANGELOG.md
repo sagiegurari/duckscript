@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.8.14
+
+* Maintenance: Runtime - Update dependencies
+
 ### v0.8.13 (2022-07-21)
 
 * Enhancement: Runtime - Enable to clone duckscript context #253 (thanks waterlens)
