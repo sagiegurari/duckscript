@@ -1,6 +1,6 @@
 [package]
 name = "duckscript_cli"
-version = "0.8.13"
+version = "0.8.14"
 authors = ["Sagie Gur-Ari <sagiegurari@gmail.com>"]
 description = "The duckscript command line executable."
 license = "Apache-2.0"
@@ -27,8 +27,8 @@ name = "duck"
 path = "src/main.rs"
 
 [dependencies]
-duckscript = { version = "^0.7.3", path = "../duckscript" }
-duckscriptsdk = { version = "^0.8.13", path = "../duckscript_sdk", default-features = false }
+duckscript = { version = "^0.7.4", path = "../duckscript" }
+duckscriptsdk = { version = "^0.8.14", path = "../duckscript_sdk", default-features = false }
 
 [features]
 tls-rustls = ["duckscriptsdk/tls-rustls"]
