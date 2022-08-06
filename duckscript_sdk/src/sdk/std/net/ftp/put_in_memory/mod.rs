@@ -1,8 +1,8 @@
 use crate::sdk::std::net::ftp::{validate_and_run_with_connection, Options};
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
-use ftp::FtpStream;
 use std::io::Cursor;
+use suppaftp::FtpStream;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -48,7 +48,7 @@ impl Command for CommandImpl {
                 let content = options_clone.content.unwrap();
 
                 let mut reader = Cursor::new(content.as_bytes());
-                match ftp_stream.put(&remote_file, &mut reader) {
+                match ftp_stream.put_file(&remote_file, &mut reader) {
                     Ok(_) => CommandResult::Continue(Some(true.to_string())),
                     Err(error) => CommandResult::Error(error.to_string()),
                 }

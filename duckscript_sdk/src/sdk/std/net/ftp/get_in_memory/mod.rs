@@ -4,8 +4,8 @@ use crate::utils::state::put_handle;
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
-use ftp::FtpStream;
 use std::collections::HashMap;
+use suppaftp::FtpStream;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -60,7 +60,7 @@ impl Command for CommandImpl {
                 let options_clone = options.clone();
                 let remote_file = options_clone.remote_file.unwrap();
 
-                match ftp_stream.simple_retr(&remote_file) {
+                match ftp_stream.retr_as_buffer(&remote_file) {
                     Ok(binary) => {
                         let key = put_handle(state, StateValue::ByteArray(binary.into_inner()));
 

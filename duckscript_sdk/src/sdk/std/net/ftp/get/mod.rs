@@ -2,9 +2,9 @@ use crate::sdk::std::net::ftp::{validate_and_run_with_connection, Options};
 use crate::utils::io::create_empty_file;
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
-use ftp::{FtpError, FtpStream};
 use std::fs::OpenOptions;
 use std::io::{BufWriter, Error, Read, Write};
+use suppaftp::{FtpError, FtpStream};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -76,7 +76,7 @@ impl Command for CommandImpl {
                         match ftp_stream.retr(&remote_file, |reader| {
                             match write_file(reader, &local_file) {
                                 Ok(_) => Ok(()),
-                                Err(error) => Err(FtpError::InvalidResponse(error.to_string())),
+                                Err(error) => Err(FtpError::ConnectionError(error)),
                             }
                         }) {
                             Ok(_) => CommandResult::Continue(Some(true.to_string())),

@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### v0.8.14
+
+* Maintenance: Runtime - Update dependencies
+* Maintenance: Migrate from unmaintained ftp crate to suppaftp fork
+
 ### v0.8.13 (2022-07-21)
 
 * Enhancement: Runtime - Enable to clone duckscript context #253 (thanks waterlens)

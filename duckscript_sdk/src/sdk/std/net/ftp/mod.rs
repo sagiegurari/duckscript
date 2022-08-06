@@ -8,8 +8,8 @@ mod put_in_memory;
 use crate::utils::pckg;
 use duckscript::types::command::{CommandResult, Commands};
 use duckscript::types::error::ScriptError;
-use ftp::types::{FileType, FormatControl};
-use ftp::FtpStream;
+use suppaftp::types::{FileType, FormatControl};
+use suppaftp::FtpStream;
 
 static PACKAGE: &str = "ftp";
 

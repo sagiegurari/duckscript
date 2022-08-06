@@ -4,8 +4,8 @@ use crate::utils::state::put_handle;
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
-use ftp::FtpStream;
 use std::collections::HashMap;
+use suppaftp::FtpStream;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
