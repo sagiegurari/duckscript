@@ -1200,9 +1200,9 @@ dependencies = [
 
 [[package]]
 name = "whoami"
-version = "1.2.2"
+version = "1.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5fd9fa466115c4a3fadac4119e0f6182f0ef5c5356cddb0b0b5de09b87369f15"
+checksum = "d6631b6a2fd59b1841b622e8f1a7ad241ef0a46f2d580464ce8140ac94cbd571"
 dependencies = [
  "bumpalo",
  "wasm-bindgen",
