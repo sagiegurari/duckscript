@@ -20,18 +20,25 @@ static LABEL_PREFIX: char = ':';
 
 /// parses the file and returns a vector of instructions
 pub fn parse_file(file: &str) -> Result<Vec<Instruction>, ScriptError> {
-    let mut meta_info = InstructionMetaInfo::new();
-    meta_info.source = Some(file.to_string());
-
-    match read_text_file(file) {
-        Ok(text) => parse_lines(&text, meta_info),
-        Err(error) => Err(ScriptError::ErrorReadingFile(file.to_string(), Some(error))),
-    }
+    let text = read_text_file(file)
+        .map_err(|error| ScriptError::ErrorReadingFile(file.to_string(), Some(error)))?;
+    parse_text_with_source_file(&text, file)
 }
 
 /// parses the provided script text and returns a vector of instructions
 pub fn parse_text(text: &str) -> Result<Vec<Instruction>, ScriptError> {
     parse_lines(&text, InstructionMetaInfo::new())
+}
+
+/// parses the provided script text with the file provided as its source path and returns a vector of instructions
+pub fn parse_text_with_source_file(
+    text: &str,
+    source_file: &str,
+) -> Result<Vec<Instruction>, ScriptError> {
+    let mut meta_info = InstructionMetaInfo::new();
+    meta_info.source = Some(source_file.to_string());
+
+    parse_lines(&text, meta_info)
 }
 
 fn parse_lines(
