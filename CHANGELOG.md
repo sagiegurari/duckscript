@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.8.15 (2022-10-05)
+
+* Enhancement: Runtime - Add parser::parse_text_with_source_file #273 (thanks @coolreader18)
+
 ### v0.8.14 (2022-08-06)
 
 * Maintenance: Runtime - Update dependencies
