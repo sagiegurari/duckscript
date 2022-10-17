@@ -72,7 +72,7 @@ impl Command for CommandImpl {
                             Err(_) => {
                                 return CommandResult::Error(
                                     format!(
-                                        "Max retries value must be positive number, found: {}",
+                                        "Max retries value must be a number, found: {}",
                                         argument
                                     )
                                     .to_string(),
@@ -119,7 +119,7 @@ impl Command for CommandImpl {
                         Err(error) => return CommandResult::Error(error),
                     }
 
-                    if max_retries <= 0 || attempt > max_retries {
+                    if max_retries >= 0 && attempt > max_retries {
                         break;
                     } else if interval > 0 {
                         thread::sleep(millis);
