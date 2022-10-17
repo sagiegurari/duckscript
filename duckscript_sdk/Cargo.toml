@@ -23,7 +23,7 @@ include = [
 ]
 
 [dependencies]
-attohttpc = { version = "^0.22", default-features = false, features = [
+attohttpc = { version = "^0.23", default-features = false, features = [
   "compress",
 ] }
 base64 = "^0.13"
@@ -43,7 +43,7 @@ rand = "^0.8"
 semver = "^1"
 serde_json = "^1"
 sha2 = "^0.10"
-suppaftp = "^4.4"
+suppaftp = "^4.5"
 walkdir = "^2"
 which = { version = "^4", default-features = false }
 whoami = "^1"
