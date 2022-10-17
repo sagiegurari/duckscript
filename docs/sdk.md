@@ -5463,7 +5463,7 @@ In case of an invalid command, the watchdog will not reattempt the invocation an
 
 ### Parameters
 
-* --max-retries - Positive value of max retries (excluding the first invocation). value <= 0 for unlimited retries. Default is unlimited.
+* --max-retries - Value of max retries (excluding the first invocation). value < 0 for unlimited retries. Default is unlimited.
 * --interval - The amount in milliseconds between retries. 0 for no waiting between invocations. Default is no wait.
 * --input - Optional content to be sent to the child process input stream.
 * The command to execute (preceded by a **--** separator).
