@@ -156,7 +156,12 @@ impl Command for CommandImpl {
                                     Err(err) => return CommandResult::Error(err),
                                 }
                             }
-                        _ => files.push(arg.to_string()),
+
+                        arg =>
+                            match state::get_as_string(arg) {
+                                Ok(arg) => files.push(arg),
+                                Err(err) => return CommandResult::Error(err),
+                            }
                     }
                 None => files.push(arg.to_string()),
             };
