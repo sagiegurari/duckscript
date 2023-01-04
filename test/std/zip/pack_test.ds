@@ -1,58 +1,87 @@
+base = set ./target/_duckscript_test/zip/pack
+
+fn randfile
+    length = random_range 10 50
+    text = random_text ${length}
+    writefile ${1} ${text}
+end
+
 fn test_create_simple
-    zipped = zip ./target/_duckscript_test/zip/test_simple.zip ./Cargo.toml ./Cargo.lock
+    randfile ${base}/foo.txt
+    randfile ${base}/bar/baz.txt
+
+    zipped = zip ${base}/test_simple.zip ${base}/foo.txt ${base}/bar/baz.txt
     assert ${zipped}
 
-    exists = is_file ./target/_duckscript_test/zip/test_simple.zip
+    exists = is_file ${base}/test_simple.zip
     assert ${exists}
 end
 
-fn test_create_base
-    touch ./target/_duckscript_test/zip/foo.txt
+fn test_create_from_array
+    files = array foo.txt bar.txt baz/qux.txt
+    files_to_zip = array
+    for file in ${files}
+        randfile ${base}/${file}
+        array_push ${files_to_zip} ${base}/${file}
+    end
 
-    zipped = zip --base ./target/_duckscript_test ./target/_duckscript_test/zip/test_base.zip ./target/_duckscript_test/zip/foo.txt
+    zipped = zip ${base}/test_array.zip ${files_to_zip}
     assert ${zipped}
 
-    exists = is_file ./target/_duckscript_test/zip/test_base.zip
+    exists = is_file ${base}/test_array.zip
+    assert ${exists}
+
+    release ${files}
+    release ${files_to_zip}
+end
+
+fn test_create_base
+    randfile ${base}/foo.txt
+
+    zipped = zip --base ${base} ${base}/test_base.zip ${base}/foo.txt
+    assert ${zipped}
+
+    exists = is_file ${base}/test_base.zip
     assert ${exists}
 end
 
 fn test_append
-    touch ./target/_duckscript_test/zip/foo.txt
-    touch ./target/_duckscript_test/zip/bar.txt
-    touch ./target/_duckscript_test/zip/baz/qux.txt
+    randfile ${base}/foo.txt
+    randfile ${base}/bar.txt
+    randfile ${base}/baz/qux.txt
 
-    zipped = zip --base ./target/_duckscript_test ./target/_duckscript_test/zip/test_append.zip ./target/_duckscript_test/zip/foo.txt
+    zipped = zip --base ${base} ${base}/test_append.zip ${base}/foo.txt
     assert ${zipped}
 
-    zipped = zip --append --base ./target/_duckscript_test ./target/_duckscript_test/zip/test_append.zip ./target/_duckscript_test/zip/bar.txt
+    zipped = zip --append --base ${base} ${base}/test_append.zip ${base}/bar.txt
     assert ${zipped}
 
-    zipped = zip --append --base ./target/_duckscript_test ./target/_duckscript_test/zip/test_append.zip ./target/_duckscript_test/zip/baz/qux.txt
+    zipped = zip --append --base ${base} ${base}/test_append.zip ${base}/baz/qux.txt
     assert ${zipped}
 
-    exists = is_file ./target/_duckscript_test/zip/test_append.zip
+    exists = is_file ${base}/test_append.zip
     assert ${exists}
 end
 
 fn test_compression_mode
-    touch ./target/_duckscript_test/zip/foo.txt
-    touch ./target/_duckscript_test/zip/bar.txt
+    randfile ${base}/foo.txt
+    randfile ${base}/bar.txt
 
-    zipped = zip --compression deflate ./target/_duckscript_test/zip/test_deflate.zip ./target/_duckscript_test/zip/foo.txt ./target/_duckscript_test/zip/bar.txt
+    zipped = zip --compression deflate ${base}/test_deflate.zip ${base}/foo.txt ${base}/bar.txt
     assert ${zipped}
 
-    exists = is_file ./target/_duckscript_test/zip/test_deflate.zip
+    exists = is_file ${base}/test_deflate.zip
     assert ${exists}
 
-    zipped = zip --compression bzip2 ./target/_duckscript_test/zip/test_bzip2.zip ./target/_duckscript_test/zip/foo.txt ./target/_duckscript_test/zip/bar.txt
+    zipped = zip --compression bzip2 ${base}/test_bzip2.zip ${base}/foo.txt ${base}/bar.txt
     assert ${zipped}
 
-    exists = is_file ./target/_duckscript_test/zip/test_bzip2.zip
+    exists = is_file ${base}/test_bzip2.zip
     assert ${exists}
 
-    zipped = zip --compression none ./target/_duckscript_test/zip/test_none.zip ./target/_duckscript_test/zip/foo.txt ./target/_duckscript_test/zip/bar.txt
+    zipped = zip --compression none ${base}/test_none.zip ${base}/foo.txt ${base}/bar.txt
     assert ${zipped}
 
-    exists = is_file ./target/_duckscript_test/zip/test_none.zip
+    exists = is_file ${base}/test_none.zip
     assert ${exists}
 end

@@ -1,10 +1,13 @@
+use std::collections::HashMap;
 use std::fs::{File, OpenOptions};
 use std::io::{Read, Write};
 use std::path::Path;
 use zip::write::FileOptions;
 use zip::{CompressionMethod, ZipWriter};
-use duckscript::types::command::{Command, CommandResult};
-use crate::utils::pckg;
+use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::instruction::Instruction;
+use duckscript::types::runtime::StateValue;
+use crate::utils::{pckg, state};
 
 #[derive(Clone)]
 pub(crate) struct CommandImpl {
@@ -35,7 +38,20 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
+    fn requires_context(&self) -> bool {
+        true
+    }
+
+    fn run_with_context(
+        &self,
+        arguments: Vec<String>,
+        state: &mut HashMap<String, StateValue>,
+        _variables: &mut HashMap<String, String>,
+        _output_variable: Option<String>,
+        _instructions: &Vec<Instruction>,
+        _commands: &mut Commands,
+        _line: usize) -> CommandResult
+    {
         if arguments.len() < 2 {
             return CommandResult::Error(
                 "Paths to the ZIP file and/or files to pack are not provided.".to_string());
@@ -46,7 +62,7 @@ impl Command for CommandImpl {
         let mut base = None;
         let mut compression = CompressionMethod::Deflated;
         let mut zipfile = None;
-        let mut files = vec![];
+        let mut file_args = Vec::new();
 
         for argument in &arguments {
             match looking_for {
@@ -79,11 +95,11 @@ impl Command for CommandImpl {
                     looking_for = LookingFor::Options;
                 },
 
-                LookingFor::Files => files.push(argument.as_str()),
+                LookingFor::Files => file_args.push(argument.as_str()),
             }
         }
 
-        if files.is_empty() {
+        if file_args.is_empty() {
             return CommandResult::Error("Input files not provided.".to_string());
         }
 
@@ -128,8 +144,26 @@ impl Command for CommandImpl {
             .compression_method(compression)
             .unix_permissions(0o755);
 
+        let mut files = Vec::new();
+        for arg in file_args {
+            match state::get_handle(state, arg.to_string()) {
+                Some(value) =>
+                    match value {
+                        StateValue::List(entries) =>
+                            for entry in entries {
+                                match state::get_as_string(entry) {
+                                    Ok(file) => files.push(file),
+                                    Err(err) => return CommandResult::Error(err),
+                                }
+                            }
+                        _ => files.push(arg.to_string()),
+                    }
+                None => files.push(arg.to_string()),
+            };
+        }
+
         for file_to_add_str in files {
-            let file_to_add_path = Path::new(file_to_add_str);
+            let file_to_add_path = Path::new(&file_to_add_str);
             let mut file_to_add = match File::open(file_to_add_path) {
                 Ok(file) => file,
                 Err(err) => return CommandResult::Error(

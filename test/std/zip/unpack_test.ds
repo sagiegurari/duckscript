@@ -1,11 +1,15 @@
 base = set ./target/_duckscript_test/zip/unpack
 
+fn randfile
+    length = random_range 10 50
+    text = random_text ${length}
+    writefile ${1} ${text}
+end
+
 fn test_unpack_simple
     files = array foo.txt bar/baz.txt bar/baf.txt qux.txt
     for file in ${files}
-        length = random_range 10 50
-        text = random_text ${length}
-        writefile ${base}/src/${file} ${text}
+        randfile ${base}/src/${file}
     end
 
     zipped = zip --base ${base}/src ${base}/test_unpack.zip ${base}/src/foo.txt ${base}/src/bar/baz.txt ${base}/src/bar/baf.txt ${base}/src/qux.txt
