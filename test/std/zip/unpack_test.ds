@@ -1,0 +1,27 @@
+base = set ./target/_duckscript_test/zip/unpack
+
+fn test_unpack_simple
+    files = array foo.txt bar/baz.txt bar/baf.txt qux.txt
+    for file in ${files}
+        length = random_range 10 50
+        text = random_text ${length}
+        writefile ${base}/src/${file} ${text}
+    end
+
+    zipped = zip --base ${base}/src ${base}/test_unpack.zip ${base}/src/foo.txt ${base}/src/bar/baz.txt ${base}/src/bar/baf.txt ${base}/src/qux.txt
+    assert ${zipped}
+
+    exists = is_file ${base}/test_unpack.zip
+    assert ${exists}
+
+    unzipped = unzip ${base}/test_unpack.zip ${base}/unpacked
+    assert ${unzipped}
+
+    for file in ${files}
+        src_hash = digest --algo sha512 --file ${base}/src/${file}
+        dst_hash = digest --algo sha512 --file ${base}/unpacked/${file}
+        assert_eq ${src_hash} ${dst_hash}
+    end
+
+    release ${files}
+end

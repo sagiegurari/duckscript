@@ -1,4 +1,5 @@
 mod pack;
+mod unpack;
 
 use duckscript::types::command::Commands;
 use duckscript::types::error::ScriptError;
@@ -10,6 +11,7 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     let package = pckg::concat(parent, PACKAGE);
 
     commands.set(pack::create(&package))?;
+    commands.set(unpack::create(&package))?;
 
     Ok(())
 }
