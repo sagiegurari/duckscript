@@ -28,7 +28,6 @@ mod test;
 mod thread;
 mod time;
 mod var;
-mod zip;
 
 use duckscript::types::command::Commands;
 use duckscript::types::error::ScriptError;
@@ -67,7 +66,6 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     thread::load(commands, PACKAGE)?;
     time::load(commands, PACKAGE)?;
     var::load(commands, PACKAGE)?;
-    zip::load(commands, PACKAGE)?;
 
     Ok(())
 }

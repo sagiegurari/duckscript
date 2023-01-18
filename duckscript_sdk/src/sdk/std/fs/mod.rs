@@ -29,6 +29,7 @@ mod temp_file;
 mod touch;
 mod write_bytes;
 mod write_text;
+mod zip;
 
 use crate::utils::pckg;
 use duckscript::types::command::Commands;
@@ -70,6 +71,8 @@ pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptEr
     commands.set(touch::create(&package))?;
     commands.set(write_bytes::create(&package))?;
     commands.set(write_text::create(&package))?;
+
+    zip::load(commands, PACKAGE)?;
 
     Ok(())
 }

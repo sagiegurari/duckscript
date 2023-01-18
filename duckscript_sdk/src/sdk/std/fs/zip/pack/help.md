@@ -9,7 +9,8 @@ File paths in the archive will be relative to current working directory.
 ### Parameters
 
  - zipfile - The path to the ZIP archive to be created.
- - files - One or more file paths to pack. No globbing is performed.
+ - files - One or more file paths to pack. No globbing is performed. However, array
+   handles containing the files to pack can be used.
  - Optional base directory via `--base <basedir>` --- this directory will be used
    as a base for the file paths inside the archive.
  - Optional append flag via `--append` --- if set, the files will be added to the

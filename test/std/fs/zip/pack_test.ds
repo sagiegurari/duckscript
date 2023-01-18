@@ -1,4 +1,4 @@
-base = set ./target/_duckscript_test/zip/pack
+base = set ./target/_duckscript_test/fs/zip/pack
 
 fn randfile
     length = random_range 10 50

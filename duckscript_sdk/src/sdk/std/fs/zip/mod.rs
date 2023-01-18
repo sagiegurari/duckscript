@@ -1,9 +1,9 @@
 mod pack;
 mod unpack;
 
+use crate::utils::pckg;
 use duckscript::types::command::Commands;
 use duckscript::types::error::ScriptError;
-use crate::utils::pckg;
 
 static PACKAGE: &str = "zip";
 
