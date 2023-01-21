@@ -14,9 +14,11 @@ fn run_no_args() {
 
 #[test]
 fn run_valid() {
-    test::run_script_and_validate(
-        vec![create("")],
-        "out = ftp_list --host test.rebex.net --username demo --password password",
-        CommandValidation::Contains("out".to_string(), "handle:".to_string()),
-    );
+    if !test::skip_unstable() {
+        test::run_script_and_validate(
+            vec![create("")],
+            "out = ftp_list --host test.rebex.net --username demo --password password",
+            CommandValidation::Contains("out".to_string(), "handle:".to_string()),
+        );
+    }
 }

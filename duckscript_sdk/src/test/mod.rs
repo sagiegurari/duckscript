@@ -5,6 +5,7 @@ use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::{Context, StateValue};
 use std::collections::HashMap;
+use std::env;
 
 #[derive(Clone)]
 pub(crate) struct EmptyCommand {}
@@ -324,4 +325,17 @@ pub(crate) fn is_handles_empty(state: &HashMap<String, StateValue>) {
         StateValue::SubState(state) => assert!(state.is_empty()),
         _ => panic!("Invalid state type."),
     }
+}
+
+pub(crate) fn skip_unstable() -> bool {
+    let skip = match env::var("CARGO_MAKE_DUCKSCRIPT_SKIP_UNSTABLE_TESTS") {
+        Ok(value) => value == "true",
+        Err(_) => false,
+    };
+
+    if skip {
+        println!("Skipping Test...");
+    }
+
+    skip
 }

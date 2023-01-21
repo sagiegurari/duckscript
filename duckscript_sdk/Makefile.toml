@@ -7,6 +7,9 @@ additional_profiles = [
   "publish-pre-cleanup",
 ]
 
+[env]
+CARGO_MAKE_DUCKSCRIPT_SKIP_UNSTABLE_TESTS = true
+
 [tasks.clean-target]
 condition = { files_exist = ["./target"] }
 script = '''

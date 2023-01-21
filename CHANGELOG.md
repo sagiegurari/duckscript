@@ -1,8 +1,9 @@
 ## CHANGELOG
 
-### v0.8.17
+### v0.8.17 (2022-01-21)
 
 * Enhancement: New zip/unzip commands #294 (thanks @Red-Teapot)
+* Maintenance: Upgrade dependencies
 
 ### v0.8.16 (2022-10-17)
 

@@ -1,0 +1,6 @@
+
+fn skip_unstable
+    value = get_env CARGO_MAKE_DUCKSCRIPT_SKIP_UNSTABLE_TESTS
+    skip = eq ${value} true
+    return ${skip}
+end

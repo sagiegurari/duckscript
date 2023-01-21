@@ -1,5 +1,11 @@
 
+!include_files ../../../helper.ds
+
 fn test_valid
+    if skip_unstable
+        return
+    end
+
     filename = set ./target/_duckscript_test/net/ftp/get/readme.txt
     result = ftp_get --host test.rebex.net --username demo --password password --remote-file readme.txt --local-file ${filename}
 

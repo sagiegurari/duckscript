@@ -1,5 +1,11 @@
 
+!include_files ../../../helper.ds
+
 fn test_valid
+    if skip_unstable
+        return
+    end
+
     arr = ftp_nlst --host test.rebex.net --username demo --password password
 
     empty = array_is_empty ${arr}
@@ -13,6 +19,10 @@ fn test_valid
 end
 
 fn test_with_path
+    if skip_unstable
+        return
+    end
+
     arr = ftp_nlst --host test.rebex.net --username demo --password password --path pub
 
     empty = array_is_empty ${arr}
