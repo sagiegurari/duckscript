@@ -1,0 +1,87 @@
+base = set ./target/_duckscript_test/fs/zip/pack
+
+fn randfile
+    length = random_range 10 50
+    text = random_text ${length}
+    writefile ${1} ${text}
+end
+
+fn test_create_simple
+    randfile ${base}/foo.txt
+    randfile ${base}/bar/baz.txt
+
+    zipped = zip ${base}/test_simple.zip ${base}/foo.txt ${base}/bar/baz.txt
+    assert ${zipped}
+
+    exists = is_file ${base}/test_simple.zip
+    assert ${exists}
+end
+
+fn test_create_from_array
+    files = array foo.txt bar.txt baz/qux.txt
+    files_to_zip = array
+    for file in ${files}
+        randfile ${base}/${file}
+        array_push ${files_to_zip} ${base}/${file}
+    end
+
+    zipped = zip ${base}/test_array.zip ${files_to_zip}
+    assert ${zipped}
+
+    exists = is_file ${base}/test_array.zip
+    assert ${exists}
+
+    release ${files}
+    release ${files_to_zip}
+end
+
+fn test_create_base
+    randfile ${base}/foo.txt
+
+    zipped = zip --base ${base} ${base}/test_base.zip ${base}/foo.txt
+    assert ${zipped}
+
+    exists = is_file ${base}/test_base.zip
+    assert ${exists}
+end
+
+fn test_append
+    randfile ${base}/foo.txt
+    randfile ${base}/bar.txt
+    randfile ${base}/baz/qux.txt
+
+    zipped = zip --base ${base} ${base}/test_append.zip ${base}/foo.txt
+    assert ${zipped}
+
+    zipped = zip --append --base ${base} ${base}/test_append.zip ${base}/bar.txt
+    assert ${zipped}
+
+    zipped = zip --append --base ${base} ${base}/test_append.zip ${base}/baz/qux.txt
+    assert ${zipped}
+
+    exists = is_file ${base}/test_append.zip
+    assert ${exists}
+end
+
+fn test_compression_mode
+    randfile ${base}/foo.txt
+    randfile ${base}/bar.txt
+
+    zipped = zip --compression deflate ${base}/test_deflate.zip ${base}/foo.txt ${base}/bar.txt
+    assert ${zipped}
+
+    exists = is_file ${base}/test_deflate.zip
+    assert ${exists}
+
+    zipped = zip --compression bzip2 ${base}/test_bzip2.zip ${base}/foo.txt ${base}/bar.txt
+    assert ${zipped}
+
+    exists = is_file ${base}/test_bzip2.zip
+    assert ${exists}
+
+    zipped = zip --compression none ${base}/test_none.zip ${base}/foo.txt ${base}/bar.txt
+    assert ${zipped}
+
+    exists = is_file ${base}/test_none.zip
+    assert ${exists}
+end
