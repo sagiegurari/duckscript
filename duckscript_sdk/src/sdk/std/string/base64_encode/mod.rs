@@ -1,6 +1,7 @@
 use crate::utils::pckg;
 use crate::utils::state::get_handles_sub_state;
 use base64;
+use base64::Engine;
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -56,7 +57,7 @@ impl Command for CommandImpl {
             match state.get(key) {
                 Some(state_value) => match state_value {
                     StateValue::ByteArray(binary) => {
-                        let encoded = base64::encode(binary);
+                        let encoded = base64::engine::general_purpose::STANDARD.encode(binary);
 
                         CommandResult::Continue(Some(encoded))
                     }

@@ -1,6 +1,7 @@
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
 use base64;
+use base64::Engine;
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -49,7 +50,7 @@ impl Command for CommandImpl {
         if arguments.is_empty() {
             CommandResult::Error("Value not provided.".to_string())
         } else {
-            match base64::decode(&arguments[0]) {
+            match base64::engine::general_purpose::STANDARD.decode(&arguments[0]) {
                 Ok(binary) => {
                     let key = put_handle(state, StateValue::ByteArray(binary));
 
