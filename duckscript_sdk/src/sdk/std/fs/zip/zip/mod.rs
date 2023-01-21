@@ -23,7 +23,7 @@ enum LookingFor {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "Pack")
+        pckg::concat(&self.package, "Zip")
     }
 
     fn aliases(&self) -> Vec<String> {

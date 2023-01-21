@@ -1,4 +1,4 @@
-base = set ./target/_duckscript_test/fs/zip/unpack
+base = set ./target/_duckscript_test/fs/zip/unzip
 
 fn randfile
     length = random_range 10 50
@@ -6,24 +6,25 @@ fn randfile
     writefile ${1} ${text}
 end
 
-fn test_unpack_simple
+fn test_unzip_simple
     files = array foo.txt bar/baz.txt bar/baf.txt qux.txt
     for file in ${files}
         randfile ${base}/src/${file}
     end
 
-    zipped = zip --base ${base}/src ${base}/test_unpack.zip ${base}/src/foo.txt ${base}/src/bar/baz.txt ${base}/src/bar/baf.txt ${base}/src/qux.txt
+    zipped = zip --base ${base}/src ${base}/test_unzip.zip ${base}/src/foo.txt ${base}/src/bar/baz.txt ${base}/src/bar/baf.txt ${base}/src/qux.txt
     assert ${zipped}
 
-    exists = is_file ${base}/test_unpack.zip
+    exists = is_file ${base}/test_unzip.zip
     assert ${exists}
 
-    unzipped = unzip ${base}/test_unpack.zip ${base}/unpacked
+    rm -R ${base}/unzipped/
+    unzipped = unzip ${base}/test_unzip.zip ${base}/unzipped
     assert ${unzipped}
 
     for file in ${files}
         src_hash = digest --algo sha512 --file ${base}/src/${file}
-        dst_hash = digest --algo sha512 --file ${base}/unpacked/${file}
+        dst_hash = digest --algo sha512 --file ${base}/unzipped/${file}
         assert_eq ${src_hash} ${dst_hash}
     end
 

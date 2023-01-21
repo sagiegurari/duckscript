@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.8.17
+
+* Enhancement: New zip/unzip commands #294 (thanks @Red-Teapot)
+
 ### v0.8.16 (2022-10-17)
 
 * Fix: watchdog command support for unlimited retries

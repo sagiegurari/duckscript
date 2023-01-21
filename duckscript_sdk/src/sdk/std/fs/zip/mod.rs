@@ -1,5 +1,5 @@
-mod pack;
-mod unpack;
+mod unzip;
+mod zip;
 
 use crate::utils::pckg;
 use duckscript::types::command::Commands;
@@ -10,8 +10,8 @@ static PACKAGE: &str = "zip";
 pub(crate) fn load(commands: &mut Commands, parent: &str) -> Result<(), ScriptError> {
     let package = pckg::concat(parent, PACKAGE);
 
-    commands.set(pack::create(&package))?;
-    commands.set(unpack::create(&package))?;
+    commands.set(unzip::create(&package))?;
+    commands.set(zip::create(&package))?;
 
     Ok(())
 }

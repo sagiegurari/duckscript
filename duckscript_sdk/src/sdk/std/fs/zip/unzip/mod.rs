@@ -14,7 +14,7 @@ pub(crate) struct CommandImpl {
 
 impl Command for CommandImpl {
     fn name(&self) -> String {
-        pckg::concat(&self.package, "Unpack")
+        pckg::concat(&self.package, "Unzip")
     }
 
     fn aliases(&self) -> Vec<String> {
@@ -50,6 +50,7 @@ impl Command for CommandImpl {
             Ok(file) => file,
             Err(err) => return CommandResult::Error(format!("Couldn't open ZIP file: {}", err)),
         };
+
         let mut zip = match ZipArchive::new(zip_file) {
             Ok(archive) => archive,
             Err(err) => return CommandResult::Error(format!("Couldn't open ZIP file: {}", err)),
