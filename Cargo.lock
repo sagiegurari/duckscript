@@ -1156,9 +1156,9 @@ checksum = "6bdef32e8150c2a081110b42772ffe7d7c9032b606bc226c8260fd97e0976601"
 
 [[package]]
 name = "suppaftp"
-version = "4.6.0"
+version = "4.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "91ba00ecec2d2022201eb403442ceb785bf39b206852f8b374c7759b323dab49"
+checksum = "4f2c372089f135a5bf0ab02a3a3754f8e0a702890f7a8eb6f64b48c26a208bbe"
 dependencies = [
  "chrono",
  "lazy-regex",
