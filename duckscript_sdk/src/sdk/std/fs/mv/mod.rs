@@ -2,7 +2,7 @@ use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
 use fs_extra::{dir, move_items};
 use fsio;
-use std::fs;
+use fsio::directory::create_parent;
 use std::path::Path;
 
 #[cfg(test)]
@@ -42,11 +42,23 @@ impl Command for CommandImpl {
             } else {
                 let target_path = Path::new(&arguments[1]);
                 let source_file = source_path.is_file();
-                let target_file = target_path.is_file();
+                let target_file = if target_path.exists() {
+                    target_path.is_file()
+                } else {
+                    !target_path.ends_with("/")
+                        && !target_path.ends_with("\\")
+                        && target_path.extension().is_some()
+                };
 
                 if source_file && target_file {
-                    match fs::rename(&arguments[0], &arguments[1]) {
-                        Ok(_) => CommandResult::Continue(Some("true".to_string())),
+                    match create_parent(&target_path) {
+                        Ok(_) => {
+                            let options = fs_extra::file::CopyOptions::new().overwrite(true);
+                            match fs_extra::file::move_file(source_path, &target_path, &options) {
+                                Ok(_) => CommandResult::Continue(Some("true".to_string())),
+                                Err(error) => CommandResult::Error(error.to_string()),
+                            }
+                        }
                         Err(error) => CommandResult::Error(error.to_string()),
                     }
                 } else {
