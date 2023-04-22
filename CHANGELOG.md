@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.8.18
+### v0.8.18 (2023-04-22)
 
 * Fix: fix mv command for files when output does not exist #319 (thanks @burrbull)
 * Maintenance: Replace math evaluation crate to evalexpr
