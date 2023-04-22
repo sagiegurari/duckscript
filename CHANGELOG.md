@@ -2,6 +2,7 @@
 
 ### v0.8.18
 
+* Fix: fix mv command for files when output does not exist #319 (thanks @burrbull)
 * Maintenance: Replace math evaluation crate to evalexpr
 * Fix: fix array_contains command
 
