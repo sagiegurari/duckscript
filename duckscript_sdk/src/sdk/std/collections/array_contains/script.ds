@@ -11,7 +11,7 @@ for scope::array_contains::next_value in ${scope::array_contains::argument::1}
         scope::array_contains::argument::1 = set
     end
 
-    scope::array_contains::counter = calc ${scope:array_contains::counter} + 1
+    scope::array_contains::counter = calc ${scope::array_contains::counter} + 1
 end
 
 set ${scope::array_contains::index}

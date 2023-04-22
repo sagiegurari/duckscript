@@ -33,7 +33,7 @@ impl Command for CommandImpl {
         } else {
             let operation = arguments.join(" ");
 
-            match meval::eval_str(&operation) {
+            match evalexpr::eval_number(&operation) {
                 Ok(value) => CommandResult::Continue(Some(value.to_string())),
                 Err(error) => CommandResult::Error(error.to_string()),
             }
