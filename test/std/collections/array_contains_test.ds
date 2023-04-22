@@ -17,7 +17,7 @@ fn test_not_found
     assert_eq ${found} false
 end
 
-fn test_found<F4>
+fn test_found
     handle = array value
 
     found = array_contains ${handle} value

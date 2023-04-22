@@ -1,6 +1,11 @@
 ## CHANGELOG
 
-### v0.8.17 (2022-01-21)
+### v0.8.18
+
+* Maintenance: Replace math evaluation crate to evalexpr
+* Fix: fix array_contains command
+
+### v0.8.17 (2023-01-21)
 
 * Enhancement: New zip/unzip commands #294 (thanks @Red-Teapot)
 * Maintenance: Upgrade dependencies

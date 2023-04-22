@@ -1,0 +1,6 @@
+
+fn test_calc
+    result = calc 1 + 5 * 7
+
+    assert_eq ${result} 36
+end
