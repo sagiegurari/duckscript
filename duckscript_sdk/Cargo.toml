@@ -47,7 +47,7 @@ suppaftp = "^5.1"
 walkdir = "^2"
 which = { version = "^4", default-features = false }
 whoami = "^1"
-zip = "^0.6"
+zip = { version = "^0.6", default-features = false, features = ["bzip2", "deflate", "time"] }
 
 [target.'cfg(not(windows))'.dependencies]
 uname = "^0.1"
