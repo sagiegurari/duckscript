@@ -22,9 +22,9 @@ end
 
 fn test_post
     payload = set {\"login\":\"login\",\"password\":\"password\"}
-    response = http_client --method POST --payload ${payload} https://httpbin.org/post
+    response = http_client --method POST --payload ${payload} https://postman-echo.com/post
 
-    found = contains ${response} origin
+    found = contains ${response} password
 
     assert ${found}
 end
