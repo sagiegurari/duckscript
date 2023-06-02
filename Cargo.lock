@@ -328,9 +328,9 @@ dependencies = [
 
 [[package]]
 name = "evalexpr"
-version = "10.0.0"
+version = "11.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c6cffb2e9992a43637801ac84ca58bdb5acb2a426ab88a1e3d343b96cfaa845c"
+checksum = "ec3b4e80fd8edee77d6fc35d59862d5765dae7512a95f49fd7bf03847c85b26a"
 
 [[package]]
 name = "fastrand"
