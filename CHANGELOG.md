@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.8.20 (2023-06-15)
+
+* Maintenance: Upgrade dependencies
+
 ### v0.8.19 (2023-05-25)
 
 * Maintenance: Upgrade dependencies
