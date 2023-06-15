@@ -33,7 +33,7 @@ duckscriptsdk = { version = "^0.8.20", path = "../duckscript_sdk", default-featu
 [features]
 tls-rustls = ["duckscriptsdk/tls-rustls"]
 tls-native = ["duckscriptsdk/tls-native"]
-tls = ["tls-rustls"]                      # alias for backward compatibility
+tls = ["tls-rustls"] # alias for backward compatibility
 default = ["tls-rustls"]
 
 [badges.codecov]

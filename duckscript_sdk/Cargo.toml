@@ -59,7 +59,7 @@ uname = "^0.1"
 [features]
 tls-rustls = ["attohttpc/rustls"]
 tls-native = ["attohttpc/tls"]
-tls = ["tls-rustls"]              # alias for backward compatibility
+tls = ["tls-rustls"] # alias for backward compatibility
 default = ["tls-rustls"]
 
 [badges.codecov]
