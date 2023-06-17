@@ -1,0 +1,37 @@
+# Maintainer: Cosmin Gabriel Georgescu <cosmingg2013@gmail.com>
+pkgname="duckscript"
+pkgver=0.8.20
+pkgrel=1
+pkgdesc="Simple, extendable and embeddable scripting language."
+
+# https://github.com/sagiegurari/duckscript#installation-binary-release
+arch=("x86_64")
+
+url="https://sagiegurari.github.io/duckscript/"
+
+# https://github.com/sagiegurari/duckscript/blob/master/LICENSE
+license=("Apache")
+
+makedepends=("cargo")
+
+source=("$pkgname-$pkgver.tar.gz::https://github.com/sagiegurari/duckscript/archive/refs/tags/$pkgver.tar.gz")
+
+sha512sums=("7ffe4ad2d1bb54753d7c262981bf31394404dd71a75919188a5f658de39b9b9215d057da382e220433d866369417e74feaef3ab4ac80df5214b046284f5f840d")
+
+b2sums=("869859f0d7e21abf1f3e1041e6f7056c25d4e6341bab19788c95c609da60cff5add66ec113aa1f2ff9557596537728a6255ec65c280668d9d3e8e785d042f616")
+
+build(){
+	cd "$pkgname-$pkgver"
+	export RUSTUP_TOOLCHAIN=stable
+	cargo build --locked --workspace --release --all-features --target-dir target --target "$arch-unknown-linux-gnu"
+}
+
+check(){
+	cd "$pkgname-$pkgver"
+	export RUSTUP_TOOLCHAIN=stable
+	cargo test --frozen --workspace --all-features --target "$arch-unknown-linux-gnu"
+} 
+
+package(){
+	install -D --mode 755 --target-directory "$pkgdir/usr/bin" "$pkgname-$pkgver/target/release/duck"
+}
