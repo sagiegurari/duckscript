@@ -22,13 +22,14 @@ b2sums=("869859f0d7e21abf1f3e1041e6f7056c25d4e6341bab19788c95c609da60cff5add66ec
 
 prepare(){
 	export RUSTUP_TOOLCHAIN=stable
-	cargo fetch --locked --target "$arch-unknown-linux-gnu"
+	cargo fetch --locked
 }
 
 build(){
 	cd "$pkgname-$pkgver"
 	export RUSTUP_TOOLCHAIN=stable
-	cargo build --frozen --workspace --release --all-features --target-dir target --target "$arch-unknown-linux-gnu" 
+	export CARGO_TARGET_DIR=target
+	cargo build --frozen --workspace --release --all-features
 }
 
 check(){
