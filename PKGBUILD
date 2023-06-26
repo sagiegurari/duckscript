@@ -14,7 +14,7 @@ license=("Apache")
 
 makedepends=("cargo")
 
-source=("$pkgname-$pkgver.tar.gz::https://github.com/sagiegurari/duckscript/archive/refs/tags/$pkgver.tar.gz")
+source=("$pkgname-$pkgver.tar.gz::https://github.com/sagiegurari/duckscript/archive/$pkgver.tar.gz")
 
 sha512sums=("7ffe4ad2d1bb54753d7c262981bf31394404dd71a75919188a5f658de39b9b9215d057da382e220433d866369417e74feaef3ab4ac80df5214b046284f5f840d")
 
@@ -22,7 +22,7 @@ b2sums=("869859f0d7e21abf1f3e1041e6f7056c25d4e6341bab19788c95c609da60cff5add66ec
 
 prepare(){
 	export RUSTUP_TOOLCHAIN=stable
-	cargo fetch --locked
+	cargo fetch --locked --target "$arch-unknown-linux-gnu"
 }
 
 build(){
@@ -39,5 +39,7 @@ check(){
 } 
 
 package(){
-	install -D --mode 755 --target-directory "$pkgdir/usr/bin" "$pkgname-$pkgver/target/release/duck"
+	install --verbose -D --mode 755 --target-directory "$pkgdir/usr/bin" "$pkgname-$pkgver/target/release/duck"
+	install --verbose -D --mode 644 --target-directory "$pkgdir/usr/share/licenses/$pkgname" LICENSE
+	install --verbose -D --mode 644 --target-directory "$pkgdir/usr/share/doc/$pkgname" *.md
 }
