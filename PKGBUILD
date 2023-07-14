@@ -36,10 +36,12 @@ check(){
 	cd "$pkgname-$pkgver"
 	export RUSTUP_TOOLCHAIN=stable
 	cargo test --frozen --workspace --all-features
+	cargo test --frozen --workspace --all-features -- --ignored --test-threads=1
 } 
 
 package(){
 	install --verbose -D --mode 755 --target-directory "$pkgdir/usr/bin" "$pkgname-$pkgver/target/release/duck"
-	install --verbose -D --mode 644 --target-directory "$pkgdir/usr/share/licenses/$pkgname" LICENSE
-	install --verbose -D --mode 644 --target-directory "$pkgdir/usr/share/doc/$pkgname" *.md
+	install --verbose -D --mode 644 --target-directory "$pkgdir/usr/share/licenses/$pkgname" "$pkgname-$pkgver/LICENSE"
+	install --verbose -D --mode 644 --target-directory "$pkgdir/usr/share/doc/$pkgname" "$pkgname-$pkgver/CHANGELOG.md"
+	install --verbose -D --mode 644 --target-directory "$pkgdir/usr/share/doc/$pkgname" "$pkgname-$pkgver/README.md"
 }
