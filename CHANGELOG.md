@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.9.0
+### v0.9.0 (2023-09-08)
 
 * Fix: Runtime - \[Breaking Change\] Empty spread should not count as an empty string argument #354
 
