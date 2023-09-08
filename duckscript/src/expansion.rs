@@ -106,7 +106,11 @@ pub(crate) fn expand_by_wrapper(
     }
 
     if value_string.is_empty() {
-        ExpandedValue::None
+        if single_type {
+            ExpandedValue::None
+        } else {
+            ExpandedValue::Multi(vec![])
+        }
     } else if single_type {
         ExpandedValue::Single(value_string.to_string())
     } else {
