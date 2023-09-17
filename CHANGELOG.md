@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.9.1 (2023-09-17)
+
+* Fix: panic on empty environment variable name provided for set_env command
+
 ### v0.9.0 (2023-09-08)
 
 * Fix: Runtime - \[Breaking Change\] Empty spread should not count as an empty string argument #354

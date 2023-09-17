@@ -50,6 +50,8 @@ impl Command for CommandImpl {
             CommandResult::Error("Missing environment variable name and value.".to_string())
         } else if arguments.len() == 1 {
             CommandResult::Error("Missing environment variable value.".to_string())
+        } else if arguments[0].is_empty() {
+            CommandResult::Error("Environment variable name is empty string.".to_string())
         } else {
             if arguments[0] == "--handle" {
                 let state = get_handles_sub_state(state);
@@ -60,8 +62,10 @@ impl Command for CommandImpl {
                     Some(state_value) => match state_value {
                         StateValue::SubState(map) => {
                             for (env_key, env_value) in map {
-                                if let Ok(env_value_string) = get_as_string(env_value) {
-                                    env::set_var(&env_key, &env_value_string);
+                                if !env_key.is_empty() {
+                                    if let Ok(env_value_string) = get_as_string(env_value) {
+                                        env::set_var(&env_key, &env_value_string);
+                                    }
                                 }
                             }
 

@@ -18,6 +18,11 @@ fn run_single_argument() {
 }
 
 #[test]
+fn run_empty_var_name() {
+    test::run_script_and_error(vec![create("")], "out = set_env \"\" value", "out");
+}
+
+#[test]
 fn run_set() {
     env::remove_var("DUCKSCRIPT_SDK_SET_ENV");
     test::run_script_and_validate(
