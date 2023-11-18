@@ -1,8 +1,10 @@
+use crate::utils::io::ends_with_separator;
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
 use fs_extra::{dir, move_items};
 use fsio;
 use fsio::directory::create_parent;
+use std::fs::rename;
 use std::path::Path;
 
 #[cfg(test)]
@@ -41,13 +43,14 @@ impl Command for CommandImpl {
                 CommandResult::Error("Path does not exist.".to_string())
             } else {
                 let target_path = Path::new(&arguments[1]);
+                let source_ends_with_separator = ends_with_separator(&arguments[0]);
                 let source_file = source_path.is_file();
-                let target_file = if target_path.exists() {
+                let target_exists = target_path.exists();
+                let target_ends_with_separator = ends_with_separator(&arguments[1]);
+                let target_file = if target_exists {
                     target_path.is_file()
                 } else {
-                    !target_path.ends_with("/")
-                        && !target_path.ends_with("\\")
-                        && target_path.extension().is_some()
+                    !target_ends_with_separator && target_path.extension().is_some()
                 };
 
                 if source_file && target_file {
@@ -59,6 +62,16 @@ impl Command for CommandImpl {
                                 Err(error) => CommandResult::Error(error.to_string()),
                             }
                         }
+                        Err(error) => CommandResult::Error(error.to_string()),
+                    }
+                } else if !source_file
+                    && !target_file
+                    && !source_ends_with_separator
+                    && !target_ends_with_separator
+                {
+                    // rename directory
+                    match rename(source_path, target_path) {
+                        Ok(_) => CommandResult::Continue(Some("true".to_string())),
                         Err(error) => CommandResult::Error(error.to_string()),
                     }
                 } else {

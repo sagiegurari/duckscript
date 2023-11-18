@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.9.2
+
+* Enhancement: \[Breaking Change\] add support for renaming directories via mv command #374
+
 ### v0.9.1 (2023-09-17)
 
 * Fix: panic on empty environment variable name provided for set_env command

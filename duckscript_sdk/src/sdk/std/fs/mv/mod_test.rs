@@ -68,21 +68,45 @@ fn run_file_to_directory() {
 }
 
 #[test]
-fn run_directory_to_directory() {
-    let mut path = Path::new("./target/_duckscript/mv/run_directory_to_directory/1/1/file1.txt");
-    let result = ensure_exists("./target/_duckscript/mv/run_directory_to_directory/1/1/file1.txt");
+fn run_directory_to_directory_rename() {
+    let mut path =
+        Path::new("./target/_duckscript/mv/run_directory_to_directory_rename/1/1/file1.txt");
+    let result =
+        ensure_exists("./target/_duckscript/mv/run_directory_to_directory_rename/1/1/file1.txt");
     assert!(result.is_ok());
     assert!(path.exists());
 
     test::run_script_and_validate(
         vec![create("")],
         r#"
-    out = mv ./target/_duckscript/mv/run_directory_to_directory/1 ./target/_duckscript/mv/run_directory_to_directory/2
+    out = mv ./target/_duckscript/mv/run_directory_to_directory_rename/1 ./target/_duckscript/mv/run_directory_to_directory_rename/2
     "#,
         CommandValidation::Match("out".to_string(), "true".to_string()),
     );
 
     assert!(!path.exists());
-    path = Path::new("./target/_duckscript/mv/run_directory_to_directory/2/1/1/file1.txt");
+    path = Path::new("./target/_duckscript/mv/run_directory_to_directory_rename/2/1/file1.txt");
+    assert!(path.exists());
+}
+
+#[test]
+fn run_directory_to_directory_move() {
+    let mut path =
+        Path::new("./target/_duckscript/mv/run_directory_to_directory_move/1/1/file1.txt");
+    let result =
+        ensure_exists("./target/_duckscript/mv/run_directory_to_directory_move/1/1/file1.txt");
+    assert!(result.is_ok());
+    assert!(path.exists());
+
+    test::run_script_and_validate(
+        vec![create("")],
+        r#"
+    out = mv ./target/_duckscript/mv/run_directory_to_directory_move/1 ./target/_duckscript/mv/run_directory_to_directory_move/2/
+    "#,
+        CommandValidation::Match("out".to_string(), "true".to_string()),
+    );
+
+    assert!(!path.exists());
+    path = Path::new("./target/_duckscript/mv/run_directory_to_directory_move/2/1/1/file1.txt");
     assert!(path.exists());
 }
