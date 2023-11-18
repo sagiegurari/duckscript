@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.9.2
+### v0.9.2 (2023-11-18)
 
 * Enhancement: \[Breaking Change\] add support for renaming directories via mv command #374
 
