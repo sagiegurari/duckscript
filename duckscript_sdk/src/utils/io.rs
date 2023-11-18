@@ -67,3 +67,7 @@ pub(crate) fn get_file_size(path: &str) -> Result<u64, String> {
         Err(_error) => Err("Unable to extract metadata for path.".to_string()),
     }
 }
+
+pub(crate) fn ends_with_separator(path_str: &str) -> bool {
+    path_str.ends_with("/") || path_str.ends_with("\\")
+}
