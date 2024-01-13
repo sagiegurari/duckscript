@@ -13,28 +13,12 @@ jobs:
         os: [ubuntu-latest, windows-latest, macOS-latest]
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Install rust
-      uses: actions-rs/toolchain@v1
+      uses: dtolnay/rust-toolchain@master
       with:
         toolchain: ${{ matrix.rust }}
-        profile: minimal
-        override: true
     - name: Install cargo-make
-      uses: actions-rs/cargo@v1
-      with:
-        command: install
-        args: --debug cargo-make
+      run: cargo install --debug cargo-make
     - name: Run CI
-      if: matrix.rust != 'nightly'
-      uses: actions-rs/cargo@v1
-      with:
-        command: make
-        args: --no-workspace workspace-ci-flow
-    - name: Run CI (Allow Failures)
-      if: matrix.rust == 'nightly'
-      continue-on-error: true
-      uses: actions-rs/cargo@v1
-      with:
-        command: make
-        args: --no-workspace workspace-ci-flow
+      run: cargo make --no-workspace workspace-ci-flow

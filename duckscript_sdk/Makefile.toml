@@ -25,11 +25,13 @@ alias = "test-scripts"
 
 [tasks.test-script]
 cwd = ".."
+install_crate = false
 command = "cargo"
 args = ["make", "--no-workspace", "test-script", "${@}"]
 
 [tasks.test-scripts]
 cwd = ".."
+install_crate = false
 command = "cargo"
 args = ["make", "--no-workspace", "test-scripts"]
 
