@@ -12,12 +12,20 @@ mod eval_test;
 fn parse(arguments: &Vec<String>) -> Result<Instruction, String> {
     let mut line_buffer = String::new();
     for argument in arguments {
-        if argument.contains(" ") {
-            line_buffer.push('"');
-        }
-        line_buffer.push_str(argument);
-        if argument.contains(" ") {
-            line_buffer.push('"');
+        if argument.is_empty() {
+            line_buffer.push_str("\"\"");
+        } else if argument.starts_with("\"") && argument.ends_with("\"") {
+            line_buffer.push('\\');
+            line_buffer.push_str(argument);
+            line_buffer.push('\\');
+        } else {
+            if argument.contains(" ") {
+                line_buffer.push('"');
+            }
+            line_buffer.push_str(argument);
+            if argument.contains(" ") {
+                line_buffer.push('"');
+            }
         }
         line_buffer.push(' ');
     }

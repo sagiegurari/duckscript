@@ -39,12 +39,16 @@ impl Command for CommandImpl {
         _arguments: Vec<String>,
         _state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
+        output_variable: Option<String>,
         instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         _line: usize,
     ) -> CommandResult {
         let string_value = format!("{:#?}", instructions).to_string();
+
+        if output_variable.is_none() {
+            println!("{}", string_value);
+        }
 
         CommandResult::Continue(Some(string_value))
     }
