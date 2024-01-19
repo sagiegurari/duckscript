@@ -425,7 +425,6 @@ print
 
 <a name="std__Println"></a>
 ## `std::Println`
-
 ```sh
 println [--style|-s bold|underline|italic|dimmed|blink|strikethrough]* [--color|-c black|red|green|yellow|blue|magenta|cyan|white|bright_<color>|rgb_<red>_<green>_<blue>] [--background-color|-bgc black|red|green|yellow|blue|magenta|cyan|white|bright_<color>|rgb_<red>_<green>_<blue>] [arg]*
 ```
@@ -457,30 +456,6 @@ println "hello    world"
 println --style underline --color red My Bold Red Text
 println -s underline -s bold -c bright_green -bgc red Hello World
 ```
-
-
-#### Source:
-<details>
-  <summary>Show Source</summary>
-
-```sh
-
-scope::println::count = set 0
-
-if not array_is_empty ${scope::println::arguments}
-    scope::println::commandline = array_join ${scope::println::arguments} "\" \""
-    scope::println::commandline = set "\"${scope::println::commandline}"
-    scope::println::commandline = substring ${scope::println::commandline} -2
-    scope::println::count = print %{scope::println::commandline}
-end
-
-echo
-
-set ${scope::println::count}
-
-```
-</details>
-
 
 
 ### Aliases:
