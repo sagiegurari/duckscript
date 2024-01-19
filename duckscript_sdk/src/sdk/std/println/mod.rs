@@ -1,22 +1,47 @@
-use crate::types::command::create_alias_command;
+use crate::sdk::std::print::run_print;
 use crate::utils::pckg;
-use duckscript::types::command::Command;
-use duckscript::types::error::ScriptError;
+use duckscript::types::command::{Command, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
 mod mod_test;
 
-pub(crate) fn create(package: &str) -> Result<Box<dyn Command>, ScriptError> {
-    let name = pckg::concat(package, "Println");
-    let command = create_alias_command(
-        name,
-        vec!["println".to_string()],
-        include_str!("help.md").to_string(),
-        "println".to_string(),
-        include_str!("script.ds").to_string(),
-        0,
-    )?;
+#[derive(Clone)]
+pub(crate) struct CommandImpl {
+    package: String,
+}
 
-    Ok(Box::new(command))
+impl Command for CommandImpl {
+    fn name(&self) -> String {
+        pckg::concat(&self.package, "Println")
+    }
+
+    fn aliases(&self) -> Vec<String> {
+        vec!["println".to_string()]
+    }
+
+    fn help(&self) -> String {
+        include_str!("help.md").to_string()
+    }
+
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
+    }
+
+    fn run(&self, arguments: Vec<String>) -> CommandResult {
+        let result = run_print(arguments);
+
+        match result {
+            CommandResult::Continue(_) => println!(""),
+            _ => (),
+        };
+
+        return result;
+    }
+}
+
+pub(crate) fn create(package: &str) -> Box<dyn Command> {
+    Box::new(CommandImpl {
+        package: package.to_string(),
+    })
 }

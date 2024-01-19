@@ -1,4 +1,5 @@
 use super::*;
+use crate::sdk::std::string::equals::create as EqCreate;
 use crate::test::SetCommand;
 
 #[test]
@@ -140,6 +141,69 @@ fn eval_with_error_parse_error() {
 
     match result {
         CommandResult::Error(_) => (),
+        _ => panic!("invalid result type."),
+    };
+}
+
+#[test]
+fn eval_with_eq_empty_args() {
+    let mut commands = Commands::new();
+    match commands.set(EqCreate("")) {
+        Err(error) => panic!("{}", error),
+        _ => (),
+    };
+
+    let result = eval_with_error(
+        &vec!["eq".to_string(), "".to_string(), "".to_string()],
+        &mut HashMap::new(),
+        &mut HashMap::new(),
+        &mut commands,
+    );
+
+    match result {
+        CommandResult::Continue(value) => assert_eq!(value.unwrap(), "true"),
+        _ => panic!("invalid result type."),
+    };
+}
+
+#[test]
+fn eval_with_eq_true_args() {
+    let mut commands = Commands::new();
+    match commands.set(EqCreate("")) {
+        Err(error) => panic!("{}", error),
+        _ => (),
+    };
+
+    let result = eval_with_error(
+        &vec!["eq".to_string(), "true".to_string(), "true".to_string()],
+        &mut HashMap::new(),
+        &mut HashMap::new(),
+        &mut commands,
+    );
+
+    match result {
+        CommandResult::Continue(value) => assert_eq!(value.unwrap(), "true"),
+        _ => panic!("invalid result type."),
+    };
+}
+
+#[test]
+fn eval_with_eq_true_and_false_args() {
+    let mut commands = Commands::new();
+    match commands.set(EqCreate("")) {
+        Err(error) => panic!("{}", error),
+        _ => (),
+    };
+
+    let result = eval_with_error(
+        &vec!["eq".to_string(), "true".to_string(), "false".to_string()],
+        &mut HashMap::new(),
+        &mut HashMap::new(),
+        &mut commands,
+    );
+
+    match result {
+        CommandResult::Continue(value) => assert_eq!(value.unwrap(), "false"),
         _ => panic!("invalid result type."),
     };
 }

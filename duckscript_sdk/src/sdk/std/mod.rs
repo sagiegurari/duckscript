@@ -42,7 +42,7 @@ pub(crate) fn load(commands: &mut Commands) -> Result<(), ScriptError> {
     commands.set(noop::create(PACKAGE))?;
     commands.set(not::create(PACKAGE))?;
     commands.set(print::create(PACKAGE))?;
-    commands.set(println::create(PACKAGE)?)?;
+    commands.set(println::create(PACKAGE))?;
     commands.set(read::create(PACKAGE))?;
     commands.set(release::create(PACKAGE))?;
 

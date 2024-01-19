@@ -134,6 +134,64 @@ fn add_color(
     }
 }
 
+pub(crate) fn run_print(arguments: Vec<String>) -> CommandResult {
+    // collect options
+    let mut styles = vec![];
+    let mut text_color = None;
+    let mut background_color = None;
+    let mut index = 0;
+    let mut looking_for = LookingFor::Flag;
+    for argument in &arguments {
+        index = index + 1;
+
+        match looking_for {
+            LookingFor::Flag => match argument.as_str() {
+                "--style" | "-s" => looking_for = LookingFor::Style,
+                "--color" | "-c" => looking_for = LookingFor::TextColor,
+                "--background-color" | "-bgc" => looking_for = LookingFor::BackgroundColor,
+                _ => break,
+            },
+            LookingFor::Style => {
+                styles.push(argument.to_string());
+                looking_for = LookingFor::Flag;
+            }
+            LookingFor::TextColor => {
+                text_color = Some(argument.to_string());
+                looking_for = LookingFor::Flag;
+            }
+            LookingFor::BackgroundColor => {
+                background_color = Some(argument.to_string());
+                looking_for = LookingFor::Flag;
+            }
+        }
+    }
+    if index > 0 {
+        index = index - 1;
+    }
+
+    // generate whole string
+    let mut string = String::new();
+    let mut count = 0;
+    for argument in &arguments[index..] {
+        count = count + 1;
+        string.push_str(argument);
+        string.push(' ');
+    }
+    if count > 0 {
+        string.remove(string.len() - 1);
+    }
+
+    // add colors
+    let mut styled_string = string.normal();
+    styled_string = add_color(styled_string, text_color, false);
+    styled_string = add_color(styled_string, background_color, true);
+    styled_string = add_styles(styled_string, styles);
+
+    print!("{}", styled_string);
+
+    CommandResult::Continue(Some(count.to_string()))
+}
+
 #[derive(Clone)]
 pub(crate) struct CommandImpl {
     package: String,
@@ -157,61 +215,7 @@ impl Command for CommandImpl {
     }
 
     fn run(&self, arguments: Vec<String>) -> CommandResult {
-        // collect options
-        let mut styles = vec![];
-        let mut text_color = None;
-        let mut background_color = None;
-        let mut index = 0;
-        let mut looking_for = LookingFor::Flag;
-        for argument in &arguments {
-            index = index + 1;
-
-            match looking_for {
-                LookingFor::Flag => match argument.as_str() {
-                    "--style" | "-s" => looking_for = LookingFor::Style,
-                    "--color" | "-c" => looking_for = LookingFor::TextColor,
-                    "--background-color" | "-bgc" => looking_for = LookingFor::BackgroundColor,
-                    _ => break,
-                },
-                LookingFor::Style => {
-                    styles.push(argument.to_string());
-                    looking_for = LookingFor::Flag;
-                }
-                LookingFor::TextColor => {
-                    text_color = Some(argument.to_string());
-                    looking_for = LookingFor::Flag;
-                }
-                LookingFor::BackgroundColor => {
-                    background_color = Some(argument.to_string());
-                    looking_for = LookingFor::Flag;
-                }
-            }
-        }
-        if index > 0 {
-            index = index - 1;
-        }
-
-        // generate whole string
-        let mut string = String::new();
-        let mut count = 0;
-        for argument in &arguments[index..] {
-            count = count + 1;
-            string.push_str(argument);
-            string.push(' ');
-        }
-        if count > 0 {
-            string.remove(string.len() - 1);
-        }
-
-        // add colors
-        let mut styled_string = string.normal();
-        styled_string = add_color(styled_string, text_color, false);
-        styled_string = add_color(styled_string, background_color, true);
-        styled_string = add_styles(styled_string, styles);
-
-        print!("{}", styled_string);
-
-        CommandResult::Continue(Some(count.to_string()))
+        run_print(arguments)
     }
 }
 

@@ -6,7 +6,7 @@ fn test_no_style
 end
 
 fn test_with_style
-    count = print -s bold -s underline -s italic -s dimmed -s blink --style strikethrough --color bright_green --background-color red bright_green red
+    count = println -s bold -s underline -s italic -s dimmed -s blink --style strikethrough --color bright_green --background-color red bright_green red
     assert_eq ${count} 2
 
     colors = array black red green yellow blue magenta cyan white

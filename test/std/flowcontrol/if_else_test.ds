@@ -163,6 +163,38 @@ fn test_if_call_to_functions
     assert ${valid}
 end
 
+fn test_eq_empty_strings
+    valid = set false
+
+    if eq "" ""
+        valid = set true
+    end
+
+    assert ${valid}
+end
+
+fn test_eq_different_strings
+    valid = set true
+
+    if eq "1 2" "1 3"
+        valid = set false
+    end
+
+    assert ${valid}
+end
+
+fn test_not_is_array_empty
+    valid = set false
+
+    array = array 1 2 3
+    if not array_is_empty ${array}
+        valid = set true
+    end
+    release ${array}
+
+    assert ${valid}
+end
+
 fn _test_return_true
     return true
 end
