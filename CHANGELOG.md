@@ -2,7 +2,7 @@
 
 ### v0.9.3
 
-* Fix: if/else condition with a command that accepts empty values
+* Fix: if/else condition with a command that accepts empty values #390
 * Enhancement: dump commands will print to output if no output variable is defined
 
 ### v0.9.2 (2023-11-18)
