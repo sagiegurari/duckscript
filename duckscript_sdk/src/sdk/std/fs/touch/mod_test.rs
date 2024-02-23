@@ -1,7 +1,6 @@
 use super::*;
 use crate::test;
 use crate::test::CommandValidation;
-use fsio;
 
 #[test]
 fn common_functions() {
