@@ -2,7 +2,6 @@ use super::*;
 use crate::test;
 use crate::test::{TestCommand1, TestCommand2, TestCommand3, TestCommand4};
 use crate::types::runtime::Context;
-use std::collections::HashMap;
 
 #[test]
 fn command_default_aliases() {

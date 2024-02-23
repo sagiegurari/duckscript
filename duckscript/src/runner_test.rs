@@ -5,7 +5,7 @@ use crate::test::{
     CrashCommand, ErrorCommand, ExitCommand, GoToLabelCommand, GoToLineCommand, OnErrorCommand,
     SetCommand,
 };
-use crate::types::instruction::{InstructionMetaInfo, PreProcessInstruction};
+use crate::types::instruction::PreProcessInstruction;
 
 fn assert_end_reason_exit_called(end_reason: EndReason) {
     match end_reason {
