@@ -2,7 +2,6 @@ use crate::utils::io::ends_with_separator;
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
 use fs_extra::{dir, move_items};
-use fsio;
 use fsio::directory::create_parent;
 use std::fs::rename;
 use std::path::Path;

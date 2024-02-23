@@ -1,7 +1,6 @@
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
 use fsio::path::from_path::FromPath;
-use which;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]

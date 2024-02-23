@@ -1,6 +1,5 @@
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use base64;
 use base64::Engine;
 use duckscript::types::command::{Command, CommandResult, Commands};
 use duckscript::types::instruction::Instruction;

@@ -1,5 +1,4 @@
 use crate::utils::pckg;
-use duckscript;
 use duckscript::types::command::{Command, CommandResult};
 
 #[cfg(test)]

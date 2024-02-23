@@ -1,5 +1,4 @@
 use crate::utils::pckg;
-use attohttpc;
 use duckscript::types::command::{Command, CommandResult};
 use fsio::directory::create_parent;
 use fsio::file::delete;

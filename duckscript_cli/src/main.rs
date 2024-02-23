@@ -211,7 +211,6 @@ mod linter;
 use duckscript::runner;
 use duckscript::types::error::ScriptError;
 use duckscript::types::runtime::Context;
-use duckscriptsdk;
 use std::env;
 use std::process::exit;
 

@@ -1,5 +1,4 @@
 use duckscript::types::error::ScriptError;
-use fsio;
 use fsio::file::{append_file, ensure_exists, read_file, write_file};
 
 #[cfg(test)]
