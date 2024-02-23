@@ -1,6 +1,5 @@
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
-use whoami;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]

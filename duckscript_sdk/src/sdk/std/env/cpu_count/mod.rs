@@ -1,6 +1,5 @@
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult};
-use num_cpus;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
