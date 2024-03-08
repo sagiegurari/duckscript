@@ -9,7 +9,7 @@ fn common_functions() {
 
 #[test]
 fn run_valid() {
-    let name = whoami::hostname();
+    let name = whoami::fallible::hostname().unwrap();
 
     test::run_script_and_validate(
         vec![create("")],

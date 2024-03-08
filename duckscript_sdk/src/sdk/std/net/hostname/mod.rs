@@ -28,7 +28,10 @@ impl Command for CommandImpl {
     }
 
     fn run(&self, _arguments: Vec<String>) -> CommandResult {
-        CommandResult::Continue(Some(whoami::hostname()))
+        match whoami::fallible::hostname() {
+            Ok(hostname) => CommandResult::Continue(Some(hostname)),
+            Err(error) => CommandResult::Error(error.to_string()),
+        }
     }
 }
 
