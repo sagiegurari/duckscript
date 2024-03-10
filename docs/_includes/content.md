@@ -61,7 +61,7 @@ Running this script is done using the **duck** executable as follows:
 duck ./examples/hello_world.ds
 ```
 
-We will understand more and breakdown this down in the following sections.
+We will understand more and break this down in the following sections.
 
 *Running the duck command without any arguments will open up the repl mode.*
 
