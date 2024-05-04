@@ -6,7 +6,7 @@ use std::collections::HashMap;
 use std::fs::{File, OpenOptions};
 use std::io;
 use std::path::Path;
-use zip::write::FileOptions;
+use zip::write::SimpleFileOptions;
 use zip::{CompressionMethod, ZipWriter};
 
 #[derive(Clone)]
@@ -109,7 +109,7 @@ impl Command for CommandImpl {
             ZipWriter::new(zip_file)
         };
 
-        let zip_options = FileOptions::default()
+        let zip_options = SimpleFileOptions::default()
             .compression_method(compression)
             .unix_permissions(0o755);
 
