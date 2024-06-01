@@ -97,20 +97,13 @@ fn create_runtime(instructions: Vec<Instruction>, context: Context) -> Runtime {
 
     let mut line = 0;
     for instruction in &instructions {
-        match &instruction.instruction_type {
-            InstructionType::Script(ref value) => {
-                match value.label {
-                    Some(ref label) => {
-                        runtime.label_to_line.insert(label.to_string(), line);
-                        ()
-                    }
-                    None => (),
-                };
-            }
-            _ => (),
+        if let InstructionType::Script(ref value) = &instruction.instruction_type {
+            if let Some(ref label) = value.label {
+                runtime.label_to_line.insert(label.to_string(), line);
+            };
         };
 
-        line = line + 1;
+        line += 1;
     }
 
     runtime.instructions = Some(instructions);
@@ -145,7 +138,7 @@ fn run_instructions(
             &mut runtime.context.commands,
             &mut runtime.context.variables,
             &mut state,
-            &instructions,
+            instructions,
             instruction,
             line,
         );
@@ -185,23 +178,18 @@ fn run_instructions(
 
                 let post_error_line = line + 1;
 
-                match run_on_error_instruction(
+                if let Err(error) = run_on_error_instruction(
                     &mut runtime.context.commands,
                     &mut runtime.context.variables,
                     &mut state,
-                    &instructions,
+                    instructions,
                     error,
                     meta_info.clone(),
                 ) {
-                    Err(error) => {
-                        return Err(ScriptError::Runtime(error, Some(meta_info.clone())));
-                    }
-                    _ => (),
+                    return Err(ScriptError::Runtime(error, Some(meta_info.clone())));
                 };
 
                 line = post_error_line;
-
-                ()
             }
             CommandResult::Crash(error) => {
                 let script_error = ScriptError::Runtime(error, Some(meta_info));
@@ -215,9 +203,7 @@ fn run_instructions(
             CommandResult::Continue(output) => {
                 update_output(&mut runtime.context.variables, output_variable, output);
 
-                line = line + 1;
-
-                ()
+                line += 1;
             }
             CommandResult::GoTo(output, goto_value) => {
                 update_output(&mut runtime.context.variables, output_variable, output);
@@ -314,26 +300,24 @@ pub fn run_instruction(
                 Some(ref command) => match commands.get_for_use(command) {
                     Some(command_instance) => {
                         let command_arguments = bind_command_arguments(
-                            &variables,
-                            &script_instruction,
+                            variables,
+                            script_instruction,
                             &instruction.meta_info,
                         );
 
-                        let command_result = if command_instance.requires_context() {
+                        if command_instance.requires_context() {
                             command_instance.run_with_context(
                                 command_arguments,
                                 state,
                                 variables,
                                 output_variable.clone(),
-                                &instructions,
+                                instructions,
                                 commands,
                                 line,
                             )
                         } else {
                             command_instance.run(command_arguments)
-                        };
-
-                        command_result
+                        }
                     }
                     None => CommandResult::Crash(format!("Command: {} not found.", &command)),
                 },

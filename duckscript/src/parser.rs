@@ -38,7 +38,7 @@ pub fn parse_text_with_source_file(
     let mut meta_info = InstructionMetaInfo::new();
     meta_info.source = Some(source_file.to_string());
 
-    parse_lines(&text, meta_info)
+    parse_lines(text, meta_info)
 }
 
 fn parse_lines(
@@ -51,18 +51,17 @@ fn parse_lines(
     for line in lines.lines() {
         let mut line_meta_info = meta_info.clone();
         line_meta_info.line = Some(line_number);
-        line_number = line_number + 1;
+        line_number += 1;
 
-        match parse_line(&line, line_meta_info) {
+        match parse_line(line, line_meta_info) {
             Ok(instruction) => {
                 instructions.push(instruction.clone());
 
-                match instruction.instruction_type {
-                    InstructionType::PreProcess(_) => match preprocessor::run(&instruction) {
+                if let InstructionType::PreProcess(_) = instruction.instruction_type {
+                    match preprocessor::run(&instruction) {
                         Ok(mut added_instructions) => instructions.append(&mut added_instructions),
                         Err(error) => return Err(error),
-                    },
-                    _ => (),
+                    }
                 }
             }
             Err(error) => return Err(error),
@@ -75,7 +74,7 @@ fn parse_lines(
 fn parse_line(line_text: &str, meta_info: InstructionMetaInfo) -> Result<Instruction, ScriptError> {
     let trimmed_text = line_text.trim();
 
-    if trimmed_text.is_empty() || trimmed_text.starts_with(&COMMENT_PREFIX_STR) {
+    if trimmed_text.is_empty() || trimmed_text.starts_with(COMMENT_PREFIX_STR) {
         Ok(Instruction {
             meta_info,
             instruction_type: InstructionType::Empty,
@@ -104,7 +103,7 @@ fn parse_pre_process_line(
         let end_index = line_text.len();
         for _i in index..end_index {
             let character = line_text[index];
-            index = index + 1;
+            index += 1;
 
             if character == ' ' {
                 if !command.is_empty() {
@@ -118,7 +117,7 @@ fn parse_pre_process_line(
         if command.is_empty() {
             Err(ScriptError::PreProcessNoCommandFound(meta_info))
         } else {
-            match parse_arguments(&meta_info, &line_text, index) {
+            match parse_arguments(&meta_info, line_text, index) {
                 Ok(arguments) => {
                     let mut instruction = PreProcessInstruction::new();
                     instruction.command = Some(command);
@@ -151,7 +150,7 @@ fn parse_command_line(
         // search for label
         let mut index = start_index;
         let mut instruction = ScriptInstruction::new();
-        match find_label(&meta_info, &line_text, index) {
+        match find_label(&meta_info, line_text, index) {
             Ok(output) => {
                 let (next_index, value) = output;
                 index = next_index;
@@ -164,12 +163,12 @@ fn parse_command_line(
         };
 
         // find output variable and command
-        index = match find_output_and_command(&meta_info, &line_text, index, &mut instruction) {
+        index = match find_output_and_command(&meta_info, line_text, index, &mut instruction) {
             Ok(next_index) => next_index,
             Err(error) => return Err(error),
         };
 
-        match parse_arguments(&meta_info, &line_text, index) {
+        match parse_arguments(&meta_info, line_text, index) {
             Ok(arguments) => {
                 instruction.arguments = arguments;
 
@@ -218,7 +217,7 @@ fn parse_arguments_with_options(
 
     let mut index = start_index;
     loop {
-        match parse_next_argument(&meta_info, &line_text, index, control_as_char) {
+        match parse_next_argument(meta_info, line_text, index, control_as_char) {
             Ok(output) => {
                 let (next_index, argument) = output;
 
@@ -247,8 +246,8 @@ fn parse_next_argument(
     control_as_char: bool,
 ) -> Result<(usize, Option<String>), ScriptError> {
     parse_next_value(
-        &meta_info,
-        &line_text,
+        meta_info,
+        line_text,
         start_index,
         true,
         !control_as_char,
@@ -259,7 +258,7 @@ fn parse_next_argument(
 
 fn parse_next_value(
     meta_info: &InstructionMetaInfo,
-    line_text: &Vec<char>,
+    line_text: &[char],
     start_index: usize,
     allow_quotes: bool,
     allow_control: bool,
@@ -280,7 +279,7 @@ fn parse_next_value(
         let mut found_variable_prefix = false;
         for _i in index..end_index {
             let character = line_text[index];
-            index = index + 1;
+            index += 1;
 
             if in_argument {
                 if in_control {
@@ -327,7 +326,7 @@ fn parse_next_value(
                         || (stop_on_equals && character == '='))
                 {
                     if character == ' ' || character == '=' {
-                        index = index - 1;
+                        index -= 1;
                     } else if character == '#' {
                         index = end_index;
                     }
@@ -394,27 +393,24 @@ fn find_label(
         let mut index = start_index;
         for _i in index..end_index {
             let character = line_text[index];
-            index = index + 1;
+            index += 1;
 
             if character == LABEL_PREFIX {
-                match parse_next_value(&meta_info, &line_text, index, false, false, false, false) {
+                match parse_next_value(meta_info, line_text, index, false, false, false, false) {
                     Ok(output) => {
                         let (next_index, value) = output;
                         index = next_index;
 
-                        match value {
-                            Some(label_value) => {
-                                if label_value.is_empty() {
-                                    return Err(ScriptError::EmptyLabel(meta_info.clone()));
-                                }
-
-                                let mut text = String::new();
-                                text.push(LABEL_PREFIX);
-                                text.push_str(&label_value);
-
-                                label = Some(text);
+                        if let Some(label_value) = value {
+                            if label_value.is_empty() {
+                                return Err(ScriptError::EmptyLabel(meta_info.clone()));
                             }
-                            None => (),
+
+                            let mut text = String::new();
+                            text.push(LABEL_PREFIX);
+                            text.push_str(&label_value);
+
+                            label = Some(text);
                         };
 
                         break;
@@ -422,7 +418,7 @@ fn find_label(
                     Err(error) => return Err(error),
                 };
             } else if character != ' ' {
-                index = index - 1;
+                index -= 1;
                 break;
             }
         }
@@ -437,15 +433,7 @@ fn find_output_and_command(
     start_index: usize,
     instruction: &mut ScriptInstruction,
 ) -> Result<usize, ScriptError> {
-    match parse_next_value(
-        &meta_info,
-        &line_text,
-        start_index,
-        false,
-        false,
-        true,
-        false,
-    ) {
+    match parse_next_value(meta_info, line_text, start_index, false, false, true, false) {
         Ok(output) => {
             let (next_index, value) = output;
 
@@ -456,7 +444,7 @@ fn find_output_and_command(
                 let end_index = line_text.len();
                 for _i in index..end_index {
                     let character = line_text[index];
-                    index = index + 1;
+                    index += 1;
 
                     if character != ' ' {
                         if character == '=' {
@@ -468,9 +456,8 @@ fn find_output_and_command(
                 }
 
                 if instruction.output.is_some() {
-                    match parse_next_value(
-                        &meta_info, &line_text, index, false, false, false, false,
-                    ) {
+                    match parse_next_value(meta_info, line_text, index, false, false, false, false)
+                    {
                         Ok(output) => {
                             let (next_index, value) = output;
 

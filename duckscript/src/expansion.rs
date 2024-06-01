@@ -58,7 +58,7 @@ pub(crate) fn expand_by_wrapper(
             } else if prefix_index == 0 && (next_char == '$' || next_char == '%') {
                 prefix_index = 1;
 
-                single_type = if next_char == '$' { true } else { false };
+                single_type = next_char == '$';
             } else if prefix_index == 1 && next_char == '{' {
                 found_prefix = true;
                 prefix_index = 0;
@@ -71,9 +71,8 @@ pub(crate) fn expand_by_wrapper(
                 value_string.push(next_char);
             }
         } else if next_char == '}' {
-            match variables.get(&key) {
-                Some(variable_value) => value_string.push_str(&variable_value),
-                _ => (),
+            if let Some(variable_value) = variables.get(&key) {
+                value_string.push_str(variable_value)
             };
 
             key.clear();
@@ -95,7 +94,7 @@ pub(crate) fn expand_by_wrapper(
 
     if force_push {
         value_string.push('\\');
-    } else if key.len() > 0 {
+    } else if !key.is_empty() {
         if prefix_index > 0 || found_prefix {
             push_prefix(&mut value_string, single_type, found_prefix);
         }

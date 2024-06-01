@@ -26,7 +26,7 @@ pub(crate) fn run(
                         match path_buffer.parent() {
                             Some(path) => {
                                 let mut parent_path_buffer = path.to_path_buf();
-                                parent_path_buffer.push(&argument);
+                                parent_path_buffer.push(argument);
 
                                 let full_path_buffer = match parent_path_buffer.canonicalize() {
                                     Ok(new_buffer) => new_buffer,
