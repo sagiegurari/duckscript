@@ -24,8 +24,3 @@ include = [
 
 [dependencies]
 fsio = "^0.4"
-
-[badges.codecov]
-branch = "master"
-repository = "sagiegurari/duckscript"
-service = "github"

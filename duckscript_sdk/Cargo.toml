@@ -61,8 +61,3 @@ tls-rustls = ["attohttpc/rustls"]
 tls-native = ["attohttpc/tls"]
 tls = ["tls-rustls"]              # alias for backward compatibility
 default = ["tls-rustls"]
-
-[badges.codecov]
-branch = "master"
-repository = "sagiegurari/duckscript"
-service = "github"

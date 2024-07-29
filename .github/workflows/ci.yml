@@ -21,4 +21,6 @@ jobs:
     - name: Install cargo-make
       run: cargo install --debug cargo-make
     - name: Run CI
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       run: cargo make --no-workspace workspace-ci-flow
