@@ -2,6 +2,7 @@ use crate::utils::io;
 use crate::utils::pckg;
 use duckscript::types::command::Commands;
 use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
@@ -41,6 +42,7 @@ impl Command for CommandImpl {
         _instructions: &Vec<Instruction>,
         commands: &mut Commands,
         _line: usize,
+        env: &mut Env,
     ) -> CommandResult {
         if arguments.is_empty() {
             CommandResult::Error("Documentation output directory not provided.".to_string())
@@ -85,7 +87,9 @@ impl Command for CommandImpl {
                         }
                     };
                 } else {
-                    println!("Command: {} skipped.", &name);
+                    if let Err(error) = writeln!(env.out, "Command: {} skipped.", &name) {
+                        return CommandResult::Error(error.to_string());
+                    }
                 }
             }
 

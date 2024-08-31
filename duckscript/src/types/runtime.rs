@@ -8,6 +8,7 @@
 mod runtime_test;
 
 use crate::types::command::Commands;
+use crate::types::env::Env;
 use crate::types::instruction::Instruction;
 use std::any::Any;
 use std::cell::RefCell;
@@ -75,15 +76,21 @@ pub struct Runtime {
     pub label_to_line: HashMap<String, usize>,
     /// The runtime context
     pub context: Context,
+    /// The runtime env
+    pub env: Env,
 }
 
 impl Runtime {
     /// Creates and returns a new instance.
-    pub fn new(context: Context) -> Runtime {
+    pub fn new(context: Context, env: Option<Env>) -> Runtime {
         Runtime {
             instructions: None,
             label_to_line: HashMap::new(),
             context,
+            env: match env {
+                Some(value) => value,
+                None => Env::default(),
+            },
         }
     }
 }

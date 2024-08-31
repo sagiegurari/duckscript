@@ -1,6 +1,10 @@
 use crate::utils::pckg;
 use colored::{Color, ColoredString, Colorize};
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::env::Env;
+use duckscript::types::instruction::Instruction;
+use duckscript::types::runtime::StateValue;
+use std::collections::HashMap;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -134,7 +138,7 @@ fn add_color(
     }
 }
 
-pub(crate) fn run_print(arguments: Vec<String>) -> CommandResult {
+pub(crate) fn run_print(env: &mut Env, arguments: Vec<String>) -> CommandResult {
     // collect options
     let mut styles = vec![];
     let mut text_color = None;
@@ -187,9 +191,10 @@ pub(crate) fn run_print(arguments: Vec<String>) -> CommandResult {
     styled_string = add_color(styled_string, background_color, true);
     styled_string = add_styles(styled_string, styles);
 
-    print!("{}", styled_string);
-
-    CommandResult::Continue(Some(count.to_string()))
+    match write!(env.out, "{}", styled_string) {
+        Ok(_) => CommandResult::Continue(Some(count.to_string())),
+        Err(error) => CommandResult::Error(error.to_string()),
+    }
 }
 
 #[derive(Clone)]
@@ -214,8 +219,22 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        run_print(arguments)
+    fn requires_context(&self) -> bool {
+        true
+    }
+
+    fn run_with_context(
+        &self,
+        arguments: Vec<String>,
+        _state: &mut HashMap<String, StateValue>,
+        _variables: &mut HashMap<String, String>,
+        _output_variable: Option<String>,
+        _instructions: &Vec<Instruction>,
+        _commands: &mut Commands,
+        _line: usize,
+        env: &mut Env,
+    ) -> CommandResult {
+        run_print(env, arguments)
     }
 }
 

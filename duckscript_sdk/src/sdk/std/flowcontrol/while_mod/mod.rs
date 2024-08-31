@@ -3,6 +3,7 @@ use crate::types::scope::get_line_context_name;
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
 use crate::utils::{condition, instruction_query, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
+use duckscript::types::env::Env;
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -279,6 +280,7 @@ impl Command for WhileCommand {
         instructions: &Vec<Instruction>,
         commands: &mut Commands,
         line: usize,
+        env: &mut Env,
     ) -> CommandResult {
         if arguments.is_empty() {
             CommandResult::Error("Missing condition".to_string())
@@ -296,6 +298,7 @@ impl Command for WhileCommand {
                         state,
                         variables,
                         commands,
+                        env,
                     ) {
                         Ok(passed) => {
                             if passed {
@@ -367,6 +370,7 @@ impl Command for EndWhileCommand {
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         line: usize,
+        _env: &mut Env,
     ) -> CommandResult {
         match pop_call_info_for_line(line, state) {
             Some(call_info) => {

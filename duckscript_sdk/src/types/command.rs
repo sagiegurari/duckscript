@@ -4,6 +4,7 @@ use crate::utils::eval;
 use crate::utils::state::{get_handles_sub_state, put_handle};
 use duckscript::parser;
 use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::env::Env;
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -92,6 +93,7 @@ impl Command for AliasCommand {
         _instructions: &Vec<Instruction>,
         commands: &mut Commands,
         _line: usize,
+        env: &mut Env,
     ) -> CommandResult {
         if arguments.len() < self.arguments_amount {
             CommandResult::Error("Invalid arguments provided.".to_string())
@@ -125,7 +127,7 @@ impl Command for AliasCommand {
             }
 
             let (flow_result, flow_output) =
-                eval::eval_instructions(&self.instructions, commands, state, variables, 0);
+                eval::eval_instructions(&self.instructions, commands, state, variables, env, 0);
 
             match handle_option {
                 Some(handle) => {

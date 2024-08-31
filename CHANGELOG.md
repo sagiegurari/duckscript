@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.10.0
+
+* Enhancement: Runtime - \[Breaking Change\] New Env struct enabling commands to redirect out/err to provided streams #440
+
 ### v0.9.3 (2024-01-19)
 
 * Fix: if/else condition with a command that accepts empty values #390

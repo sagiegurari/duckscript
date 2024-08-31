@@ -1,6 +1,7 @@
 use duckscript::parser;
 use duckscript::runner;
 use duckscript::types::command::{CommandResult, Commands, GoToValue};
+use duckscript::types::env::Env;
 use duckscript::types::instruction::{Instruction, InstructionType};
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
@@ -46,14 +47,22 @@ pub(crate) fn eval(
     state: &mut HashMap<String, StateValue>,
     variables: &mut HashMap<String, String>,
     commands: &mut Commands,
+    env: &mut Env,
 ) -> Result<CommandResult, String> {
     if arguments.is_empty() {
         Ok(CommandResult::Continue(None))
     } else {
         match parse(arguments) {
             Ok(instruction) => {
-                let (command_result, _) =
-                    runner::run_instruction(commands, variables, state, &vec![], instruction, 0);
+                let (command_result, _) = runner::run_instruction(
+                    commands,
+                    variables,
+                    state,
+                    &vec![],
+                    instruction,
+                    0,
+                    env,
+                );
 
                 Ok(command_result)
             }
@@ -67,8 +76,9 @@ pub(crate) fn eval_with_error(
     state: &mut HashMap<String, StateValue>,
     variables: &mut HashMap<String, String>,
     commands: &mut Commands,
+    env: &mut Env,
 ) -> CommandResult {
-    match eval(arguments, state, variables, commands) {
+    match eval(arguments, state, variables, commands, env) {
         Ok(command_result) => match command_result.clone() {
             CommandResult::Crash(error) => CommandResult::Error(error),
             _ => command_result,
@@ -83,6 +93,7 @@ pub(crate) fn eval_with_instructions(
     state: &mut HashMap<String, StateValue>,
     variables: &mut HashMap<String, String>,
     commands: &mut Commands,
+    env: &mut Env,
 ) -> CommandResult {
     if arguments.is_empty() {
         CommandResult::Continue(None)
@@ -96,6 +107,7 @@ pub(crate) fn eval_with_instructions(
                     commands,
                     state,
                     variables,
+                    env,
                     all_instructions.len() - 1,
                 );
 
@@ -117,6 +129,7 @@ pub(crate) fn eval_instructions(
     commands: &mut Commands,
     state: &mut HashMap<String, StateValue>,
     variables: &mut HashMap<String, String>,
+    env: &mut Env,
     start_line: usize,
 ) -> (Option<CommandResult>, Option<String>) {
     let mut line = start_line;
@@ -138,6 +151,7 @@ pub(crate) fn eval_instructions(
                     &instructions,
                     instruction.clone(),
                     line,
+                    env,
                 );
 
                 match command_result {

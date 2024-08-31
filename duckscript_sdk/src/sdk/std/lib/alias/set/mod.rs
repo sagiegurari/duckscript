@@ -2,6 +2,7 @@ use crate::sdk::std::lib::alias::ALIAS_STATE_KEY;
 use crate::utils::state::get_sub_state;
 use crate::utils::{eval, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
@@ -48,12 +49,13 @@ fn create_alias_command(
             _instructions: &Vec<Instruction>,
             commands: &mut Commands,
             _line: usize,
+            env: &mut Env,
         ) -> CommandResult {
             let mut all_arguments = vec![];
             all_arguments.append(&mut self.arguments.clone());
             all_arguments.append(&mut arguments.clone());
 
-            eval::eval_with_error(&all_arguments, state, variables, commands)
+            eval::eval_with_error(&all_arguments, state, variables, commands, env)
         }
     }
 
@@ -106,6 +108,7 @@ impl Command for CommandImpl {
         _instructions: &Vec<Instruction>,
         commands: &mut Commands,
         _line: usize,
+        _env: &mut Env,
     ) -> CommandResult {
         if arguments.len() < 2 {
             CommandResult::Error("Invalid alias provided.".to_string())

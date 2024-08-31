@@ -1,6 +1,10 @@
 use crate::sdk::std::print::run_print;
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::env::Env;
+use duckscript::types::instruction::Instruction;
+use duckscript::types::runtime::StateValue;
+use std::collections::HashMap;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -28,15 +32,31 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        let result = run_print(arguments);
+    fn requires_context(&self) -> bool {
+        true
+    }
 
-        match result {
-            CommandResult::Continue(_) => println!(""),
-            _ => (),
-        };
+    fn run_with_context(
+        &self,
+        arguments: Vec<String>,
+        _state: &mut HashMap<String, StateValue>,
+        _variables: &mut HashMap<String, String>,
+        _output_variable: Option<String>,
+        _instructions: &Vec<Instruction>,
+        _commands: &mut Commands,
+        _line: usize,
+        env: &mut Env,
+    ) -> CommandResult {
+        let result = run_print(env, arguments);
 
-        return result;
+        if let CommandResult::Continue(ref _value) = result {
+            match writeln!(env.out, "") {
+                Ok(_) => result,
+                Err(error) => CommandResult::Error(error.to_string()),
+            }
+        } else {
+            result
+        }
     }
 }
 
