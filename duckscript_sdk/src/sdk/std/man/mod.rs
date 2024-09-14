@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -11,10 +11,15 @@ mod mod_test;
 
 fn print_help(env: &mut Env, help_doc: String, name: &str) -> CommandResult {
     if help_doc.is_empty() {
-        writeln!(env.out, "No documentation found for command: {}", name).unwrap();
+        writeln!(
+            arguments.env.out,
+            "No documentation found for command: {}",
+            name
+        )
+        .unwrap();
         CommandResult::Continue(None)
     } else {
-        writeln!(env.out, "{}", &help_doc).unwrap();
+        writeln!(arguments.env.out, "{}", &help_doc).unwrap();
         CommandResult::Continue(Some(help_doc))
     }
 }
@@ -47,7 +52,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         _state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -56,10 +61,10 @@ impl Command for CommandImpl {
         _line: usize,
         env: &mut Env,
     ) -> CommandResult {
-        if arguments.is_empty() {
+        if arguments.args.is_empty() {
             print_help(env, self.help(), &self.name())
         } else {
-            let name = &arguments[0];
+            let name = &arguments.args[0];
 
             match commands.get(name) {
                 Some(command) => {
@@ -70,7 +75,7 @@ impl Command for CommandImpl {
                     if name == &self.name() || self.aliases().contains(name) {
                         print_help(env, self.help(), &self.name())
                     } else {
-                        writeln!(env.out, "Command: {} not found.", name).unwrap();
+                        writeln!(arguments.env.out, "Command: {} not found.", name).unwrap();
                         CommandResult::Continue(None)
                     }
                 }

@@ -1,6 +1,6 @@
 use crate::sdk::std::print::run_print;
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -38,7 +38,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         _state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -50,7 +50,7 @@ impl Command for CommandImpl {
         let result = run_print(env, arguments);
 
         if let CommandResult::Continue(ref _value) = result {
-            match writeln!(env.out, "") {
+            match writeln!(arguments.env.out, "") {
                 Ok(_) => result,
                 Err(error) => CommandResult::Error(error.to_string()),
             }

@@ -1,5 +1,5 @@
 use crate::utils::{pckg, scope};
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -37,7 +37,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -46,10 +46,10 @@ impl Command for CommandImpl {
         _line: usize,
         _env: &mut Env,
     ) -> CommandResult {
-        let copy = if arguments.is_empty() {
+        let copy = if arguments.args.is_empty() {
             &[]
-        } else if arguments[0] == "--copy" {
-            &arguments[1..]
+        } else if arguments.args[0] == "--copy" {
+            &arguments.args[1..]
         } else {
             &[]
         };

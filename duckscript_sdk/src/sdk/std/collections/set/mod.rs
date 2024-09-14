@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -32,24 +32,10 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         let mut set = HashSet::new();
 
-        for argument in arguments {
+        for argument in arguments.args {
             set.insert(argument);
         }
 

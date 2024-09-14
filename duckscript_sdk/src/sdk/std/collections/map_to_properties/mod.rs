@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::{get_as_string, get_handles_sub_state};
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -34,28 +34,14 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("Map handle not provided.".to_string())
         } else {
-            let (prefix, key) = if arguments.len() >= 3 && arguments[0] == "--prefix" {
-                (arguments[1].to_string(), arguments[2].to_string())
+            let (prefix, key) = if arguments.args.len() >= 3 && arguments.args[0] == "--prefix" {
+                (arguments.args[1].to_string(), arguments.args[2].to_string())
             } else {
-                ("".to_string(), arguments[0].to_string())
+                ("".to_string(), arguments.args[0].to_string())
             };
 
             let state = get_handles_sub_state(state);

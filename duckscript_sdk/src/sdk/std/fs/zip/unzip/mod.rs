@@ -3,7 +3,7 @@ use std::path::Path;
 
 use zip::ZipArchive;
 
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 
 use crate::utils::pckg;
 
@@ -29,15 +29,15 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.len() < 2 {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.len() < 2 {
             return CommandResult::Error(
                 "Paths to the ZIP file and/or target directory are not provided.".to_string(),
             );
         }
 
-        let zipfile = Path::new(&arguments[0]);
-        let target_dir = Path::new(&arguments[1]);
+        let zipfile = Path::new(&arguments.args[0]);
+        let target_dir = Path::new(&arguments.args[1]);
 
         match std::fs::create_dir_all(target_dir) {
             Ok(_) => (),

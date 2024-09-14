@@ -1,10 +1,7 @@
-use crate::types::command::{Command, CommandResult, Commands, GoToValue};
-use crate::types::env::Env;
+use crate::types::command::{Command, CommandArgs, CommandResult, GoToValue};
 use crate::types::instruction::{
     Instruction, InstructionType, PreProcessInstruction, ScriptInstruction,
 };
-use crate::types::runtime::StateValue;
-use std::collections::HashMap;
 
 #[derive(Clone)]
 pub(crate) struct SetCommand {}
@@ -18,11 +15,11 @@ impl Command for SetCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        let output = if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        let output = if arguments.args.is_empty() {
             None
         } else {
-            Some(arguments[0].clone())
+            Some(arguments.args[0].clone())
         };
 
         CommandResult::Continue(output)
@@ -41,11 +38,11 @@ impl Command for ExitCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        let output = if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        let output = if arguments.args.is_empty() {
             None
         } else {
-            Some(arguments[0].clone())
+            Some(arguments.args[0].clone())
         };
 
         CommandResult::Exit(output)
@@ -64,28 +61,16 @@ impl Command for OnErrorCommand {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        _state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         let mut index = 0;
-        for argument in arguments {
+        for argument in arguments.args {
             index = index + 1;
-            variables.insert(index.to_string(), argument.clone());
+            arguments
+                .variables
+                .insert(index.to_string(), argument.clone());
         }
 
-        writeln!(env.out, "{}", "test").unwrap();
+        writeln!(arguments.env.out, "{}", "test").unwrap();
 
         CommandResult::Continue(None)
     }
@@ -103,7 +88,7 @@ impl Command for ErrorCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+    fn run(&self, _arguments: CommandArgs) -> CommandResult {
         CommandResult::Error("test".to_string())
     }
 }
@@ -120,7 +105,7 @@ impl Command for CrashCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+    fn run(&self, _arguments: CommandArgs) -> CommandResult {
         CommandResult::Crash("test".to_string())
     }
 }
@@ -137,11 +122,11 @@ impl Command for GoToLabelCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        let (output, label) = if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        let (output, label) = if arguments.args.is_empty() {
             (None, "target".to_string())
         } else {
-            (Some(arguments[0].clone()), arguments[0].clone())
+            (Some(arguments.args[0].clone()), arguments.args[0].clone())
         };
 
         CommandResult::GoTo(output, GoToValue::Label(label))
@@ -160,13 +145,13 @@ impl Command for GoToLineCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        let (output, line) = if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        let (output, line) = if arguments.args.is_empty() {
             (None, 900)
         } else {
             (
-                Some(arguments[0].clone()),
-                arguments[0].clone().parse().unwrap(),
+                Some(arguments.args[0].clone()),
+                arguments.args[0].clone().parse().unwrap(),
             )
         };
 
@@ -190,7 +175,7 @@ impl Command for TestCommand1 {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+    fn run(&self, _arguments: CommandArgs) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
@@ -211,7 +196,7 @@ impl Command for TestCommand2 {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+    fn run(&self, _arguments: CommandArgs) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
@@ -232,7 +217,7 @@ impl Command for TestCommand3 {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+    fn run(&self, _arguments: CommandArgs) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
@@ -253,7 +238,7 @@ impl Command for TestCommand4 {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+    fn run(&self, _arguments: CommandArgs) -> CommandResult {
         CommandResult::Continue(None)
     }
 }

@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use fsio::directory::create_parent;
 use fsio::file::delete;
 use std::fs::File;
@@ -149,18 +149,18 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("URL not provided.".to_string())
         } else {
-            let len = arguments.len() - 1;
-            let url = arguments[len].to_string();
+            let len = arguments.args.len() - 1;
+            let url = arguments.args[len].to_string();
 
             let url_lowercase = url.to_lowercase();
             if !url_lowercase.starts_with("http://") && !url_lowercase.starts_with("https://") {
                 CommandResult::Error(format!("Invalid URL: {} provided.", &url).to_string())
             } else {
-                match parse_options(&arguments[0..len].to_vec()) {
+                match parse_options(&arguments.args[0..len].to_vec()) {
                     Ok(options) => do_request(url, options),
                     Err(error) => CommandResult::Error(error),
                 }

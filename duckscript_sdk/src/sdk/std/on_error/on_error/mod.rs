@@ -1,7 +1,7 @@
 use crate::sdk::std::on_error::{get_value, EXIT_ON_ERROR_KEY, STATE_KEY};
 use crate::utils::state::get_core_sub_state_for_command;
 use crate::utils::{condition, pckg};
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -39,7 +39,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -48,8 +48,8 @@ impl Command for CommandImpl {
         _line: usize,
         _env: &mut Env,
     ) -> CommandResult {
-        if !arguments.is_empty() {
-            let error = arguments[0].clone();
+        if !arguments.args.is_empty() {
+            let error = arguments.args[0].clone();
 
             let exit_on_error = get_value(state, EXIT_ON_ERROR_KEY.to_string());
             let should_crash = condition::is_true(exit_on_error);
@@ -57,10 +57,10 @@ impl Command for CommandImpl {
             if should_crash {
                 CommandResult::Crash(error)
             } else {
-                let (line, source) = if arguments.len() > 1 {
-                    let line = arguments[1].clone();
-                    let source = if arguments.len() > 2 {
-                        arguments[2].clone()
+                let (line, source) = if arguments.args.len() > 1 {
+                    let line = arguments.args[1].clone();
+                    let source = if arguments.args.len() > 2 {
+                        arguments.args[2].clone()
                     } else {
                         "".to_string()
                     };

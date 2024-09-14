@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use std::process;
 
 #[cfg(test)]
@@ -28,7 +28,7 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+    fn run(&self, _arguments: CommandArgs) -> CommandResult {
         let id = process::id();
         CommandResult::Continue(Some(id.to_string()))
     }

@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -38,7 +38,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -47,10 +47,10 @@ impl Command for CommandImpl {
         _line: usize,
         _env: &mut Env,
     ) -> CommandResult {
-        if arguments.len() < 2 {
+        if arguments.args.len() < 2 {
             CommandResult::Error("Invalid input provided.".to_string())
         } else {
-            let split = arguments[0].split(&arguments[1]);
+            let split = arguments.args[0].split(&arguments.args[1]);
             let values = split.collect::<Vec<&str>>();
 
             let mut array = vec![];

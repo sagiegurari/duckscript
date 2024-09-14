@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::{Instruction, InstructionType};
 use duckscript::types::runtime::{Context, StateValue};
@@ -49,7 +49,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         _state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -58,17 +58,17 @@ impl Command for CommandImpl {
         _line: usize,
         env: &mut Env,
     ) -> CommandResult {
-        if arguments.is_empty() {
+        if arguments.args.is_empty() {
             CommandResult::Crash("File name not provided.".to_string())
         } else {
-            let file = arguments[0].clone();
-            let requested_test_name = if arguments.len() > 1 {
-                arguments[1].clone()
+            let file = arguments.args[0].clone();
+            let requested_test_name = if arguments.args.len() > 1 {
+                arguments.args[1].clone()
             } else {
                 "".to_string()
             };
 
-            match parser::parse_file(&arguments[0]) {
+            match parser::parse_file(&arguments.args[0]) {
                 Ok(instructions) => match commands.get("function") {
                     Some(function_command) => {
                         let mut command_names = function_command.aliases();
@@ -83,11 +83,12 @@ impl Command for CommandImpl {
                                         script_instruction.arguments.as_ref(),
                                     ) {
                                         (Some(current_command), Some(current_arguments)) => {
-                                            if !current_arguments.is_empty()
+                                            if !current_arguments.args.is_empty()
                                                 && command_names.contains(&current_command)
                                             {
-                                                if current_arguments[0].starts_with("test_") {
-                                                    test_names.push(current_arguments[0].clone());
+                                                if current_arguments.args[0].starts_with("test_") {
+                                                    test_names
+                                                        .push(current_arguments.args[0].clone());
                                                 }
                                             }
                                         }
@@ -110,7 +111,7 @@ impl Command for CommandImpl {
                                 match runner::run_script(&script, context, None) {
                                     Err(error) => {
                                         writeln!(
-                                            env.out,
+                                            arguments.env.out,
                                             "test: [{}][{}] ... failed",
                                             &file, &test_name
                                         )
@@ -126,7 +127,7 @@ impl Command for CommandImpl {
                                         );
                                     }
                                     _ => writeln!(
-                                        env.out,
+                                        arguments.env.out,
                                         "test: [{}][{}] ... ok",
                                         &file, &test_name
                                     )
@@ -144,7 +145,7 @@ impl Command for CommandImpl {
                 Err(error) => CommandResult::Crash(
                     format!(
                         "Error while parsing file: {}\n{}",
-                        &arguments[0],
+                        &arguments.args[0],
                         &error.to_string()
                     )
                     .to_string(),

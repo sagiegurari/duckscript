@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use fsio::path::from_path::FromPath;
 
 #[cfg(test)]
@@ -28,7 +28,7 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+    fn run(&self, _arguments: CommandArgs) -> CommandResult {
         match home::home_dir() {
             Some(directory) => {
                 let directory_str = FromPath::from_path(&directory);

@@ -1,7 +1,6 @@
 use crate::utils::io;
 use crate::utils::pckg;
-use duckscript::types::command::Commands;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -29,38 +28,24 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        _state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        commands: &mut Commands,
-        _line: usize,
-        env: &mut Env,
-    ) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("Documentation output directory not provided.".to_string())
         } else {
-            let (file, prefix) = if arguments.len() == 1 {
-                (arguments[0].clone(), "".to_string())
+            let (file, prefix) = if arguments.args.len() == 1 {
+                (arguments.args[0].clone(), "".to_string())
             } else {
-                (arguments[1].clone(), arguments[0].clone())
+                (arguments.args[1].clone(), arguments.args[0].clone())
             };
 
-            let names = commands.get_all_command_names();
+            let names = arguments.commands.get_all_command_names();
             let mut buffer = String::new();
 
             // create ToC
             buffer.push_str("# Table of Contents\n");
             for name in &names {
                 if name.starts_with(&prefix) {
-                    match commands.get(name) {
+                    match arguments.commands.get(name) {
                         Some(command) => {
                             if !command.help().is_empty() {
                                 let aliases = command.aliases();
@@ -87,7 +72,7 @@ impl Command for CommandImpl {
                         }
                     };
                 } else {
-                    if let Err(error) = writeln!(env.out, "Command: {} skipped.", &name) {
+                    if let Err(error) = writeln!(arguments.env.out, "Command: {} skipped.", &name) {
                         return CommandResult::Error(error.to_string());
                     }
                 }

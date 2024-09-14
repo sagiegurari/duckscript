@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use colored::{Color, ColoredString, Colorize};
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -138,7 +138,7 @@ fn add_color(
     }
 }
 
-pub(crate) fn run_print(env: &mut Env, arguments: Vec<String>) -> CommandResult {
+pub(crate) fn run_print(env: &mut Env, arguments: CommandArgs) -> CommandResult {
     // collect options
     let mut styles = vec![];
     let mut text_color = None;
@@ -176,7 +176,7 @@ pub(crate) fn run_print(env: &mut Env, arguments: Vec<String>) -> CommandResult 
     // generate whole string
     let mut string = String::new();
     let mut count = 0;
-    for argument in &arguments[index..] {
+    for argument in &arguments.args[index..] {
         count = count + 1;
         string.push_str(argument);
         string.push(' ');
@@ -191,7 +191,7 @@ pub(crate) fn run_print(env: &mut Env, arguments: Vec<String>) -> CommandResult 
     styled_string = add_color(styled_string, background_color, true);
     styled_string = add_styles(styled_string, styles);
 
-    match write!(env.out, "{}", styled_string) {
+    match write!(arguments.env.out, "{}", styled_string) {
         Ok(_) => CommandResult::Continue(Some(count.to_string())),
         Err(error) => CommandResult::Error(error.to_string()),
     }
@@ -225,7 +225,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         _state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,

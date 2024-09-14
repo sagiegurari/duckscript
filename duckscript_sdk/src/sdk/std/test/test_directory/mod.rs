@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use duckscript::runner;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::{Context, StateValue};
@@ -49,7 +49,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         _state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -58,18 +58,18 @@ impl Command for CommandImpl {
         _line: usize,
         _env: &mut Env,
     ) -> CommandResult {
-        if arguments.is_empty() {
+        if arguments.args.is_empty() {
             CommandResult::Crash("Directory name not provided.".to_string())
         } else {
             let mut script = String::new();
 
-            let test_name = if arguments.len() > 1 {
-                arguments[1].clone()
+            let test_name = if arguments.args.len() > 1 {
+                arguments.args[1].clone()
             } else {
                 "".to_string()
             };
 
-            let walker = WalkDir::new(&arguments[0])
+            let walker = WalkDir::new(&arguments.args[0])
                 .sort_by(|entry1, entry2| entry1.file_name().cmp(entry2.file_name()))
                 .into_iter();
             for entry in walker {

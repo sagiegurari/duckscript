@@ -4,7 +4,7 @@ use crate::utils::state::{
     get_as_string, get_core_sub_state_for_command, get_handle, get_list, get_sub_state,
 };
 use crate::utils::{instruction_query, pckg};
-use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands, GoToValue};
 use duckscript::types::env::Env;
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
@@ -316,7 +316,7 @@ impl Command for ForInCommand {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -325,7 +325,7 @@ impl Command for ForInCommand {
         line: usize,
         _env: &mut Env,
     ) -> CommandResult {
-        if arguments.len() != 3 || arguments[1] != "in" {
+        if arguments.args.len() != 3 || arguments.args[1] != "in" {
             CommandResult::Error("Invalid for/in statement".to_string())
         } else {
             let call_info = match pop_call_info_for_line(line, state, false) {
@@ -356,7 +356,7 @@ impl Command for ForInCommand {
             let iteration = call_info.iteration;
             let forin_meta_info = call_info.meta_info;
 
-            let handle = &arguments[2];
+            let handle = &arguments.args[2];
             match get_next_iteration(iteration, handle.to_string(), state) {
                 Some(next_value) => {
                     let line_context_name = get_line_context_name(state);
@@ -370,7 +370,7 @@ impl Command for ForInCommand {
                         state,
                     );
 
-                    variables.insert(arguments[0].clone(), next_value);
+                    variables.insert(arguments.args[0].clone(), next_value);
                     CommandResult::Continue(None)
                 }
                 None => {
@@ -419,7 +419,7 @@ impl Command for EndForInCommand {
 
     fn run_with_context(
         &self,
-        _arguments: Vec<String>,
+        _arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,

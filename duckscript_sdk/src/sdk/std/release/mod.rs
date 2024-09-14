@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::{remove_handle, remove_handle_recursive};
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -38,7 +38,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -47,15 +47,16 @@ impl Command for CommandImpl {
         _line: usize,
         _env: &mut Env,
     ) -> CommandResult {
-        if arguments.is_empty() {
+        if arguments.args.is_empty() {
             CommandResult::Continue(Some("false".to_string()))
         } else {
-            let (key, recursive) =
-                if arguments.len() > 1 && (arguments[0] == "-r" || arguments[0] == "--recursive") {
-                    (arguments[1].to_string(), true)
-                } else {
-                    (arguments[0].to_string(), false)
-                };
+            let (key, recursive) = if arguments.args.len() > 1
+                && (arguments.args[0] == "-r" || arguments.args[0] == "--recursive")
+            {
+                (arguments.args[1].to_string(), true)
+            } else {
+                (arguments.args[0].to_string(), false)
+            };
 
             let removed = if recursive {
                 remove_handle_recursive(state, key)

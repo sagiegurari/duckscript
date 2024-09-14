@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -37,7 +37,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         _state: &mut HashMap<String, StateValue>,
         variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -46,8 +46,8 @@ impl Command for CommandImpl {
         _line: usize,
         _env: &mut Env,
     ) -> CommandResult {
-        if arguments.len() > 1 && arguments[0] == "--prefix" {
-            let prefix = &arguments[1];
+        if arguments.args.len() > 1 && arguments.args[0] == "--prefix" {
+            let prefix = &arguments.args[1];
 
             variables.retain(|key, _| !key.starts_with(prefix));
         } else {

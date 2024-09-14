@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -31,25 +31,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        _arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        env: &mut Env,
-    ) -> CommandResult {
-        let string_value = format!("{:#?}", state).to_string();
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        let string_value = format!("{:#?}", arguments.state).to_string();
 
         if output_variable.is_none() {
-            match writeln!(env.out, "{}", &string_value) {
+            match writeln!(arguments.env.out, "{}", &string_value) {
                 Ok(_) => (),
                 Err(error) => return CommandResult::Error(error.to_string()),
             };

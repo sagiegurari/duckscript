@@ -1,6 +1,6 @@
 use crate::utils::state::{get_handles_sub_state, put_handle};
 use duckscript::runner;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
@@ -24,7 +24,7 @@ impl Command for EmptyCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+    fn run(&self, _arguments: CommandArgs) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
@@ -41,7 +41,7 @@ impl Command for ErrorCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+    fn run(&self, _arguments: CommandArgs) -> CommandResult {
         CommandResult::Error("test".to_string())
     }
 }
@@ -62,11 +62,11 @@ impl Command for SetCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Continue(None)
         } else {
-            CommandResult::Continue(Some(arguments[0].clone()))
+            CommandResult::Continue(Some(arguments.args[0].clone()))
         }
     }
 }
@@ -89,7 +89,7 @@ impl Command for SetHandleCommand {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -98,11 +98,14 @@ impl Command for SetHandleCommand {
         _line: usize,
         _env: &mut Env,
     ) -> CommandResult {
-        if arguments.is_empty() {
+        if arguments.args.is_empty() {
             CommandResult::Continue(None)
         } else {
             let state = get_handles_sub_state(state);
-            state.insert(arguments[0].clone(), StateValue::String("test".to_string()));
+            state.insert(
+                arguments.args[0].clone(),
+                StateValue::String("test".to_string()),
+            );
             CommandResult::Continue(None)
         }
     }
@@ -126,7 +129,7 @@ impl Command for ArrayCommand {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -165,7 +168,7 @@ impl Command for OnErrorCommand {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         _state: &mut HashMap<String, StateValue>,
         variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,

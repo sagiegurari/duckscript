@@ -1,7 +1,7 @@
 use crate::sdk::std::json::OBJECT_VALUE;
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -111,7 +111,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         variables: &mut HashMap<String, String>,
         output_variable: Option<String>,
@@ -120,16 +120,17 @@ impl Command for CommandImpl {
         _line: usize,
         _env: &mut Env,
     ) -> CommandResult {
-        if arguments.is_empty() {
+        if arguments.args.is_empty() {
             CommandResult::Error("No JSON string provided.".to_string())
         } else {
-            let (json_index, as_state) = if arguments.len() > 1 && arguments[0] == "--collection" {
-                (1, true)
-            } else {
-                (0, false)
-            };
+            let (json_index, as_state) =
+                if arguments.args.len() > 1 && arguments.args[0] == "--collection" {
+                    (1, true)
+                } else {
+                    (0, false)
+                };
 
-            match parse_json(&arguments[json_index]) {
+            match parse_json(&arguments.args[json_index]) {
                 Ok(data) => {
                     let output = match output_variable {
                         Some(name) => {

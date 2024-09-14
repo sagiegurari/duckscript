@@ -1,7 +1,7 @@
 use crate::sdk::std::on_error::STATE_KEY;
 use crate::utils::pckg;
 use crate::utils::state::get_core_sub_state_for_command;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -39,7 +39,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -48,8 +48,8 @@ impl Command for CommandImpl {
         line: usize,
         _env: &mut Env,
     ) -> CommandResult {
-        if !arguments.is_empty() {
-            let error = arguments[0].clone();
+        if !arguments.args.is_empty() {
+            let error = arguments.args[0].clone();
 
             let sub_state = get_core_sub_state_for_command(state, STATE_KEY.to_string());
             sub_state.insert("error".to_string(), StateValue::String(error));

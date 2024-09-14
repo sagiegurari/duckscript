@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::{get_handles_sub_state, mutate_list};
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -36,30 +36,16 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("Array handle not provided.".to_string())
         } else {
             let state = get_handles_sub_state(state);
 
-            let key = arguments[0].clone();
+            let key = arguments.args[0].clone();
 
             let result = mutate_list(key, state, |list| {
-                for argument in &arguments[1..] {
+                for argument in &arguments.args[1..] {
                     list.push(StateValue::String(argument.to_string()))
                 }
 

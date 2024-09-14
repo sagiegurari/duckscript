@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::{get_handles_sub_state, mutate_list};
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -32,32 +32,18 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
-        if arguments.len() < 3 {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.len() < 3 {
             CommandResult::Error("Invalid input provided.".to_string())
         } else {
             let state = get_handles_sub_state(state);
 
-            let key = arguments[0].clone();
-            let index: usize = match arguments[1].parse() {
+            let key = arguments.args[0].clone();
+            let index: usize = match arguments.args[1].parse() {
                 Ok(value) => value,
                 Err(_) => {
                     return CommandResult::Error(
-                        format!("Non numeric value: {} provided.", &arguments[1]).to_string(),
+                        format!("Non numeric value: {} provided.", &arguments.args[1]).to_string(),
                     );
                 }
             };
@@ -66,7 +52,7 @@ impl Command for CommandImpl {
                 let list_length = list.len();
 
                 if list_length > index {
-                    list[index] = StateValue::String(arguments[2].clone());
+                    list[index] = StateValue::String(arguments.args[2].clone());
 
                     Ok(Some("true".to_string()))
                 } else {

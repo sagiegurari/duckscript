@@ -29,17 +29,17 @@ pub(crate) fn is_true(value: Option<String>) -> bool {
 }
 
 pub(crate) fn eval_condition(
-    arguments: Vec<String>,
+    arguments: CommandArgs,
     instructions: &Vec<Instruction>,
     state: &mut HashMap<String, StateValue>,
     variables: &mut HashMap<String, String>,
     commands: &mut Commands,
     env: &mut Env,
 ) -> Result<bool, String> {
-    if arguments.is_empty() {
+    if arguments.args.is_empty() {
         Ok(is_true(None))
     } else {
-        let eval_statement = commands.exists(&arguments[0]);
+        let eval_statement = commands.exists(&arguments.args[0]);
 
         if eval_statement {
             match eval::eval_with_instructions(
@@ -59,13 +59,13 @@ pub(crate) fn eval_condition(
                 _ => Err("Invalid condition evaluation result.".to_string()),
             }
         } else {
-            eval_condition_for_slice(&arguments[..])
+            eval_condition_for_slice(&arguments.args[..])
         }
     }
 }
 
 pub(crate) fn eval_condition_for_slice(arguments: &[String]) -> Result<bool, String> {
-    if arguments.is_empty() {
+    if arguments.args.is_empty() {
         Ok(is_true(None))
     } else {
         let mut searching_block_end = false;
@@ -88,7 +88,7 @@ pub(crate) fn eval_condition_for_slice(arguments: &[String]) -> Result<bool, Str
                 if counter == 0 {
                     searching_block_end = false;
 
-                    match eval_condition_for_slice(&arguments[start_block..index]) {
+                    match eval_condition_for_slice(&arguments.args[start_block..index]) {
                         Ok(evaluated) => {
                             start_block = 0;
 

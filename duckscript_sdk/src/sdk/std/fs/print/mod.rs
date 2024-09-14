@@ -1,5 +1,5 @@
 use crate::utils::{io, pckg};
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -37,7 +37,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         _state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -46,7 +46,7 @@ impl Command for CommandImpl {
         _line: usize,
         env: &mut Env,
     ) -> CommandResult {
-        if arguments.is_empty() {
+        if arguments.args.is_empty() {
             CommandResult::Error("File name not provided.".to_string())
         } else {
             let mut all_text = String::new();
@@ -59,7 +59,7 @@ impl Command for CommandImpl {
                 }
             }
 
-            match writeln!(env.out, "{}", &all_text) {
+            match writeln!(arguments.env.out, "{}", &all_text) {
                 Ok(_) => CommandResult::Continue(Some(all_text)),
                 Err(error) => CommandResult::Error(error.to_string()),
             }

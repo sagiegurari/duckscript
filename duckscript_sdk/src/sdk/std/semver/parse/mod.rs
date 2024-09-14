@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -38,7 +38,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         _state: &mut HashMap<String, StateValue>,
         variables: &mut HashMap<String, String>,
         output_variable: Option<String>,
@@ -47,10 +47,10 @@ impl Command for CommandImpl {
         _line: usize,
         _env: &mut Env,
     ) -> CommandResult {
-        if arguments.is_empty() {
+        if arguments.args.is_empty() {
             CommandResult::Error("No semver value provided.".to_string())
         } else {
-            match Version::parse(&arguments[0]) {
+            match Version::parse(&arguments.args[0]) {
                 Ok(version) => match output_variable {
                     Some(name) => {
                         variables.insert(

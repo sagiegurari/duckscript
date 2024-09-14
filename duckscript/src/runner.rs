@@ -9,7 +9,7 @@ mod runner_test;
 
 use crate::expansion::{self, ExpandedValue};
 use crate::parser;
-use crate::types::command::{CommandResult, Commands, GoToValue};
+use crate::types::command::{CommandArgs, CommandResult, Commands, GoToValue};
 use crate::types::env::Env;
 use crate::types::error::ScriptError;
 use crate::types::instruction::{
@@ -325,20 +325,17 @@ pub fn run_instruction(
                             &instruction.meta_info,
                         );
 
-                        if command_instance.requires_context() {
-                            command_instance.run_with_context(
-                                command_arguments,
-                                state,
-                                variables,
-                                output_variable.clone(),
-                                instructions,
-                                commands,
-                                line,
-                                env,
-                            )
-                        } else {
-                            command_instance.run(command_arguments)
-                        }
+                        let command_args = CommandArgs {
+                            args: command_arguments,
+                            state,
+                            variables,
+                            output_variable: output_variable.clone(),
+                            instructions,
+                            commands,
+                            line,
+                            env,
+                        };
+                        command_instance.run(command_args)
                     }
                     None => CommandResult::Crash(format!("Command: {} not found.", &command)),
                 },

@@ -1,5 +1,5 @@
 use crate::utils::{flags, pckg};
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -54,7 +54,7 @@ fn print_entry(env: &mut Env, item: &HashMap<DirEntryAttr, DirEntryValue>, exten
         };
 
         writeln!(
-            env.out,
+            arguments.env.out,
             "{}\t{}\t{}",
             get_u64_value(DirEntryAttr::FileSize, &item),
             directory_flag,
@@ -63,7 +63,7 @@ fn print_entry(env: &mut Env, item: &HashMap<DirEntryAttr, DirEntryValue>, exten
         .unwrap();
     } else {
         writeln!(
-            env.out,
+            arguments.env.out,
             "{} ",
             get_string_value(DirEntryAttr::FullName, &item)
         )
@@ -99,7 +99,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         _state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -108,18 +108,18 @@ impl Command for CommandImpl {
         _line: usize,
         env: &mut Env,
     ) -> CommandResult {
-        let (path_str, flags) = if arguments.is_empty() {
+        let (path_str, flags) = if arguments.args.is_empty() {
             (".", "")
-        } else if arguments.len() == 1 {
-            if flags::is_unix_flags_argument(&arguments[0]) {
-                (".", arguments[0].as_str())
+        } else if arguments.args.len() == 1 {
+            if flags::is_unix_flags_argument(&arguments.args[0]) {
+                (".", arguments.args[0].as_str())
             } else {
-                (arguments[0].as_str(), "")
+                (arguments.args[0].as_str(), "")
             }
-        } else if flags::is_unix_flags_argument(&arguments[0]) {
-            (arguments[1].as_str(), arguments[0].as_str())
+        } else if flags::is_unix_flags_argument(&arguments.args[0]) {
+            (arguments.args[1].as_str(), arguments.args[0].as_str())
         } else {
-            (arguments[0].as_str(), "")
+            (arguments.args[0].as_str(), "")
         };
 
         let path = Path::new(path_str);

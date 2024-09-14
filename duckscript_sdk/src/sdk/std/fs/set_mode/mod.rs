@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use fsio::path::as_path::AsPath;
 
 #[cfg(test)]
@@ -58,15 +58,15 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.len() < 2 {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.len() < 2 {
             CommandResult::Error("Path/Mode not provided.".to_string())
         } else {
-            let path = &arguments[1].as_path();
+            let path = &arguments.args[1].as_path();
             if path.exists() {
-                set_mode(&arguments[1], &arguments[0])
+                set_mode(&arguments.args[1], &arguments.args[0])
             } else {
-                CommandResult::Error(format!("Path: {} not found.", &arguments[1]).to_string())
+                CommandResult::Error(format!("Path: {} not found.", &arguments.args[1]).to_string())
             }
         }
     }

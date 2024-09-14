@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use std::env;
 use std::path::Path;
 
@@ -33,11 +33,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        let directory_option = if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        let directory_option = if arguments.args.is_empty() {
             home::home_dir()
         } else {
-            let path = Path::new(&arguments[0]);
+            let path = Path::new(&arguments.args[0]);
             Some(path.to_path_buf())
         };
 

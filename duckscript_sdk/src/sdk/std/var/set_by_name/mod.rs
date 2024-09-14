@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -36,7 +36,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         _state: &mut HashMap<String, StateValue>,
         variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -45,14 +45,14 @@ impl Command for CommandImpl {
         _line: usize,
         _env: &mut Env,
     ) -> CommandResult {
-        if arguments.is_empty() {
+        if arguments.args.is_empty() {
             CommandResult::Error("Missing variable name.".to_string())
         } else {
-            let output = if arguments.len() > 1 {
-                variables.insert(arguments[0].clone(), arguments[1].clone());
-                Some(arguments[1].clone())
+            let output = if arguments.args.len() > 1 {
+                variables.insert(arguments.args[0].clone(), arguments.args[1].clone());
+                Some(arguments.args[1].clone())
             } else {
-                variables.remove(&arguments[0]);
+                variables.remove(&arguments.args[0]);
                 None
             };
 

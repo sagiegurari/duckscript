@@ -3,7 +3,7 @@ use crate::types::scope::set_line_context_name;
 use crate::utils::eval;
 use crate::utils::state::{get_handles_sub_state, put_handle};
 use duckscript::parser;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
@@ -86,7 +86,7 @@ impl Command for AliasCommand {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -95,7 +95,7 @@ impl Command for AliasCommand {
         _line: usize,
         env: &mut Env,
     ) -> CommandResult {
-        if arguments.len() < self.arguments_amount {
+        if arguments.args.len() < self.arguments_amount {
             CommandResult::Error("Invalid arguments provided.".to_string())
         } else {
             let start_count = variables.len();
@@ -103,7 +103,7 @@ impl Command for AliasCommand {
 
             // define script arguments
             let mut handle_option = None;
-            if !arguments.is_empty() {
+            if !arguments.args.is_empty() {
                 let mut index = 0;
                 let mut array = vec![];
                 for argument in arguments {
@@ -179,7 +179,7 @@ impl Command for DocOnlyCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+    fn run(&self, _arguments: CommandArgs) -> CommandResult {
         CommandResult::Error("Documentation only commands should not be executed.".to_string())
     }
 }

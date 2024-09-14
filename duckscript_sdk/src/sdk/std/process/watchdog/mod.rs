@@ -1,6 +1,6 @@
 use crate::utils::exec::ExecInput;
 use crate::utils::{exec, pckg};
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use std::thread;
 use std::time::Duration;
 
@@ -37,8 +37,8 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("Command not provided.".to_string())
         } else {
             let mut max_retries: isize = -1;

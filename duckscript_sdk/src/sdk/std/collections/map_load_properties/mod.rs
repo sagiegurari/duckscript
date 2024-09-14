@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::{get_handles_sub_state, mutate_map};
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -33,37 +33,24 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
-        if arguments.len() < 2 {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.len() < 2 {
             CommandResult::Error("Map handle and/or properties text not provided.".to_string())
         } else {
-            let (prefix, key, text) = if arguments.len() >= 4 && arguments[0] == "--prefix" {
-                (
-                    arguments[1].to_string(),
-                    arguments[2].to_string(),
-                    arguments[3].to_string(),
-                )
-            } else {
-                (
-                    "".to_string(),
-                    arguments[0].to_string(),
-                    arguments[1].to_string(),
-                )
-            };
+            let (prefix, key, text) =
+                if arguments.args.len() >= 4 && arguments.args[0] == "--prefix" {
+                    (
+                        arguments.args[1].to_string(),
+                        arguments.args[2].to_string(),
+                        arguments.args[3].to_string(),
+                    )
+                } else {
+                    (
+                        "".to_string(),
+                        arguments.args[0].to_string(),
+                        arguments.args[1].to_string(),
+                    )
+                };
 
             match read(text.as_bytes()) {
                 Ok(data) => {

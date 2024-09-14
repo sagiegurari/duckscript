@@ -1,6 +1,6 @@
 use crate::utils::state::get_handles_sub_state;
 use crate::utils::{io, pckg};
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -38,7 +38,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -47,19 +47,19 @@ impl Command for CommandImpl {
         _line: usize,
         _env: &mut Env,
     ) -> CommandResult {
-        if arguments.is_empty() {
+        if arguments.args.is_empty() {
             CommandResult::Error("File name and text not provided.".to_string())
-        } else if arguments.len() == 1 {
+        } else if arguments.args.len() == 1 {
             CommandResult::Error("Binary data handle not provided.".to_string())
         } else {
             let state = get_handles_sub_state(state);
 
-            let key = &arguments[1];
+            let key = &arguments.args[1];
 
             match state.get(key) {
                 Some(state_value) => match state_value {
                     StateValue::ByteArray(binary) => {
-                        let result = io::write_to_file(&arguments[0], &binary, false);
+                        let result = io::write_to_file(&arguments.args[0], &binary, false);
 
                         match result {
                             Ok(_) => CommandResult::Continue(Some("true".to_string())),

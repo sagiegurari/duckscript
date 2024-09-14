@@ -420,11 +420,11 @@ impl Command for GetEnvCommand {
         "get_env".to_string()
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("Missing environment variable name.".to_string())
         } else {
-            match env::var(&arguments[0]) {
+            match env::var(&arguments.args[0]) {
                 Ok(value) => CommandResult::Continue(Some(value)),
                 Err(_) => CommandResult::Continue(None),
             }
@@ -436,21 +436,14 @@ impl Command for GetEnvCommand {
 You can look at more examples in the duckscript_sdk folder.
 
 <a name="sdk-tutorial-context-commands"></a>
-## Context Commands
-Context commands are exactly the same as standard commands except that they have access to the runtime context.<br>
-Therefore they implement the same Command trait but this time instead of implementing the run function, they need to implement the following:
-
-* requires_context - Must return true
-* run_with_context - The same logic you would put in the run function but now you have access to a lot more of the runtime context.
-
-The run_with_context signature is as follows:
+## Access to Context
+The duckscript runtime context is available in the CommandArgs struc.<br>
 
 ```rust
 /// Run the instruction with access to the runtime context.
 ///
-/// # Arguments
-///
-/// * `arguments` - The command arguments array
+/// The CommandArgs has the following members:
+/// * `args` - The command arguments array
 /// * `state` - Internal state which is only used by commands to store/pull data
 /// * `variables` - All script variables
 /// * `output_variable` - The output variable name (if defined)
@@ -458,17 +451,7 @@ The run_with_context signature is as follows:
 /// * `commands` - The currently known commands
 /// * `line` - The current instruction line number (global line number after including all scripts into one global script)
 /// * `env` - The current runtime env with access to out/err writers, etc...
-fn run_with_context(
-    &self,
-    arguments: Vec<String>,
-    state: &mut HashMap<String, StateValue>,
-    variables: &mut HashMap<String, String>,
-    output_variable: Option<String>,
-    instructions: &Vec<Instruction>,
-    commands: &mut Commands,
-    line: usize,
-    env: &mut Env,
-) -> CommandResult;
+fn run(&self, arguments: CommandArgs) -> CommandResult;
 ```
 
 With access to this context you can add/remove/switch commands in runtime, store/pull internal state, add/remove/change variables and so on...

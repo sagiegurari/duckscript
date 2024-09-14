@@ -1,7 +1,7 @@
 use crate::sdk::std::json::OBJECT_VALUE;
 use crate::utils::pckg;
 use crate::utils::state::get_handles_sub_state;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -206,7 +206,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -215,24 +215,25 @@ impl Command for CommandImpl {
         _line: usize,
         _env: &mut Env,
     ) -> CommandResult {
-        if arguments.is_empty() {
+        if arguments.args.is_empty() {
             CommandResult::Error("No JSON root variable name provided.".to_string())
         } else {
-            let (start_index, as_state) = if arguments.len() > 1 && arguments[0] == "--collection" {
-                (1, true)
-            } else {
-                (0, false)
-            };
+            let (start_index, as_state) =
+                if arguments.args.len() > 1 && arguments.args[0] == "--collection" {
+                    (1, true)
+                } else {
+                    (0, false)
+                };
 
             if as_state {
                 let state = get_handles_sub_state(state);
 
-                match encode_from_state(&arguments[start_index], state) {
+                match encode_from_state(&arguments.args[start_index], state) {
                     Ok(output) => CommandResult::Continue(Some(output)),
                     Err(error) => CommandResult::Error(error),
                 }
             } else {
-                match encode_from_variables(&arguments[start_index], variables) {
+                match encode_from_variables(&arguments.args[start_index], variables) {
                     Ok(output) => CommandResult::Continue(Some(output)),
                     Err(error) => CommandResult::Error(error),
                 }

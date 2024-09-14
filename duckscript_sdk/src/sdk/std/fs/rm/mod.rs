@@ -1,5 +1,5 @@
 use crate::utils::{flags, pckg};
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use std::fs;
 use std::path::Path;
 
@@ -29,24 +29,24 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.is_empty()
-            || (arguments.len() == 1 && flags::is_unix_flags_argument(&arguments[0]))
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty()
+            || (arguments.args.len() == 1 && flags::is_unix_flags_argument(&arguments.args[0]))
         {
             CommandResult::Error("Path not provided.".to_string())
         } else {
-            let (start_index, recursive) = if arguments.len() == 1 {
+            let (start_index, recursive) = if arguments.args.len() == 1 {
                 (0, false)
-            } else if flags::is_unix_flags_argument(&arguments[0]) {
-                let recursive = flags::is_unix_flag_exists('r', &arguments[0]);
+            } else if flags::is_unix_flags_argument(&arguments.args[0]) {
+                let recursive = flags::is_unix_flag_exists('r', &arguments.args[0]);
                 (1, recursive)
             } else {
                 (0, false)
             };
 
-            let end_index = arguments.len();
+            let end_index = arguments.args.len();
             for index in start_index..end_index {
-                let path = Path::new(&arguments[index]);
+                let path = Path::new(&arguments.args[index]);
 
                 let result = if !path.exists() {
                     Ok(())

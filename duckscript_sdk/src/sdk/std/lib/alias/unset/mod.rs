@@ -1,7 +1,7 @@
 use crate::sdk::std::lib::alias::ALIAS_STATE_KEY;
 use crate::utils::pckg;
 use crate::utils::state::get_sub_state;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -39,7 +39,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -48,12 +48,12 @@ impl Command for CommandImpl {
         _line: usize,
         _env: &mut Env,
     ) -> CommandResult {
-        if arguments.len() != 1 {
+        if arguments.args.len() != 1 {
             CommandResult::Error("Invalid alias name provided.".to_string())
         } else {
             let sub_state = get_sub_state(ALIAS_STATE_KEY.to_string(), state);
 
-            let key = &arguments[0];
+            let key = &arguments.args[0];
             let removed = if sub_state.contains_key(key) {
                 if commands.remove(key) {
                     sub_state.remove(key);

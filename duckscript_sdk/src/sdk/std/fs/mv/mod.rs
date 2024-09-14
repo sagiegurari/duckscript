@@ -1,6 +1,6 @@
 use crate::utils::io::ends_with_separator;
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use fs_extra::{dir, move_items};
 use fsio::directory::create_parent;
 use std::fs::rename;
@@ -32,20 +32,20 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.len() < 2 {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.len() < 2 {
             CommandResult::Error("Paths not provided.".to_string())
         } else {
-            let source_path = Path::new(&arguments[0]);
+            let source_path = Path::new(&arguments.args[0]);
 
             if !source_path.exists() {
                 CommandResult::Error("Path does not exist.".to_string())
             } else {
-                let target_path = Path::new(&arguments[1]);
-                let source_ends_with_separator = ends_with_separator(&arguments[0]);
+                let target_path = Path::new(&arguments.args[1]);
+                let source_ends_with_separator = ends_with_separator(&arguments.args[0]);
                 let source_file = source_path.is_file();
                 let target_exists = target_path.exists();
-                let target_ends_with_separator = ends_with_separator(&arguments[1]);
+                let target_ends_with_separator = ends_with_separator(&arguments.args[1]);
                 let target_file = if target_exists {
                     target_path.is_file()
                 } else {
@@ -74,11 +74,11 @@ impl Command for CommandImpl {
                         Err(error) => CommandResult::Error(error.to_string()),
                     }
                 } else {
-                    match fsio::directory::create(&arguments[1]) {
+                    match fsio::directory::create(&arguments.args[1]) {
                         Ok(_) => {
                             let options = dir::CopyOptions::new();
-                            let from_paths = vec![&arguments[0]];
-                            match move_items(&from_paths, &arguments[1], &options) {
+                            let from_paths = vec![&arguments.args[0]];
+                            match move_items(&from_paths, &arguments.args[1], &options) {
                                 Ok(_) => CommandResult::Continue(Some("true".to_string())),
                                 Err(error) => CommandResult::Error(error.to_string()),
                             }

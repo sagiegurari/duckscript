@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use rand::distributions::Alphanumeric;
 use rand::{thread_rng, Rng};
 use std::iter;
@@ -30,18 +30,18 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        let length = if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        let length = if arguments.args.is_empty() {
             1
         } else {
-            match arguments[0].parse() {
+            match arguments.args[0].parse() {
                 Ok(value) => {
                     let value_usize: usize = value;
                     value_usize
                 }
                 Err(_) => {
                     return CommandResult::Error(
-                        format!("Invalid length provided: {}", &arguments[0]).to_string(),
+                        format!("Invalid length provided: {}", &arguments.args[0]).to_string(),
                     )
                 }
             }

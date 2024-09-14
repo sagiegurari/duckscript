@@ -2,7 +2,7 @@ use crate::sdk::std::flowcontrol::{end, forin, ifelse, while_mod};
 use crate::types::scope::get_line_context_name;
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
 use crate::utils::{annotation, instruction_query, pckg, scope};
-use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands, GoToValue};
 use duckscript::types::env::Env;
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
@@ -212,7 +212,7 @@ fn pop_from_call_stack(state: &mut HashMap<String, StateValue>) -> Option<CallIn
 
 fn run_call(
     function_name: String,
-    arguments: Vec<String>,
+    arguments: CommandArgs,
     state: &mut HashMap<String, StateValue>,
     variables: &mut HashMap<String, String>,
     output_variable: Option<String>,
@@ -293,7 +293,7 @@ impl Command for FunctionCommand {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -302,18 +302,18 @@ impl Command for FunctionCommand {
         line: usize,
         _env: &mut Env,
     ) -> CommandResult {
-        if arguments.is_empty() {
+        if arguments.args.is_empty() {
             CommandResult::Error("Missing function name.".to_string())
         } else {
-            let (function_name, scoped) = if arguments.len() == 1 {
-                (arguments[0].clone(), false)
+            let (function_name, scoped) = if arguments.args.len() == 1 {
+                (arguments.args[0].clone(), false)
             } else {
-                match annotation::parse(&arguments[0]) {
+                match annotation::parse(&arguments.args[0]) {
                     Some(annotations) => (
-                        arguments[1].clone(),
+                        arguments.args[1].clone(),
                         annotations.contains(&"scope".to_string()),
                     ),
-                    None => (arguments[0].clone(), false),
+                    None => (arguments.args[0].clone(), false),
                 }
             };
 
@@ -412,7 +412,7 @@ impl Command for FunctionCommand {
 
                                             fn run_with_context(
                                                 &self,
-                                                arguments: Vec<String>,
+                                                arguments: CommandArgs,
                                                 state: &mut HashMap<String, StateValue>,
                                                 variables: &mut HashMap<String, String>,
                                                 output_variable: Option<String>,
@@ -495,7 +495,7 @@ impl Command for EndFunctionCommand {
 
     fn run_with_context(
         &self,
-        _arguments: Vec<String>,
+        _arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -557,7 +557,7 @@ impl Command for ReturnCommand {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -576,19 +576,19 @@ impl Command for ReturnCommand {
                 {
                     match call_info.output_variable {
                         Some(ref name) => {
-                            if arguments.is_empty() {
+                            if arguments.args.is_empty() {
                                 variables.remove(name);
                             } else {
-                                variables.insert(name.to_string(), arguments[0].clone());
+                                variables.insert(name.to_string(), arguments.args[0].clone());
                             }
                         }
                         None => (),
                     };
 
-                    let output = if arguments.is_empty() {
+                    let output = if arguments.args.is_empty() {
                         None
                     } else {
-                        Some(arguments[0].clone())
+                        Some(arguments.args[0].clone())
                     };
 
                     if call_info.scoped {

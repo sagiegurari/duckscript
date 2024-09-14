@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -33,32 +33,19 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        _state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
-        if arguments.len() < 1 {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.len() < 1 {
             CommandResult::Error("Missing properties names.".to_string())
         } else {
-            let (start_index, prefix) = if arguments.len() > 2 && arguments[0] == "--prefix" {
-                (2, arguments[1].as_str())
-            } else {
-                (0, "")
-            };
+            let (start_index, prefix) =
+                if arguments.args.len() > 2 && arguments.args[0] == "--prefix" {
+                    (2, arguments.args[1].as_str())
+                } else {
+                    (0, "")
+                };
 
             let mut data = HashMap::new();
-            for argument in &arguments[start_index..] {
+            for argument in &arguments.args[start_index..] {
                 match variables.get(argument) {
                     Some(value) => {
                         let mut key = argument.to_string();

@@ -1,7 +1,7 @@
 use crate::sdk::std::lib::alias::ALIAS_STATE_KEY;
 use crate::utils::state::get_sub_state;
 use crate::utils::{eval, pckg};
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
 use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -13,14 +13,14 @@ mod mod_test;
 
 fn create_alias_command(
     name: String,
-    arguments: Vec<String>,
+    arguments: CommandArgs,
     commands: &mut Commands,
     sub_state: &mut HashMap<String, StateValue>,
 ) -> Result<(), String> {
     #[derive(Clone)]
     struct AliasCommand {
         name: String,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
     }
 
     impl Command for AliasCommand {
@@ -42,7 +42,7 @@ fn create_alias_command(
 
         fn run_with_context(
             &self,
-            arguments: Vec<String>,
+            arguments: CommandArgs,
             state: &mut HashMap<String, StateValue>,
             variables: &mut HashMap<String, String>,
             _output_variable: Option<String>,
@@ -101,7 +101,7 @@ impl Command for CommandImpl {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -110,14 +110,14 @@ impl Command for CommandImpl {
         _line: usize,
         _env: &mut Env,
     ) -> CommandResult {
-        if arguments.len() < 2 {
+        if arguments.args.len() < 2 {
             CommandResult::Error("Invalid alias provided.".to_string())
         } else {
-            let name = arguments[0].clone();
+            let name = arguments.args[0].clone();
 
             let sub_state = get_sub_state(ALIAS_STATE_KEY.to_string(), state);
 
-            match create_alias_command(name, arguments[1..].to_vec(), commands, sub_state) {
+            match create_alias_command(name, arguments.args[1..].to_vec(), commands, sub_state) {
                 Ok(_) => CommandResult::Continue(Some("true".to_string())),
                 Err(error) => CommandResult::Error(error.to_string()),
             }

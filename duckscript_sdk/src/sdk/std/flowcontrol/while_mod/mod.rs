@@ -2,7 +2,7 @@ use crate::sdk::std::flowcontrol::{end, forin, function, get_line_key, ifelse};
 use crate::types::scope::get_line_context_name;
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
 use crate::utils::{condition, instruction_query, pckg};
-use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands, GoToValue};
 use duckscript::types::env::Env;
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
@@ -273,7 +273,7 @@ impl Command for WhileCommand {
 
     fn run_with_context(
         &self,
-        arguments: Vec<String>,
+        arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
@@ -282,7 +282,7 @@ impl Command for WhileCommand {
         line: usize,
         env: &mut Env,
     ) -> CommandResult {
-        if arguments.is_empty() {
+        if arguments.args.is_empty() {
             CommandResult::Error("Missing condition".to_string())
         } else {
             match get_or_create_while_meta_info_for_line(
@@ -363,7 +363,7 @@ impl Command for EndWhileCommand {
 
     fn run_with_context(
         &self,
-        _arguments: Vec<String>,
+        _arguments: CommandArgs,
         state: &mut HashMap<String, StateValue>,
         _variables: &mut HashMap<String, String>,
         _output_variable: Option<String>,
