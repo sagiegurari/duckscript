@@ -18,12 +18,14 @@ use crate::types::instruction::{
 use crate::types::runtime::{Context, Runtime, StateValue};
 use std::collections::HashMap;
 use std::io::stdin;
+use std::sync::atomic::Ordering;
 
 #[derive(Debug)]
 enum EndReason {
     ExitCalled,
     ReachedEnd,
     Crash(ScriptError),
+    Halted
 }
 
 /// Executes the provided script with the given context
@@ -135,6 +137,11 @@ fn run_instructions(
 
     let mut end_reason = EndReason::ReachedEnd;
     loop {
+        if runtime.env.halt.load(Ordering::SeqCst) {
+            end_reason = EndReason::Halted;
+            break;
+        }
+
         let (instruction, meta_info) = if instructions.len() > line {
             let instruction = instructions[line].clone();
             let meta_info = instruction.meta_info.clone();
