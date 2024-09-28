@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.9.4 (2024-09-28)
+
+* Enhancement: Runtime - Adding halt interrupt to env #448 (thanks @nickheyer)
+
 ### v0.9.3 (2024-01-19)
 
 * Fix: if/else condition with a command that accepts empty values #390
