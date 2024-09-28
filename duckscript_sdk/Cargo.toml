@@ -1,6 +1,6 @@
 [package]
 name = "duckscriptsdk"
-version = "0.9.3"
+version = "0.9.4"
 authors = ["Sagie Gur-Ari <sagiegurari@gmail.com>"]
 description = "The duckscript SDK."
 license = "Apache-2.0"
@@ -29,7 +29,7 @@ attohttpc = { version = "^0.28", default-features = false, features = [
 base64 = "^0.22"
 cfg-if = "^1"
 colored = "^2"
-duckscript = { version = "^0.8.0", path = "../duckscript" }
+duckscript = { version = "^0.8.1", path = "../duckscript" }
 evalexpr = "^11"
 fs_extra = "^1"
 fsio = { version = "^0.4", features = ["temp-path"] }
