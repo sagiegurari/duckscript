@@ -1,6 +1,7 @@
 use crate::utils::state::{get_handles_sub_state, put_handle};
 use duckscript::runner;
 use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::env::Env;
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::{Context, StateValue};
@@ -95,6 +96,7 @@ impl Command for SetHandleCommand {
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         _line: usize,
+        _env: &mut Env,
     ) -> CommandResult {
         if arguments.is_empty() {
             CommandResult::Continue(None)
@@ -131,6 +133,7 @@ impl Command for ArrayCommand {
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         _line: usize,
+        _env: &mut Env,
     ) -> CommandResult {
         let mut array = vec![];
 
@@ -169,6 +172,7 @@ impl Command for OnErrorCommand {
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         _line: usize,
+        _env: &mut Env,
     ) -> CommandResult {
         println!("on error: {:#?}", &arguments);
 
@@ -212,7 +216,7 @@ fn run_command(commands: Vec<Box<dyn Command>>, script: &str) -> Result<Context,
         assert!(added.is_ok());
     }
 
-    runner::run_script(script, context)
+    runner::run_script(script, context, None)
 }
 
 pub(crate) fn run_script_and_crash(commands: Vec<Box<dyn Command>>, script: &str) {

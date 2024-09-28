@@ -65,6 +65,7 @@ fn eval_condition_empty() {
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut Commands::new(),
+        &mut Env::default(),
     );
 
     assert!(result.is_ok());
@@ -82,6 +83,7 @@ fn eval_condition_value_true() {
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut Commands::new(),
+        &mut Env::default(),
     );
 
     assert!(result.is_ok());
@@ -99,6 +101,7 @@ fn eval_condition_value_false() {
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut Commands::new(),
+        &mut Env::default(),
     );
 
     assert!(result.is_ok());
@@ -122,6 +125,7 @@ fn eval_condition_command_true() {
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
+        &mut Env::default(),
     );
 
     assert!(result.is_ok());
@@ -145,6 +149,7 @@ fn eval_condition_command_false() {
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
+        &mut Env::default(),
     );
 
     assert!(result.is_ok());
@@ -168,6 +173,7 @@ fn eval_condition_command_error() {
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
+        &mut Env::default(),
     );
 
     assert!(result.is_err());

@@ -1,5 +1,8 @@
 use crate::utils::{flags, pckg};
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::env::Env;
+use duckscript::types::instruction::Instruction;
+use duckscript::types::runtime::StateValue;
 use fs_extra::dir::{ls, DirEntryAttr, DirEntryValue};
 use fsio::path::{get_basename, get_parent_directory};
 use std::collections::{HashMap, HashSet};
@@ -42,7 +45,7 @@ fn get_boolean_value(key: DirEntryAttr, attributes: &HashMap<DirEntryAttr, DirEn
     }
 }
 
-fn print_entry(item: &HashMap<DirEntryAttr, DirEntryValue>, extended_details: bool) {
+fn print_entry(env: &mut Env, item: &HashMap<DirEntryAttr, DirEntryValue>, extended_details: bool) {
     if extended_details {
         let directory_flag = if get_boolean_value(DirEntryAttr::IsDir, &item) {
             "<DIR>"
@@ -50,14 +53,21 @@ fn print_entry(item: &HashMap<DirEntryAttr, DirEntryValue>, extended_details: bo
             ""
         };
 
-        println!(
+        writeln!(
+            env.out,
             "{}\t{}\t{}",
             get_u64_value(DirEntryAttr::FileSize, &item),
             directory_flag,
             get_string_value(DirEntryAttr::FullName, &item)
-        );
+        )
+        .unwrap();
     } else {
-        println!("{} ", get_string_value(DirEntryAttr::FullName, &item));
+        writeln!(
+            env.out,
+            "{} ",
+            get_string_value(DirEntryAttr::FullName, &item)
+        )
+        .unwrap();
     }
 }
 
@@ -83,7 +93,21 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
+    fn requires_context(&self) -> bool {
+        true
+    }
+
+    fn run_with_context(
+        &self,
+        arguments: Vec<String>,
+        _state: &mut HashMap<String, StateValue>,
+        _variables: &mut HashMap<String, String>,
+        _output_variable: Option<String>,
+        _instructions: &Vec<Instruction>,
+        _commands: &mut Commands,
+        _line: usize,
+        env: &mut Env,
+    ) -> CommandResult {
         let (path_str, flags) = if arguments.is_empty() {
             (".", "")
         } else if arguments.len() == 1 {
@@ -138,13 +162,13 @@ impl Command for CommandImpl {
                             let item_name = get_string_value(DirEntryAttr::FullName, &item);
 
                             if item_name == file_name {
-                                print_entry(&item, extended_details);
+                                print_entry(env, &item, extended_details);
                                 break;
                             }
                         }
                     } else {
                         for item in items {
-                            print_entry(&item, extended_details);
+                            print_entry(env, &item, extended_details);
                         }
                     }
 

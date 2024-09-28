@@ -5,6 +5,7 @@ use crate::utils::state::{
 };
 use crate::utils::{instruction_query, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
+use duckscript::types::env::Env;
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -322,6 +323,7 @@ impl Command for ForInCommand {
         instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         line: usize,
+        _env: &mut Env,
     ) -> CommandResult {
         if arguments.len() != 3 || arguments[1] != "in" {
             CommandResult::Error("Invalid for/in statement".to_string())
@@ -424,6 +426,7 @@ impl Command for EndForInCommand {
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         line: usize,
+        _env: &mut Env,
     ) -> CommandResult {
         match pop_call_info_for_line(line, state, true) {
             Some(call_info) => {

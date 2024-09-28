@@ -82,6 +82,7 @@ fn command_default_run_with_context() {
     }
 
     let mut context = Context::new();
+    let mut env = Env::default();
     let command = InnerCommand {};
     let result = command.run_with_context(
         vec![],
@@ -91,6 +92,7 @@ fn command_default_run_with_context() {
         &vec![],
         &mut context.commands,
         0,
+        &mut env,
     );
 
     test::validate_continue_result(&result, None);

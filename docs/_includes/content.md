@@ -457,6 +457,7 @@ The run_with_context signature is as follows:
 /// * `instructions` - The entire list of instructions which make up the currently running script
 /// * `commands` - The currently known commands
 /// * `line` - The current instruction line number (global line number after including all scripts into one global script)
+/// * `env` - The current runtime env with access to out/err writers, etc...
 fn run_with_context(
     &self,
     arguments: Vec<String>,
@@ -466,6 +467,7 @@ fn run_with_context(
     instructions: &Vec<Instruction>,
     commands: &mut Commands,
     line: usize,
+    env: &mut Env,
 ) -> CommandResult;
 ```
 
@@ -479,7 +481,7 @@ The duckscript cli basically embeds duckscript so you can look at it as a refere
 ```rust
 let mut context = Context::new();
 duckscriptsdk::load(&mut context.commands)?;
-runner::run_script_file(file, context)?;
+runner::run_script_file(file, context, None)?;
 ```
 
 That's it!<br>
@@ -502,10 +504,10 @@ The following public functions are available:
 
 ```rust
 /// Executes the provided script with the given context
-pub fn run_script(text: &str, context: Context) -> Result<Context, ScriptError>;
+pub fn run_script(text: &str, context: Context, env: Option<Env>) -> Result<Context, ScriptError>;
 
 /// Executes the provided script file with the given context
-pub fn run_script_file(file: &str, context: Context) -> Result<Context, ScriptError>;
+pub fn run_script_file(file: &str, context: Context, env: Option<Env>) -> Result<Context, ScriptError>;
 ```
 
 <a name="editor-support"></a>

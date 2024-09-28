@@ -1,5 +1,6 @@
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
@@ -43,12 +44,16 @@ impl Command for CommandImpl {
         instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         _line: usize,
+        env: &mut Env,
     ) -> CommandResult {
         let string_value = format!("{:#?}", instructions).to_string();
 
         if output_variable.is_none() {
-            println!("{}", string_value);
-        }
+            match writeln!(env.out, "{}", string_value) {
+                Ok(_) => (),
+                Err(error) => return CommandResult::Error(error.to_string()),
+            }
+        };
 
         CommandResult::Continue(Some(string_value))
     }

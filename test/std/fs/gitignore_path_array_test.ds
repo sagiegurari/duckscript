@@ -9,7 +9,7 @@ fn test_found
     handle = gitignore_path_array ./duckscript/src
 
     size = array_length ${handle}
-    assert_eq ${size} 36
+    assert_eq ${size} 38
 
     expected = map
     map_put ${expected} ./duckscript/src true

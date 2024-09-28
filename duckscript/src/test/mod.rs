@@ -1,4 +1,5 @@
 use crate::types::command::{Command, CommandResult, Commands, GoToValue};
+use crate::types::env::Env;
 use crate::types::instruction::{
     Instruction, InstructionType, PreProcessInstruction, ScriptInstruction,
 };
@@ -76,12 +77,15 @@ impl Command for OnErrorCommand {
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         _line: usize,
+        env: &mut Env,
     ) -> CommandResult {
         let mut index = 0;
         for argument in arguments {
             index = index + 1;
             variables.insert(index.to_string(), argument.clone());
         }
+
+        writeln!(env.out, "{}", "test").unwrap();
 
         CommandResult::Continue(None)
     }

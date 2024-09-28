@@ -1,5 +1,6 @@
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::env::Env;
 use duckscript::types::instruction::{Instruction, InstructionType};
 use duckscript::types::runtime::{Context, StateValue};
 use duckscript::{parser, runner};
@@ -55,6 +56,7 @@ impl Command for CommandImpl {
         _instructions: &Vec<Instruction>,
         commands: &mut Commands,
         _line: usize,
+        env: &mut Env,
     ) -> CommandResult {
         if arguments.is_empty() {
             CommandResult::Crash("File name not provided.".to_string())
@@ -105,9 +107,14 @@ impl Command for CommandImpl {
                                 let mut context = Context::new();
                                 context.commands = commands.clone();
 
-                                match runner::run_script(&script, context) {
+                                match runner::run_script(&script, context, None) {
                                     Err(error) => {
-                                        println!("test: [{}][{}] ... failed", &file, &test_name);
+                                        writeln!(
+                                            env.out,
+                                            "test: [{}][{}] ... failed",
+                                            &file, &test_name
+                                        )
+                                        .unwrap();
 
                                         return CommandResult::Crash(
                                             format!(
@@ -118,7 +125,12 @@ impl Command for CommandImpl {
                                             .to_string(),
                                         );
                                     }
-                                    _ => println!("test: [{}][{}] ... ok", &file, &test_name),
+                                    _ => writeln!(
+                                        env.out,
+                                        "test: [{}][{}] ... ok",
+                                        &file, &test_name
+                                    )
+                                    .unwrap(),
                                 }
                             }
                         }

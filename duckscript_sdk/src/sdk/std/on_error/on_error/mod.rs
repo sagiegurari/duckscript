@@ -2,6 +2,7 @@ use crate::sdk::std::on_error::{get_value, EXIT_ON_ERROR_KEY, STATE_KEY};
 use crate::utils::state::get_core_sub_state_for_command;
 use crate::utils::{condition, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
@@ -45,6 +46,7 @@ impl Command for CommandImpl {
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         _line: usize,
+        _env: &mut Env,
     ) -> CommandResult {
         if !arguments.is_empty() {
             let error = arguments[0].clone();

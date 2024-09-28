@@ -1,6 +1,7 @@
 use crate::utils::pckg;
 use duckscript::runner;
 use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::{Context, StateValue};
 use std::collections::HashMap;
@@ -55,6 +56,7 @@ impl Command for CommandImpl {
         _instructions: &Vec<Instruction>,
         commands: &mut Commands,
         _line: usize,
+        _env: &mut Env,
     ) -> CommandResult {
         if arguments.is_empty() {
             CommandResult::Crash("Directory name not provided.".to_string())
@@ -89,7 +91,7 @@ assert result
             let mut context = Context::new();
             context.commands = commands.clone();
 
-            match runner::run_script(&script, context) {
+            match runner::run_script(&script, context, None) {
                 Err(error) => CommandResult::Crash(
                     format!("Error while running tests.\n{}", &error.to_string()).to_string(),
                 ),

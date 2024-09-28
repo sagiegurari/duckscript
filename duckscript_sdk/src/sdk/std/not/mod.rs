@@ -1,5 +1,6 @@
 use crate::utils::{condition, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
@@ -43,11 +44,19 @@ impl Command for CommandImpl {
         instructions: &Vec<Instruction>,
         commands: &mut Commands,
         _line: usize,
+        env: &mut Env,
     ) -> CommandResult {
         if arguments.is_empty() {
             CommandResult::Error("Missing condition".to_string())
         } else {
-            match condition::eval_condition(arguments, instructions, state, variables, commands) {
+            match condition::eval_condition(
+                arguments,
+                instructions,
+                state,
+                variables,
+                commands,
+                env,
+            ) {
                 Ok(passed) => {
                     let output = !passed;
                     CommandResult::Continue(Some(output.to_string()))

@@ -3,6 +3,7 @@ use crate::types::scope::get_line_context_name;
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
 use crate::utils::{condition, instruction_query, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
+use duckscript::types::env::Env;
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -356,6 +357,7 @@ impl Command for IfCommand {
         instructions: &Vec<Instruction>,
         commands: &mut Commands,
         line: usize,
+        env: &mut Env,
     ) -> CommandResult {
         if arguments.is_empty() {
             CommandResult::Error("Missing condition".to_string())
@@ -373,6 +375,7 @@ impl Command for IfCommand {
                         state,
                         variables,
                         commands,
+                        env,
                     ) {
                         Ok(passed) => {
                             if passed {
@@ -460,6 +463,7 @@ impl Command for ElseIfCommand {
         instructions: &Vec<Instruction>,
         commands: &mut Commands,
         line: usize,
+        env: &mut Env,
     ) -> CommandResult {
         if arguments.is_empty() {
             CommandResult::Error("Missing condition".to_string())
@@ -472,7 +476,7 @@ impl Command for ElseIfCommand {
                 } else {
                     let if_else_info = call_info.meta_info.clone();
                     let line_context_name = get_line_context_name(state);
-                    match condition::eval_condition(arguments, instructions, state, variables, commands) {
+                    match condition::eval_condition(arguments, instructions, state, variables, commands, env) {
                         Ok(passed) => {
                             if passed {
                                 let next_line = if call_info.else_line_index + 1 < if_else_info.else_lines.len() {
@@ -558,6 +562,7 @@ impl Command for ElseCommand {
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         line: usize,
+        _env: &mut Env,
     ) -> CommandResult {
         match pop_call_info_for_line(line, state) {
             Some(call_info) => {

@@ -1,5 +1,6 @@
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
 use semver::Version;
@@ -44,6 +45,7 @@ impl Command for CommandImpl {
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         _line: usize,
+        _env: &mut Env,
     ) -> CommandResult {
         if arguments.is_empty() {
             CommandResult::Error("No semver value provided.".to_string())

@@ -1,5 +1,6 @@
 use crate::utils::eval;
 use duckscript::types::command::{CommandResult, Commands};
+use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
@@ -33,6 +34,7 @@ pub(crate) fn eval_condition(
     state: &mut HashMap<String, StateValue>,
     variables: &mut HashMap<String, String>,
     commands: &mut Commands,
+    env: &mut Env,
 ) -> Result<bool, String> {
     if arguments.is_empty() {
         Ok(is_true(None))
@@ -40,8 +42,14 @@ pub(crate) fn eval_condition(
         let eval_statement = commands.exists(&arguments[0]);
 
         if eval_statement {
-            match eval::eval_with_instructions(&arguments, instructions, state, variables, commands)
-            {
+            match eval::eval_with_instructions(
+                &arguments,
+                instructions,
+                state,
+                variables,
+                commands,
+                env,
+            ) {
                 CommandResult::Continue(value) => {
                     let passed = is_true(value);
 

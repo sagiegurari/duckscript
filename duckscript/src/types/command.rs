@@ -7,6 +7,7 @@
 #[path = "./command_test.rs"]
 mod command_test;
 
+use crate::types::env::Env;
 use crate::types::error::ScriptError;
 use crate::types::instruction::Instruction;
 use crate::types::runtime::StateValue;
@@ -75,6 +76,7 @@ pub trait Command {
     /// * `instructions` - The entire list of instructions which make up the currently running script
     /// * `commands` - The currently known commands
     /// * `line` - The current instruction line number (global line number after including all scripts into one global script)
+    /// * `env` - The current runtime env with access to out/err writers, etc...
     fn run_with_context(
         &self,
         _arguments: Vec<String>,
@@ -84,6 +86,7 @@ pub trait Command {
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         _line: usize,
+        _env: &mut Env,
     ) -> CommandResult {
         CommandResult::Crash(format!("Not implemented for command: {}", &self.name()).to_string())
     }

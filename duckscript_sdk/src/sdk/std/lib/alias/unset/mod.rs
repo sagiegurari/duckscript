@@ -2,6 +2,7 @@ use crate::sdk::std::lib::alias::ALIAS_STATE_KEY;
 use crate::utils::pckg;
 use crate::utils::state::get_sub_state;
 use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
@@ -45,6 +46,7 @@ impl Command for CommandImpl {
         _instructions: &Vec<Instruction>,
         commands: &mut Commands,
         _line: usize,
+        _env: &mut Env,
     ) -> CommandResult {
         if arguments.len() != 1 {
             CommandResult::Error("Invalid alias name provided.".to_string())

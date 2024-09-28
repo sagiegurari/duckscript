@@ -1,6 +1,7 @@
 use crate::utils::state::put_handle;
 use crate::utils::{io, pckg};
 use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
@@ -44,6 +45,7 @@ impl Command for CommandImpl {
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         _line: usize,
+        _env: &mut Env,
     ) -> CommandResult {
         if arguments.is_empty() {
             CommandResult::Error("File name not provided.".to_string())

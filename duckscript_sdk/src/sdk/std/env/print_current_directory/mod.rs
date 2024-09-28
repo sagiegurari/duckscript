@@ -1,5 +1,9 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::env::Env;
+use duckscript::types::instruction::Instruction;
+use duckscript::types::runtime::StateValue;
+use std::collections::HashMap;
 use std::env;
 
 #[cfg(test)]
@@ -28,12 +32,28 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+    fn requires_context(&self) -> bool {
+        true
+    }
+
+    fn run_with_context(
+        &self,
+        _arguments: Vec<String>,
+        _state: &mut HashMap<String, StateValue>,
+        _variables: &mut HashMap<String, String>,
+        _output_variable: Option<String>,
+        _instructions: &Vec<Instruction>,
+        _commands: &mut Commands,
+        _line: usize,
+        env: &mut Env,
+    ) -> CommandResult {
         match env::current_dir() {
             Ok(directory_path) => {
                 let directory = directory_path.display();
-                println!("{}", &directory);
-                CommandResult::Continue(Some(directory.to_string()))
+                match writeln!(env.out, "{}", &directory) {
+                    Ok(_) => CommandResult::Continue(Some(directory.to_string())),
+                    Err(error) => CommandResult::Error(error.to_string()),
+                }
             }
             Err(_) => CommandResult::Continue(None),
         }

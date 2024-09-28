@@ -1,5 +1,6 @@
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::env::Env;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
@@ -8,12 +9,12 @@ use std::collections::HashMap;
 #[path = "./mod_test.rs"]
 mod mod_test;
 
-fn print_help(help_doc: String, name: &str) -> CommandResult {
+fn print_help(env: &mut Env, help_doc: String, name: &str) -> CommandResult {
     if help_doc.is_empty() {
-        println!("No documentation found for command: {}", name);
+        writeln!(env.out, "No documentation found for command: {}", name).unwrap();
         CommandResult::Continue(None)
     } else {
-        println!("{}", &help_doc);
+        writeln!(env.out, "{}", &help_doc).unwrap();
         CommandResult::Continue(Some(help_doc))
     }
 }
@@ -53,22 +54,23 @@ impl Command for CommandImpl {
         _instructions: &Vec<Instruction>,
         commands: &mut Commands,
         _line: usize,
+        env: &mut Env,
     ) -> CommandResult {
         if arguments.is_empty() {
-            print_help(self.help(), &self.name())
+            print_help(env, self.help(), &self.name())
         } else {
             let name = &arguments[0];
 
             match commands.get(name) {
                 Some(command) => {
                     let help_doc = command.help();
-                    print_help(help_doc, name)
+                    print_help(env, help_doc, name)
                 }
                 None => {
                     if name == &self.name() || self.aliases().contains(name) {
-                        print_help(self.help(), &self.name())
+                        print_help(env, self.help(), &self.name())
                     } else {
-                        println!("Command: {} not found.", name);
+                        writeln!(env.out, "Command: {} not found.", name).unwrap();
                         CommandResult::Continue(None)
                     }
                 }

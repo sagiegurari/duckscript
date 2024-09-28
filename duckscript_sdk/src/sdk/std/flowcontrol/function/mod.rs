@@ -3,6 +3,7 @@ use crate::types::scope::get_line_context_name;
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
 use crate::utils::{annotation, instruction_query, pckg, scope};
 use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
+use duckscript::types::env::Env;
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -299,6 +300,7 @@ impl Command for FunctionCommand {
         instructions: &Vec<Instruction>,
         commands: &mut Commands,
         line: usize,
+        _env: &mut Env,
     ) -> CommandResult {
         if arguments.is_empty() {
             CommandResult::Error("Missing function name.".to_string())
@@ -417,6 +419,7 @@ impl Command for FunctionCommand {
                                                 _instructions: &Vec<Instruction>,
                                                 _commands: &mut Commands,
                                                 line: usize,
+                                                _env: &mut Env,
                                             ) -> CommandResult
                                             {
                                                 run_call(
@@ -499,6 +502,7 @@ impl Command for EndFunctionCommand {
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         line: usize,
+        _env: &mut Env,
     ) -> CommandResult {
         let line_context_name = get_line_context_name(state);
 
@@ -560,6 +564,7 @@ impl Command for ReturnCommand {
         _instructions: &Vec<Instruction>,
         _commands: &mut Commands,
         line: usize,
+        _env: &mut Env,
     ) -> CommandResult {
         let line_context_name = get_line_context_name(state);
 
