@@ -93,21 +93,7 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        _state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         let (path_str, flags) = if arguments.args.is_empty() {
             (".", "")
         } else if arguments.args.len() == 1 {

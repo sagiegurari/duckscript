@@ -200,21 +200,7 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         if arguments.args.is_empty() {
             CommandResult::Error("No JSON root variable name provided.".to_string())
         } else {
@@ -226,14 +212,14 @@ impl Command for CommandImpl {
                 };
 
             if as_state {
-                let state = get_handles_sub_state(state);
+                let state = get_handles_sub_state(arguments.state);
 
-                match encode_from_state(&arguments.args[start_index], state) {
+                match encode_from_state(&arguments.args[start_index], arguments.state) {
                     Ok(output) => CommandResult::Continue(Some(output)),
                     Err(error) => CommandResult::Error(error),
                 }
             } else {
-                match encode_from_variables(&arguments.args[start_index], variables) {
+                match encode_from_variables(&arguments.args[start_index], arguments.variables) {
                     Ok(output) => CommandResult::Continue(Some(output)),
                     Err(error) => CommandResult::Error(error),
                 }

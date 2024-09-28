@@ -39,21 +39,7 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         if arguments.args.len() < 2 {
             return CommandResult::Error(
                 "Paths to the ZIP file and/or files to pack are not provided.".to_string(),
@@ -71,7 +57,7 @@ impl Command for CommandImpl {
             Err(err) => return CommandResult::Error(err),
         };
 
-        let files = match collect_files_from_arrays(&file_args, state) {
+        let files = match collect_files_from_arrays(&file_args, arguments.state) {
             Ok(files) => files,
             Err(err) => return CommandResult::Error(err),
         };

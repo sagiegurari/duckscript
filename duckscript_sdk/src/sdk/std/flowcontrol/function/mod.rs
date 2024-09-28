@@ -287,21 +287,7 @@ impl Command for FunctionCommand {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        instructions: &Vec<Instruction>,
-        commands: &mut Commands,
-        line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         if arguments.args.is_empty() {
             CommandResult::Error("Missing function name.".to_string())
         } else {
@@ -406,29 +392,14 @@ impl Command for FunctionCommand {
                                                 Box::new((*self).clone())
                                             }
 
-                                            fn requires_context(&self) -> bool {
-                                                true
-                                            }
-
-                                            fn run_with_context(
-                                                &self,
-                                                arguments: CommandArgs,
-                                                state: &mut HashMap<String, StateValue>,
-                                                variables: &mut HashMap<String, String>,
-                                                output_variable: Option<String>,
-                                                _instructions: &Vec<Instruction>,
-                                                _commands: &mut Commands,
-                                                line: usize,
-                                                _env: &mut Env,
-                                            ) -> CommandResult
-                                            {
+                                            fn run(&self, arguments: CommandArgs) -> CommandResult {
                                                 run_call(
                                                     self.name(),
-                                                    arguments,
-                                                    state,
-                                                    variables,
-                                                    output_variable,
-                                                    line,
+                                                    arguments.args,
+                                                    arguments.state,
+                                                    arguments.variables,
+                                                    arguments.output_variable,
+                                                    arguments.line,
                                                 )
                                             }
                                         }
@@ -489,30 +460,18 @@ impl Command for EndFunctionCommand {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        let line_context_name = get_line_context_name(arguments.state);
 
-    fn run_with_context(
-        &self,
-        _arguments: CommandArgs,
-        state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
-        let line_context_name = get_line_context_name(state);
-
-        match pop_from_call_stack(state) {
+        match pop_from_call_stack(arguments.state) {
             Some(call_info) => {
-                if call_info.end_line == line && call_info.line_context_name == line_context_name {
+                if call_info.end_line == arguments.line
+                    && call_info.line_context_name == line_context_name
+                {
                     let next_line = call_info.call_line + 1;
 
                     if call_info.scoped {
-                        match scope::pop(variables, state, &vec![]) {
+                        match scope::pop(arguments.variables, arguments.state, &vec![]) {
                             Err(error) => return CommandResult::Error(error),
                             _ => (),
                         }
@@ -520,7 +479,7 @@ impl Command for EndFunctionCommand {
 
                     CommandResult::GoTo(None, GoToValue::Line(next_line))
                 } else {
-                    push_to_call_stack(state, &call_info);
+                    push_to_call_stack(arguments.state, &call_info);
                     CommandResult::Continue(None)
                 }
             }
@@ -551,35 +510,23 @@ impl Command for ReturnCommand {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
-        let line_context_name = get_line_context_name(state);
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        let line_context_name = get_line_context_name(arguments.state);
 
         match pop_from_call_stack(state) {
             Some(call_info) => {
-                if call_info.start_line < line
-                    && call_info.end_line > line
+                if call_info.start_line < arguments.line
+                    && call_info.end_line > arguments.line
                     && call_info.line_context_name == line_context_name
                 {
                     match call_info.output_variable {
                         Some(ref name) => {
                             if arguments.args.is_empty() {
-                                variables.remove(name);
+                                arguments.variables.remove(name);
                             } else {
-                                variables.insert(name.to_string(), arguments.args[0].clone());
+                                arguments
+                                    .variables
+                                    .insert(name.to_string(), arguments.args[0].clone());
                             }
                         }
                         None => (),
@@ -597,7 +544,7 @@ impl Command for ReturnCommand {
                             None => vec![],
                         };
 
-                        match scope::pop(variables, state, &copy) {
+                        match scope::pop(arguments.variables, arguments.state, &copy) {
                             Err(error) => return CommandResult::Error(error),
                             _ => (),
                         }
@@ -606,7 +553,7 @@ impl Command for ReturnCommand {
                     let next_line = call_info.call_line + 1;
                     CommandResult::GoTo(output, GoToValue::Line(next_line))
                 } else {
-                    push_to_call_stack(state, &call_info);
+                    push_to_call_stack(arguments.state, &call_info);
                     CommandResult::Continue(None)
                 }
             }

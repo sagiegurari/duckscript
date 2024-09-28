@@ -267,49 +267,35 @@ impl Command for WhileCommand {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        instructions: &Vec<Instruction>,
-        commands: &mut Commands,
-        line: usize,
-        env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         if arguments.args.is_empty() {
             CommandResult::Error("Missing condition".to_string())
         } else {
             match get_or_create_while_meta_info_for_line(
-                line,
-                state,
-                instructions,
+                arguments.line,
+                arguments.state,
+                arguments.instructions,
                 self.package.clone(),
             ) {
                 Ok(while_info) => {
                     match condition::eval_condition(
-                        arguments,
-                        instructions,
-                        state,
-                        variables,
-                        commands,
-                        env,
+                        arguments.args,
+                        arguments.instructions,
+                        arguments.state,
+                        arguments.variables,
+                        arguments.commands,
+                        arguments.env,
                     ) {
                         Ok(passed) => {
                             if passed {
-                                let line_context_name = get_line_context_name(state);
+                                let line_context_name = get_line_context_name(arguments.state);
 
                                 let call_info = CallInfo {
                                     meta_info: while_info.clone(),
                                     line_context_name,
                                 };
 
-                                store_call_info(&call_info, state);
+                                store_call_info(&call_info, arguments.state);
 
                                 CommandResult::Continue(None)
                             } else {
@@ -357,25 +343,11 @@ impl Command for EndWhileCommand {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        _arguments: CommandArgs,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
-        match pop_call_info_for_line(line, state) {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        match pop_call_info_for_line(arguments.line, arguments.state) {
             Some(call_info) => {
                 let next_line = call_info.meta_info.start;
-                store_call_info(&call_info, state);
+                store_call_info(&call_info, arguments.state);
                 CommandResult::GoTo(None, GoToValue::Line(next_line))
             }
             None => CommandResult::Error(

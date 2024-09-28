@@ -31,26 +31,12 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        _state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         if arguments.args.is_empty() {
             CommandResult::Error("File name not provided.".to_string())
         } else {
             let mut all_text = String::new();
-            for argument in &arguments {
+            for argument in &arguments.args {
                 let result = io::read_text_file(&argument);
 
                 match result {

@@ -105,21 +105,7 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         if arguments.args.is_empty() {
             CommandResult::Error("No JSON string provided.".to_string())
         } else {
@@ -135,11 +121,11 @@ impl Command for CommandImpl {
                     let output = match output_variable {
                         Some(name) => {
                             if as_state {
-                                create_structure(data, state)
+                                create_structure(data, arguments.state)
                             } else {
-                                create_variables(data, &name, variables);
+                                create_variables(data, &name, arguments.variables);
 
-                                match variables.get(&name) {
+                                match arguments.variables.get(&name) {
                                     Some(value) => Some(value.to_string()),
                                     None => None,
                                 }

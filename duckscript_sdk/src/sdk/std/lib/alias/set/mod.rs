@@ -36,26 +36,18 @@ fn create_alias_command(
             Box::new((*self).clone())
         }
 
-        fn requires_context(&self) -> bool {
-            true
-        }
-
-        fn run_with_context(
-            &self,
-            arguments: CommandArgs,
-            state: &mut HashMap<String, StateValue>,
-            variables: &mut HashMap<String, String>,
-            _output_variable: Option<String>,
-            _instructions: &Vec<Instruction>,
-            commands: &mut Commands,
-            _line: usize,
-            env: &mut Env,
-        ) -> CommandResult {
+        fn run(&self, arguments: CommandArgs) -> CommandResult {
             let mut all_arguments = vec![];
-            all_arguments.append(&mut self.arguments.clone());
-            all_arguments.append(&mut arguments.clone());
+            all_arguments.append(&mut self.arguments.args.clone());
+            all_arguments.append(&mut arguments.args.clone());
 
-            eval::eval_with_error(&all_arguments, state, variables, commands, env)
+            eval::eval_with_error(
+                &all_arguments,
+                arguments.state,
+                arguments.variables,
+                arguments.commands,
+                arguments.env,
+            )
         }
     }
 

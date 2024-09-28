@@ -32,21 +32,7 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         if arguments.args.is_empty() {
             CommandResult::Error("File name not provided.".to_string())
         } else {
@@ -54,7 +40,7 @@ impl Command for CommandImpl {
 
             match result {
                 Ok(binary) => {
-                    let key = put_handle(state, StateValue::ByteArray(binary));
+                    let key = put_handle(arguments.state, StateValue::ByteArray(binary));
 
                     CommandResult::Continue(Some(key))
                 }

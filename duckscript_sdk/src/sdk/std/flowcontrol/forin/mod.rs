@@ -310,21 +310,7 @@ impl Command for ForInCommand {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         if arguments.args.len() != 3 || arguments.args[1] != "in" {
             CommandResult::Error("Invalid for/in statement".to_string())
         } else {
@@ -413,25 +399,11 @@ impl Command for EndForInCommand {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        _arguments: CommandArgs,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
-        match pop_call_info_for_line(line, state, true) {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        match pop_call_info_for_line(line, arguments.state, true) {
             Some(call_info) => {
                 let next_line = call_info.meta_info.start;
-                store_call_info(&call_info, state);
+                store_call_info(&call_info, arguments.state);
                 CommandResult::GoTo(None, GoToValue::Line(next_line))
             }
             None => CommandResult::Error(

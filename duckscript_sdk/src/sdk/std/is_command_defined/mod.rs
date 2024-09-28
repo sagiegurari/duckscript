@@ -31,25 +31,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        _state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        commands: &mut Commands,
-        _line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         if arguments.args.is_empty() {
             CommandResult::Error("Command name not provided.".to_string())
         } else {
-            let result = commands.exists(&arguments.args[0]);
+            let result = arguments.commands.exists(&arguments.args[0]);
 
             CommandResult::Continue(Some(result.to_string()))
         }
