@@ -25,7 +25,7 @@ enum EndReason {
     ExitCalled,
     ReachedEnd,
     Crash(ScriptError),
-    Halted
+    Halted,
 }
 
 /// Executes the provided script with the given context
