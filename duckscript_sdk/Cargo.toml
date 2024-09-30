@@ -47,7 +47,7 @@ suppaftp = "^6.0"
 walkdir = "^2"
 which = { version = "^6", default-features = false }
 whoami = "^1"
-zip = { version = "^1", default-features = false, features = [
+zip = { version = "^2", default-features = false, features = [
   "bzip2",
   "deflate",
   "time",
