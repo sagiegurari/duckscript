@@ -32,22 +32,8 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        _arguments: CommandArgs,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
-        let value = get_value(state, "source".to_string());
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        let value = get_value(arguments.state, "source".to_string());
         CommandResult::Continue(value)
     }
 }

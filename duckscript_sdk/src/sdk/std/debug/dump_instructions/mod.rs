@@ -34,7 +34,7 @@ impl Command for CommandImpl {
     fn run(&self, arguments: CommandArgs) -> CommandResult {
         let string_value = format!("{:#?}", arguments.instructions).to_string();
 
-        if output_variable.is_none() {
+        if arguments.output_variable.is_none() {
             match writeln!(arguments.env.out, "{}", string_value) {
                 Ok(_) => (),
                 Err(error) => return CommandResult::Error(error.to_string()),

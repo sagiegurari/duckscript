@@ -30,25 +30,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        _state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         let output = if arguments.args.is_empty() {
             None
         } else {
-            match variables.get(&arguments.args[0]) {
+            match arguments.variables.get(&arguments.args[0]) {
                 Some(ref value) => Some(value.to_string()),
                 None => None,
             }

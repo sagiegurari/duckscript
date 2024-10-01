@@ -44,7 +44,7 @@ impl Command for CommandImpl {
                 ("".to_string(), arguments.args[0].to_string())
             };
 
-            let state = get_handles_sub_state(state);
+            let state = get_handles_sub_state(arguments.state);
 
             match state.get(&key) {
                 Some(state_value) => match state_value {

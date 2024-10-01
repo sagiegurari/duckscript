@@ -39,7 +39,7 @@ impl Command for CommandImpl {
             set.insert(argument);
         }
 
-        let key = put_handle(state, StateValue::Set(set));
+        let key = put_handle(arguments.state, StateValue::Set(set));
 
         CommandResult::Continue(Some(key))
     }

@@ -314,19 +314,19 @@ impl Command for ForInCommand {
         if arguments.args.len() != 3 || arguments.args[1] != "in" {
             CommandResult::Error("Invalid for/in statement".to_string())
         } else {
-            let call_info = match pop_call_info_for_line(line, state, false) {
+            let call_info = match pop_call_info_for_line(arguments.line, arguments.state, false) {
                 Some(call_info) => call_info,
                 None => {
                     let forin_meta_info_result = get_or_create_forin_meta_info_for_line(
-                        line,
-                        state,
-                        instructions,
+                        arguments.line,
+                        arguments.state,
+                        arguments.instructions,
                         self.package.clone(),
                     );
 
                     match forin_meta_info_result {
                         Ok(forin_meta_info) => {
-                            let line_context_name = get_line_context_name(state);
+                            let line_context_name = get_line_context_name(arguments.state);
 
                             CallInfo {
                                 iteration: 0,
@@ -343,9 +343,9 @@ impl Command for ForInCommand {
             let forin_meta_info = call_info.meta_info;
 
             let handle = &arguments.args[2];
-            match get_next_iteration(iteration, handle.to_string(), state) {
+            match get_next_iteration(iteration, handle.to_string(), arguments.state) {
                 Some(next_value) => {
-                    let line_context_name = get_line_context_name(state);
+                    let line_context_name = get_line_context_name(arguments.state);
 
                     store_call_info(
                         &CallInfo {
@@ -353,10 +353,12 @@ impl Command for ForInCommand {
                             meta_info: forin_meta_info,
                             line_context_name,
                         },
-                        state,
+                        arguments.state,
                     );
 
-                    variables.insert(arguments.args[0].clone(), next_value);
+                    arguments
+                        .variables
+                        .insert(arguments.args[0].clone(), next_value);
                     CommandResult::Continue(None)
                 }
                 None => {
@@ -400,7 +402,7 @@ impl Command for EndForInCommand {
     }
 
     fn run(&self, arguments: CommandArgs) -> CommandResult {
-        match pop_call_info_for_line(line, arguments.state, true) {
+        match pop_call_info_for_line(arguments.line, arguments.state, true) {
             Some(call_info) => {
                 let next_line = call_info.meta_info.start;
                 store_call_info(&call_info, arguments.state);

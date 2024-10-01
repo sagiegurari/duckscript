@@ -51,7 +51,7 @@ impl Command for CommandImpl {
                             var_key.insert_str(0, &prefix);
                         }
 
-                        variables.insert(var_key, value.to_string());
+                        arguments.variables.insert(var_key, value.to_string());
                     }
 
                     CommandResult::Continue(Some(data.len().to_string()))

@@ -43,21 +43,7 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        _state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        commands: &mut Commands,
-        _line: usize,
-        env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         if arguments.args.is_empty() {
             CommandResult::Crash("File name not provided.".to_string())
         } else {
@@ -69,7 +55,7 @@ impl Command for CommandImpl {
             };
 
             match parser::parse_file(&arguments.args[0]) {
-                Ok(instructions) => match commands.get("function") {
+                Ok(instructions) => match arguments.commands.get("function") {
                     Some(function_command) => {
                         let mut command_names = function_command.aliases();
                         command_names.push(function_command.name());

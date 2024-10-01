@@ -41,7 +41,7 @@ impl Command for CommandImpl {
             map.insert(var_key, StateValue::String(var_value.to_string()));
         }
 
-        let key = put_handle(state, StateValue::SubState(map));
+        let key = put_handle(arguments.state, StateValue::SubState(map));
 
         CommandResult::Continue(Some(key))
     }

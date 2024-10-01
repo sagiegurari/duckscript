@@ -34,21 +34,7 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         validate_and_run_with_connection(
             &arguments,
             &|options: &Options| -> Result<(), String> {
@@ -64,7 +50,8 @@ impl Command for CommandImpl {
 
                 match ftp_stream.retr_as_buffer(&remote_file) {
                     Ok(binary) => {
-                        let key = put_handle(state, StateValue::ByteArray(binary.into_inner()));
+                        let key =
+                            put_handle(arguments.state, StateValue::ByteArray(binary.into_inner()));
 
                         CommandResult::Continue(Some(key))
                     }

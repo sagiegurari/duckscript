@@ -33,21 +33,7 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         if arguments.args.is_empty() {
             CommandResult::Error("Array handle not provided.".to_string())
         } else {
@@ -55,7 +41,7 @@ impl Command for CommandImpl {
 
             let key = &arguments.args[0];
 
-            match state.get(key) {
+            match arguments.state.get(key) {
                 Some(state_value) => match state_value {
                     StateValue::ByteArray(binary) => match str::from_utf8(&binary) {
                         Ok(text) => CommandResult::Continue(Some(text.to_string())),

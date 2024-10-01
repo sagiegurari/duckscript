@@ -38,7 +38,7 @@ impl Command for CommandImpl {
         } else if arguments.args.len() < 3 {
             CommandResult::Error("Key/Value not provided.".to_string())
         } else {
-            let state = get_handles_sub_state(state);
+            let state = get_handles_sub_state(arguments.state);
 
             let key = arguments.args[0].clone();
 

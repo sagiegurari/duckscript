@@ -54,7 +54,7 @@ fn print_entry(env: &mut Env, item: &HashMap<DirEntryAttr, DirEntryValue>, exten
         };
 
         writeln!(
-            arguments.env.out,
+            env.out,
             "{}\t{}\t{}",
             get_u64_value(DirEntryAttr::FileSize, &item),
             directory_flag,
@@ -63,7 +63,7 @@ fn print_entry(env: &mut Env, item: &HashMap<DirEntryAttr, DirEntryValue>, exten
         .unwrap();
     } else {
         writeln!(
-            arguments.env.out,
+            env.out,
             "{} ",
             get_string_value(DirEntryAttr::FullName, &item)
         )

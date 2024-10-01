@@ -80,21 +80,7 @@ impl Command for AliasCommand {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        commands: &mut Commands,
-        _line: usize,
-        env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         if arguments.args.len() < self.arguments_amount {
             CommandResult::Error("Invalid arguments provided.".to_string())
         } else {
@@ -106,18 +92,18 @@ impl Command for AliasCommand {
             if !arguments.args.is_empty() {
                 let mut index = 0;
                 let mut array = vec![];
-                for argument in arguments {
+                for argument in arguments.args {
                     index = index + 1;
                     let mut key = self.scope_name.clone();
                     key.push_str("::argument::");
                     key.push_str(&index.to_string());
 
-                    variables.insert(key, argument.clone());
+                    arguments.variables.insert(key, argument.clone());
 
                     array.push(StateValue::String(argument.clone()));
                 }
 
-                let handle = put_handle(state, StateValue::List(array));
+                let handle = put_handle(argument.state, StateValue::List(array));
 
                 let mut key = self.scope_name.clone();
                 key.push_str("::arguments");
@@ -126,22 +112,28 @@ impl Command for AliasCommand {
                 handle_option = Some(handle);
             }
 
-            let (flow_result, flow_output) =
-                eval::eval_instructions(&self.instructions, commands, state, variables, env, 0);
+            let (flow_result, flow_output) = eval::eval_instructions(
+                &self.instructions,
+                arguments.commands,
+                arguments.state,
+                arguments.variables,
+                env,
+                0,
+            );
 
             match handle_option {
                 Some(handle) => {
-                    let handle_state = get_handles_sub_state(state);
+                    let handle_state = get_handles_sub_state(arguments.state);
                     match handle_state.remove(&handle) {
                         _ => (),
                     }
                 }
                 None => (),
             }
-            clear(&self.scope_name, variables);
-            set_line_context_name(&line_context_name, state);
+            clear(&self.scope_name, arguments.variables);
+            set_line_context_name(&line_context_name, arguments.state);
 
-            let end_count = variables.len();
+            let end_count = arguments.variables.len();
             if start_count < end_count {
                 CommandResult::Crash(
                     format!(

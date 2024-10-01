@@ -32,21 +32,7 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         if arguments.args.is_empty() {
             CommandResult::Continue(Some("false".to_string()))
         } else {
@@ -59,9 +45,9 @@ impl Command for CommandImpl {
             };
 
             let removed = if recursive {
-                remove_handle_recursive(state, key)
+                remove_handle_recursive(arguments.state, key)
             } else {
-                let old_value = remove_handle(state, key);
+                let old_value = remove_handle(arguments.state, key);
                 old_value.is_some()
             };
 

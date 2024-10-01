@@ -36,7 +36,7 @@ impl Command for CommandImpl {
         if arguments.args.is_empty() {
             CommandResult::Error("Set handle not provided.".to_string())
         } else {
-            let handles_state = get_handles_sub_state(state);
+            let handles_state = get_handles_sub_state(arguments.state);
 
             match handles_state.get(&arguments.args[0]) {
                 Some(state_value) => match state_value {
@@ -47,7 +47,7 @@ impl Command for CommandImpl {
                             array.push(StateValue::String(value.to_string()));
                         }
 
-                        let key = put_handle(state, StateValue::List(array));
+                        let key = put_handle(arguments.state, StateValue::List(array));
 
                         CommandResult::Continue(Some(key))
                     }

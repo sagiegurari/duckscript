@@ -36,7 +36,7 @@ impl Command for CommandImpl {
         if arguments.args.len() < 2 {
             CommandResult::Error("Invalid input provided.".to_string())
         } else {
-            let state = get_handles_sub_state(state);
+            let state = get_handles_sub_state(arguments.state);
 
             let key = arguments.args[0].clone();
             let index: usize = match arguments.args[1].parse() {

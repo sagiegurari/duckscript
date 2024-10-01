@@ -59,13 +59,13 @@ impl Command for CommandImpl {
                         let value_string: String = FromPath::from_path(&path.path());
                         let state_value = StateValue::String(value_string);
 
-                        array.push(state_value);
+                        array.push(arguments.state_value);
                     }
                     Err(error) => return CommandResult::Error(error.to_string()),
                 }
             }
 
-            let key = put_handle(state, StateValue::List(array));
+            let key = put_handle(arguments.state, StateValue::List(array));
 
             CommandResult::Continue(Some(key))
         }

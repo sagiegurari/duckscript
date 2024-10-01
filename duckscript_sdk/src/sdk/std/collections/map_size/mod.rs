@@ -36,7 +36,7 @@ impl Command for CommandImpl {
         if arguments.args.is_empty() {
             CommandResult::Error("Map handle not provided.".to_string())
         } else {
-            let state = get_handles_sub_state(state);
+            let state = get_handles_sub_state(arguments.state);
 
             let key = &arguments.args[0];
 

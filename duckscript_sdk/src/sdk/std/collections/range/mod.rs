@@ -61,7 +61,7 @@ impl Command for CommandImpl {
                     .map(|value| StateValue::Number64Bit(value))
                     .collect();
 
-                let key = put_handle(state, StateValue::List(array));
+                let key = put_handle(arguments.state, StateValue::List(array));
 
                 CommandResult::Continue(Some(key))
             }

@@ -13,14 +13,14 @@ mod mod_test;
 
 fn create_alias_command(
     name: String,
-    arguments: CommandArgs,
+    arguments: Vec<String>,
     commands: &mut Commands,
     sub_state: &mut HashMap<String, StateValue>,
 ) -> Result<(), String> {
     #[derive(Clone)]
     struct AliasCommand {
         name: String,
-        arguments: CommandArgs,
+        arguments: Vec<String>,
     }
 
     impl Command for AliasCommand {
@@ -87,29 +87,20 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        commands: &mut Commands,
-        _line: usize,
-        _env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         if arguments.args.len() < 2 {
             CommandResult::Error("Invalid alias provided.".to_string())
         } else {
             let name = arguments.args[0].clone();
 
-            let sub_state = get_sub_state(ALIAS_STATE_KEY.to_string(), state);
+            let sub_state = get_sub_state(ALIAS_STATE_KEY.to_string(), arguments.state);
 
-            match create_alias_command(name, arguments.args[1..].to_vec(), commands, sub_state) {
+            match create_alias_command(
+                name,
+                arguments.args[1..].to_vec(),
+                arguments.commands,
+                sub_state,
+            ) {
                 Ok(_) => CommandResult::Continue(Some("true".to_string())),
                 Err(error) => CommandResult::Error(error.to_string()),
             }

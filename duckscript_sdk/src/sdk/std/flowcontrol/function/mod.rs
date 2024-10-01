@@ -303,9 +303,9 @@ impl Command for FunctionCommand {
                 }
             };
 
-            match get_fn_info_from_state(state, &function_name) {
+            match get_fn_info_from_state(arguments.state, &function_name) {
                 Some(fn_info) => {
-                    if fn_info.start != line {
+                    if fn_info.start != arguments.line {
                         CommandResult::Error(
                             format!(
                                 "Function: {} already defined at: {} to: {}",
@@ -349,11 +349,11 @@ impl Command for FunctionCommand {
                     end_blocks.push(end::END_COMMAND_NAME.to_string());
 
                     match instruction_query::find_commands(
-                        instructions,
+                        arguments.instructions,
                         &start_names,
                         &vec![],
                         &end_names,
-                        Some(line + 1),
+                        Some(arguments.line + 1),
                         None,
                         false,
                         &start_blocks,
@@ -365,14 +365,14 @@ impl Command for FunctionCommand {
 
                                 let fn_info = FunctionMetaInfo {
                                     name: function_name.clone(),
-                                    start: line,
+                                    start: arguments.line,
                                     end: fn_end_line,
                                     scoped,
                                 };
 
-                                end::set_command(fn_end_line, state, end_command.name());
+                                end::set_command(fn_end_line, arguments.state, end_command.name());
 
-                                match store_fn_info_in_state(state, &fn_info) {
+                                match store_fn_info_in_state(arguments.state, &fn_info) {
                                     Ok(_) => {
                                         #[derive(Clone)]
                                         pub(crate) struct CallFunctionCommand {
@@ -404,9 +404,11 @@ impl Command for FunctionCommand {
                                             }
                                         }
 
-                                        match commands.set(Box::new(CallFunctionCommand {
-                                            name: function_name.clone(),
-                                        })) {
+                                        match arguments.commands.set(Box::new(
+                                            CallFunctionCommand {
+                                                name: function_name.clone(),
+                                            },
+                                        )) {
                                             Ok(_) => CommandResult::GoTo(
                                                 None,
                                                 GoToValue::Line(fn_end_line + 1),
@@ -513,7 +515,7 @@ impl Command for ReturnCommand {
     fn run(&self, arguments: CommandArgs) -> CommandResult {
         let line_context_name = get_line_context_name(arguments.state);
 
-        match pop_from_call_stack(state) {
+        match pop_from_call_stack(arguments.state) {
             Some(call_info) => {
                 if call_info.start_line < arguments.line
                     && call_info.end_line > arguments.line

@@ -31,31 +31,17 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: CommandArgs,
-        state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        instructions: &Vec<Instruction>,
-        commands: &mut Commands,
-        _line: usize,
-        env: &mut Env,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         if arguments.args.is_empty() {
             CommandResult::Error("Missing condition".to_string())
         } else {
             match condition::eval_condition(
-                arguments,
-                instructions,
-                state,
-                variables,
-                commands,
-                env,
+                arguments.args,
+                arguments.instructions,
+                arguments.state,
+                arguments.variables,
+                arguments.commands,
+                arguments.env,
             ) {
                 Ok(passed) => {
                     let output = !passed;

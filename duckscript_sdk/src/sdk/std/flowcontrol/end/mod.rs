@@ -58,7 +58,7 @@ impl Command for CommandImpl {
     }
 
     fn run(&self, arguments: CommandArgs) -> CommandResult {
-        match get_command(line, state) {
+        match get_command(arguments.line, arguments.state) {
             Some(command) => {
                 let mut script_instruction = ScriptInstruction::new();
                 script_instruction.command = Some(arguments.command);
@@ -70,13 +70,13 @@ impl Command for CommandImpl {
                 };
 
                 let (command_result, _) = runner::run_instruction(
-                    commands,
-                    variables,
-                    state,
-                    instructions,
-                    instruction,
-                    line,
-                    env,
+                    arguments.commands,
+                    arguments.variables,
+                    arguments.state,
+                    arguments.instructions,
+                    arguments.instruction,
+                    arguments.line,
+                    arguments.env,
                 );
 
                 command_result

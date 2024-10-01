@@ -46,7 +46,7 @@ impl Command for CommandImpl {
 
             let mut data = HashMap::new();
             for argument in &arguments.args[start_index..] {
-                match variables.get(argument) {
+                match arguments.variables.get(argument) {
                     Some(value) => {
                         let mut key = argument.to_string();
                         if !prefix.is_empty() {

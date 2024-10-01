@@ -54,7 +54,7 @@ impl Command for CommandImpl {
 
             match read(text.as_bytes()) {
                 Ok(data) => {
-                    let state = get_handles_sub_state(state);
+                    let state = get_handles_sub_state(arguments.state);
 
                     let result = mutate_map(key, state, |map| {
                         for (property_key, property_value) in &data {

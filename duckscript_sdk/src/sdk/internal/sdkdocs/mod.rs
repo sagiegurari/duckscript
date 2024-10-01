@@ -82,7 +82,7 @@ impl Command for CommandImpl {
             buffer.push_str("\n");
             for name in &names {
                 if name.starts_with(&prefix) {
-                    let command = match commands.get(name) {
+                    let command = match arguments.commands.get(name) {
                         Some(command) => command,
                         None => {
                             return CommandResult::Error(format!("Command: {} not found", name));

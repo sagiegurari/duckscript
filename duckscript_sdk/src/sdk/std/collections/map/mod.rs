@@ -32,10 +32,10 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: CommandArgs) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         let map = HashMap::new();
 
-        let key = put_handle(state, StateValue::SubState(map));
+        let key = put_handle(arguments.state, StateValue::SubState(map));
 
         CommandResult::Continue(Some(key))
     }
