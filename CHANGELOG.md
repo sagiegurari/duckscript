@@ -4,6 +4,7 @@
 
 * Enhancement: Runtime - \[Breaking Change\] New Env struct enabling commands to redirect out/err to provided streams #440
 * Enhancement: Runtime - \[Breaking Change\] Commands now get new CommandArgs struct instead of multiple fields.
+* Enhancement: Runtime - Enable to halt execution via env.
 
 ### v0.9.4 (2024-09-28)
 
