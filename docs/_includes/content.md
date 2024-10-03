@@ -356,13 +356,8 @@ If you want to know how to write your own commands or embed the duckscript runti
 Want to write new custom commands so you can use them in your duckscripts? great!<br>
 Hopefully the following sections will help you gain the basic knowledge on how to write them.<br>
 
-First of all it is important to understand that there are two types of commands:
-
-* Commands which execute some action like copying files, printing some text to the console or returning an environment variable.
-* Commands which provide flow control or some more complex action and require modifying the internal context in runtime.
-
-<a name="sdk-tutorial-standard-commands"></a>
-## Standard Commands
+<a name="sdk-tutorial-commands"></a>
+## Commands
 Commands are structs that must implement the Command trait.<br>
 
 * They must have a name, which is used to invoke the command.<br>
@@ -370,7 +365,7 @@ Commands are structs that must implement the Command trait.<br>
 * They should return help documentation in markdown format in order to generate SDK documentation (must for PRs to duckscript official SDK).<br>
 * They must implement the **run** function which holds the command logic.<br>
 
-The run function accepts the command arguments (variables already replaced to actual values) and returns the command result.<br>
+The run function accepts the command arguments (args array contains actual values and not original variables) and returns the command result.<br>
 The command result can be one of the following:
 
 * Continue(Option<String>) - Tells the runner to continue to the next command and optionally set the output variable the given value.
@@ -393,11 +388,15 @@ impl Command for SetCommand {
         "set".to_string()
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        let output = if arguments.is_empty() {
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
+    }
+
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        let output = if arguments.args.is_empty() {
             None
         } else {
-            Some(arguments[0].clone())
+            Some(arguments.args[0].clone())
         };
 
         CommandResult::Continue(output)
@@ -420,6 +419,10 @@ impl Command for GetEnvCommand {
         "get_env".to_string()
     }
 
+    fn clone_and_box(&self) -> Box<dyn Command> {
+        Box::new((*self).clone())
+    }
+
     fn run(&self, arguments: CommandArgs) -> CommandResult {
         if arguments.args.is_empty() {
             CommandResult::Error("Missing environment variable name.".to_string())
@@ -435,8 +438,8 @@ impl Command for GetEnvCommand {
 
 You can look at more examples in the duckscript_sdk folder.
 
-<a name="sdk-tutorial-context-commands"></a>
-## Access to Context
+<a name="sdk-tutorial-commands-context"></a>
+## Access The Context
 The duckscript runtime context is available in the CommandArgs struc.<br>
 
 ```rust
