@@ -3,6 +3,7 @@
 ### v0.10.0
 
 * Enhancement: Runtime - \[Breaking Change\] New Env struct enabling commands to redirect out/err to provided streams #440
+* Enhancement: Runtime - \[Breaking Change\] Commands now get new CommandArgs struct instead of multiple fields.
 
 ### v0.9.4 (2024-09-28)
 
