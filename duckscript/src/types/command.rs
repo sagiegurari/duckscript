@@ -7,10 +7,30 @@
 #[path = "./command_test.rs"]
 mod command_test;
 
+use crate::types::env::Env;
 use crate::types::error::ScriptError;
 use crate::types::instruction::Instruction;
 use crate::types::runtime::StateValue;
 use std::collections::HashMap;
+
+pub struct CommandArgs<'a> {
+    /// The command arguments
+    pub args: Vec<String>,
+    /// Internal state which is only used by commands to store/pull data
+    pub state: &'a mut HashMap<String, StateValue>,
+    /// All script variables
+    pub variables: &'a mut HashMap<String, String>,
+    /// The output variable name (if defined)
+    pub output_variable: Option<String>,
+    /// The entire list of instructions which make up the currently running script
+    pub instructions: &'a Vec<Instruction>,
+    /// The currently known commands
+    pub commands: &'a mut Commands,
+    /// The current instruction line number (global line number after including all scripts into one global script)
+    pub line: usize,
+    /// The current runtime env with access to out/err writers, etc...
+    pub env: &'a mut Env,
+}
 
 /// GoTo type value
 #[derive(Debug, Clone)]
@@ -54,37 +74,8 @@ pub trait Command {
     /// Clones the command and returns a box reference.
     fn clone_and_box(&self) -> Box<dyn Command>;
 
-    /// If true the run with the context will be invoked.
-    fn requires_context(&self) -> bool {
-        false
-    }
-
-    /// Runs the given instruction
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
-        CommandResult::Crash(format!("Not implemented for command: {}", &self.name()).to_string())
-    }
-
-    /// Run the instruction with access to the runtime context.
-    ///
-    /// # Arguments
-    ///
-    /// * `arguments` - The command arguments array
-    /// * `state` - Internal state which is only used by commands to store/pull data
-    /// * `variables` - All script variables
-    /// * `output_variable` - The output variable name (if defined)
-    /// * `instructions` - The entire list of instructions which make up the currently running script
-    /// * `commands` - The currently known commands
-    /// * `line` - The current instruction line number (global line number after including all scripts into one global script)
-    fn run_with_context(
-        &self,
-        _arguments: Vec<String>,
-        _state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
+    /// Run the instruction.
+    fn run(&self, mut _arguments: CommandArgs) -> CommandResult {
         CommandResult::Crash(format!("Not implemented for command: {}", &self.name()).to_string())
     }
 }

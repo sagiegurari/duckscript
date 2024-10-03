@@ -1,9 +1,7 @@
 use crate::utils::pckg;
 use duckscript::runner;
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
-use duckscript::types::runtime::{Context, StateValue};
-use std::collections::HashMap;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::runtime::Context;
 use walkdir::DirEntry;
 use walkdir::WalkDir;
 
@@ -42,32 +40,19 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        _state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Crash("Directory name not provided.".to_string())
         } else {
             let mut script = String::new();
 
-            let test_name = if arguments.len() > 1 {
-                arguments[1].clone()
+            let test_name = if arguments.args.len() > 1 {
+                arguments.args[1].clone()
             } else {
                 "".to_string()
             };
 
-            let walker = WalkDir::new(&arguments[0])
+            let walker = WalkDir::new(&arguments.args[0])
                 .sort_by(|entry1, entry2| entry1.file_name().cmp(entry2.file_name()))
                 .into_iter();
             for entry in walker {
@@ -87,9 +72,9 @@ assert result
             }
 
             let mut context = Context::new();
-            context.commands = commands.clone();
+            context.commands = arguments.commands.clone();
 
-            match runner::run_script(&script, context) {
+            match runner::run_script(&script, context, None) {
                 Err(error) => CommandResult::Crash(
                     format!("Error while running tests.\n{}", &error.to_string()).to_string(),
                 ),

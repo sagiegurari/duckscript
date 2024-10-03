@@ -1,9 +1,8 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::{Instruction, InstructionType};
-use duckscript::types::runtime::{Context, StateValue};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::instruction::InstructionType;
+use duckscript::types::runtime::Context;
 use duckscript::{parser, runner};
-use std::collections::HashMap;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -42,32 +41,19 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        _state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Crash("File name not provided.".to_string())
         } else {
-            let file = arguments[0].clone();
-            let requested_test_name = if arguments.len() > 1 {
-                arguments[1].clone()
+            let file = arguments.args[0].clone();
+            let requested_test_name = if arguments.args.len() > 1 {
+                arguments.args[1].clone()
             } else {
                 "".to_string()
             };
 
-            match parser::parse_file(&arguments[0]) {
-                Ok(instructions) => match commands.get("function") {
+            match parser::parse_file(&arguments.args[0]) {
+                Ok(instructions) => match arguments.commands.get("function") {
                     Some(function_command) => {
                         let mut command_names = function_command.aliases();
                         command_names.push(function_command.name());
@@ -103,11 +89,16 @@ impl Command for CommandImpl {
                                 let script = create_test_script(&file, &test_name);
 
                                 let mut context = Context::new();
-                                context.commands = commands.clone();
+                                context.commands = arguments.commands.clone();
 
-                                match runner::run_script(&script, context) {
+                                match runner::run_script(&script, context, None) {
                                     Err(error) => {
-                                        println!("test: [{}][{}] ... failed", &file, &test_name);
+                                        writeln!(
+                                            arguments.env.out,
+                                            "test: [{}][{}] ... failed",
+                                            &file, &test_name
+                                        )
+                                        .unwrap();
 
                                         return CommandResult::Crash(
                                             format!(
@@ -118,7 +109,12 @@ impl Command for CommandImpl {
                                             .to_string(),
                                         );
                                     }
-                                    _ => println!("test: [{}][{}] ... ok", &file, &test_name),
+                                    _ => writeln!(
+                                        arguments.env.out,
+                                        "test: [{}][{}] ... ok",
+                                        &file, &test_name
+                                    )
+                                    .unwrap(),
                                 }
                             }
                         }
@@ -132,7 +128,7 @@ impl Command for CommandImpl {
                 Err(error) => CommandResult::Crash(
                     format!(
                         "Error while parsing file: {}\n{}",
-                        &arguments[0],
+                        &arguments.args[0],
                         &error.to_string()
                     )
                     .to_string(),

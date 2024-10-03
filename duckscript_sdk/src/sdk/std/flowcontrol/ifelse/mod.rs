@@ -2,7 +2,7 @@ use crate::sdk::std::flowcontrol::{end, forin, function, get_line_key, while_mod
 use crate::types::scope::get_line_context_name;
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
 use crate::utils::{condition, instruction_query, pckg};
-use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands, GoToValue};
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -343,36 +343,24 @@ impl Command for IfCommand {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        instructions: &Vec<Instruction>,
-        commands: &mut Commands,
-        line: usize,
-    ) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("Missing condition".to_string())
         } else {
             match get_or_create_if_meta_info_for_line(
-                line,
-                state,
-                instructions,
+                arguments.line,
+                arguments.state,
+                arguments.instructions,
                 self.package.clone(),
             ) {
                 Ok(if_else_info) => {
                     match condition::eval_condition(
-                        arguments,
-                        instructions,
-                        state,
-                        variables,
-                        commands,
+                        &arguments.args,
+                        arguments.instructions,
+                        arguments.state,
+                        arguments.variables,
+                        arguments.commands,
+                        arguments.env,
                     ) {
                         Ok(passed) => {
                             if passed {
@@ -382,7 +370,7 @@ impl Command for IfCommand {
                                     if_else_info.else_lines[0]
                                 };
 
-                                let line_context_name = get_line_context_name(state);
+                                let line_context_name = get_line_context_name(arguments.state);
 
                                 let call_info = CallInfo {
                                     current: next_line,
@@ -392,7 +380,7 @@ impl Command for IfCommand {
                                     line_context_name,
                                 };
 
-                                store_call_info(&call_info, state);
+                                store_call_info(&call_info, arguments.state);
 
                                 CommandResult::Continue(None)
                             } else if if_else_info.else_lines.is_empty() {
@@ -401,7 +389,7 @@ impl Command for IfCommand {
                             } else {
                                 let next_line = if_else_info.else_lines[0];
 
-                                let line_context_name = get_line_context_name(state);
+                                let line_context_name = get_line_context_name(arguments.state);
 
                                 let call_info = CallInfo {
                                     current: next_line,
@@ -411,7 +399,7 @@ impl Command for IfCommand {
                                     line_context_name,
                                 };
 
-                                store_call_info(&call_info, state);
+                                store_call_info(&call_info, arguments.state);
 
                                 CommandResult::GoTo(None, GoToValue::Line(next_line))
                             }
@@ -447,32 +435,19 @@ impl Command for ElseIfCommand {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        instructions: &Vec<Instruction>,
-        commands: &mut Commands,
-        line: usize,
-    ) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("Missing condition".to_string())
         } else {
-            match pop_call_info_for_line(line, state) {
+            match pop_call_info_for_line(arguments.line, arguments.state) {
             Some(call_info) => {
                 if call_info.passed {
                     let next_line = call_info.meta_info.end + 1;
                     CommandResult::GoTo(None, GoToValue::Line(next_line))
                 } else {
                     let if_else_info = call_info.meta_info.clone();
-                    let line_context_name = get_line_context_name(state);
-                    match condition::eval_condition(arguments, instructions, state, variables, commands) {
+                    let line_context_name = get_line_context_name(arguments.state);
+                    match condition::eval_condition(&arguments.args, arguments.instructions, arguments.state, arguments.variables, arguments.commands, arguments.env) {
                         Ok(passed) => {
                             if passed {
                                 let next_line = if call_info.else_line_index + 1 < if_else_info.else_lines.len() {
@@ -489,7 +464,7 @@ impl Command for ElseIfCommand {
                                     line_context_name
                                 };
 
-                                store_call_info(&else_call_info, state);
+                                store_call_info(&else_call_info, arguments.state);
 
                                 CommandResult::Continue(None)
                             } else if call_info.else_line_index + 1 < if_else_info.else_lines.len() {
@@ -504,7 +479,7 @@ impl Command for ElseIfCommand {
                                     line_context_name
                                 };
 
-                                store_call_info(&call_info, state);
+                                store_call_info(&call_info, arguments.state);
 
                                 CommandResult::GoTo(None, GoToValue::Line(next_line))
                             } else {
@@ -545,21 +520,8 @@ impl Command for ElseCommand {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        _arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        line: usize,
-    ) -> CommandResult {
-        match pop_call_info_for_line(line, state) {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        match pop_call_info_for_line(arguments.line, arguments.state) {
             Some(call_info) => {
                 if call_info.passed {
                     let next_line = call_info.meta_info.end + 1;
@@ -607,7 +569,7 @@ impl Command for EndIfCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+    fn run(&self, _arguments: CommandArgs) -> CommandResult {
         CommandResult::Continue(None)
     }
 }

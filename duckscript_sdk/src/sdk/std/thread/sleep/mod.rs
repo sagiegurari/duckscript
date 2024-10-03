@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use std::thread;
 use std::time::Duration;
 
@@ -29,11 +29,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Continue(Some("0".to_string()))
         } else {
-            match arguments[0].parse() {
+            match arguments.args[0].parse() {
                 Ok(value) => {
                     if value == 0 {
                         CommandResult::Continue(Some("0".to_string()))
@@ -48,7 +48,7 @@ impl Command for CommandImpl {
                     }
                 }
                 Err(_) => CommandResult::Error(
-                    format!("Non numeric value: {} provided.", &arguments[0]).to_string(),
+                    format!("Non numeric value: {} provided.", &arguments.args[0]).to_string(),
                 ),
             }
         }

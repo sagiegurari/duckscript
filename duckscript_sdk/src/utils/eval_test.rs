@@ -5,12 +5,14 @@ use crate::test::SetCommand;
 #[test]
 fn eval_with_error_empty_arguments() {
     let mut commands = Commands::new();
+    let mut env = Env::default();
 
     let result = eval_with_error(
         &vec![],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
+        &mut env,
     );
 
     match result {
@@ -22,12 +24,14 @@ fn eval_with_error_empty_arguments() {
 #[test]
 fn eval_with_error_label_only() {
     let mut commands = Commands::new();
+    let mut env = Env::default();
 
     let result = eval_with_error(
         &vec![":label".to_string()],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
+        &mut env,
     );
 
     match result {
@@ -43,12 +47,14 @@ fn eval_with_error_command_no_output() {
         Err(error) => panic!("{}", error),
         _ => (),
     };
+    let mut env = Env::default();
 
     let result = eval_with_error(
         &vec!["test_set".to_string()],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
+        &mut env,
     );
 
     match result {
@@ -64,12 +70,14 @@ fn eval_with_error_command_with_output() {
         Err(error) => panic!("{}", error),
         _ => (),
     };
+    let mut env = Env::default();
 
     let result = eval_with_error(
         &vec!["test_set".to_string(), "test".to_string()],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
+        &mut env,
     );
 
     match result {
@@ -85,12 +93,14 @@ fn eval_with_error_command_with_output_with_spaces() {
         Err(error) => panic!("{}", error),
         _ => (),
     };
+    let mut env = Env::default();
 
     let result = eval_with_error(
         &vec!["test_set".to_string(), "test 1 2 3".to_string()],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
+        &mut env,
     );
 
     match result {
@@ -106,6 +116,7 @@ fn eval_with_error_command_with_output_with_spaces_and_all_line_types() {
         Err(error) => panic!("{}", error),
         _ => (),
     };
+    let mut env = Env::default();
 
     let result = eval_with_error(
         &vec![
@@ -120,6 +131,7 @@ fn eval_with_error_command_with_output_with_spaces_and_all_line_types() {
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
+        &mut env,
     );
 
     match result {
@@ -131,12 +143,14 @@ fn eval_with_error_command_with_output_with_spaces_and_all_line_types() {
 #[test]
 fn eval_with_error_parse_error() {
     let mut commands = Commands::new();
+    let mut env = Env::default();
 
     let result = eval_with_error(
         &vec![":label".to_string(), ":label".to_string()],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
+        &mut env,
     );
 
     match result {
@@ -152,12 +166,14 @@ fn eval_with_eq_empty_args() {
         Err(error) => panic!("{}", error),
         _ => (),
     };
+    let mut env = Env::default();
 
     let result = eval_with_error(
         &vec!["eq".to_string(), "".to_string(), "".to_string()],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
+        &mut env,
     );
 
     match result {
@@ -173,12 +189,14 @@ fn eval_with_eq_true_args() {
         Err(error) => panic!("{}", error),
         _ => (),
     };
+    let mut env = Env::default();
 
     let result = eval_with_error(
         &vec!["eq".to_string(), "true".to_string(), "true".to_string()],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
+        &mut env,
     );
 
     match result {
@@ -194,12 +212,14 @@ fn eval_with_eq_true_and_false_args() {
         Err(error) => panic!("{}", error),
         _ => (),
     };
+    let mut env = Env::default();
 
     let result = eval_with_error(
         &vec!["eq".to_string(), "true".to_string(), "false".to_string()],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
+        &mut env,
     );
 
     match result {

@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use fsio::path::canonicalize_or;
 
 #[cfg(test)]
@@ -28,11 +28,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("Path not provided.".to_string())
         } else {
-            let path = canonicalize_or(&arguments[0], &arguments[0]);
+            let path = canonicalize_or(&arguments.args[0], &arguments.args[0]);
 
             CommandResult::Continue(Some(path.to_string()))
         }

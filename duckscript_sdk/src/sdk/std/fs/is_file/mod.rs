@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use fsio::path::as_path::AsPath;
 
 #[cfg(test)]
@@ -28,11 +28,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("Path not provided.".to_string())
         } else {
-            let path = &arguments[0].as_path();
+            let path = &arguments.args[0].as_path();
             CommandResult::Continue(Some(path.is_file().to_string()))
         }
     }

@@ -1,5 +1,5 @@
 use crate::utils::{io, pckg};
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use fsio::path::get_temporary_file_path;
 
 #[cfg(test)]
@@ -28,11 +28,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        let extension = if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        let extension = if arguments.args.is_empty() {
             "tmp"
         } else {
-            &arguments[0]
+            &arguments.args[0]
         };
 
         let path = get_temporary_file_path(extension);

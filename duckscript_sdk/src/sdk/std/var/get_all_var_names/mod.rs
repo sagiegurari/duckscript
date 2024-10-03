@@ -1,9 +1,7 @@
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -31,27 +29,14 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        _arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         let mut array = vec![];
 
-        for key in variables.keys() {
+        for key in arguments.variables.keys() {
             array.push(StateValue::String(key.to_string()));
         }
 
-        let key = put_handle(state, StateValue::List(array));
+        let key = put_handle(arguments.state, StateValue::List(array));
 
         CommandResult::Continue(Some(key))
     }

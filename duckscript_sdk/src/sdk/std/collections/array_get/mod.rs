@@ -1,9 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::{get_handles_sub_state, get_optional_as_string, mutate_list};
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
-use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -31,31 +28,18 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if arguments.len() < 2 {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.len() < 2 {
             CommandResult::Error("Array handle or item index not provided.".to_string())
         } else {
-            let state = get_handles_sub_state(state);
+            let state = get_handles_sub_state(arguments.state);
 
-            let key = arguments[0].clone();
-            let index: usize = match arguments[1].parse() {
+            let key = arguments.args[0].clone();
+            let index: usize = match arguments.args[1].parse() {
                 Ok(value) => value,
                 Err(_) => {
                     return CommandResult::Error(
-                        format!("Non numeric value: {} provided.", &arguments[1]).to_string(),
+                        format!("Non numeric value: {} provided.", &arguments.args[1]).to_string(),
                     );
                 }
             };

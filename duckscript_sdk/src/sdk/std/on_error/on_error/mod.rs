@@ -1,10 +1,8 @@
 use crate::sdk::std::on_error::{get_value, EXIT_ON_ERROR_KEY, STATE_KEY};
 use crate::utils::state::get_core_sub_state_for_command;
 use crate::utils::{condition, pckg};
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -32,33 +30,20 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if !arguments.args.is_empty() {
+            let error = arguments.args[0].clone();
 
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if !arguments.is_empty() {
-            let error = arguments[0].clone();
-
-            let exit_on_error = get_value(state, EXIT_ON_ERROR_KEY.to_string());
+            let exit_on_error = get_value(arguments.state, EXIT_ON_ERROR_KEY.to_string());
             let should_crash = condition::is_true(exit_on_error);
 
             if should_crash {
                 CommandResult::Crash(error)
             } else {
-                let (line, source) = if arguments.len() > 1 {
-                    let line = arguments[1].clone();
-                    let source = if arguments.len() > 2 {
-                        arguments[2].clone()
+                let (line, source) = if arguments.args.len() > 1 {
+                    let line = arguments.args[1].clone();
+                    let source = if arguments.args.len() > 2 {
+                        arguments.args[2].clone()
                     } else {
                         "".to_string()
                     };
@@ -68,7 +53,8 @@ impl Command for CommandImpl {
                     ("".to_string(), "".to_string())
                 };
 
-                let sub_state = get_core_sub_state_for_command(state, STATE_KEY.to_string());
+                let sub_state =
+                    get_core_sub_state_for_command(arguments.state, STATE_KEY.to_string());
                 sub_state.insert("error".to_string(), StateValue::String(error));
                 sub_state.insert("line".to_string(), StateValue::String(line));
                 sub_state.insert("source".to_string(), StateValue::String(source));

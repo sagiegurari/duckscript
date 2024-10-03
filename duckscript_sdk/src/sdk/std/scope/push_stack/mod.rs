@@ -1,8 +1,5 @@
 use crate::utils::{pckg, scope};
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
-use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -30,29 +27,16 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        let copy = if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        let copy = if arguments.args.is_empty() {
             &[]
-        } else if arguments[0] == "--copy" {
-            &arguments[1..]
+        } else if arguments.args[0] == "--copy" {
+            &arguments.args[1..]
         } else {
             &[]
         };
 
-        match scope::push(variables, state, &copy) {
+        match scope::push(arguments.variables, arguments.state, &copy) {
             Ok(_) => CommandResult::Continue(Some("true".to_string())),
             Err(error) => CommandResult::Error(error),
         }

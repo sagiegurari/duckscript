@@ -23,14 +23,14 @@ fn assert_end_reason_reached_end(end_reason: EndReason) {
 
 #[test]
 fn run_script_parse_error() {
-    let result = run_script("!bad", Context::new());
+    let result = run_script("!bad", Context::new(), None);
 
     assert!(result.is_err());
 }
 
 #[test]
 fn run_script_valid() {
-    let result = run_script("!print test", Context::new());
+    let result = run_script("!print test", Context::new(), None);
 
     assert!(result.is_ok());
 }
@@ -40,21 +40,25 @@ fn run_script_runtime_error() {
     let mut context = Context::new();
     let cmd_result = context.commands.set(Box::new(CrashCommand {}));
     assert!(cmd_result.is_ok());
-    let result = run_script_file("./src/test/scripts/crash.ds", context);
+    let result = run_script_file("./src/test/scripts/crash.ds", context, None);
 
     assert!(result.is_err());
 }
 
 #[test]
 fn run_script_file_valid() {
-    let result = run_script_file("./src/test/scripts/print_preprocessor.ds", Context::new());
+    let result = run_script_file(
+        "./src/test/scripts/print_preprocessor.ds",
+        Context::new(),
+        None,
+    );
 
     assert!(result.is_ok());
 }
 
 #[test]
 fn run_no_instructions() {
-    let result = run(vec![], Context::new());
+    let result = run(vec![], Context::new(), None);
 
     assert!(result.is_ok());
 }
@@ -71,7 +75,7 @@ fn run_empty_instructions() {
         instruction_type: InstructionType::Empty,
     });
 
-    let result = run(instructions, Context::new());
+    let result = run(instructions, Context::new(), None);
 
     assert!(result.is_ok());
 }
@@ -88,7 +92,7 @@ fn run_pre_processor_instructions() {
         instruction_type: InstructionType::PreProcess(PreProcessInstruction::new()),
     });
 
-    let result = run(instructions, Context::new());
+    let result = run(instructions, Context::new(), None);
 
     assert!(result.is_ok());
 }
@@ -105,7 +109,7 @@ fn run_no_command_script_instructions() {
         instruction_type: InstructionType::Script(ScriptInstruction::new()),
     });
 
-    let result = run(instructions, Context::new());
+    let result = run(instructions, Context::new(), None);
 
     assert!(result.is_ok());
 }
@@ -126,7 +130,7 @@ fn run_all_types_instructions() {
         instruction_type: InstructionType::Script(ScriptInstruction::new()),
     });
 
-    let result = run(instructions, Context::new());
+    let result = run(instructions, Context::new(), None);
 
     assert!(result.is_ok());
 }
@@ -148,7 +152,7 @@ fn create_runtime_with_labels() {
         instruction_type: InstructionType::Script(script_instruction),
     });
 
-    let runtime = create_runtime(instructions, Context::new());
+    let runtime = create_runtime(instructions, Context::new(), None);
 
     assert_eq!(runtime.label_to_line.get("test1"), Some(&0));
     assert_eq!(runtime.label_to_line.get("test2"), Some(&1));
@@ -165,7 +169,7 @@ fn run_instructions_unknown_command() {
         instruction_type: InstructionType::Script(script_instruction),
     });
 
-    let runtime = create_runtime(instructions, Context::new());
+    let runtime = create_runtime(instructions, Context::new(), None);
 
     let context_result = run_instructions(runtime, 0, false);
 
@@ -181,7 +185,7 @@ fn run_instructions_start_bigger_then_script() {
         instruction_type: InstructionType::Script(ScriptInstruction::new()),
     });
 
-    let runtime = create_runtime(instructions, Context::new());
+    let runtime = create_runtime(instructions, Context::new(), None);
 
     let context_result = run_instructions(runtime, 10, false);
 
@@ -211,7 +215,7 @@ fn run_instructions_start_after_bad_command() {
     result = context.commands.set(Box::new(SetCommand {}));
     assert!(result.is_ok());
 
-    let runtime = create_runtime(instructions, context);
+    let runtime = create_runtime(instructions, context, None);
 
     let context_result = run_instructions(runtime, 1, false);
 
@@ -239,7 +243,7 @@ fn run_instructions_exit_result_no_output() {
     let result = context.commands.set(Box::new(ExitCommand {}));
     assert!(result.is_ok());
 
-    let runtime = create_runtime(instructions, context);
+    let runtime = create_runtime(instructions, context, None);
 
     let context_result = run_instructions(runtime, 0, false);
 
@@ -272,7 +276,7 @@ fn run_instructions_exit_result_with_string_output() {
     let result = context.commands.set(Box::new(ExitCommand {}));
     assert!(result.is_ok());
 
-    let runtime = create_runtime(instructions, context);
+    let runtime = create_runtime(instructions, context, None);
 
     let context_result = run_instructions(runtime, 0, false);
 
@@ -308,7 +312,7 @@ fn run_instructions_exit_result_with_0_output() {
     let result = context.commands.set(Box::new(ExitCommand {}));
     assert!(result.is_ok());
 
-    let runtime = create_runtime(instructions, context);
+    let runtime = create_runtime(instructions, context, None);
 
     let context_result = run_instructions(runtime, 0, false);
 
@@ -341,7 +345,7 @@ fn run_instructions_exit_result_with_error_code_output() {
     let result = context.commands.set(Box::new(ExitCommand {}));
     assert!(result.is_ok());
 
-    let runtime = create_runtime(instructions, context);
+    let runtime = create_runtime(instructions, context, None);
 
     let context_result = run_instructions(runtime, 0, false);
 
@@ -364,7 +368,7 @@ fn run_instructions_error_result() {
     let result = context.commands.set(Box::new(ErrorCommand {}));
     assert!(result.is_ok());
 
-    let runtime = create_runtime(instructions, context);
+    let runtime = create_runtime(instructions, context, None);
 
     let context_result = run_instructions(runtime, 0, false);
 
@@ -405,7 +409,7 @@ fn run_instructions_error_result_with_on_error() {
     result = context.commands.set(Box::new(OnErrorCommand {}));
     assert!(result.is_ok());
 
-    let runtime = create_runtime(instructions, context);
+    let runtime = create_runtime(instructions, context, None);
 
     let context_result = run_instructions(runtime, 2, false);
 
@@ -435,7 +439,7 @@ fn run_instructions_crash_result() {
     let result = context.commands.set(Box::new(CrashCommand {}));
     assert!(result.is_ok());
 
-    let runtime = create_runtime(instructions, context);
+    let runtime = create_runtime(instructions, context, None);
 
     let context_result = run_instructions(runtime, 0, false);
 
@@ -457,7 +461,7 @@ fn run_instructions_crash_result_repl_mode() {
     let result = context.commands.set(Box::new(CrashCommand {}));
     assert!(result.is_ok());
 
-    let runtime = create_runtime(instructions, context);
+    let runtime = create_runtime(instructions, context, None);
 
     let context_result = run_instructions(runtime, 0, true);
 
@@ -477,7 +481,7 @@ fn run_instructions_continue_result_no_output() {
         instruction_type: InstructionType::Empty,
     });
 
-    let runtime = create_runtime(instructions, Context::new());
+    let runtime = create_runtime(instructions, Context::new(), None);
 
     let context_result = run_instructions(runtime, 0, false);
 
@@ -512,7 +516,7 @@ fn run_instructions_continue_result_with_output() {
     let result = context.commands.set(Box::new(SetCommand {}));
     assert!(result.is_ok());
 
-    let runtime = create_runtime(instructions, context);
+    let runtime = create_runtime(instructions, context, None);
 
     let context_result = run_instructions(runtime, 0, false);
 
@@ -565,7 +569,7 @@ fn run_instructions_goto_label_result_no_output() {
     result = context.commands.set(Box::new(GoToLabelCommand {}));
     assert!(result.is_ok());
 
-    let runtime = create_runtime(instructions, context);
+    let runtime = create_runtime(instructions, context, None);
 
     let context_result = run_instructions(runtime, 0, false);
 
@@ -615,7 +619,7 @@ fn run_instructions_goto_label_result_with_output() {
     result = context.commands.set(Box::new(GoToLabelCommand {}));
     assert!(result.is_ok());
 
-    let runtime = create_runtime(instructions, context);
+    let runtime = create_runtime(instructions, context, None);
 
     let context_result = run_instructions(runtime, 0, false);
 
@@ -668,7 +672,7 @@ fn run_instructions_goto_line_result_no_output() {
     result = context.commands.set(Box::new(GoToLineCommand {}));
     assert!(result.is_ok());
 
-    let runtime = create_runtime(instructions, context);
+    let runtime = create_runtime(instructions, context, None);
 
     let context_result = run_instructions(runtime, 0, false);
 
@@ -718,7 +722,7 @@ fn run_instructions_goto_line_result_with_output() {
     result = context.commands.set(Box::new(GoToLineCommand {}));
     assert!(result.is_ok());
 
-    let runtime = create_runtime(instructions, context);
+    let runtime = create_runtime(instructions, context, None);
 
     let context_result = run_instructions(runtime, 0, false);
 
@@ -784,6 +788,7 @@ fn run_instruction_empty_instruction() {
     };
 
     let mut context = Context::new();
+    let mut env = Env::default();
 
     let (command_result, output_variable) = run_instruction(
         &mut context.commands,
@@ -792,6 +797,7 @@ fn run_instruction_empty_instruction() {
         &vec![],
         instruction,
         0,
+        &mut env,
     );
 
     assert!(output_variable.is_none());
@@ -806,6 +812,7 @@ fn run_instruction_pre_processor_instruction() {
     };
 
     let mut context = Context::new();
+    let mut env = Env::default();
 
     let (command_result, output_variable) = run_instruction(
         &mut context.commands,
@@ -814,6 +821,7 @@ fn run_instruction_pre_processor_instruction() {
         &vec![],
         instruction,
         0,
+        &mut env,
     );
 
     assert!(output_variable.is_none());
@@ -828,6 +836,7 @@ fn run_instruction_script_instruction_no_command() {
     };
 
     let mut context = Context::new();
+    let mut env = Env::default();
 
     let (command_result, output_variable) = run_instruction(
         &mut context.commands,
@@ -836,6 +845,7 @@ fn run_instruction_script_instruction_no_command() {
         &vec![],
         instruction,
         0,
+        &mut env,
     );
 
     assert!(output_variable.is_none());
@@ -853,6 +863,7 @@ fn run_instruction_script_instruction_unknown_command() {
     };
 
     let mut context = Context::new();
+    let mut env = Env::default();
 
     let (command_result, output_variable) = run_instruction(
         &mut context.commands,
@@ -861,6 +872,7 @@ fn run_instruction_script_instruction_unknown_command() {
         &vec![],
         instruction,
         0,
+        &mut env,
     );
 
     assert!(output_variable.is_none());
@@ -880,6 +892,7 @@ fn run_instruction_script_instruction_continue_result_no_output() {
     let mut context = Context::new();
     let result = context.commands.set(Box::new(SetCommand {}));
     assert!(result.is_ok());
+    let mut env = Env::default();
 
     let (command_result, output_variable) = run_instruction(
         &mut context.commands,
@@ -888,6 +901,7 @@ fn run_instruction_script_instruction_continue_result_no_output() {
         &vec![],
         instruction,
         0,
+        &mut env,
     );
 
     assert!(output_variable.is_none());
@@ -909,6 +923,7 @@ fn run_instruction_script_instruction_continue_result_with_output() {
     let mut context = Context::new();
     let result = context.commands.set(Box::new(SetCommand {}));
     assert!(result.is_ok());
+    let mut env = Env::default();
 
     let (command_result, output_variable) = run_instruction(
         &mut context.commands,
@@ -917,6 +932,7 @@ fn run_instruction_script_instruction_continue_result_with_output() {
         &vec![],
         instruction,
         0,
+        &mut env,
     );
 
     assert_eq!(output_variable.unwrap(), "out");
@@ -939,6 +955,7 @@ fn run_instruction_script_instruction_exit_result_no_output() {
     let mut context = Context::new();
     let result = context.commands.set(Box::new(ExitCommand {}));
     assert!(result.is_ok());
+    let mut env = Env::default();
 
     let (command_result, output_variable) = run_instruction(
         &mut context.commands,
@@ -947,6 +964,7 @@ fn run_instruction_script_instruction_exit_result_no_output() {
         &vec![],
         instruction,
         0,
+        &mut env,
     );
 
     assert!(output_variable.is_none());
@@ -968,6 +986,7 @@ fn run_instruction_script_instruction_exit_result_with_output() {
     let mut context = Context::new();
     let result = context.commands.set(Box::new(ExitCommand {}));
     assert!(result.is_ok());
+    let mut env = Env::default();
 
     let (command_result, output_variable) = run_instruction(
         &mut context.commands,
@@ -976,6 +995,7 @@ fn run_instruction_script_instruction_exit_result_with_output() {
         &vec![],
         instruction,
         0,
+        &mut env,
     );
 
     assert_eq!(output_variable.unwrap(), "out");
@@ -998,6 +1018,7 @@ fn run_instruction_script_instruction_goto_label_result_no_output() {
     let mut context = Context::new();
     let result = context.commands.set(Box::new(GoToLabelCommand {}));
     assert!(result.is_ok());
+    let mut env = Env::default();
 
     let (command_result, output_variable) = run_instruction(
         &mut context.commands,
@@ -1006,6 +1027,7 @@ fn run_instruction_script_instruction_goto_label_result_no_output() {
         &vec![],
         instruction,
         0,
+        &mut env,
     );
 
     assert!(output_variable.is_none());
@@ -1027,6 +1049,7 @@ fn run_instruction_script_instruction_goto_label_result_with_output() {
     let mut context = Context::new();
     let result = context.commands.set(Box::new(GoToLabelCommand {}));
     assert!(result.is_ok());
+    let mut env = Env::default();
 
     let (command_result, output_variable) = run_instruction(
         &mut context.commands,
@@ -1035,6 +1058,7 @@ fn run_instruction_script_instruction_goto_label_result_with_output() {
         &vec![],
         instruction,
         0,
+        &mut env,
     );
 
     assert_eq!(output_variable.unwrap(), "out");
@@ -1057,6 +1081,7 @@ fn run_instruction_script_instruction_goto_line_result_no_output() {
     let mut context = Context::new();
     let result = context.commands.set(Box::new(GoToLineCommand {}));
     assert!(result.is_ok());
+    let mut env = Env::default();
 
     let (command_result, output_variable) = run_instruction(
         &mut context.commands,
@@ -1065,6 +1090,7 @@ fn run_instruction_script_instruction_goto_line_result_no_output() {
         &vec![],
         instruction,
         0,
+        &mut env,
     );
 
     assert!(output_variable.is_none());
@@ -1086,6 +1112,7 @@ fn run_instruction_script_instruction_goto_line_result_with_output() {
     let mut context = Context::new();
     let result = context.commands.set(Box::new(GoToLineCommand {}));
     assert!(result.is_ok());
+    let mut env = Env::default();
 
     let (command_result, output_variable) = run_instruction(
         &mut context.commands,
@@ -1094,6 +1121,7 @@ fn run_instruction_script_instruction_goto_line_result_with_output() {
         &vec![],
         instruction,
         0,
+        &mut env,
     );
 
     assert_eq!(output_variable.unwrap(), "out");
@@ -1116,6 +1144,7 @@ fn run_instruction_script_instruction_error_result() {
     let mut context = Context::new();
     let result = context.commands.set(Box::new(ErrorCommand {}));
     assert!(result.is_ok());
+    let mut env = Env::default();
 
     let (command_result, output_variable) = run_instruction(
         &mut context.commands,
@@ -1124,6 +1153,7 @@ fn run_instruction_script_instruction_error_result() {
         &vec![],
         instruction,
         0,
+        &mut env,
     );
 
     assert!(output_variable.is_none());
@@ -1145,6 +1175,7 @@ fn run_instruction_control_characters() {
     let mut context = Context::new();
     let result = context.commands.set(Box::new(SetCommand {}));
     assert!(result.is_ok());
+    let mut env = Env::default();
 
     let (command_result, output_variable) = run_instruction(
         &mut context.commands,
@@ -1153,6 +1184,7 @@ fn run_instruction_control_characters() {
         &vec![],
         instruction,
         0,
+        &mut env,
     );
 
     assert!(output_variable.is_some());
@@ -1167,6 +1199,7 @@ fn run_on_error_instruction_no_command() {
     let mut commands = Commands::new();
     let mut variables = HashMap::new();
     let mut state = HashMap::new();
+    let mut env = Env::default();
 
     let result = run_on_error_instruction(
         &mut commands,
@@ -1175,6 +1208,7 @@ fn run_on_error_instruction_no_command() {
         &vec![],
         "error".to_string(),
         InstructionMetaInfo::new(),
+        &mut env,
     );
 
     assert!(result.is_ok());
@@ -1185,6 +1219,7 @@ fn run_on_error_instruction_unknown_command() {
     let mut commands = Commands::new();
     let mut variables = HashMap::new();
     let mut state = HashMap::new();
+    let mut env = Env::default();
 
     commands
         .aliases
@@ -1197,6 +1232,7 @@ fn run_on_error_instruction_unknown_command() {
         &vec![],
         "error".to_string(),
         InstructionMetaInfo::new(),
+        &mut env,
     );
 
     assert!(result.is_ok());
@@ -1207,6 +1243,7 @@ fn run_on_error_instruction_exit_response() {
     let mut commands = Commands::new();
     let mut variables = HashMap::new();
     let mut state = HashMap::new();
+    let mut env = Env::default();
 
     let set_result = commands.set(Box::new(ExitCommand {}));
     assert!(set_result.is_ok());
@@ -1221,6 +1258,7 @@ fn run_on_error_instruction_exit_response() {
         &vec![],
         "error".to_string(),
         InstructionMetaInfo::new(),
+        &mut env,
     );
 
     assert!(result.is_err());
@@ -1231,6 +1269,7 @@ fn run_on_error_instruction_crash_response() {
     let mut commands = Commands::new();
     let mut variables = HashMap::new();
     let mut state = HashMap::new();
+    let mut env = Env::default();
 
     let set_result = commands.set(Box::new(CrashCommand {}));
     assert!(set_result.is_ok());
@@ -1245,6 +1284,7 @@ fn run_on_error_instruction_crash_response() {
         &vec![],
         "error".to_string(),
         InstructionMetaInfo::new(),
+        &mut env,
     );
 
     assert!(result.is_err());
@@ -1255,6 +1295,7 @@ fn run_on_error_instruction_continue_response() {
     let mut commands = Commands::new();
     let mut variables = HashMap::new();
     let mut state = HashMap::new();
+    let mut env = Env::default();
 
     let set_result = commands.set(Box::new(SetCommand {}));
     assert!(set_result.is_ok());
@@ -1269,6 +1310,7 @@ fn run_on_error_instruction_continue_response() {
         &vec![],
         "error".to_string(),
         InstructionMetaInfo::new(),
+        &mut env,
     );
 
     assert!(result.is_ok());
@@ -1279,6 +1321,7 @@ fn run_on_error_instruction_error_response() {
     let mut commands = Commands::new();
     let mut variables = HashMap::new();
     let mut state = HashMap::new();
+    let mut env = Env::default();
 
     let set_result = commands.set(Box::new(ErrorCommand {}));
     assert!(set_result.is_ok());
@@ -1293,6 +1336,7 @@ fn run_on_error_instruction_error_response() {
         &vec![],
         "error".to_string(),
         InstructionMetaInfo::new(),
+        &mut env,
     );
 
     assert!(result.is_ok());

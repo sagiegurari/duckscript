@@ -1,8 +1,7 @@
 use crate::utils::state::{get_handles_sub_state, put_handle};
 use duckscript::runner;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::error::ScriptError;
-use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::{Context, StateValue};
 use std::collections::HashMap;
 use std::env;
@@ -23,7 +22,7 @@ impl Command for EmptyCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+    fn run(&self, _arguments: CommandArgs) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
@@ -40,7 +39,7 @@ impl Command for ErrorCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+    fn run(&self, _arguments: CommandArgs) -> CommandResult {
         CommandResult::Error("test".to_string())
     }
 }
@@ -61,11 +60,11 @@ impl Command for SetCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Continue(None)
         } else {
-            CommandResult::Continue(Some(arguments[0].clone()))
+            CommandResult::Continue(Some(arguments.args[0].clone()))
         }
     }
 }
@@ -82,25 +81,15 @@ impl Command for SetHandleCommand {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Continue(None)
         } else {
-            let state = get_handles_sub_state(state);
-            state.insert(arguments[0].clone(), StateValue::String("test".to_string()));
+            let state = get_handles_sub_state(arguments.state);
+            state.insert(
+                arguments.args[0].clone(),
+                StateValue::String("test".to_string()),
+            );
             CommandResult::Continue(None)
         }
     }
@@ -118,27 +107,14 @@ impl Command for ArrayCommand {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         let mut array = vec![];
 
-        for argument in arguments {
+        for argument in arguments.args {
             array.push(StateValue::String(argument));
         }
 
-        let key = put_handle(state, StateValue::List(array));
+        let key = put_handle(arguments.state, StateValue::List(array));
 
         CommandResult::Continue(Some(key))
     }
@@ -156,29 +132,20 @@ impl Command for OnErrorCommand {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        _state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        println!("on error: {:#?}", &arguments);
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        println!("on error: {:#?}", &arguments.args);
 
         let mut index = 0;
-        for argument in arguments {
+        for argument in arguments.args {
             index = index + 1;
-            variables.insert(index.to_string(), argument.clone());
+            arguments
+                .variables
+                .insert(index.to_string(), argument.clone());
         }
 
-        variables.insert("on_error_invoked".to_string(), "true".to_string());
+        arguments
+            .variables
+            .insert("on_error_invoked".to_string(), "true".to_string());
 
         CommandResult::Continue(None)
     }
@@ -212,7 +179,7 @@ fn run_command(commands: Vec<Box<dyn Command>>, script: &str) -> Result<Context,
         assert!(added.is_ok());
     }
 
-    runner::run_script(script, context)
+    runner::run_script(script, context, None)
 }
 
 pub(crate) fn run_script_and_crash(commands: Vec<Box<dyn Command>>, script: &str) {

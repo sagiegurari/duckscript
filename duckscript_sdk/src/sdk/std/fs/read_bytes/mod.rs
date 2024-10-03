@@ -1,9 +1,7 @@
 use crate::utils::state::put_handle;
 use crate::utils::{io, pckg};
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -31,28 +29,15 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("File name not provided.".to_string())
         } else {
-            let result = io::read_raw_file(&arguments[0]);
+            let result = io::read_raw_file(&arguments.args[0]);
 
             match result {
                 Ok(binary) => {
-                    let key = put_handle(state, StateValue::ByteArray(binary));
+                    let key = put_handle(arguments.state, StateValue::ByteArray(binary));
 
                     CommandResult::Continue(Some(key))
                 }

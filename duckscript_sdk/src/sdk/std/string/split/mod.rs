@@ -1,9 +1,7 @@
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -31,24 +29,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if arguments.len() < 2 {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.len() < 2 {
             CommandResult::Error("Invalid input provided.".to_string())
         } else {
-            let split = arguments[0].split(&arguments[1]);
+            let split = arguments.args[0].split(&arguments.args[1]);
             let values = split.collect::<Vec<&str>>();
 
             let mut array = vec![];
@@ -56,7 +41,7 @@ impl Command for CommandImpl {
                 array.push(StateValue::String(value.to_string()));
             }
 
-            let key = put_handle(state, StateValue::List(array));
+            let key = put_handle(arguments.state, StateValue::List(array));
 
             CommandResult::Continue(Some(key))
         }

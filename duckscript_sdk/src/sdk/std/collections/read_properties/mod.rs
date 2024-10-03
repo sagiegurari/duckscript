@@ -1,9 +1,6 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
-use duckscript::types::runtime::StateValue;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use java_properties::read;
-use std::collections::HashMap;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -31,27 +28,14 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        _state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if arguments.len() < 1 {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.len() < 1 {
             CommandResult::Error("Missing properties text argument.".to_string())
         } else {
-            let (prefix, text) = if arguments.len() >= 3 && arguments[0] == "--prefix" {
-                (arguments[1].to_string(), arguments[2].to_string())
+            let (prefix, text) = if arguments.args.len() >= 3 && arguments.args[0] == "--prefix" {
+                (arguments.args[1].to_string(), arguments.args[2].to_string())
             } else {
-                ("".to_string(), arguments[0].to_string())
+                ("".to_string(), arguments.args[0].to_string())
             };
 
             match read(text.as_bytes()) {
@@ -63,7 +47,7 @@ impl Command for CommandImpl {
                             var_key.insert_str(0, &prefix);
                         }
 
-                        variables.insert(var_key, value.to_string());
+                        arguments.variables.insert(var_key, value.to_string());
                     }
 
                     CommandResult::Continue(Some(data.len().to_string()))

@@ -1,8 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
-use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -30,26 +27,15 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.len() > 1 && arguments.args[0] == "--prefix" {
+            let prefix = &arguments.args[1];
 
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        _state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if arguments.len() > 1 && arguments[0] == "--prefix" {
-            let prefix = &arguments[1];
-
-            variables.retain(|key, _| !key.starts_with(prefix));
+            arguments
+                .variables
+                .retain(|key, _| !key.starts_with(prefix));
         } else {
-            variables.clear();
+            arguments.variables.clear();
         }
 
         CommandResult::Continue(None)

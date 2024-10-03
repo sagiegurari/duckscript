@@ -3,11 +3,10 @@ use crate::types::scope::set_line_context_name;
 use crate::utils::eval;
 use crate::utils::state::{get_handles_sub_state, put_handle};
 use duckscript::parser;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
 
 #[derive(Clone)]
 pub(crate) struct AliasCommand {
@@ -79,67 +78,60 @@ impl Command for AliasCommand {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if arguments.len() < self.arguments_amount {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.len() < self.arguments_amount {
             CommandResult::Error("Invalid arguments provided.".to_string())
         } else {
-            let start_count = variables.len();
-            let line_context_name = set_line_context_name(&self.scope_name, state);
+            let start_count = arguments.variables.len();
+            let line_context_name = set_line_context_name(&self.scope_name, arguments.state);
 
             // define script arguments
             let mut handle_option = None;
-            if !arguments.is_empty() {
+            if !arguments.args.is_empty() {
                 let mut index = 0;
                 let mut array = vec![];
-                for argument in arguments {
+                for argument in arguments.args {
                     index = index + 1;
                     let mut key = self.scope_name.clone();
                     key.push_str("::argument::");
                     key.push_str(&index.to_string());
 
-                    variables.insert(key, argument.clone());
+                    arguments.variables.insert(key, argument.clone());
 
                     array.push(StateValue::String(argument.clone()));
                 }
 
-                let handle = put_handle(state, StateValue::List(array));
+                let handle = put_handle(arguments.state, StateValue::List(array));
 
                 let mut key = self.scope_name.clone();
                 key.push_str("::arguments");
 
-                variables.insert(key, handle.clone());
+                arguments.variables.insert(key, handle.clone());
                 handle_option = Some(handle);
             }
 
-            let (flow_result, flow_output) =
-                eval::eval_instructions(&self.instructions, commands, state, variables, 0);
+            let (flow_result, flow_output) = eval::eval_instructions(
+                &self.instructions,
+                arguments.commands,
+                arguments.state,
+                arguments.variables,
+                arguments.env,
+                0,
+            );
 
             match handle_option {
                 Some(handle) => {
-                    let handle_state = get_handles_sub_state(state);
+                    let handle_state = get_handles_sub_state(arguments.state);
                     match handle_state.remove(&handle) {
                         _ => (),
                     }
                 }
                 None => (),
             }
-            clear(&self.scope_name, variables);
-            set_line_context_name(&line_context_name, state);
+            clear(&self.scope_name, arguments.variables);
+            set_line_context_name(&line_context_name, arguments.state);
 
-            let end_count = variables.len();
+            let end_count = arguments.variables.len();
             if start_count < end_count {
                 CommandResult::Crash(
                     format!(
@@ -177,7 +169,7 @@ impl Command for DocOnlyCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+    fn run(&self, _arguments: CommandArgs) -> CommandResult {
         CommandResult::Error("Documentation only commands should not be executed.".to_string())
     }
 }

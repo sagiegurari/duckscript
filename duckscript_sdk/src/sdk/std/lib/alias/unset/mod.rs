@@ -1,10 +1,7 @@
 use crate::sdk::std::lib::alias::ALIAS_STATE_KEY;
 use crate::utils::pckg;
 use crate::utils::state::get_sub_state;
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
-use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -32,35 +29,22 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if arguments.len() != 1 {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.len() != 1 {
             CommandResult::Error("Invalid alias name provided.".to_string())
         } else {
-            let sub_state = get_sub_state(ALIAS_STATE_KEY.to_string(), state);
+            let sub_state = get_sub_state(ALIAS_STATE_KEY.to_string(), arguments.state);
 
-            let key = &arguments[0];
+            let key = &arguments.args[0];
             let removed = if sub_state.contains_key(key) {
-                if commands.remove(key) {
+                if arguments.commands.remove(key) {
                     sub_state.remove(key);
                     true
                 } else {
                     false
                 }
-            } else if commands.aliases.contains_key(key) {
-                commands.aliases.remove(key);
+            } else if arguments.commands.aliases.contains_key(key) {
+                arguments.commands.aliases.remove(key);
                 true
             } else {
                 false

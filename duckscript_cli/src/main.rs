@@ -100,9 +100,9 @@ fn run_script(value: &str, is_file: bool) -> Result<(), ScriptError> {
     let context = create_context()?;
 
     if is_file {
-        runner::run_script_file(value, context)?;
+        runner::run_script_file(value, context, None)?;
     } else {
-        runner::run_script(value, context)?;
+        runner::run_script(value, context, None)?;
     }
 
     Ok(())

@@ -1,6 +1,6 @@
 use crate::sdk::std::print::run_print;
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -28,15 +28,17 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        let result = run_print(arguments);
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        let result = run_print(arguments.env, &arguments.args);
 
-        match result {
-            CommandResult::Continue(_) => println!(""),
-            _ => (),
-        };
-
-        return result;
+        if let CommandResult::Continue(ref _value) = result {
+            match writeln!(arguments.env.out, "") {
+                Ok(_) => result,
+                Err(error) => CommandResult::Error(error.to_string()),
+            }
+        } else {
+            result
+        }
     }
 }
 

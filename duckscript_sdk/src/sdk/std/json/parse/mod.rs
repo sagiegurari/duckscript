@@ -1,8 +1,7 @@
 use crate::sdk::std::json::OBJECT_VALUE;
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::runtime::StateValue;
 use serde_json::{Result, Value};
 use std::collections::HashMap;
@@ -104,39 +103,27 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("No JSON string provided.".to_string())
         } else {
-            let (json_index, as_state) = if arguments.len() > 1 && arguments[0] == "--collection" {
-                (1, true)
-            } else {
-                (0, false)
-            };
+            let (json_index, as_state) =
+                if arguments.args.len() > 1 && arguments.args[0] == "--collection" {
+                    (1, true)
+                } else {
+                    (0, false)
+                };
 
-            match parse_json(&arguments[json_index]) {
+            match parse_json(&arguments.args[json_index]) {
                 Ok(data) => {
-                    let output = match output_variable {
+                    let output = match arguments.output_variable {
                         Some(name) => {
                             if as_state {
-                                create_structure(data, state)
+                                create_structure(data, arguments.state)
                             } else {
-                                create_variables(data, &name, variables);
+                                create_variables(data, &name, arguments.variables);
 
-                                match variables.get(&name) {
+                                match arguments.variables.get(&name) {
                                     Some(value) => Some(value.to_string()),
                                     None => None,
                                 }

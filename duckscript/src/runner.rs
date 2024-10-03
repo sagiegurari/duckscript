@@ -9,7 +9,8 @@ mod runner_test;
 
 use crate::expansion::{self, ExpandedValue};
 use crate::parser;
-use crate::types::command::{CommandResult, Commands, GoToValue};
+use crate::types::command::{CommandArgs, CommandResult, Commands, GoToValue};
+use crate::types::env::Env;
 use crate::types::error::ScriptError;
 use crate::types::instruction::{
     Instruction, InstructionMetaInfo, InstructionType, ScriptInstruction,
@@ -17,26 +18,32 @@ use crate::types::instruction::{
 use crate::types::runtime::{Context, Runtime, StateValue};
 use std::collections::HashMap;
 use std::io::stdin;
+use std::sync::atomic::Ordering;
 
 #[derive(Debug)]
 enum EndReason {
     ExitCalled,
     ReachedEnd,
     Crash(ScriptError),
+    Halted,
 }
 
 /// Executes the provided script with the given context
-pub fn run_script(text: &str, context: Context) -> Result<Context, ScriptError> {
+pub fn run_script(text: &str, context: Context, env: Option<Env>) -> Result<Context, ScriptError> {
     match parser::parse_text(text) {
-        Ok(instructions) => run(instructions, context),
+        Ok(instructions) => run(instructions, context, env),
         Err(error) => Err(error),
     }
 }
 
 /// Executes the provided script file with the given context
-pub fn run_script_file(file: &str, context: Context) -> Result<Context, ScriptError> {
+pub fn run_script_file(
+    file: &str,
+    context: Context,
+    env: Option<Env>,
+) -> Result<Context, ScriptError> {
     match parser::parse_file(file) {
-        Ok(instructions) => run(instructions, context),
+        Ok(instructions) => run(instructions, context, env),
         Err(error) => Err(error),
     }
 }
@@ -58,7 +65,7 @@ pub fn repl(mut context: Context) -> Result<Context, ScriptError> {
 
                         // add new instructions
                         instructions.append(&mut new_instructions);
-                        let runtime = create_runtime(instructions.clone(), context);
+                        let runtime = create_runtime(instructions.clone(), context, None);
 
                         let (updated_context, end_reason) = run_instructions(runtime, start, true)?;
 
@@ -83,8 +90,12 @@ pub fn repl(mut context: Context) -> Result<Context, ScriptError> {
     }
 }
 
-fn run(instructions: Vec<Instruction>, context: Context) -> Result<Context, ScriptError> {
-    let runtime = create_runtime(instructions, context);
+fn run(
+    instructions: Vec<Instruction>,
+    context: Context,
+    env: Option<Env>,
+) -> Result<Context, ScriptError> {
+    let runtime = create_runtime(instructions, context, env);
 
     match run_instructions(runtime, 0, false) {
         Ok((context, _)) => Ok(context),
@@ -92,8 +103,8 @@ fn run(instructions: Vec<Instruction>, context: Context) -> Result<Context, Scri
     }
 }
 
-fn create_runtime(instructions: Vec<Instruction>, context: Context) -> Runtime {
-    let mut runtime = Runtime::new(context);
+fn create_runtime(instructions: Vec<Instruction>, context: Context, env: Option<Env>) -> Runtime {
+    let mut runtime = Runtime::new(context, env);
 
     let mut line = 0;
     for instruction in &instructions {
@@ -126,6 +137,11 @@ fn run_instructions(
 
     let mut end_reason = EndReason::ReachedEnd;
     loop {
+        if runtime.env.halt.load(Ordering::SeqCst) {
+            end_reason = EndReason::Halted;
+            break;
+        }
+
         let (instruction, meta_info) = if instructions.len() > line {
             let instruction = instructions[line].clone();
             let meta_info = instruction.meta_info.clone();
@@ -141,6 +157,7 @@ fn run_instructions(
             instructions,
             instruction,
             line,
+            &mut runtime.env,
         );
 
         match command_result {
@@ -185,6 +202,7 @@ fn run_instructions(
                     instructions,
                     error,
                     meta_info.clone(),
+                    &mut runtime.env,
                 ) {
                     return Err(ScriptError::Runtime(error, Some(meta_info.clone())));
                 };
@@ -249,6 +267,7 @@ fn run_on_error_instruction(
     instructions: &Vec<Instruction>,
     error: String,
     meta_info: InstructionMetaInfo,
+    env: &mut Env,
 ) -> Result<(), String> {
     if commands.exists("on_error") {
         let mut script_instruction = ScriptInstruction::new();
@@ -263,8 +282,15 @@ fn run_on_error_instruction(
             instruction_type: InstructionType::Script(script_instruction),
         };
 
-        let (command_result, output_variable) =
-            run_instruction(commands, variables, state, instructions, instruction, 0);
+        let (command_result, output_variable) = run_instruction(
+            commands,
+            variables,
+            state,
+            instructions,
+            instruction,
+            0,
+            env,
+        );
 
         match command_result {
             CommandResult::Exit(output) => {
@@ -288,6 +314,7 @@ pub fn run_instruction(
     instructions: &Vec<Instruction>,
     instruction: Instruction,
     line: usize,
+    env: &mut Env,
 ) -> (CommandResult, Option<String>) {
     let mut output_variable = None;
     let command_result = match instruction.instruction_type {
@@ -305,19 +332,17 @@ pub fn run_instruction(
                             &instruction.meta_info,
                         );
 
-                        if command_instance.requires_context() {
-                            command_instance.run_with_context(
-                                command_arguments,
-                                state,
-                                variables,
-                                output_variable.clone(),
-                                instructions,
-                                commands,
-                                line,
-                            )
-                        } else {
-                            command_instance.run(command_arguments)
-                        }
+                        let command_args = CommandArgs {
+                            args: command_arguments,
+                            state,
+                            variables,
+                            output_variable: output_variable.clone(),
+                            instructions,
+                            commands,
+                            line,
+                            env,
+                        };
+                        command_instance.run(command_args)
                     }
                     None => CommandResult::Crash(format!("Command: {} not found.", &command)),
                 },

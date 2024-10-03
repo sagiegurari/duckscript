@@ -1,6 +1,6 @@
 use crate::utils::exec::ExecInput;
 use crate::utils::{exec, pckg};
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -33,14 +33,14 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
         let mut print_output = true;
         let mut input = ExecInput::None;
         let mut command_start_index = 0;
 
         let mut index = 0;
         let mut looking_for = LookingFor::Flag;
-        for argument in &arguments {
+        for argument in &arguments.args {
             index = index + 1;
 
             match looking_for {
@@ -64,7 +64,13 @@ impl Command for CommandImpl {
             }
         }
 
-        match exec::spawn(&arguments, print_output, true, input, command_start_index) {
+        match exec::spawn(
+            &arguments.args,
+            print_output,
+            true,
+            input,
+            command_start_index,
+        ) {
             Ok(child) => {
                 let pid = child.id();
 

@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -27,11 +27,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("Value not provided.".to_string())
         } else {
-            match u64::from_str_radix(arguments[0].trim_start_matches("0x"), 16) {
+            match u64::from_str_radix(arguments.args[0].trim_start_matches("0x"), 16) {
                 Ok(num) => CommandResult::Continue(Some(num.to_string())),
                 Err(error) => CommandResult::Error(error.to_string()),
             }

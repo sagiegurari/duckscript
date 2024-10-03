@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -27,11 +27,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.len() < 3 {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.len() < 3 {
             CommandResult::Error("Three arguments are required.".to_string())
         } else {
-            let result = arguments[0].replace(&arguments[1], &arguments[2]);
+            let result = arguments.args[0].replace(&arguments.args[1], &arguments.args[2]);
 
             CommandResult::Continue(Some(result.to_string()))
         }

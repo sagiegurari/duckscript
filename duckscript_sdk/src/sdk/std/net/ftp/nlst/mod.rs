@@ -1,10 +1,8 @@
 use crate::sdk::std::net::ftp::{run_with_connection, Options};
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
 use suppaftp::FtpStream;
 
 #[cfg(test)]
@@ -33,22 +31,9 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        run_with_connection(&arguments, &mut |_options: &Options,
-                                              ftp_stream: &mut FtpStream|
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        run_with_connection(&arguments.args, &mut |_options: &Options,
+                                                   ftp_stream: &mut FtpStream|
          -> CommandResult {
             match ftp_stream.nlst(None) {
                 Ok(output) => {
@@ -58,7 +43,7 @@ impl Command for CommandImpl {
                         array.push(StateValue::String(item));
                     }
 
-                    let key = put_handle(state, StateValue::List(array));
+                    let key = put_handle(arguments.state, StateValue::List(array));
 
                     CommandResult::Continue(Some(key))
                 }

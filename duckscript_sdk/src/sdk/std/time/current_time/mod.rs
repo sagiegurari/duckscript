@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 #[cfg(test)]
@@ -28,7 +28,7 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: Vec<String>) -> CommandResult {
+    fn run(&self, _arguments: CommandArgs) -> CommandResult {
         match SystemTime::now().duration_since(UNIX_EPOCH) {
             Ok(value) => CommandResult::Continue(Some(value.as_millis().to_string())),
             Err(error) => CommandResult::Error(error.to_string()),

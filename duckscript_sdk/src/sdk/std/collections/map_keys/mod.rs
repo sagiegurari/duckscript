@@ -1,9 +1,7 @@
 use crate::utils::pckg;
 use crate::utils::state::{get_handles_sub_state, put_handle};
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
 use std::str;
 
 #[cfg(test)]
@@ -32,26 +30,13 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("Map handle not provided.".to_string())
         } else {
-            let handles_state = get_handles_sub_state(state);
+            let handles_state = get_handles_sub_state(arguments.state);
 
-            match handles_state.get(&arguments[0]) {
+            match handles_state.get(&arguments.args[0]) {
                 Some(state_value) => match state_value {
                     StateValue::SubState(ref map) => {
                         let mut array = vec![];
@@ -60,14 +45,14 @@ impl Command for CommandImpl {
                             array.push(StateValue::String(map_key.to_string()));
                         }
 
-                        let key = put_handle(state, StateValue::List(array));
+                        let key = put_handle(arguments.state, StateValue::List(array));
 
                         CommandResult::Continue(Some(key))
                     }
                     _ => CommandResult::Error("Invalid handle provided.".to_string()),
                 },
                 None => CommandResult::Error(
-                    format!("Map for handle: {} not found.", &arguments[0]).to_string(),
+                    format!("Map for handle: {} not found.", &arguments.args[0]).to_string(),
                 ),
             }
         }

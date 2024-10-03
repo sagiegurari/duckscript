@@ -61,7 +61,16 @@ fn command_default_run() {
     }
 
     let command = InnerCommand {};
-    let result = command.run(vec![]);
+    let result = command.run(CommandArgs {
+        args: vec![],
+        state: &mut HashMap::new(),
+        variables: &mut HashMap::new(),
+        output_variable: None,
+        instructions: &vec![],
+        commands: &mut Commands::new(),
+        line: 0,
+        env: &mut Env::default(),
+    });
 
     test::validate_continue_result(&result, None);
 }
@@ -82,16 +91,18 @@ fn command_default_run_with_context() {
     }
 
     let mut context = Context::new();
+    let mut env = Env::default();
     let command = InnerCommand {};
-    let result = command.run_with_context(
-        vec![],
-        &mut HashMap::new(),
-        &mut HashMap::new(),
-        None,
-        &vec![],
-        &mut context.commands,
-        0,
-    );
+    let result = command.run(CommandArgs {
+        args: vec![],
+        state: &mut HashMap::new(),
+        variables: &mut HashMap::new(),
+        output_variable: None,
+        instructions: &vec![],
+        commands: &mut context.commands,
+        line: 0,
+        env: &mut env,
+    });
 
     test::validate_continue_result(&result, None);
 }

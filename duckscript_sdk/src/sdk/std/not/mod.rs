@@ -1,8 +1,5 @@
 use crate::utils::{condition, pckg};
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
-use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -30,24 +27,18 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        instructions: &Vec<Instruction>,
-        commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("Missing condition".to_string())
         } else {
-            match condition::eval_condition(arguments, instructions, state, variables, commands) {
+            match condition::eval_condition(
+                &arguments.args,
+                arguments.instructions,
+                arguments.state,
+                arguments.variables,
+                arguments.commands,
+                arguments.env,
+            ) {
                 Ok(passed) => {
                     let output = !passed;
                     CommandResult::Continue(Some(output.to_string()))

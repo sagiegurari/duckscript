@@ -1,9 +1,7 @@
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -31,37 +29,24 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if arguments.len() < 2 {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.len() < 2 {
             CommandResult::Error("Invalid arguments provided.".to_string())
         } else {
-            let start: i64 = match arguments[0].parse() {
+            let start: i64 = match arguments.args[0].parse() {
                 Ok(value) => value,
                 Err(_) => {
                     return CommandResult::Error(
-                        format!("Non numeric value: {} provided.", &arguments[0]).to_string(),
+                        format!("Non numeric value: {} provided.", &arguments.args[0]).to_string(),
                     );
                 }
             };
 
-            let end: i64 = match arguments[1].parse() {
+            let end: i64 = match arguments.args[1].parse() {
                 Ok(value) => value,
                 Err(_) => {
                     return CommandResult::Error(
-                        format!("Non numeric value: {} provided.", &arguments[1]).to_string(),
+                        format!("Non numeric value: {} provided.", &arguments.args[1]).to_string(),
                     );
                 }
             };
@@ -73,7 +58,7 @@ impl Command for CommandImpl {
                     .map(|value| StateValue::Number64Bit(value))
                     .collect();
 
-                let key = put_handle(state, StateValue::List(array));
+                let key = put_handle(arguments.state, StateValue::List(array));
 
                 CommandResult::Continue(Some(key))
             }

@@ -1,6 +1,5 @@
 use crate::utils::{pckg, state};
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
 use std::fs::{File, OpenOptions};
@@ -38,21 +37,8 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if arguments.len() < 2 {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.len() < 2 {
             return CommandResult::Error(
                 "Paths to the ZIP file and/or files to pack are not provided.".to_string(),
             );
@@ -64,12 +50,12 @@ impl Command for CommandImpl {
             compression,
             zipfile,
             file_args,
-        } = match parse_args(&arguments) {
+        } = match parse_args(&arguments.args) {
             Ok(options) => options,
             Err(err) => return CommandResult::Error(err),
         };
 
-        let files = match collect_files_from_arrays(&file_args, state) {
+        let files = match collect_files_from_arrays(&file_args, arguments.state) {
             Ok(files) => files,
             Err(err) => return CommandResult::Error(err),
         };

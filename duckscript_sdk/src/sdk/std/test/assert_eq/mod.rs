@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -27,23 +27,23 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.len() < 2 {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.len() < 2 {
             CommandResult::Crash("Assert failed, two arguments are required.".to_string())
         } else {
-            let passed = arguments[0] == arguments[1];
+            let passed = arguments.args[0] == arguments.args[1];
 
             if passed {
                 CommandResult::Continue(Some("true".to_string()))
             } else {
-                let error_message = if arguments.len() == 2 {
+                let error_message = if arguments.args.len() == 2 {
                     format!(
                         "Assert failed, value: {} does not match: {}",
-                        &arguments[0], &arguments[1]
+                        &arguments.args[0], &arguments.args[1]
                     )
                     .to_string()
                 } else {
-                    arguments[2].clone()
+                    arguments.args[2].clone()
                 };
 
                 CommandResult::Crash(error_message)

@@ -2,7 +2,7 @@ use crate::sdk::std::flowcontrol::{end, forin, function, get_line_key, ifelse};
 use crate::types::scope::get_line_context_name;
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
 use crate::utils::{condition, instruction_query, pckg};
-use duckscript::types::command::{Command, CommandResult, Commands, GoToValue};
+use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands, GoToValue};
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -266,47 +266,35 @@ impl Command for WhileCommand {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        instructions: &Vec<Instruction>,
-        commands: &mut Commands,
-        line: usize,
-    ) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("Missing condition".to_string())
         } else {
             match get_or_create_while_meta_info_for_line(
-                line,
-                state,
-                instructions,
+                arguments.line,
+                arguments.state,
+                arguments.instructions,
                 self.package.clone(),
             ) {
                 Ok(while_info) => {
                     match condition::eval_condition(
-                        arguments,
-                        instructions,
-                        state,
-                        variables,
-                        commands,
+                        &arguments.args,
+                        arguments.instructions,
+                        arguments.state,
+                        arguments.variables,
+                        arguments.commands,
+                        arguments.env,
                     ) {
                         Ok(passed) => {
                             if passed {
-                                let line_context_name = get_line_context_name(state);
+                                let line_context_name = get_line_context_name(arguments.state);
 
                                 let call_info = CallInfo {
                                     meta_info: while_info.clone(),
                                     line_context_name,
                                 };
 
-                                store_call_info(&call_info, state);
+                                store_call_info(&call_info, arguments.state);
 
                                 CommandResult::Continue(None)
                             } else {
@@ -354,24 +342,11 @@ impl Command for EndWhileCommand {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        _arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        line: usize,
-    ) -> CommandResult {
-        match pop_call_info_for_line(line, state) {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        match pop_call_info_for_line(arguments.line, arguments.state) {
             Some(call_info) => {
                 let next_line = call_info.meta_info.start;
-                store_call_info(&call_info, state);
+                store_call_info(&call_info, arguments.state);
                 CommandResult::GoTo(None, GoToValue::Line(next_line))
             }
             None => CommandResult::Error(

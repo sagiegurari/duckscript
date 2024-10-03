@@ -1,7 +1,7 @@
 use crate::sdk::std::flowcontrol::get_line_key;
 use crate::utils::state::get_core_sub_state_for_command;
 use duckscript::runner;
-use duckscript::types::command::{Command, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::instruction::{
     Instruction, InstructionMetaInfo, InstructionType, ScriptInstruction,
 };
@@ -56,38 +56,26 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        _arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        instructions: &Vec<Instruction>,
-        commands: &mut Commands,
-        line: usize,
-    ) -> CommandResult {
-        match get_command(line, state) {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        match get_command(arguments.line, arguments.state) {
             Some(command) => {
                 let mut script_instruction = ScriptInstruction::new();
                 script_instruction.command = Some(command);
                 let mut instruction_meta_info = InstructionMetaInfo::new();
-                instruction_meta_info.line = Some(line);
+                instruction_meta_info.line = Some(arguments.line);
                 let instruction = Instruction {
                     meta_info: instruction_meta_info,
                     instruction_type: InstructionType::Script(script_instruction),
                 };
 
                 let (command_result, _) = runner::run_instruction(
-                    commands,
-                    variables,
-                    state,
-                    instructions,
+                    arguments.commands,
+                    arguments.variables,
+                    arguments.state,
+                    arguments.instructions,
                     instruction,
-                    line,
+                    arguments.line,
+                    arguments.env,
                 );
 
                 command_result

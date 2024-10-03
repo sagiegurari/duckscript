@@ -1,19 +1,17 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
-use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::env::Env;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
 mod mod_test;
 
-fn print_help(help_doc: String, name: &str) -> CommandResult {
+fn print_help(env: &mut Env, help_doc: String, name: &str) -> CommandResult {
     if help_doc.is_empty() {
-        println!("No documentation found for command: {}", name);
+        writeln!(env.out, "No documentation found for command: {}", name).unwrap();
         CommandResult::Continue(None)
     } else {
-        println!("{}", &help_doc);
+        writeln!(env.out, "{}", &help_doc).unwrap();
         CommandResult::Continue(Some(help_doc))
     }
 }
@@ -40,35 +38,22 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        _state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if arguments.is_empty() {
-            print_help(self.help(), &self.name())
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
+            print_help(arguments.env, self.help(), &self.name())
         } else {
-            let name = &arguments[0];
+            let name = &arguments.args[0];
 
-            match commands.get(name) {
+            match arguments.commands.get(name) {
                 Some(command) => {
                     let help_doc = command.help();
-                    print_help(help_doc, name)
+                    print_help(arguments.env, help_doc, name)
                 }
                 None => {
                     if name == &self.name() || self.aliases().contains(name) {
-                        print_help(self.help(), &self.name())
+                        print_help(arguments.env, self.help(), &self.name())
                     } else {
-                        println!("Command: {} not found.", name);
+                        writeln!(arguments.env.out, "Command: {} not found.", name).unwrap();
                         CommandResult::Continue(None)
                     }
                 }

@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use rand::{thread_rng, Rng};
 
 #[cfg(test)]
@@ -28,12 +28,12 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.len() < 2 {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.len() < 2 {
             CommandResult::Error("Missing random min/max values.".to_string())
         } else {
-            match arguments[0].parse() {
-                Ok(min) => match arguments[1].parse() {
+            match arguments.args[0].parse() {
+                Ok(min) => match arguments.args[1].parse() {
                     Ok(max) => {
                         if min > max {
                             CommandResult::Error(
@@ -51,11 +51,12 @@ impl Command for CommandImpl {
                         }
                     }
                     Err(_) => CommandResult::Error(
-                        format!("Non numeric max value: {} provided.", &arguments[1]).to_string(),
+                        format!("Non numeric max value: {} provided.", &arguments.args[1])
+                            .to_string(),
                     ),
                 },
                 Err(_) => CommandResult::Error(
-                    format!("Non numeric min value: {} provided.", &arguments[0]).to_string(),
+                    format!("Non numeric min value: {} provided.", &arguments.args[0]).to_string(),
                 ),
             }
         }

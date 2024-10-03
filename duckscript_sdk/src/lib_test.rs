@@ -36,6 +36,7 @@ fn test_scripts() {
     unset_env DUCKSCRIPT_TEST_RUST
     "#,
         context,
+        None,
     );
 
     assert!(result.is_ok());

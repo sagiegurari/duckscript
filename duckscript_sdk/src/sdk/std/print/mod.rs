@@ -1,6 +1,7 @@
 use crate::utils::pckg;
 use colored::{Color, ColoredString, Colorize};
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::env::Env;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -134,14 +135,14 @@ fn add_color(
     }
 }
 
-pub(crate) fn run_print(arguments: Vec<String>) -> CommandResult {
+pub(crate) fn run_print(env: &mut Env, arguments: &Vec<String>) -> CommandResult {
     // collect options
     let mut styles = vec![];
     let mut text_color = None;
     let mut background_color = None;
     let mut index = 0;
     let mut looking_for = LookingFor::Flag;
-    for argument in &arguments {
+    for argument in arguments {
         index = index + 1;
 
         match looking_for {
@@ -187,9 +188,10 @@ pub(crate) fn run_print(arguments: Vec<String>) -> CommandResult {
     styled_string = add_color(styled_string, background_color, true);
     styled_string = add_styles(styled_string, styles);
 
-    print!("{}", styled_string);
-
-    CommandResult::Continue(Some(count.to_string()))
+    match write!(env.out, "{}", styled_string) {
+        Ok(_) => CommandResult::Continue(Some(count.to_string())),
+        Err(error) => CommandResult::Error(error.to_string()),
+    }
 }
 
 #[derive(Clone)]
@@ -214,8 +216,8 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        run_print(arguments)
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        run_print(arguments.env, &arguments.args)
     }
 }
 

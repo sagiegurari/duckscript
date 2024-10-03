@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use fsio::path::from_path::FromPath;
 
 #[cfg(test)]
@@ -28,11 +28,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("No executable name provided.".to_string())
         } else {
-            match which::which(&arguments[0]) {
+            match which::which(&arguments.args[0]) {
                 Ok(path) => {
                     let path_string: String = FromPath::from_path(&path);
                     CommandResult::Continue(Some(path_string))

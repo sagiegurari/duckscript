@@ -1,9 +1,6 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
-use duckscript::types::runtime::StateValue;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use semver::Version;
-use std::collections::HashMap;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -31,35 +28,22 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        _state: &mut HashMap<String, StateValue>,
-        variables: &mut HashMap<String, String>,
-        output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("No semver value provided.".to_string())
         } else {
-            match Version::parse(&arguments[0]) {
-                Ok(version) => match output_variable {
+            match Version::parse(&arguments.args[0]) {
+                Ok(version) => match arguments.output_variable {
                     Some(name) => {
-                        variables.insert(
+                        arguments.variables.insert(
                             format!("{}.major", &name).to_string(),
                             version.major.to_string(),
                         );
-                        variables.insert(
+                        arguments.variables.insert(
                             format!("{}.minor", &name).to_string(),
                             version.minor.to_string(),
                         );
-                        variables.insert(
+                        arguments.variables.insert(
                             format!("{}.patch", &name).to_string(),
                             version.patch.to_string(),
                         );

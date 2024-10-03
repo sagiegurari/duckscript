@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandResult};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -34,17 +34,17 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: Vec<String>) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("No arguments provided.".to_string())
         } else {
-            let string_value = arguments[0].clone();
+            let string_value = arguments.args[0].clone();
             let string_len = string_value.len() as isize;
 
-            let (start, end) = if arguments.len() == 1 {
+            let (start, end) = if arguments.args.len() == 1 {
                 (0, string_len)
-            } else if arguments.len() == 2 {
-                match parse_number(&arguments[1]) {
+            } else if arguments.args.len() == 2 {
+                match parse_number(&arguments.args[1]) {
                     Ok(value) => {
                         if value >= 0 {
                             if value > (string_len - 1) {
@@ -71,7 +71,7 @@ impl Command for CommandImpl {
                     Err(error) => return CommandResult::Error(error.to_string()),
                 }
             } else {
-                let start = match parse_number(&arguments[1]) {
+                let start = match parse_number(&arguments.args[1]) {
                     Ok(value) => {
                         if value > (string_len - 1) {
                             return CommandResult::Error(
@@ -83,7 +83,7 @@ impl Command for CommandImpl {
                     }
                     Err(error) => return CommandResult::Error(error.to_string()),
                 };
-                let end = match parse_number(&arguments[2]) {
+                let end = match parse_number(&arguments.args[2]) {
                     Ok(value) => {
                         if value >= start {
                             if value > (string_len - 1) {

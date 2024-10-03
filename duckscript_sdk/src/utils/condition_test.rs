@@ -60,11 +60,12 @@ fn is_true_valid() {
 #[test]
 fn eval_condition_empty() {
     let result = eval_condition(
-        vec![],
+        &vec![],
         &vec![],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut Commands::new(),
+        &mut Env::default(),
     );
 
     assert!(result.is_ok());
@@ -77,11 +78,12 @@ fn eval_condition_empty() {
 #[test]
 fn eval_condition_value_true() {
     let result = eval_condition(
-        vec!["true".to_string()],
+        &vec!["true".to_string()],
         &vec![],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut Commands::new(),
+        &mut Env::default(),
     );
 
     assert!(result.is_ok());
@@ -94,11 +96,12 @@ fn eval_condition_value_true() {
 #[test]
 fn eval_condition_value_false() {
     let result = eval_condition(
-        vec!["false".to_string()],
+        &vec!["false".to_string()],
         &vec![],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut Commands::new(),
+        &mut Env::default(),
     );
 
     assert!(result.is_ok());
@@ -117,11 +120,12 @@ fn eval_condition_command_true() {
     }
 
     let result = eval_condition(
-        vec!["test_set".to_string(), "true".to_string()],
+        &vec!["test_set".to_string(), "true".to_string()],
         &vec![],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
+        &mut Env::default(),
     );
 
     assert!(result.is_ok());
@@ -140,11 +144,12 @@ fn eval_condition_command_false() {
     }
 
     let result = eval_condition(
-        vec!["test_set".to_string(), "false".to_string()],
+        &vec!["test_set".to_string(), "false".to_string()],
         &vec![],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
+        &mut Env::default(),
     );
 
     assert!(result.is_ok());
@@ -163,11 +168,12 @@ fn eval_condition_command_error() {
     }
 
     let result = eval_condition(
-        vec!["test_error".to_string()],
+        &vec!["test_error".to_string()],
         &vec![],
         &mut HashMap::new(),
         &mut HashMap::new(),
         &mut commands,
+        &mut Env::default(),
     );
 
     assert!(result.is_err());

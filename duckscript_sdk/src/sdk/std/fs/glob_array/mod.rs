@@ -1,11 +1,9 @@
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandResult, Commands};
-use duckscript::types::instruction::Instruction;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::runtime::StateValue;
 use fsio::path::from_path::FromPath;
 use glob::glob;
-use std::collections::HashMap;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -33,24 +31,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn requires_context(&self) -> bool {
-        true
-    }
-
-    fn run_with_context(
-        &self,
-        arguments: Vec<String>,
-        state: &mut HashMap<String, StateValue>,
-        _variables: &mut HashMap<String, String>,
-        _output_variable: Option<String>,
-        _instructions: &Vec<Instruction>,
-        _commands: &mut Commands,
-        _line: usize,
-    ) -> CommandResult {
-        if arguments.is_empty() {
+    fn run(&self, arguments: CommandArgs) -> CommandResult {
+        if arguments.args.is_empty() {
             CommandResult::Error("Glob pattern not provided.".to_string())
         } else {
-            match glob(&arguments[0]) {
+            match glob(&arguments.args[0]) {
                 Ok(paths) => {
                     let mut array = vec![];
 
@@ -66,7 +51,7 @@ impl Command for CommandImpl {
                         }
                     }
 
-                    let key = put_handle(state, StateValue::List(array));
+                    let key = put_handle(arguments.state, StateValue::List(array));
 
                     CommandResult::Continue(Some(key))
                 }
