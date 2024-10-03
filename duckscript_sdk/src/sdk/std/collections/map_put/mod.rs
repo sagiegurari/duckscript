@@ -1,10 +1,7 @@
 use crate::utils::pckg;
 use crate::utils::state::{get_handles_sub_state, mutate_map};
 use duckscript::types::command::{Command, CommandArgs, CommandResult};
-use duckscript::types::env::Env;
-use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]

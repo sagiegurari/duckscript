@@ -1,11 +1,8 @@
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
 use base64::Engine;
-use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
-use duckscript::types::env::Env;
-use duckscript::types::instruction::Instruction;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]

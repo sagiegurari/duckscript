@@ -1,10 +1,7 @@
 use crate::utils::pckg;
 use crate::utils::state::get_handles_sub_state;
-use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
-use duckscript::types::env::Env;
-use duckscript::types::instruction::Instruction;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
 use std::str;
 
 #[cfg(test)]
@@ -37,11 +34,11 @@ impl Command for CommandImpl {
         if arguments.args.is_empty() {
             CommandResult::Error("Array handle not provided.".to_string())
         } else {
-            let state = get_handles_sub_state(state);
+            let state = get_handles_sub_state(arguments.state);
 
             let key = &arguments.args[0];
 
-            match arguments.state.get(key) {
+            match state.get(key) {
                 Some(state_value) => match state_value {
                     StateValue::ByteArray(binary) => match str::from_utf8(&binary) {
                         Ok(text) => CommandResult::Continue(Some(text.to_string())),

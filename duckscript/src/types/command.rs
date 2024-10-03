@@ -75,7 +75,7 @@ pub trait Command {
     fn clone_and_box(&self) -> Box<dyn Command>;
 
     /// Run the instruction.
-    fn run(&self, _arguments: CommandArgs) -> CommandResult {
+    fn run(&self, mut _arguments: CommandArgs) -> CommandResult {
         CommandResult::Crash(format!("Not implemented for command: {}", &self.name()).to_string())
     }
 }

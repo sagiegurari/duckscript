@@ -1,10 +1,6 @@
 use crate::types::scope::clear;
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
-use duckscript::types::env::Env;
-use duckscript::types::instruction::Instruction;
-use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]

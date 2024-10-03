@@ -1,7 +1,5 @@
 use crate::utils::{pckg, state};
-use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
-use duckscript::types::env::Env;
-use duckscript::types::instruction::Instruction;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
 use std::fs::{File, OpenOptions};

@@ -3,9 +3,7 @@ use crate::types::scope::get_line_context_name;
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
 use crate::utils::{annotation, instruction_query, pckg, scope};
 use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands, GoToValue};
-use duckscript::types::env::Env;
 use duckscript::types::error::ScriptError;
-use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
 
@@ -212,7 +210,7 @@ fn pop_from_call_stack(state: &mut HashMap<String, StateValue>) -> Option<CallIn
 
 fn run_call(
     function_name: String,
-    arguments: CommandArgs,
+    arguments: &Vec<String>,
     state: &mut HashMap<String, StateValue>,
     variables: &mut HashMap<String, String>,
     output_variable: Option<String>,
@@ -232,7 +230,7 @@ fn run_call(
             for argument in arguments {
                 index = index + 1;
 
-                variables.insert(index.to_string(), argument);
+                variables.insert(index.to_string(), argument.to_string());
             }
 
             let line_context_name = get_line_context_name(state);
@@ -395,7 +393,7 @@ impl Command for FunctionCommand {
                                             fn run(&self, arguments: CommandArgs) -> CommandResult {
                                                 run_call(
                                                     self.name(),
-                                                    arguments.args,
+                                                    &arguments.args,
                                                     arguments.state,
                                                     arguments.variables,
                                                     arguments.output_variable,

@@ -1,9 +1,6 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::env::Env;
-use duckscript::types::instruction::Instruction;
-use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -11,15 +8,10 @@ mod mod_test;
 
 fn print_help(env: &mut Env, help_doc: String, name: &str) -> CommandResult {
     if help_doc.is_empty() {
-        writeln!(
-            arguments.env.out,
-            "No documentation found for command: {}",
-            name
-        )
-        .unwrap();
+        writeln!(env.out, "No documentation found for command: {}", name).unwrap();
         CommandResult::Continue(None)
     } else {
-        writeln!(arguments.env.out, "{}", &help_doc).unwrap();
+        writeln!(env.out, "{}", &help_doc).unwrap();
         CommandResult::Continue(Some(help_doc))
     }
 }
@@ -48,7 +40,7 @@ impl Command for CommandImpl {
 
     fn run(&self, arguments: CommandArgs) -> CommandResult {
         if arguments.args.is_empty() {
-            print_help(env, self.help(), &self.name())
+            print_help(arguments.env, self.help(), &self.name())
         } else {
             let name = &arguments.args[0];
 
@@ -59,7 +51,7 @@ impl Command for CommandImpl {
                 }
                 None => {
                     if name == &self.name() || self.aliases().contains(name) {
-                        print_help(env, self.help(), &self.name())
+                        print_help(arguments.env, self.help(), &self.name())
                     } else {
                         writeln!(arguments.env.out, "Command: {} not found.", name).unwrap();
                         CommandResult::Continue(None)

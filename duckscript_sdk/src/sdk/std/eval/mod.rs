@@ -1,9 +1,5 @@
 use crate::utils::{eval, pckg};
-use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
-use duckscript::types::env::Env;
-use duckscript::types::instruction::Instruction;
-use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -34,10 +30,10 @@ impl Command for CommandImpl {
     fn run(&self, arguments: CommandArgs) -> CommandResult {
         eval::eval_with_error(
             &arguments.args,
-            &arguments.state,
-            &arguments.variables,
-            &arguments.commands,
-            &arguments.env,
+            &mut arguments.state,
+            &mut arguments.variables,
+            &mut arguments.commands,
+            &mut arguments.env,
         )
     }
 }

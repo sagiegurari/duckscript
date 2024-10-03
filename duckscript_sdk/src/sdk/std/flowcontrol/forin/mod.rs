@@ -5,7 +5,6 @@ use crate::utils::state::{
 };
 use crate::utils::{instruction_query, pckg};
 use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands, GoToValue};
-use duckscript::types::env::Env;
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;

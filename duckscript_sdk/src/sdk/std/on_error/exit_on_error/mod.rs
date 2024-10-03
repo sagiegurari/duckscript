@@ -1,11 +1,8 @@
 use crate::sdk::std::on_error::{get_value, EXIT_ON_ERROR_KEY, STATE_KEY};
 use crate::utils::state::get_core_sub_state_for_command;
 use crate::utils::{condition, pckg};
-use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
-use duckscript::types::env::Env;
-use duckscript::types::instruction::Instruction;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -35,7 +32,7 @@ impl Command for CommandImpl {
 
     fn run(&self, arguments: CommandArgs) -> CommandResult {
         let exit_on_error = if arguments.args.is_empty() {
-            let value_string = get_value(state, EXIT_ON_ERROR_KEY.to_string());
+            let value_string = get_value(arguments.state, EXIT_ON_ERROR_KEY.to_string());
             condition::is_true(value_string)
         } else {
             let exit_on_error = condition::is_true(Some(arguments.args[0].clone()));

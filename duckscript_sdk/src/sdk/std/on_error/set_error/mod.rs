@@ -1,11 +1,8 @@
 use crate::sdk::std::on_error::STATE_KEY;
 use crate::utils::pckg;
 use crate::utils::state::get_core_sub_state_for_command;
-use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
-use duckscript::types::env::Env;
-use duckscript::types::instruction::Instruction;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -39,7 +36,10 @@ impl Command for CommandImpl {
 
             let sub_state = get_core_sub_state_for_command(arguments.state, STATE_KEY.to_string());
             sub_state.insert("error".to_string(), StateValue::String(error));
-            sub_state.insert("line".to_string(), StateValue::String(line.to_string()));
+            sub_state.insert(
+                "line".to_string(),
+                StateValue::String(arguments.line.to_string()),
+            );
             sub_state.remove("source");
 
             CommandResult::Continue(None)

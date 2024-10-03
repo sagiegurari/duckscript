@@ -1,10 +1,8 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
-use duckscript::types::env::Env;
-use duckscript::types::instruction::{Instruction, InstructionType};
-use duckscript::types::runtime::{Context, StateValue};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::instruction::InstructionType;
+use duckscript::types::runtime::Context;
 use duckscript::{parser, runner};
-use std::collections::HashMap;
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -69,12 +67,11 @@ impl Command for CommandImpl {
                                         script_instruction.arguments.as_ref(),
                                     ) {
                                         (Some(current_command), Some(current_arguments)) => {
-                                            if !current_arguments.args.is_empty()
+                                            if !current_arguments.is_empty()
                                                 && command_names.contains(&current_command)
                                             {
-                                                if current_arguments.args[0].starts_with("test_") {
-                                                    test_names
-                                                        .push(current_arguments.args[0].clone());
+                                                if current_arguments[0].starts_with("test_") {
+                                                    test_names.push(current_arguments[0].clone());
                                                 }
                                             }
                                         }
@@ -92,7 +89,7 @@ impl Command for CommandImpl {
                                 let script = create_test_script(&file, &test_name);
 
                                 let mut context = Context::new();
-                                context.commands = commands.clone();
+                                context.commands = arguments.commands.clone();
 
                                 match runner::run_script(&script, context, None) {
                                     Err(error) => {

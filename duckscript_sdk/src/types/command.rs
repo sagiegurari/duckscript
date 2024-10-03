@@ -3,12 +3,10 @@ use crate::types::scope::set_line_context_name;
 use crate::utils::eval;
 use crate::utils::state::{get_handles_sub_state, put_handle};
 use duckscript::parser;
-use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
-use duckscript::types::env::Env;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
-use std::collections::HashMap;
 
 #[derive(Clone)]
 pub(crate) struct AliasCommand {
@@ -84,8 +82,8 @@ impl Command for AliasCommand {
         if arguments.args.len() < self.arguments_amount {
             CommandResult::Error("Invalid arguments provided.".to_string())
         } else {
-            let start_count = variables.len();
-            let line_context_name = set_line_context_name(&self.scope_name, state);
+            let start_count = arguments.variables.len();
+            let line_context_name = set_line_context_name(&self.scope_name, arguments.state);
 
             // define script arguments
             let mut handle_option = None;
@@ -103,12 +101,12 @@ impl Command for AliasCommand {
                     array.push(StateValue::String(argument.clone()));
                 }
 
-                let handle = put_handle(argument.state, StateValue::List(array));
+                let handle = put_handle(arguments.state, StateValue::List(array));
 
                 let mut key = self.scope_name.clone();
                 key.push_str("::arguments");
 
-                variables.insert(key, handle.clone());
+                arguments.variables.insert(key, handle.clone());
                 handle_option = Some(handle);
             }
 
@@ -117,7 +115,7 @@ impl Command for AliasCommand {
                 arguments.commands,
                 arguments.state,
                 arguments.variables,
-                env,
+                arguments.env,
                 0,
             );
 

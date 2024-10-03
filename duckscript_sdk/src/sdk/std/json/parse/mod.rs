@@ -1,9 +1,7 @@
 use crate::sdk::std::json::OBJECT_VALUE;
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
-use duckscript::types::env::Env;
-use duckscript::types::instruction::Instruction;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::runtime::StateValue;
 use serde_json::{Result, Value};
 use std::collections::HashMap;
@@ -118,7 +116,7 @@ impl Command for CommandImpl {
 
             match parse_json(&arguments.args[json_index]) {
                 Ok(data) => {
-                    let output = match output_variable {
+                    let output = match arguments.output_variable {
                         Some(name) => {
                             if as_state {
                                 create_structure(data, arguments.state)

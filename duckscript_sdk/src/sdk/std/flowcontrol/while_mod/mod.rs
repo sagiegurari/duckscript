@@ -3,7 +3,6 @@ use crate::types::scope::get_line_context_name;
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
 use crate::utils::{condition, instruction_query, pckg};
 use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands, GoToValue};
-use duckscript::types::env::Env;
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -279,7 +278,7 @@ impl Command for WhileCommand {
             ) {
                 Ok(while_info) => {
                     match condition::eval_condition(
-                        arguments.args,
+                        &arguments.args,
                         arguments.instructions,
                         arguments.state,
                         arguments.variables,

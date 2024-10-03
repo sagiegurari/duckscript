@@ -29,7 +29,7 @@ pub(crate) fn is_true(value: Option<String>) -> bool {
 }
 
 pub(crate) fn eval_condition(
-    arguments: CommandArgs,
+    arguments: &Vec<String>,
     instructions: &Vec<Instruction>,
     state: &mut HashMap<String, StateValue>,
     variables: &mut HashMap<String, String>,

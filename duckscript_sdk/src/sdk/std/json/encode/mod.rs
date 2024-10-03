@@ -1,9 +1,7 @@
 use crate::sdk::std::json::OBJECT_VALUE;
 use crate::utils::pckg;
 use crate::utils::state::get_handles_sub_state;
-use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
-use duckscript::types::env::Env;
-use duckscript::types::instruction::Instruction;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::runtime::StateValue;
 use serde_json::map::Map;
 use serde_json::{Number, Value};
@@ -214,7 +212,7 @@ impl Command for CommandImpl {
             if as_state {
                 let state = get_handles_sub_state(arguments.state);
 
-                match encode_from_state(&arguments.args[start_index], arguments.state) {
+                match encode_from_state(&arguments.args[start_index], state) {
                     Ok(output) => CommandResult::Continue(Some(output)),
                     Err(error) => CommandResult::Error(error),
                 }

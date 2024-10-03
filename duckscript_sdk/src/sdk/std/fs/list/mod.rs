@@ -1,8 +1,6 @@
 use crate::utils::{flags, pckg};
-use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::env::Env;
-use duckscript::types::instruction::Instruction;
-use duckscript::types::runtime::StateValue;
 use fs_extra::dir::{ls, DirEntryAttr, DirEntryValue};
 use fsio::path::{get_basename, get_parent_directory};
 use std::collections::{HashMap, HashSet};
@@ -148,13 +146,13 @@ impl Command for CommandImpl {
                             let item_name = get_string_value(DirEntryAttr::FullName, &item);
 
                             if item_name == file_name {
-                                print_entry(env, &item, extended_details);
+                                print_entry(arguments.env, &item, extended_details);
                                 break;
                             }
                         }
                     } else {
                         for item in items {
-                            print_entry(env, &item, extended_details);
+                            print_entry(arguments.env, &item, extended_details);
                         }
                     }
 
