@@ -149,7 +149,7 @@ impl Command for CommandImpl {
         if arguments.args.is_empty() {
             CommandResult::Error("No input provided.".to_string())
         } else {
-            match parse_options(&arguments) {
+            match parse_options(&arguments.args) {
                 Ok(options) => {
                     if options.algorithm.is_none() {
                         CommandResult::Error("No algorithm defined".to_string())

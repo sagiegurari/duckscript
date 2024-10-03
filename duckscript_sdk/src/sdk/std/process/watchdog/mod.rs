@@ -48,7 +48,7 @@ impl Command for CommandImpl {
 
             let mut index = 0;
             let mut looking_for = LookingFor::Flag;
-            for argument in &arguments {
+            for argument in &arguments.args {
                 index = index + 1;
 
                 match looking_for {
@@ -114,7 +114,7 @@ impl Command for CommandImpl {
                 loop {
                     attempt = attempt + 1;
 
-                    match exec::exec(&arguments, false, input.clone(), command_start_index) {
+                    match exec::exec(&arguments.args, false, input.clone(), command_start_index) {
                         Ok(_) => (),
                         Err(error) => return CommandResult::Error(error),
                     }

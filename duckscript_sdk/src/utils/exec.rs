@@ -29,7 +29,7 @@ pub(crate) fn exec(
                 None => {
                     return Err(format!(
                         "Unable to extract exit code for command: {}",
-                        &arguments.args[0]
+                        &arguments[0]
                     )
                     .to_string());
                 }
@@ -78,13 +78,13 @@ fn create_command(
     input: &ExecInput,
     start_index: usize,
 ) -> Result<Command, String> {
-    if arguments.args.len() <= start_index {
+    if arguments.len() <= start_index {
         Err("Command not provided.".to_string())
     } else {
-        let mut command = Command::new(&arguments.args[start_index]);
+        let mut command = Command::new(&arguments[start_index]);
         let argument_index = start_index + 1;
 
-        for argument in &arguments.args[argument_index..] {
+        for argument in &arguments[argument_index..] {
             command.arg(argument);
         }
 

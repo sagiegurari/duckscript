@@ -59,7 +59,7 @@ impl Command for CommandImpl {
         } else if arguments.args.len() == 1 {
             Some(arguments.args[0].clone())
         } else {
-            match get_output(&arguments) {
+            match get_output(&arguments.args) {
                 Ok(output) => output,
                 Err(error) => return CommandResult::Error(error),
             }

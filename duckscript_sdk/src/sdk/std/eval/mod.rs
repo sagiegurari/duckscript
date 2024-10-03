@@ -27,7 +27,7 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
+    fn run(&self, mut arguments: CommandArgs) -> CommandResult {
         eval::eval_with_error(
             &arguments.args,
             &mut arguments.state,

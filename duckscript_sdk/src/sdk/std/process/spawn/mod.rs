@@ -40,7 +40,7 @@ impl Command for CommandImpl {
 
         let mut index = 0;
         let mut looking_for = LookingFor::Flag;
-        for argument in &arguments {
+        for argument in &arguments.args {
             index = index + 1;
 
             match looking_for {
@@ -64,7 +64,13 @@ impl Command for CommandImpl {
             }
         }
 
-        match exec::spawn(&arguments, print_output, true, input, command_start_index) {
+        match exec::spawn(
+            &arguments.args,
+            print_output,
+            true,
+            input,
+            command_start_index,
+        ) {
             Ok(child) => {
                 let pid = child.id();
 

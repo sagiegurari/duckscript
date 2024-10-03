@@ -135,14 +135,14 @@ fn add_color(
     }
 }
 
-pub(crate) fn run_print(env: &mut Env, arguments: CommandArgs) -> CommandResult {
+pub(crate) fn run_print(env: &mut Env, arguments: &Vec<String>) -> CommandResult {
     // collect options
     let mut styles = vec![];
     let mut text_color = None;
     let mut background_color = None;
     let mut index = 0;
     let mut looking_for = LookingFor::Flag;
-    for argument in &arguments {
+    for argument in arguments {
         index = index + 1;
 
         match looking_for {
@@ -173,7 +173,7 @@ pub(crate) fn run_print(env: &mut Env, arguments: CommandArgs) -> CommandResult 
     // generate whole string
     let mut string = String::new();
     let mut count = 0;
-    for argument in &arguments.args[index..] {
+    for argument in &arguments[index..] {
         count = count + 1;
         string.push_str(argument);
         string.push(' ');
@@ -188,7 +188,7 @@ pub(crate) fn run_print(env: &mut Env, arguments: CommandArgs) -> CommandResult 
     styled_string = add_color(styled_string, background_color, true);
     styled_string = add_styles(styled_string, styles);
 
-    match write!(arguments.env.out, "{}", styled_string) {
+    match write!(env.out, "{}", styled_string) {
         Ok(_) => CommandResult::Continue(Some(count.to_string())),
         Err(error) => CommandResult::Error(error.to_string()),
     }
@@ -217,7 +217,7 @@ impl Command for CommandImpl {
     }
 
     fn run(&self, arguments: CommandArgs) -> CommandResult {
-        run_print(arguments.env, arguments.args)
+        run_print(arguments.env, &arguments.args)
     }
 }
 

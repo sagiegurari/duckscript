@@ -56,7 +56,7 @@ impl Command for CommandImpl {
                         let value_string: String = FromPath::from_path(&path.path());
                         let state_value = StateValue::String(value_string);
 
-                        array.push(arguments.state_value);
+                        array.push(state_value);
                     }
                     Err(error) => return CommandResult::Error(error.to_string()),
                 }

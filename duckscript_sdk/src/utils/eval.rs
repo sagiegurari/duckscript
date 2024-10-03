@@ -49,7 +49,7 @@ pub(crate) fn eval(
     commands: &mut Commands,
     env: &mut Env,
 ) -> Result<CommandResult, String> {
-    if arguments.args.is_empty() {
+    if arguments.is_empty() {
         Ok(CommandResult::Continue(None))
     } else {
         match parse(arguments) {
@@ -95,7 +95,7 @@ pub(crate) fn eval_with_instructions(
     commands: &mut Commands,
     env: &mut Env,
 ) -> CommandResult {
-    if arguments.args.is_empty() {
+    if arguments.is_empty() {
         CommandResult::Continue(None)
     } else {
         match parse(arguments) {

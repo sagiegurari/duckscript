@@ -29,7 +29,7 @@ impl Command for CommandImpl {
     }
 
     fn run(&self, arguments: CommandArgs) -> CommandResult {
-        let result = run_print(arguments.env, arguments.args);
+        let result = run_print(arguments.env, &arguments.args);
 
         if let CommandResult::Continue(ref _value) = result {
             match writeln!(arguments.env.out, "") {

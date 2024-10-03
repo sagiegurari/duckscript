@@ -32,7 +32,7 @@ impl Command for CommandImpl {
 
     fn run(&self, arguments: CommandArgs) -> CommandResult {
         validate_and_run_with_connection(
-            &arguments,
+            &arguments.args,
             &|options: &Options| -> Result<(), String> {
                 if options.remote_file.is_none() {
                     Err("Missing remote file name".to_string())

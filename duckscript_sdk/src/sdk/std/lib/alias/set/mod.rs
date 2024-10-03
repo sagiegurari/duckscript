@@ -36,7 +36,7 @@ fn create_alias_command(
 
         fn run(&self, arguments: CommandArgs) -> CommandResult {
             let mut all_arguments = vec![];
-            all_arguments.append(&mut self.arguments.args.clone());
+            all_arguments.append(&mut self.arguments.clone());
             all_arguments.append(&mut arguments.args.clone());
 
             eval::eval_with_error(

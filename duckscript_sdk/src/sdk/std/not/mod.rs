@@ -32,7 +32,7 @@ impl Command for CommandImpl {
             CommandResult::Error("Missing condition".to_string())
         } else {
             match condition::eval_condition(
-                arguments.args,
+                &arguments.args,
                 arguments.instructions,
                 arguments.state,
                 arguments.variables,

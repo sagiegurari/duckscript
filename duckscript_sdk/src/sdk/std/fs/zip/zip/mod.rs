@@ -50,7 +50,7 @@ impl Command for CommandImpl {
             compression,
             zipfile,
             file_args,
-        } = match parse_args(&arguments) {
+        } = match parse_args(&arguments.args) {
             Ok(options) => options,
             Err(err) => return CommandResult::Error(err),
         };

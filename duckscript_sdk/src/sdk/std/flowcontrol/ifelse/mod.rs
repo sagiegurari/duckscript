@@ -447,7 +447,7 @@ impl Command for ElseIfCommand {
                 } else {
                     let if_else_info = call_info.meta_info.clone();
                     let line_context_name = get_line_context_name(arguments.state);
-                    match condition::eval_condition(arguments.args, arguments.instructions, arguments.state, arguments.variables, arguments.commands, arguments.env) {
+                    match condition::eval_condition(&arguments.args, arguments.instructions, arguments.state, arguments.variables, arguments.commands, arguments.env) {
                         Ok(passed) => {
                             if passed {
                                 let next_line = if call_info.else_line_index + 1 < if_else_info.else_lines.len() {

@@ -32,8 +32,8 @@ impl Command for CommandImpl {
     }
 
     fn run(&self, arguments: CommandArgs) -> CommandResult {
-        run_with_connection(&arguments, &mut |_options: &Options,
-                                              ftp_stream: &mut FtpStream|
+        run_with_connection(&arguments.args, &mut |_options: &Options,
+                                                   ftp_stream: &mut FtpStream|
          -> CommandResult {
             match ftp_stream.nlst(None) {
                 Ok(output) => {

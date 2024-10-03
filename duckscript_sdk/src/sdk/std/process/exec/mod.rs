@@ -52,7 +52,7 @@ impl Command for CommandImpl {
             match looking_for {
                 LookingFor::Flag => match argument.as_str() {
                     "--fail-on-error" => {
-                        fail_on_error = argument.output_variable.is_none();
+                        fail_on_error = arguments.output_variable.is_none();
                         command_start_index = command_start_index + 1;
                     }
                     "--get-exit-code" => {

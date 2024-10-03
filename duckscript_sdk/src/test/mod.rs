@@ -1,9 +1,7 @@
 use crate::utils::state::{get_handles_sub_state, put_handle};
 use duckscript::runner;
-use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
-use duckscript::types::env::Env;
+use duckscript::types::command::{Command, CommandArgs, CommandResult};
 use duckscript::types::error::ScriptError;
-use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::{Context, StateValue};
 use std::collections::HashMap;
 use std::env;
@@ -116,7 +114,7 @@ impl Command for ArrayCommand {
             array.push(StateValue::String(argument));
         }
 
-        let key = put_handle(argument.state, StateValue::List(array));
+        let key = put_handle(arguments.state, StateValue::List(array));
 
         CommandResult::Continue(Some(key))
     }
@@ -135,7 +133,7 @@ impl Command for OnErrorCommand {
     }
 
     fn run(&self, arguments: CommandArgs) -> CommandResult {
-        println!("on error: {:#?}", &arguments);
+        println!("on error: {:#?}", &arguments.args);
 
         let mut index = 0;
         for argument in arguments.args {
@@ -145,7 +143,7 @@ impl Command for OnErrorCommand {
                 .insert(index.to_string(), argument.clone());
         }
 
-        argument
+        arguments
             .variables
             .insert("on_error_invoked".to_string(), "true".to_string());
 

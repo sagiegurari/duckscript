@@ -36,10 +36,10 @@ pub(crate) fn eval_condition(
     commands: &mut Commands,
     env: &mut Env,
 ) -> Result<bool, String> {
-    if arguments.args.is_empty() {
+    if arguments.is_empty() {
         Ok(is_true(None))
     } else {
-        let eval_statement = commands.exists(&arguments.args[0]);
+        let eval_statement = commands.exists(&arguments[0]);
 
         if eval_statement {
             match eval::eval_with_instructions(
@@ -59,13 +59,13 @@ pub(crate) fn eval_condition(
                 _ => Err("Invalid condition evaluation result.".to_string()),
             }
         } else {
-            eval_condition_for_slice(&arguments.args[..])
+            eval_condition_for_slice(&arguments[..])
         }
     }
 }
 
 pub(crate) fn eval_condition_for_slice(arguments: &[String]) -> Result<bool, String> {
-    if arguments.args.is_empty() {
+    if arguments.is_empty() {
         Ok(is_true(None))
     } else {
         let mut searching_block_end = false;
@@ -88,7 +88,7 @@ pub(crate) fn eval_condition_for_slice(arguments: &[String]) -> Result<bool, Str
                 if counter == 0 {
                     searching_block_end = false;
 
-                    match eval_condition_for_slice(&arguments.args[start_block..index]) {
+                    match eval_condition_for_slice(&arguments[start_block..index]) {
                         Ok(evaluated) => {
                             start_block = 0;
 
