@@ -1,6 +1,6 @@
 use crate::utils::exec::ExecInput;
 use crate::utils::{exec, pckg};
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use std::thread;
 use std::time::Duration;
 
@@ -37,8 +37,8 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Command not provided.".to_string())
         } else {
             let mut max_retries: isize = -1;
@@ -48,7 +48,7 @@ impl Command for CommandImpl {
 
             let mut index = 0;
             let mut looking_for = LookingFor::Flag;
-            for argument in &arguments.args {
+            for argument in &context.arguments {
                 index = index + 1;
 
                 match looking_for {
@@ -114,7 +114,12 @@ impl Command for CommandImpl {
                 loop {
                     attempt = attempt + 1;
 
-                    match exec::exec(&arguments.args, false, input.clone(), command_start_index) {
+                    match exec::exec(
+                        &context.arguments,
+                        false,
+                        input.clone(),
+                        command_start_index,
+                    ) {
                         Ok(_) => (),
                         Err(error) => return CommandResult::Error(error),
                     }

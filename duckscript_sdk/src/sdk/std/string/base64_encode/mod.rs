@@ -1,7 +1,7 @@
 use crate::utils::pckg;
 use crate::utils::state::get_handles_sub_state;
 use base64::Engine;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::runtime::StateValue;
 
 #[cfg(test)]
@@ -30,13 +30,13 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Array handle not provided.".to_string())
         } else {
-            let state = get_handles_sub_state(arguments.state);
+            let state = get_handles_sub_state(context.state);
 
-            let key = &arguments.args[0];
+            let key = &context.arguments[0];
 
             match state.get(key) {
                 Some(state_value) => match state_value {

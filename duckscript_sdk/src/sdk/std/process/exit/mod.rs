@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -27,14 +27,14 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Exit(Some("0".to_string()))
         } else {
-            match arguments.args[0].parse::<i32>() {
-                Ok(_) => CommandResult::Exit(Some(arguments.args[0].clone())),
+            match context.arguments[0].parse::<i32>() {
+                Ok(_) => CommandResult::Exit(Some(context.arguments[0].clone())),
                 Err(_) => CommandResult::Error(
-                    format!("Invalid exit code: {}", arguments.args[0]).to_string(),
+                    format!("Invalid exit code: {}", context.arguments[0]).to_string(),
                 ),
             }
         }

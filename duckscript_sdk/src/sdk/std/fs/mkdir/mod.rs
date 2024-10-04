@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -27,11 +27,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Directory name not provided.".to_string())
         } else {
-            match fsio::directory::create(&arguments.args[0]) {
+            match fsio::directory::create(&context.arguments[0]) {
                 Ok(_) => CommandResult::Continue(Some("true".to_string())),
                 Err(error) => CommandResult::Error(error.to_string()),
             }

@@ -1,6 +1,6 @@
 use crate::utils::state::{get_handles_sub_state, put_handle};
 use duckscript::runner;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::error::ScriptError;
 use duckscript::types::runtime::{Context, StateValue};
 use std::collections::HashMap;
@@ -22,7 +22,7 @@ impl Command for EmptyCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: CommandArgs) -> CommandResult {
+    fn run(&self, _context: CommandInvocationContext) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
@@ -39,7 +39,7 @@ impl Command for ErrorCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: CommandArgs) -> CommandResult {
+    fn run(&self, _context: CommandInvocationContext) -> CommandResult {
         CommandResult::Error("test".to_string())
     }
 }
@@ -60,11 +60,11 @@ impl Command for SetCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Continue(None)
         } else {
-            CommandResult::Continue(Some(arguments.args[0].clone()))
+            CommandResult::Continue(Some(context.arguments[0].clone()))
         }
     }
 }
@@ -81,13 +81,13 @@ impl Command for SetHandleCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Continue(None)
         } else {
-            let state = get_handles_sub_state(arguments.state);
+            let state = get_handles_sub_state(context.state);
             state.insert(
-                arguments.args[0].clone(),
+                context.arguments[0].clone(),
                 StateValue::String("test".to_string()),
             );
             CommandResult::Continue(None)
@@ -107,14 +107,14 @@ impl Command for ArrayCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
         let mut array = vec![];
 
-        for argument in arguments.args {
+        for argument in context.arguments {
             array.push(StateValue::String(argument));
         }
 
-        let key = put_handle(arguments.state, StateValue::List(array));
+        let key = put_handle(context.state, StateValue::List(array));
 
         CommandResult::Continue(Some(key))
     }
@@ -132,18 +132,18 @@ impl Command for OnErrorCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        println!("on error: {:#?}", &arguments.args);
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        println!("on error: {:#?}", &context.arguments);
 
         let mut index = 0;
-        for argument in arguments.args {
+        for argument in context.arguments {
             index = index + 1;
-            arguments
+            context
                 .variables
                 .insert(index.to_string(), argument.clone());
         }
 
-        arguments
+        context
             .variables
             .insert("on_error_invoked".to_string(), "true".to_string());
 

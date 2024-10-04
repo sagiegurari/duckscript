@@ -1,7 +1,7 @@
 use crate::sdk::std::net::ftp::{run_with_connection, Options};
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::runtime::StateValue;
 use suppaftp::FtpStream;
 
@@ -31,9 +31,9 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        run_with_connection(&arguments.args, &mut |_options: &Options,
-                                                   ftp_stream: &mut FtpStream|
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        run_with_connection(&context.arguments, &mut |_options: &Options,
+                                                      ftp_stream: &mut FtpStream|
          -> CommandResult {
             match ftp_stream.list(None) {
                 Ok(output) => {
@@ -43,7 +43,7 @@ impl Command for CommandImpl {
                         array.push(StateValue::String(item));
                     }
 
-                    let key = put_handle(arguments.state, StateValue::List(array));
+                    let key = put_handle(context.state, StateValue::List(array));
 
                     CommandResult::Continue(Some(key))
                 }

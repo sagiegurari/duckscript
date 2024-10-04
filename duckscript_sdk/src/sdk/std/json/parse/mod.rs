@@ -1,7 +1,7 @@
 use crate::sdk::std::json::OBJECT_VALUE;
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::runtime::StateValue;
 use serde_json::{Result, Value};
 use std::collections::HashMap;
@@ -103,27 +103,27 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("No JSON string provided.".to_string())
         } else {
             let (json_index, as_state) =
-                if arguments.args.len() > 1 && arguments.args[0] == "--collection" {
+                if context.arguments.len() > 1 && context.arguments[0] == "--collection" {
                     (1, true)
                 } else {
                     (0, false)
                 };
 
-            match parse_json(&arguments.args[json_index]) {
+            match parse_json(&context.arguments[json_index]) {
                 Ok(data) => {
-                    let output = match arguments.output_variable {
+                    let output = match context.output_variable {
                         Some(name) => {
                             if as_state {
-                                create_structure(data, arguments.state)
+                                create_structure(data, context.state)
                             } else {
-                                create_variables(data, &name, arguments.variables);
+                                create_variables(data, &name, context.variables);
 
-                                match arguments.variables.get(&name) {
+                                match context.variables.get(&name) {
                                     Some(value) => Some(value.to_string()),
                                     None => None,
                                 }

@@ -1,7 +1,7 @@
 use crate::sdk::std::on_error::{get_value, EXIT_ON_ERROR_KEY, STATE_KEY};
 use crate::utils::state::get_core_sub_state_for_command;
 use crate::utils::{condition, pckg};
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::runtime::StateValue;
 
 #[cfg(test)]
@@ -30,20 +30,20 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if !arguments.args.is_empty() {
-            let error = arguments.args[0].clone();
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if !context.arguments.is_empty() {
+            let error = context.arguments[0].clone();
 
-            let exit_on_error = get_value(arguments.state, EXIT_ON_ERROR_KEY.to_string());
+            let exit_on_error = get_value(context.state, EXIT_ON_ERROR_KEY.to_string());
             let should_crash = condition::is_true(exit_on_error);
 
             if should_crash {
                 CommandResult::Crash(error)
             } else {
-                let (line, source) = if arguments.args.len() > 1 {
-                    let line = arguments.args[1].clone();
-                    let source = if arguments.args.len() > 2 {
-                        arguments.args[2].clone()
+                let (line, source) = if context.arguments.len() > 1 {
+                    let line = context.arguments[1].clone();
+                    let source = if context.arguments.len() > 2 {
+                        context.arguments[2].clone()
                     } else {
                         "".to_string()
                     };
@@ -54,7 +54,7 @@ impl Command for CommandImpl {
                 };
 
                 let sub_state =
-                    get_core_sub_state_for_command(arguments.state, STATE_KEY.to_string());
+                    get_core_sub_state_for_command(context.state, STATE_KEY.to_string());
                 sub_state.insert("error".to_string(), StateValue::String(error));
                 sub_state.insert("line".to_string(), StateValue::String(line));
                 sub_state.insert("source".to_string(), StateValue::String(source));

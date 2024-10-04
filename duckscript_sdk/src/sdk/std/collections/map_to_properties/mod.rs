@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::{get_as_string, get_handles_sub_state};
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::runtime::StateValue;
 use java_properties::write;
 use std::collections::HashMap;
@@ -32,17 +32,21 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Map handle not provided.".to_string())
         } else {
-            let (prefix, key) = if arguments.args.len() >= 3 && arguments.args[0] == "--prefix" {
-                (arguments.args[1].to_string(), arguments.args[2].to_string())
-            } else {
-                ("".to_string(), arguments.args[0].to_string())
-            };
+            let (prefix, key) =
+                if context.arguments.len() >= 3 && context.arguments[0] == "--prefix" {
+                    (
+                        context.arguments[1].to_string(),
+                        context.arguments[2].to_string(),
+                    )
+                } else {
+                    ("".to_string(), context.arguments[0].to_string())
+                };
 
-            let state = get_handles_sub_state(arguments.state);
+            let state = get_handles_sub_state(context.state);
 
             match state.get(&key) {
                 Some(state_value) => match state_value {

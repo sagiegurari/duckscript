@@ -1,7 +1,7 @@
 use crate::sdk::std::lib::alias::ALIAS_STATE_KEY;
 use crate::utils::pckg;
 use crate::utils::state::get_sub_state;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -29,22 +29,22 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.len() != 1 {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.len() != 1 {
             CommandResult::Error("Invalid alias name provided.".to_string())
         } else {
-            let sub_state = get_sub_state(ALIAS_STATE_KEY.to_string(), arguments.state);
+            let sub_state = get_sub_state(ALIAS_STATE_KEY.to_string(), context.state);
 
-            let key = &arguments.args[0];
+            let key = &context.arguments[0];
             let removed = if sub_state.contains_key(key) {
-                if arguments.commands.remove(key) {
+                if context.commands.remove(key) {
                     sub_state.remove(key);
                     true
                 } else {
                     false
                 }
-            } else if arguments.commands.aliases.contains_key(key) {
-                arguments.commands.aliases.remove(key);
+            } else if context.commands.aliases.contains_key(key) {
+                context.commands.aliases.remove(key);
                 true
             } else {
                 false

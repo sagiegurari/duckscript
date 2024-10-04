@@ -1,7 +1,7 @@
 use crate::sdk::std::flowcontrol::get_line_key;
 use crate::utils::state::get_core_sub_state_for_command;
 use duckscript::runner;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::instruction::{
     Instruction, InstructionMetaInfo, InstructionType, ScriptInstruction,
 };
@@ -56,26 +56,26 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        match get_command(arguments.line, arguments.state) {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        match get_command(context.line, context.state) {
             Some(command) => {
                 let mut script_instruction = ScriptInstruction::new();
                 script_instruction.command = Some(command);
                 let mut instruction_meta_info = InstructionMetaInfo::new();
-                instruction_meta_info.line = Some(arguments.line);
+                instruction_meta_info.line = Some(context.line);
                 let instruction = Instruction {
                     meta_info: instruction_meta_info,
                     instruction_type: InstructionType::Script(script_instruction),
                 };
 
                 let (command_result, _) = runner::run_instruction(
-                    arguments.commands,
-                    arguments.variables,
-                    arguments.state,
-                    arguments.instructions,
+                    context.commands,
+                    context.variables,
+                    context.state,
+                    context.instructions,
                     instruction,
-                    arguments.line,
-                    arguments.env,
+                    context.line,
+                    context.env,
                 );
 
                 command_result

@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::runtime::StateValue;
 use fsio::path::from_path::FromPath;
 use glob::glob;
@@ -31,11 +31,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Glob pattern not provided.".to_string())
         } else {
-            match glob(&arguments.args[0]) {
+            match glob(&context.arguments[0]) {
                 Ok(paths) => {
                     let mut array = vec![];
 
@@ -51,7 +51,7 @@ impl Command for CommandImpl {
                         }
                     }
 
-                    let key = put_handle(arguments.state, StateValue::List(array));
+                    let key = put_handle(context.state, StateValue::List(array));
 
                     CommandResult::Continue(Some(key))
                 }

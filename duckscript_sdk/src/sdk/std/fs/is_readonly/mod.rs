@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use std::fs;
 
 #[cfg(test)]
@@ -28,11 +28,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Path not provided.".to_string())
         } else {
-            match fs::metadata(&arguments.args[0]) {
+            match fs::metadata(&context.arguments[0]) {
                 Ok(metadata) => {
                     CommandResult::Continue(Some(metadata.permissions().readonly().to_string()))
                 }

@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::runtime::StateValue;
 use std::collections::HashSet;
 
@@ -30,14 +30,14 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
         let mut set = HashSet::new();
 
-        for argument in arguments.args {
+        for argument in context.arguments {
             set.insert(argument);
         }
 
-        let key = put_handle(arguments.state, StateValue::Set(set));
+        let key = put_handle(context.state, StateValue::Set(set));
 
         CommandResult::Continue(Some(key))
     }

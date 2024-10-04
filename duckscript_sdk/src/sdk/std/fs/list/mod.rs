@@ -1,5 +1,5 @@
 use crate::utils::{flags, pckg};
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::env::Env;
 use fs_extra::dir::{ls, DirEntryAttr, DirEntryValue};
 use fsio::path::{get_basename, get_parent_directory};
@@ -91,19 +91,19 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        let (path_str, flags) = if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        let (path_str, flags) = if context.arguments.is_empty() {
             (".", "")
-        } else if arguments.args.len() == 1 {
-            if flags::is_unix_flags_argument(&arguments.args[0]) {
-                (".", arguments.args[0].as_str())
+        } else if context.arguments.len() == 1 {
+            if flags::is_unix_flags_argument(&context.arguments[0]) {
+                (".", context.arguments[0].as_str())
             } else {
-                (arguments.args[0].as_str(), "")
+                (context.arguments[0].as_str(), "")
             }
-        } else if flags::is_unix_flags_argument(&arguments.args[0]) {
-            (arguments.args[1].as_str(), arguments.args[0].as_str())
+        } else if flags::is_unix_flags_argument(&context.arguments[0]) {
+            (context.arguments[1].as_str(), context.arguments[0].as_str())
         } else {
-            (arguments.args[0].as_str(), "")
+            (context.arguments[0].as_str(), "")
         };
 
         let path = Path::new(path_str);
@@ -146,13 +146,13 @@ impl Command for CommandImpl {
                             let item_name = get_string_value(DirEntryAttr::FullName, &item);
 
                             if item_name == file_name {
-                                print_entry(arguments.env, &item, extended_details);
+                                print_entry(context.env, &item, extended_details);
                                 break;
                             }
                         }
                     } else {
                         for item in items {
-                            print_entry(arguments.env, &item, extended_details);
+                            print_entry(context.env, &item, extended_details);
                         }
                     }
 

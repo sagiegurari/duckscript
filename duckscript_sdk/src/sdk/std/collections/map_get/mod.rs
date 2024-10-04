@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::{get_handles_sub_state, get_optional_as_string, mutate_map};
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -28,21 +28,21 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Map handle not provided.".to_string())
-        } else if arguments.args.len() < 2 {
+        } else if context.arguments.len() < 2 {
             CommandResult::Error("Key not provided.".to_string())
         } else {
-            let state = get_handles_sub_state(arguments.state);
+            let state = get_handles_sub_state(context.state);
 
-            let key = arguments.args[0].clone();
+            let key = context.arguments[0].clone();
 
             let result = mutate_map(key, state, |map| {
-                let item = match map.remove(&arguments.args[1]) {
+                let item = match map.remove(&context.arguments[1]) {
                     Some(value) => {
                         let value_clone = value.clone();
-                        map.insert(arguments.args[1].clone(), value);
+                        map.insert(context.arguments[1].clone(), value);
                         Some(value_clone)
                     }
                     None => None,

@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use java_properties::write;
 use std::collections::HashMap;
 use std::str;
@@ -30,20 +30,20 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.len() < 1 {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.len() < 1 {
             CommandResult::Error("Missing properties names.".to_string())
         } else {
             let (start_index, prefix) =
-                if arguments.args.len() > 2 && arguments.args[0] == "--prefix" {
-                    (2, arguments.args[1].as_str())
+                if context.arguments.len() > 2 && context.arguments[0] == "--prefix" {
+                    (2, context.arguments[1].as_str())
                 } else {
                     (0, "")
                 };
 
             let mut data = HashMap::new();
-            for argument in &arguments.args[start_index..] {
-                match arguments.variables.get(argument) {
+            for argument in &context.arguments[start_index..] {
+                match context.variables.get(argument) {
                     Some(value) => {
                         let mut key = argument.to_string();
                         if !prefix.is_empty() {

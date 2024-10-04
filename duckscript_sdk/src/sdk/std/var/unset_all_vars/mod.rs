@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -27,15 +27,13 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.len() > 1 && arguments.args[0] == "--prefix" {
-            let prefix = &arguments.args[1];
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.len() > 1 && context.arguments[0] == "--prefix" {
+            let prefix = &context.arguments[1];
 
-            arguments
-                .variables
-                .retain(|key, _| !key.starts_with(prefix));
+            context.variables.retain(|key, _| !key.starts_with(prefix));
         } else {
-            arguments.variables.clear();
+            context.variables.clear();
         }
 
         CommandResult::Continue(None)

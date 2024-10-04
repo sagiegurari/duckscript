@@ -1,4 +1,4 @@
-use crate::types::command::{Command, CommandArgs, CommandResult, GoToValue};
+use crate::types::command::{Command, CommandInvocationContext, CommandResult, GoToValue};
 use crate::types::instruction::{
     Instruction, InstructionType, PreProcessInstruction, ScriptInstruction,
 };
@@ -15,11 +15,11 @@ impl Command for SetCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        let output = if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        let output = if context.arguments.is_empty() {
             None
         } else {
-            Some(arguments.args[0].clone())
+            Some(context.arguments[0].clone())
         };
 
         CommandResult::Continue(output)
@@ -38,11 +38,11 @@ impl Command for ExitCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        let output = if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        let output = if context.arguments.is_empty() {
             None
         } else {
-            Some(arguments.args[0].clone())
+            Some(context.arguments[0].clone())
         };
 
         CommandResult::Exit(output)
@@ -61,16 +61,16 @@ impl Command for OnErrorCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
         let mut index = 0;
-        for argument in arguments.args {
+        for argument in context.arguments {
             index = index + 1;
-            arguments
+            context
                 .variables
                 .insert(index.to_string(), argument.clone());
         }
 
-        writeln!(arguments.env.out, "{}", "test").unwrap();
+        writeln!(context.env.out, "{}", "test").unwrap();
 
         CommandResult::Continue(None)
     }
@@ -88,7 +88,7 @@ impl Command for ErrorCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: CommandArgs) -> CommandResult {
+    fn run(&self, _context: CommandInvocationContext) -> CommandResult {
         CommandResult::Error("test".to_string())
     }
 }
@@ -105,7 +105,7 @@ impl Command for CrashCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: CommandArgs) -> CommandResult {
+    fn run(&self, _context: CommandInvocationContext) -> CommandResult {
         CommandResult::Crash("test".to_string())
     }
 }
@@ -122,11 +122,14 @@ impl Command for GoToLabelCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        let (output, label) = if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        let (output, label) = if context.arguments.is_empty() {
             (None, "target".to_string())
         } else {
-            (Some(arguments.args[0].clone()), arguments.args[0].clone())
+            (
+                Some(context.arguments[0].clone()),
+                context.arguments[0].clone(),
+            )
         };
 
         CommandResult::GoTo(output, GoToValue::Label(label))
@@ -145,13 +148,13 @@ impl Command for GoToLineCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        let (output, line) = if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        let (output, line) = if context.arguments.is_empty() {
             (None, 900)
         } else {
             (
-                Some(arguments.args[0].clone()),
-                arguments.args[0].clone().parse().unwrap(),
+                Some(context.arguments[0].clone()),
+                context.arguments[0].clone().parse().unwrap(),
             )
         };
 
@@ -175,7 +178,7 @@ impl Command for TestCommand1 {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: CommandArgs) -> CommandResult {
+    fn run(&self, _context: CommandInvocationContext) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
@@ -196,7 +199,7 @@ impl Command for TestCommand2 {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: CommandArgs) -> CommandResult {
+    fn run(&self, _context: CommandInvocationContext) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
@@ -217,7 +220,7 @@ impl Command for TestCommand3 {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: CommandArgs) -> CommandResult {
+    fn run(&self, _context: CommandInvocationContext) -> CommandResult {
         CommandResult::Continue(None)
     }
 }
@@ -238,7 +241,7 @@ impl Command for TestCommand4 {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: CommandArgs) -> CommandResult {
+    fn run(&self, _context: CommandInvocationContext) -> CommandResult {
         CommandResult::Continue(None)
     }
 }

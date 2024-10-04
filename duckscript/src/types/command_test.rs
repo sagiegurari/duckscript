@@ -61,8 +61,8 @@ fn command_default_run() {
     }
 
     let command = InnerCommand {};
-    let result = command.run(CommandArgs {
-        args: vec![],
+    let result = command.run(CommandInvocationContext {
+        arguments: vec![],
         state: &mut HashMap::new(),
         variables: &mut HashMap::new(),
         output_variable: None,
@@ -93,8 +93,8 @@ fn command_default_run_with_context() {
     let mut context = Context::new();
     let mut env = Env::default();
     let command = InnerCommand {};
-    let result = command.run(CommandArgs {
-        args: vec![],
+    let result = command.run(CommandInvocationContext {
+        arguments: vec![],
         state: &mut HashMap::new(),
         variables: &mut HashMap::new(),
         output_variable: None,

@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::runtime::StateValue;
 
 #[cfg(test)]
@@ -29,11 +29,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.len() < 2 {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.len() < 2 {
             CommandResult::Error("Invalid input provided.".to_string())
         } else {
-            let split = arguments.args[0].split(&arguments.args[1]);
+            let split = context.arguments[0].split(&context.arguments[1]);
             let values = split.collect::<Vec<&str>>();
 
             let mut array = vec![];
@@ -41,7 +41,7 @@ impl Command for CommandImpl {
                 array.push(StateValue::String(value.to_string()));
             }
 
-            let key = put_handle(arguments.state, StateValue::List(array));
+            let key = put_handle(context.state, StateValue::List(array));
 
             CommandResult::Continue(Some(key))
         }

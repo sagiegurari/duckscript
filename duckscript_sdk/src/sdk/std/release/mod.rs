@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::{remove_handle, remove_handle_recursive};
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -28,22 +28,22 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Continue(Some("false".to_string()))
         } else {
-            let (key, recursive) = if arguments.args.len() > 1
-                && (arguments.args[0] == "-r" || arguments.args[0] == "--recursive")
+            let (key, recursive) = if context.arguments.len() > 1
+                && (context.arguments[0] == "-r" || context.arguments[0] == "--recursive")
             {
-                (arguments.args[1].to_string(), true)
+                (context.arguments[1].to_string(), true)
             } else {
-                (arguments.args[0].to_string(), false)
+                (context.arguments[0].to_string(), false)
             };
 
             let removed = if recursive {
-                remove_handle_recursive(arguments.state, key)
+                remove_handle_recursive(context.state, key)
             } else {
-                let old_value = remove_handle(arguments.state, key);
+                let old_value = remove_handle(context.state, key);
                 old_value.is_some()
             };
 

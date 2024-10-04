@@ -1,6 +1,6 @@
 use crate::utils::state::get_handles_sub_state;
 use crate::utils::{io, pckg};
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::runtime::StateValue;
 
 #[cfg(test)]
@@ -29,20 +29,20 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("File name and text not provided.".to_string())
-        } else if arguments.args.len() == 1 {
+        } else if context.arguments.len() == 1 {
             CommandResult::Error("Binary data handle not provided.".to_string())
         } else {
-            let state = get_handles_sub_state(arguments.state);
+            let state = get_handles_sub_state(context.state);
 
-            let key = &arguments.args[1];
+            let key = &context.arguments[1];
 
             match state.get(key) {
                 Some(state_value) => match state_value {
                     StateValue::ByteArray(binary) => {
-                        let result = io::write_to_file(&arguments.args[0], &binary, false);
+                        let result = io::write_to_file(&context.arguments[0], &binary, false);
 
                         match result {
                             Ok(_) => CommandResult::Continue(Some("true".to_string())),

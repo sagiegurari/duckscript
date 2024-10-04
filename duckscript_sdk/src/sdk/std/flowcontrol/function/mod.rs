@@ -2,7 +2,9 @@ use crate::sdk::std::flowcontrol::{end, forin, ifelse, while_mod};
 use crate::types::scope::get_line_context_name;
 use crate::utils::state::{get_core_sub_state_for_command, get_list, get_sub_state};
 use crate::utils::{annotation, instruction_query, pckg, scope};
-use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands, GoToValue};
+use duckscript::types::command::{
+    Command, CommandInvocationContext, CommandResult, Commands, GoToValue,
+};
 use duckscript::types::error::ScriptError;
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
@@ -285,25 +287,25 @@ impl Command for FunctionCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Missing function name.".to_string())
         } else {
-            let (function_name, scoped) = if arguments.args.len() == 1 {
-                (arguments.args[0].clone(), false)
+            let (function_name, scoped) = if context.arguments.len() == 1 {
+                (context.arguments[0].clone(), false)
             } else {
-                match annotation::parse(&arguments.args[0]) {
+                match annotation::parse(&context.arguments[0]) {
                     Some(annotations) => (
-                        arguments.args[1].clone(),
+                        context.arguments[1].clone(),
                         annotations.contains(&"scope".to_string()),
                     ),
-                    None => (arguments.args[0].clone(), false),
+                    None => (context.arguments[0].clone(), false),
                 }
             };
 
-            match get_fn_info_from_state(arguments.state, &function_name) {
+            match get_fn_info_from_state(context.state, &function_name) {
                 Some(fn_info) => {
-                    if fn_info.start != arguments.line {
+                    if fn_info.start != context.line {
                         CommandResult::Error(
                             format!(
                                 "Function: {} already defined at: {} to: {}",
@@ -347,11 +349,11 @@ impl Command for FunctionCommand {
                     end_blocks.push(end::END_COMMAND_NAME.to_string());
 
                     match instruction_query::find_commands(
-                        arguments.instructions,
+                        context.instructions,
                         &start_names,
                         &vec![],
                         &end_names,
-                        Some(arguments.line + 1),
+                        Some(context.line + 1),
                         None,
                         false,
                         &start_blocks,
@@ -363,14 +365,14 @@ impl Command for FunctionCommand {
 
                                 let fn_info = FunctionMetaInfo {
                                     name: function_name.clone(),
-                                    start: arguments.line,
+                                    start: context.line,
                                     end: fn_end_line,
                                     scoped,
                                 };
 
-                                end::set_command(fn_end_line, arguments.state, end_command.name());
+                                end::set_command(fn_end_line, context.state, end_command.name());
 
-                                match store_fn_info_in_state(arguments.state, &fn_info) {
+                                match store_fn_info_in_state(context.state, &fn_info) {
                                     Ok(_) => {
                                         #[derive(Clone)]
                                         pub(crate) struct CallFunctionCommand {
@@ -390,23 +392,25 @@ impl Command for FunctionCommand {
                                                 Box::new((*self).clone())
                                             }
 
-                                            fn run(&self, arguments: CommandArgs) -> CommandResult {
+                                            fn run(
+                                                &self,
+                                                context: CommandInvocationContext,
+                                            ) -> CommandResult
+                                            {
                                                 run_call(
                                                     self.name(),
-                                                    &arguments.args,
-                                                    arguments.state,
-                                                    arguments.variables,
-                                                    arguments.output_variable,
-                                                    arguments.line,
+                                                    &context.arguments,
+                                                    context.state,
+                                                    context.variables,
+                                                    context.output_variable,
+                                                    context.line,
                                                 )
                                             }
                                         }
 
-                                        match arguments.commands.set(Box::new(
-                                            CallFunctionCommand {
-                                                name: function_name.clone(),
-                                            },
-                                        )) {
+                                        match context.commands.set(Box::new(CallFunctionCommand {
+                                            name: function_name.clone(),
+                                        })) {
                                             Ok(_) => CommandResult::GoTo(
                                                 None,
                                                 GoToValue::Line(fn_end_line + 1),
@@ -460,18 +464,18 @@ impl Command for EndFunctionCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        let line_context_name = get_line_context_name(arguments.state);
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        let line_context_name = get_line_context_name(context.state);
 
-        match pop_from_call_stack(arguments.state) {
+        match pop_from_call_stack(context.state) {
             Some(call_info) => {
-                if call_info.end_line == arguments.line
+                if call_info.end_line == context.line
                     && call_info.line_context_name == line_context_name
                 {
                     let next_line = call_info.call_line + 1;
 
                     if call_info.scoped {
-                        match scope::pop(arguments.variables, arguments.state, &vec![]) {
+                        match scope::pop(context.variables, context.state, &vec![]) {
                             Err(error) => return CommandResult::Error(error),
                             _ => (),
                         }
@@ -479,7 +483,7 @@ impl Command for EndFunctionCommand {
 
                     CommandResult::GoTo(None, GoToValue::Line(next_line))
                 } else {
-                    push_to_call_stack(arguments.state, &call_info);
+                    push_to_call_stack(context.state, &call_info);
                     CommandResult::Continue(None)
                 }
             }
@@ -510,32 +514,32 @@ impl Command for ReturnCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        let line_context_name = get_line_context_name(arguments.state);
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        let line_context_name = get_line_context_name(context.state);
 
-        match pop_from_call_stack(arguments.state) {
+        match pop_from_call_stack(context.state) {
             Some(call_info) => {
-                if call_info.start_line < arguments.line
-                    && call_info.end_line > arguments.line
+                if call_info.start_line < context.line
+                    && call_info.end_line > context.line
                     && call_info.line_context_name == line_context_name
                 {
                     match call_info.output_variable {
                         Some(ref name) => {
-                            if arguments.args.is_empty() {
-                                arguments.variables.remove(name);
+                            if context.arguments.is_empty() {
+                                context.variables.remove(name);
                             } else {
-                                arguments
+                                context
                                     .variables
-                                    .insert(name.to_string(), arguments.args[0].clone());
+                                    .insert(name.to_string(), context.arguments[0].clone());
                             }
                         }
                         None => (),
                     };
 
-                    let output = if arguments.args.is_empty() {
+                    let output = if context.arguments.is_empty() {
                         None
                     } else {
-                        Some(arguments.args[0].clone())
+                        Some(context.arguments[0].clone())
                     };
 
                     if call_info.scoped {
@@ -544,7 +548,7 @@ impl Command for ReturnCommand {
                             None => vec![],
                         };
 
-                        match scope::pop(arguments.variables, arguments.state, &copy) {
+                        match scope::pop(context.variables, context.state, &copy) {
                             Err(error) => return CommandResult::Error(error),
                             _ => (),
                         }
@@ -553,7 +557,7 @@ impl Command for ReturnCommand {
                     let next_line = call_info.call_line + 1;
                     CommandResult::GoTo(output, GoToValue::Line(next_line))
                 } else {
-                    push_to_call_stack(arguments.state, &call_info);
+                    push_to_call_stack(context.state, &call_info);
                     CommandResult::Continue(None)
                 }
             }

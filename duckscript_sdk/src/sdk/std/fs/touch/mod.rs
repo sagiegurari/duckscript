@@ -1,5 +1,5 @@
 use crate::utils::{io, pckg};
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -27,11 +27,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Path not provided.".to_string())
         } else {
-            match io::create_empty_file(&arguments.args[0]) {
+            match io::create_empty_file(&context.arguments[0]) {
                 Ok(_) => CommandResult::Continue(Some("true".to_string())),
                 Err(_) => CommandResult::Continue(Some("false".to_string())),
             }

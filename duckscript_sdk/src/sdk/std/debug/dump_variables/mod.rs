@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -27,11 +27,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        let string_value = format!("{:#?}", arguments.variables).to_string();
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        let string_value = format!("{:#?}", context.variables).to_string();
 
-        if arguments.output_variable.is_none() {
-            match writeln!(arguments.env.out, "{}", string_value) {
+        if context.output_variable.is_none() {
+            match writeln!(context.env.out, "{}", string_value) {
                 Ok(_) => (),
                 Err(error) => return CommandResult::Error(error.to_string()),
             };

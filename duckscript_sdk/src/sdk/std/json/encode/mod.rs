@@ -1,7 +1,7 @@
 use crate::sdk::std::json::OBJECT_VALUE;
 use crate::utils::pckg;
 use crate::utils::state::get_handles_sub_state;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::runtime::StateValue;
 use serde_json::map::Map;
 use serde_json::{Number, Value};
@@ -198,26 +198,26 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("No JSON root variable name provided.".to_string())
         } else {
             let (start_index, as_state) =
-                if arguments.args.len() > 1 && arguments.args[0] == "--collection" {
+                if context.arguments.len() > 1 && context.arguments[0] == "--collection" {
                     (1, true)
                 } else {
                     (0, false)
                 };
 
             if as_state {
-                let state = get_handles_sub_state(arguments.state);
+                let state = get_handles_sub_state(context.state);
 
-                match encode_from_state(&arguments.args[start_index], state) {
+                match encode_from_state(&context.arguments[start_index], state) {
                     Ok(output) => CommandResult::Continue(Some(output)),
                     Err(error) => CommandResult::Error(error),
                 }
             } else {
-                match encode_from_variables(&arguments.args[start_index], arguments.variables) {
+                match encode_from_variables(&context.arguments[start_index], context.variables) {
                     Ok(output) => CommandResult::Continue(Some(output)),
                     Err(error) => CommandResult::Error(error),
                 }

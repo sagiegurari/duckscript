@@ -1,6 +1,6 @@
 use crate::utils::state::put_handle;
 use crate::utils::{io, pckg};
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::runtime::StateValue;
 
 #[cfg(test)]
@@ -29,15 +29,15 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("File name not provided.".to_string())
         } else {
-            let result = io::read_raw_file(&arguments.args[0]);
+            let result = io::read_raw_file(&context.arguments[0]);
 
             match result {
                 Ok(binary) => {
-                    let key = put_handle(arguments.state, StateValue::ByteArray(binary));
+                    let key = put_handle(context.state, StateValue::ByteArray(binary));
 
                     CommandResult::Continue(Some(key))
                 }
