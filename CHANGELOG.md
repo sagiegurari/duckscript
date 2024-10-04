@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.11.0
+### v0.11.0 (2024-10-04)
 
 * Enhancement: Runtime - \[Breaking Change\] Renamed command args to context.
 

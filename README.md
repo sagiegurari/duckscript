@@ -410,7 +410,7 @@ Commands are structs that must implement the Command trait.<br>
 * They should return help documentation in markdown format in order to generate SDK documentation (must for PRs to duckscript official SDK).<br>
 * They must implement the **run** function which holds the command logic.<br>
 
-The run function accepts the command arguments (args array contains actual values and not original variables) and returns the command result.<br>
+The run function accepts the command invocation context (args array contains actual values and not original variables) and returns the command result.<br>
 The command result can be one of the following:
 
 * Continue(Option<String>) - Tells the runner to continue to the next command and optionally set the output variable the given value.
@@ -437,11 +437,11 @@ impl Command for SetCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        let output = if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        let output = if context.arguments.is_empty() {
             None
         } else {
-            Some(arguments.args[0].clone())
+            Some(context.arguments[0].clone())
         };
 
         CommandResult::Continue(output)
@@ -468,11 +468,11 @@ impl Command for GetEnvCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Missing environment variable name.".to_string())
         } else {
-            match env::var(&arguments.args[0]) {
+            match env::var(&context.arguments[0]) {
                 Ok(value) => CommandResult::Continue(Some(value)),
                 Err(_) => CommandResult::Continue(None),
             }
@@ -485,13 +485,13 @@ You can look at more examples in the duckscript_sdk folder.
 
 <a name="sdk-tutorial-commands-context"></a>
 ## Access The Context
-The duckscript runtime context is available in the CommandArgs struc.<br>
+The duckscript runtime context is available in the CommandInvocationContext struc.<br>
 
 ```rust
 /// Run the instruction with access to the runtime context.
 ///
-/// The CommandArgs has the following members:
-/// * `args` - The command arguments array
+/// The CommandInvocationContext has the following members:
+/// * `arguments` - The command arguments array
 /// * `state` - Internal state which is only used by commands to store/pull data
 /// * `variables` - All script variables
 /// * `output_variable` - The output variable name (if defined)
@@ -499,7 +499,7 @@ The duckscript runtime context is available in the CommandArgs struc.<br>
 /// * `commands` - The currently known commands
 /// * `line` - The current instruction line number (global line number after including all scripts into one global script)
 /// * `env` - The current runtime env with access to out/err writers, etc...
-fn run(&self, arguments: CommandArgs) -> CommandResult;
+fn run(&self, context: CommandInvocationContext) -> CommandResult;
 ```
 
 With access to this context you can add/remove/switch commands in runtime, store/pull internal state, add/remove/change variables and so on...
