@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use fsio::path::get_basename;
 
 #[cfg(test)]
@@ -28,11 +28,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Path not provided.".to_string())
         } else {
-            let basename = get_basename(&arguments.args[0]);
+            let basename = get_basename(&context.arguments[0]);
             CommandResult::Continue(basename)
         }
     }

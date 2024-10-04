@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult, GoToValue};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult, GoToValue};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -27,13 +27,13 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Label not provided.".to_string())
-        } else if arguments.args.len() > 1 {
+        } else if context.arguments.len() > 1 {
             CommandResult::Error("Multiple labels provided.".to_string())
         } else {
-            let label = arguments.args[0].clone();
+            let label = context.arguments[0].clone();
 
             if label.starts_with(":") {
                 CommandResult::GoTo(None, GoToValue::Label(label))

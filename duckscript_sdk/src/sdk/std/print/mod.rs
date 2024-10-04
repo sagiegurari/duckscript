@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use colored::{Color, ColoredString, Colorize};
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::env::Env;
 
 #[cfg(test)]
@@ -216,8 +216,8 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        run_print(arguments.env, &arguments.args)
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        run_print(context.env, &context.arguments)
     }
 }
 

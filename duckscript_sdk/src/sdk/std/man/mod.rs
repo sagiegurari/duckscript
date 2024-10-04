@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::env::Env;
 
 #[cfg(test)]
@@ -38,22 +38,22 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
-            print_help(arguments.env, self.help(), &self.name())
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
+            print_help(context.env, self.help(), &self.name())
         } else {
-            let name = &arguments.args[0];
+            let name = &context.arguments[0];
 
-            match arguments.commands.get(name) {
+            match context.commands.get(name) {
                 Some(command) => {
                     let help_doc = command.help();
-                    print_help(arguments.env, help_doc, name)
+                    print_help(context.env, help_doc, name)
                 }
                 None => {
                     if name == &self.name() || self.aliases().contains(name) {
-                        print_help(arguments.env, self.help(), &self.name())
+                        print_help(context.env, self.help(), &self.name())
                     } else {
-                        writeln!(arguments.env.out, "Command: {} not found.", name).unwrap();
+                        writeln!(context.env.out, "Command: {} not found.", name).unwrap();
                         CommandResult::Continue(None)
                     }
                 }

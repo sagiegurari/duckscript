@@ -1,6 +1,6 @@
 use crate::utils::exec::ExecInput;
 use crate::utils::{exec, pckg};
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -33,26 +33,26 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        let mut input = if arguments.output_variable.is_some() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        let mut input = if context.output_variable.is_some() {
             ExecInput::External
         } else {
             ExecInput::None
         };
         let mut command_start_index = 0;
-        let mut print_output = arguments.output_variable.is_none();
+        let mut print_output = context.output_variable.is_none();
         let mut fail_on_error = false;
         let mut exit_code_output = false;
 
         let mut index = 0;
         let mut looking_for = LookingFor::Flag;
-        for argument in &arguments.args {
+        for argument in &context.arguments {
             index = index + 1;
 
             match looking_for {
                 LookingFor::Flag => match argument.as_str() {
                     "--fail-on-error" => {
-                        fail_on_error = arguments.output_variable.is_none();
+                        fail_on_error = context.output_variable.is_none();
                         command_start_index = command_start_index + 1;
                     }
                     "--get-exit-code" => {
@@ -75,25 +75,23 @@ impl Command for CommandImpl {
             }
         }
 
-        match exec::exec(&arguments.args, print_output, input, command_start_index) {
-            Ok((stdout, stderr, exit_code)) => match arguments.output_variable {
+        match exec::exec(&context.arguments, print_output, input, command_start_index) {
+            Ok((stdout, stderr, exit_code)) => match context.output_variable {
                 Some(name) => {
                     if exit_code_output {
                         CommandResult::Continue(Some(exit_code.to_string()))
                     } else {
                         let mut key = String::from(&name);
                         key.push_str(".stdout");
-                        arguments.variables.insert(key.clone(), stdout);
+                        context.variables.insert(key.clone(), stdout);
 
                         key = String::from(&name);
                         key.push_str(".stderr");
-                        arguments.variables.insert(key.clone(), stderr);
+                        context.variables.insert(key.clone(), stderr);
 
                         key = String::from(&name);
                         key.push_str(".code");
-                        arguments
-                            .variables
-                            .insert(key.clone(), exit_code.to_string());
+                        context.variables.insert(key.clone(), exit_code.to_string());
 
                         CommandResult::Continue(None)
                     }

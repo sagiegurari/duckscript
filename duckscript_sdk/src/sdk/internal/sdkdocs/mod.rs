@@ -1,6 +1,6 @@
 use crate::utils::io;
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -24,24 +24,24 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Documentation output directory not provided.".to_string())
         } else {
-            let (file, prefix) = if arguments.args.len() == 1 {
-                (arguments.args[0].clone(), "".to_string())
+            let (file, prefix) = if context.arguments.len() == 1 {
+                (context.arguments[0].clone(), "".to_string())
             } else {
-                (arguments.args[1].clone(), arguments.args[0].clone())
+                (context.arguments[1].clone(), context.arguments[0].clone())
             };
 
-            let names = arguments.commands.get_all_command_names();
+            let names = context.commands.get_all_command_names();
             let mut buffer = String::new();
 
             // create ToC
             buffer.push_str("# Table of Contents\n");
             for name in &names {
                 if name.starts_with(&prefix) {
-                    match arguments.commands.get(name) {
+                    match context.commands.get(name) {
                         Some(command) => {
                             if !command.help().is_empty() {
                                 let aliases = command.aliases();
@@ -68,7 +68,7 @@ impl Command for CommandImpl {
                         }
                     };
                 } else {
-                    if let Err(error) = writeln!(arguments.env.out, "Command: {} skipped.", &name) {
+                    if let Err(error) = writeln!(context.env.out, "Command: {} skipped.", &name) {
                         return CommandResult::Error(error.to_string());
                     }
                 }
@@ -78,7 +78,7 @@ impl Command for CommandImpl {
             buffer.push_str("\n");
             for name in &names {
                 if name.starts_with(&prefix) {
-                    let command = match arguments.commands.get(name) {
+                    let command = match context.commands.get(name) {
                         Some(command) => command,
                         None => {
                             return CommandResult::Error(format!("Command: {} not found", name));

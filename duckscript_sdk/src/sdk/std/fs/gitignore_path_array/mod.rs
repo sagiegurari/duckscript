@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::runtime::StateValue;
 use fsio::path::from_path::FromPath;
 use ignore::WalkBuilder;
@@ -31,20 +31,20 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Root directory not provided.".to_string())
         } else {
             let mut array = vec![];
 
             let (path_index, include_hidden) =
-                if arguments.args.len() > 1 && arguments.args[0] == "--include-hidden" {
+                if context.arguments.len() > 1 && context.arguments[0] == "--include-hidden" {
                     (1, true)
                 } else {
                     (0, false)
                 };
 
-            for entry in WalkBuilder::new(&arguments.args[path_index])
+            for entry in WalkBuilder::new(&context.arguments[path_index])
                 .hidden(!include_hidden)
                 .parents(true)
                 .git_ignore(true)
@@ -62,7 +62,7 @@ impl Command for CommandImpl {
                 }
             }
 
-            let key = put_handle(arguments.state, StateValue::List(array));
+            let key = put_handle(context.state, StateValue::List(array));
 
             CommandResult::Continue(Some(key))
         }

@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.11.0
+
+* Enhancement: Runtime - \[Breaking Change\] Renamed command args to context.
+
 ### v0.10.0 (2024-10-03)
 
 * Enhancement: Runtime - \[Breaking Change\] Commands now get new CommandArgs struct instead of multiple fields.

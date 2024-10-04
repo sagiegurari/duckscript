@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use java_properties::read;
 
 #[cfg(test)]
@@ -28,15 +28,19 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.len() < 1 {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.len() < 1 {
             CommandResult::Error("Missing properties text argument.".to_string())
         } else {
-            let (prefix, text) = if arguments.args.len() >= 3 && arguments.args[0] == "--prefix" {
-                (arguments.args[1].to_string(), arguments.args[2].to_string())
-            } else {
-                ("".to_string(), arguments.args[0].to_string())
-            };
+            let (prefix, text) =
+                if context.arguments.len() >= 3 && context.arguments[0] == "--prefix" {
+                    (
+                        context.arguments[1].to_string(),
+                        context.arguments[2].to_string(),
+                    )
+                } else {
+                    ("".to_string(), context.arguments[0].to_string())
+                };
 
             match read(text.as_bytes()) {
                 Ok(data) => {
@@ -47,7 +51,7 @@ impl Command for CommandImpl {
                             var_key.insert_str(0, &prefix);
                         }
 
-                        arguments.variables.insert(var_key, value.to_string());
+                        context.variables.insert(var_key, value.to_string());
                     }
 
                     CommandResult::Continue(Some(data.len().to_string()))

@@ -1,5 +1,5 @@
 use crate::utils::{condition, pckg};
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -27,19 +27,19 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Crash("Assert failed, empty value.".to_string())
         } else {
-            let passed = condition::is_true(Some(arguments.args[0].clone()));
+            let passed = condition::is_true(Some(context.arguments[0].clone()));
 
             if passed {
                 CommandResult::Continue(Some("true".to_string()))
             } else {
-                let error_message = if arguments.args.len() == 1 {
-                    format!("Assert failed, value is falsy: {}", &arguments.args[0]).to_string()
+                let error_message = if context.arguments.len() == 1 {
+                    format!("Assert failed, value is falsy: {}", &context.arguments[0]).to_string()
                 } else {
-                    arguments.args[1].clone()
+                    context.arguments[1].clone()
                 };
 
                 CommandResult::Crash(error_message)

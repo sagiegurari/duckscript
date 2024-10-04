@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use fs_extra::dir;
 use fsio::directory::create_parent;
 use std::fs;
@@ -31,18 +31,18 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.len() < 2 {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.len() < 2 {
             CommandResult::Error("Paths not provided.".to_string())
         } else {
-            let source_path_str = &arguments.args[0];
+            let source_path_str = &context.arguments[0];
             let source_path = Path::new(source_path_str);
             if !source_path.exists() {
                 CommandResult::Error("Path does not exist.".to_string())
             } else {
                 let source_file = source_path.is_file();
 
-                let target_path_str = &arguments.args[1];
+                let target_path_str = &context.arguments[1];
 
                 if source_file {
                     match create_parent(target_path_str) {

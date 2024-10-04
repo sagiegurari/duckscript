@@ -1,7 +1,7 @@
 use crate::sdk::std::lib::alias::ALIAS_STATE_KEY;
 use crate::utils::state::get_sub_state;
 use crate::utils::{eval, pckg};
-use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult, Commands};
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
 
@@ -34,17 +34,17 @@ fn create_alias_command(
             Box::new((*self).clone())
         }
 
-        fn run(&self, arguments: CommandArgs) -> CommandResult {
+        fn run(&self, context: CommandInvocationContext) -> CommandResult {
             let mut all_arguments = vec![];
             all_arguments.append(&mut self.arguments.clone());
-            all_arguments.append(&mut arguments.args.clone());
+            all_arguments.append(&mut context.arguments.clone());
 
             eval::eval_with_error(
                 &all_arguments,
-                arguments.state,
-                arguments.variables,
-                arguments.commands,
-                arguments.env,
+                context.state,
+                context.variables,
+                context.commands,
+                context.env,
             )
         }
     }
@@ -85,18 +85,18 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.len() < 2 {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.len() < 2 {
             CommandResult::Error("Invalid alias provided.".to_string())
         } else {
-            let name = arguments.args[0].clone();
+            let name = context.arguments[0].clone();
 
-            let sub_state = get_sub_state(ALIAS_STATE_KEY.to_string(), arguments.state);
+            let sub_state = get_sub_state(ALIAS_STATE_KEY.to_string(), context.state);
 
             match create_alias_command(
                 name,
-                arguments.args[1..].to_vec(),
-                arguments.commands,
+                context.arguments[1..].to_vec(),
+                context.commands,
                 sub_state,
             ) {
                 Ok(_) => CommandResult::Continue(Some("true".to_string())),

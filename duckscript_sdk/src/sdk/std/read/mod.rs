@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use std::io::stdin;
 
 #[cfg(test)]
@@ -28,7 +28,7 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: CommandArgs) -> CommandResult {
+    fn run(&self, _context: CommandInvocationContext) -> CommandResult {
         let mut text = String::new();
 
         let value = match stdin().read_line(&mut text) {

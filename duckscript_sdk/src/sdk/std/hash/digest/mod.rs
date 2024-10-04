@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use core::fmt::Write;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use sha2::{Digest, Sha256, Sha512};
 use std::fs::File;
 use std::io::Read;
@@ -145,11 +145,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("No input provided.".to_string())
         } else {
-            match parse_options(&arguments.args) {
+            match parse_options(&context.arguments) {
                 Ok(options) => {
                     if options.algorithm.is_none() {
                         CommandResult::Error("No algorithm defined".to_string())

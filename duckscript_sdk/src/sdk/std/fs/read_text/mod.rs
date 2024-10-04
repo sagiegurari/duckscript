@@ -1,5 +1,5 @@
 use crate::utils::{io, pckg};
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -27,11 +27,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("File name not provided.".to_string())
         } else {
-            let result = io::read_text_file(&arguments.args[0]);
+            let result = io::read_text_file(&context.arguments[0]);
 
             match result {
                 Ok(text) => CommandResult::Continue(Some(text)),

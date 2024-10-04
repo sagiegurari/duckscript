@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use std::fs;
 use std::path::Path;
 
@@ -29,15 +29,15 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Directory path not provided.".to_string())
         } else {
-            let path = Path::new(&arguments.args[0]);
+            let path = Path::new(&context.arguments[0]);
             if !path.exists() {
                 CommandResult::Continue(Some("true".to_string()))
             } else {
-                let result = fs::remove_dir(&arguments.args[0]);
+                let result = fs::remove_dir(&context.arguments[0]);
 
                 match result {
                     Ok(_) => CommandResult::Continue(Some("true".to_string())),

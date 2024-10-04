@@ -1,6 +1,6 @@
 use crate::sdk::std::net::ftp::{validate_and_run_with_connection, Options};
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use std::io::Cursor;
 use suppaftp::FtpStream;
 
@@ -30,9 +30,9 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
         validate_and_run_with_connection(
-            &arguments.args,
+            &context.arguments,
             &|options: &Options| -> Result<(), String> {
                 if options.remote_file.is_none() {
                     Err("Missing remote file name".to_string())

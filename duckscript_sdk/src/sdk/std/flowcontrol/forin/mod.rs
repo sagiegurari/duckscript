@@ -4,7 +4,9 @@ use crate::utils::state::{
     get_as_string, get_core_sub_state_for_command, get_handle, get_list, get_sub_state,
 };
 use crate::utils::{instruction_query, pckg};
-use duckscript::types::command::{Command, CommandArgs, CommandResult, Commands, GoToValue};
+use duckscript::types::command::{
+    Command, CommandInvocationContext, CommandResult, Commands, GoToValue,
+};
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -309,23 +311,23 @@ impl Command for ForInCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.len() != 3 || arguments.args[1] != "in" {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.len() != 3 || context.arguments[1] != "in" {
             CommandResult::Error("Invalid for/in statement".to_string())
         } else {
-            let call_info = match pop_call_info_for_line(arguments.line, arguments.state, false) {
+            let call_info = match pop_call_info_for_line(context.line, context.state, false) {
                 Some(call_info) => call_info,
                 None => {
                     let forin_meta_info_result = get_or_create_forin_meta_info_for_line(
-                        arguments.line,
-                        arguments.state,
-                        arguments.instructions,
+                        context.line,
+                        context.state,
+                        context.instructions,
                         self.package.clone(),
                     );
 
                     match forin_meta_info_result {
                         Ok(forin_meta_info) => {
-                            let line_context_name = get_line_context_name(arguments.state);
+                            let line_context_name = get_line_context_name(context.state);
 
                             CallInfo {
                                 iteration: 0,
@@ -341,10 +343,10 @@ impl Command for ForInCommand {
             let iteration = call_info.iteration;
             let forin_meta_info = call_info.meta_info;
 
-            let handle = &arguments.args[2];
-            match get_next_iteration(iteration, handle.to_string(), arguments.state) {
+            let handle = &context.arguments[2];
+            match get_next_iteration(iteration, handle.to_string(), context.state) {
                 Some(next_value) => {
-                    let line_context_name = get_line_context_name(arguments.state);
+                    let line_context_name = get_line_context_name(context.state);
 
                     store_call_info(
                         &CallInfo {
@@ -352,12 +354,12 @@ impl Command for ForInCommand {
                             meta_info: forin_meta_info,
                             line_context_name,
                         },
-                        arguments.state,
+                        context.state,
                     );
 
-                    arguments
+                    context
                         .variables
-                        .insert(arguments.args[0].clone(), next_value);
+                        .insert(context.arguments[0].clone(), next_value);
                     CommandResult::Continue(None)
                 }
                 None => {
@@ -400,11 +402,11 @@ impl Command for EndForInCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        match pop_call_info_for_line(arguments.line, arguments.state, true) {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        match pop_call_info_for_line(context.line, context.state, true) {
             Some(call_info) => {
                 let next_line = call_info.meta_info.start;
-                store_call_info(&call_info, arguments.state);
+                store_call_info(&call_info, context.state);
                 CommandResult::GoTo(None, GoToValue::Line(next_line))
             }
             None => CommandResult::Error(

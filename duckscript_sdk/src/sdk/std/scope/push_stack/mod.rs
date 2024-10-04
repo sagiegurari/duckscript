@@ -1,5 +1,5 @@
 use crate::utils::{pckg, scope};
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -27,16 +27,16 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        let copy = if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        let copy = if context.arguments.is_empty() {
             &[]
-        } else if arguments.args[0] == "--copy" {
-            &arguments.args[1..]
+        } else if context.arguments[0] == "--copy" {
+            &context.arguments[1..]
         } else {
             &[]
         };
 
-        match scope::push(arguments.variables, arguments.state, &copy) {
+        match scope::push(context.variables, context.state, &copy) {
             Ok(_) => CommandResult::Continue(Some("true".to_string())),
             Err(error) => CommandResult::Error(error),
         }

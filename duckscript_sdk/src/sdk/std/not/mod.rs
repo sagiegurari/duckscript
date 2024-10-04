@@ -1,5 +1,5 @@
 use crate::utils::{condition, pckg};
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -27,17 +27,17 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Missing condition".to_string())
         } else {
             match condition::eval_condition(
-                &arguments.args,
-                arguments.instructions,
-                arguments.state,
-                arguments.variables,
-                arguments.commands,
-                arguments.env,
+                &context.arguments,
+                context.instructions,
+                context.state,
+                context.variables,
+                context.commands,
+                context.env,
             ) {
                 Ok(passed) => {
                     let output = !passed;

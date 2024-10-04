@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -26,17 +26,17 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Missing variable name.".to_string())
         } else {
-            let output = if arguments.args.len() > 1 {
-                arguments
+            let output = if context.arguments.len() > 1 {
+                context
                     .variables
-                    .insert(arguments.args[0].clone(), arguments.args[1].clone());
-                Some(arguments.args[1].clone())
+                    .insert(context.arguments[0].clone(), context.arguments[1].clone());
+                Some(context.arguments[1].clone())
             } else {
-                arguments.variables.remove(&arguments.args[0]);
+                context.variables.remove(&context.arguments[0]);
                 None
             };
 

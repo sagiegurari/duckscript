@@ -13,9 +13,10 @@ use crate::types::instruction::Instruction;
 use crate::types::runtime::StateValue;
 use std::collections::HashMap;
 
-pub struct CommandArgs<'a> {
+/// Holdes entire context (args, variables, state, etc...)
+pub struct CommandInvocationContext<'a> {
     /// The command arguments
-    pub args: Vec<String>,
+    pub arguments: Vec<String>,
     /// Internal state which is only used by commands to store/pull data
     pub state: &'a mut HashMap<String, StateValue>,
     /// All script variables
@@ -75,7 +76,7 @@ pub trait Command {
     fn clone_and_box(&self) -> Box<dyn Command>;
 
     /// Run the instruction.
-    fn run(&self, mut _arguments: CommandArgs) -> CommandResult {
+    fn run(&self, mut _context: CommandInvocationContext) -> CommandResult {
         CommandResult::Crash(format!("Not implemented for command: {}", &self.name()).to_string())
     }
 }

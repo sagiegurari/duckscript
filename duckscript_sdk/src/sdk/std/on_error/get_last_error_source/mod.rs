@@ -1,6 +1,6 @@
 use crate::sdk::std::on_error::get_value;
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -28,8 +28,8 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        let value = get_value(arguments.state, "source".to_string());
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        let value = get_value(context.state, "source".to_string());
         CommandResult::Continue(value)
     }
 }

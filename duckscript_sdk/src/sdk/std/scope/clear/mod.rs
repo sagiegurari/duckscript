@@ -1,6 +1,6 @@
 use crate::types::scope::clear;
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -28,11 +28,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Scope name not provided.".to_string())
         } else {
-            clear(&arguments.args[0], arguments.variables);
+            clear(&context.arguments[0], context.variables);
 
             CommandResult::Continue(None)
         }

@@ -1,5 +1,5 @@
 use crate::utils::{eval, pckg};
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -27,13 +27,13 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, mut arguments: CommandArgs) -> CommandResult {
+    fn run(&self, mut context: CommandInvocationContext) -> CommandResult {
         eval::eval_with_error(
-            &arguments.args,
-            &mut arguments.state,
-            &mut arguments.variables,
-            &mut arguments.commands,
-            &mut arguments.env,
+            &context.arguments,
+            &mut context.state,
+            &mut context.variables,
+            &mut context.commands,
+            &mut context.env,
         )
     }
 }

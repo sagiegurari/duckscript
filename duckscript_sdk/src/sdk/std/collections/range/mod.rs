@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::runtime::StateValue;
 
 #[cfg(test)]
@@ -29,24 +29,26 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.len() < 2 {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.len() < 2 {
             CommandResult::Error("Invalid arguments provided.".to_string())
         } else {
-            let start: i64 = match arguments.args[0].parse() {
+            let start: i64 = match context.arguments[0].parse() {
                 Ok(value) => value,
                 Err(_) => {
                     return CommandResult::Error(
-                        format!("Non numeric value: {} provided.", &arguments.args[0]).to_string(),
+                        format!("Non numeric value: {} provided.", &context.arguments[0])
+                            .to_string(),
                     );
                 }
             };
 
-            let end: i64 = match arguments.args[1].parse() {
+            let end: i64 = match context.arguments[1].parse() {
                 Ok(value) => value,
                 Err(_) => {
                     return CommandResult::Error(
-                        format!("Non numeric value: {} provided.", &arguments.args[1]).to_string(),
+                        format!("Non numeric value: {} provided.", &context.arguments[1])
+                            .to_string(),
                     );
                 }
             };
@@ -58,7 +60,7 @@ impl Command for CommandImpl {
                     .map(|value| StateValue::Number64Bit(value))
                     .collect();
 
-                let key = put_handle(arguments.state, StateValue::List(array));
+                let key = put_handle(context.state, StateValue::List(array));
 
                 CommandResult::Continue(Some(key))
             }

@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::{get_as_string, get_handles_sub_state};
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::runtime::StateValue;
 use std::env;
 
@@ -30,18 +30,18 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("Missing environment variable name and value.".to_string())
-        } else if arguments.args.len() == 1 {
+        } else if context.arguments.len() == 1 {
             CommandResult::Error("Missing environment variable value.".to_string())
-        } else if arguments.args[0].is_empty() {
+        } else if context.arguments[0].is_empty() {
             CommandResult::Error("Environment variable name is empty string.".to_string())
         } else {
-            if arguments.args[0] == "--handle" {
-                let state = get_handles_sub_state(arguments.state);
+            if context.arguments[0] == "--handle" {
+                let state = get_handles_sub_state(context.state);
 
-                let key = &arguments.args[1];
+                let key = &context.arguments[1];
 
                 match state.get(key) {
                     Some(state_value) => match state_value {
@@ -63,7 +63,7 @@ impl Command for CommandImpl {
                     ),
                 }
             } else {
-                env::set_var(&arguments.args[0], &arguments.args[1]);
+                env::set_var(&context.arguments[0], &context.arguments[1]);
 
                 CommandResult::Continue(Some("true".to_string()))
             }

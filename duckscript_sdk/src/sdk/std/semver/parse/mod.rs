@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use semver::Version;
 
 #[cfg(test)]
@@ -28,22 +28,22 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Error("No semver value provided.".to_string())
         } else {
-            match Version::parse(&arguments.args[0]) {
-                Ok(version) => match arguments.output_variable {
+            match Version::parse(&context.arguments[0]) {
+                Ok(version) => match context.output_variable {
                     Some(name) => {
-                        arguments.variables.insert(
+                        context.variables.insert(
                             format!("{}.major", &name).to_string(),
                             version.major.to_string(),
                         );
-                        arguments.variables.insert(
+                        context.variables.insert(
                             format!("{}.minor", &name).to_string(),
                             version.minor.to_string(),
                         );
-                        arguments.variables.insert(
+                        context.variables.insert(
                             format!("{}.patch", &name).to_string(),
                             version.patch.to_string(),
                         );

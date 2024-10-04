@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::runtime::StateValue;
 use std::collections::HashMap;
 
@@ -30,10 +30,10 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
         let map = HashMap::new();
 
-        let key = put_handle(arguments.state, StateValue::SubState(map));
+        let key = put_handle(context.state, StateValue::SubState(map));
 
         CommandResult::Continue(Some(key))
     }

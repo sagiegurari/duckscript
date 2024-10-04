@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::instruction::InstructionType;
 use duckscript::types::runtime::Context;
 use duckscript::{parser, runner};
@@ -41,19 +41,19 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Crash("File name not provided.".to_string())
         } else {
-            let file = arguments.args[0].clone();
-            let requested_test_name = if arguments.args.len() > 1 {
-                arguments.args[1].clone()
+            let file = context.arguments[0].clone();
+            let requested_test_name = if context.arguments.len() > 1 {
+                context.arguments[1].clone()
             } else {
                 "".to_string()
             };
 
-            match parser::parse_file(&arguments.args[0]) {
-                Ok(instructions) => match arguments.commands.get("function") {
+            match parser::parse_file(&context.arguments[0]) {
+                Ok(instructions) => match context.commands.get("function") {
                     Some(function_command) => {
                         let mut command_names = function_command.aliases();
                         command_names.push(function_command.name());
@@ -88,13 +88,13 @@ impl Command for CommandImpl {
                             if file_included || test_name.contains(&requested_test_name) {
                                 let script = create_test_script(&file, &test_name);
 
-                                let mut context = Context::new();
-                                context.commands = arguments.commands.clone();
+                                let mut runner_context = Context::new();
+                                runner_context.commands = context.commands.clone();
 
-                                match runner::run_script(&script, context, None) {
+                                match runner::run_script(&script, runner_context, None) {
                                     Err(error) => {
                                         writeln!(
-                                            arguments.env.out,
+                                            context.env.out,
                                             "test: [{}][{}] ... failed",
                                             &file, &test_name
                                         )
@@ -110,7 +110,7 @@ impl Command for CommandImpl {
                                         );
                                     }
                                     _ => writeln!(
-                                        arguments.env.out,
+                                        context.env.out,
                                         "test: [{}][{}] ... ok",
                                         &file, &test_name
                                     )
@@ -128,7 +128,7 @@ impl Command for CommandImpl {
                 Err(error) => CommandResult::Crash(
                     format!(
                         "Error while parsing file: {}\n{}",
-                        &arguments.args[0],
+                        &context.arguments[0],
                         &error.to_string()
                     )
                     .to_string(),

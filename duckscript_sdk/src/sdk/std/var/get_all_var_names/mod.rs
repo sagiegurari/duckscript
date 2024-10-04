@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use crate::utils::state::put_handle;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::runtime::StateValue;
 
 #[cfg(test)]
@@ -29,14 +29,14 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
         let mut array = vec![];
 
-        for key in arguments.variables.keys() {
+        for key in context.variables.keys() {
             array.push(StateValue::String(key.to_string()));
         }
 
-        let key = put_handle(arguments.state, StateValue::List(array));
+        let key = put_handle(context.state, StateValue::List(array));
 
         CommandResult::Continue(Some(key))
     }

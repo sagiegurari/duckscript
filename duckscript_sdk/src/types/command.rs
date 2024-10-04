@@ -3,7 +3,7 @@ use crate::types::scope::set_line_context_name;
 use crate::utils::eval;
 use crate::utils::state::{get_handles_sub_state, put_handle};
 use duckscript::parser;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::error::ScriptError;
 use duckscript::types::instruction::Instruction;
 use duckscript::types::runtime::StateValue;
@@ -78,60 +78,60 @@ impl Command for AliasCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.len() < self.arguments_amount {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.len() < self.arguments_amount {
             CommandResult::Error("Invalid arguments provided.".to_string())
         } else {
-            let start_count = arguments.variables.len();
-            let line_context_name = set_line_context_name(&self.scope_name, arguments.state);
+            let start_count = context.variables.len();
+            let line_context_name = set_line_context_name(&self.scope_name, context.state);
 
             // define script arguments
             let mut handle_option = None;
-            if !arguments.args.is_empty() {
+            if !context.arguments.is_empty() {
                 let mut index = 0;
                 let mut array = vec![];
-                for argument in arguments.args {
+                for argument in context.arguments {
                     index = index + 1;
                     let mut key = self.scope_name.clone();
                     key.push_str("::argument::");
                     key.push_str(&index.to_string());
 
-                    arguments.variables.insert(key, argument.clone());
+                    context.variables.insert(key, argument.clone());
 
                     array.push(StateValue::String(argument.clone()));
                 }
 
-                let handle = put_handle(arguments.state, StateValue::List(array));
+                let handle = put_handle(context.state, StateValue::List(array));
 
                 let mut key = self.scope_name.clone();
                 key.push_str("::arguments");
 
-                arguments.variables.insert(key, handle.clone());
+                context.variables.insert(key, handle.clone());
                 handle_option = Some(handle);
             }
 
             let (flow_result, flow_output) = eval::eval_instructions(
                 &self.instructions,
-                arguments.commands,
-                arguments.state,
-                arguments.variables,
-                arguments.env,
+                context.commands,
+                context.state,
+                context.variables,
+                context.env,
                 0,
             );
 
             match handle_option {
                 Some(handle) => {
-                    let handle_state = get_handles_sub_state(arguments.state);
+                    let handle_state = get_handles_sub_state(context.state);
                     match handle_state.remove(&handle) {
                         _ => (),
                     }
                 }
                 None => (),
             }
-            clear(&self.scope_name, arguments.variables);
-            set_line_context_name(&line_context_name, arguments.state);
+            clear(&self.scope_name, context.variables);
+            set_line_context_name(&line_context_name, context.state);
 
-            let end_count = arguments.variables.len();
+            let end_count = context.variables.len();
             if start_count < end_count {
                 CommandResult::Crash(
                     format!(
@@ -169,7 +169,7 @@ impl Command for DocOnlyCommand {
         Box::new((*self).clone())
     }
 
-    fn run(&self, _arguments: CommandArgs) -> CommandResult {
+    fn run(&self, _context: CommandInvocationContext) -> CommandResult {
         CommandResult::Error("Documentation only commands should not be executed.".to_string())
     }
 }

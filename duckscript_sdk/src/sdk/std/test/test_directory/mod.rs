@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use duckscript::runner;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use duckscript::types::runtime::Context;
 use walkdir::DirEntry;
 use walkdir::WalkDir;
@@ -40,19 +40,19 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
-        if arguments.args.is_empty() {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
+        if context.arguments.is_empty() {
             CommandResult::Crash("Directory name not provided.".to_string())
         } else {
             let mut script = String::new();
 
-            let test_name = if arguments.args.len() > 1 {
-                arguments.args[1].clone()
+            let test_name = if context.arguments.len() > 1 {
+                context.arguments[1].clone()
             } else {
                 "".to_string()
             };
 
-            let walker = WalkDir::new(&arguments.args[0])
+            let walker = WalkDir::new(&context.arguments[0])
                 .sort_by(|entry1, entry2| entry1.file_name().cmp(entry2.file_name()))
                 .into_iter();
             for entry in walker {
@@ -71,10 +71,10 @@ assert result
                 }
             }
 
-            let mut context = Context::new();
-            context.commands = arguments.commands.clone();
+            let mut runner_context = Context::new();
+            runner_context.commands = context.commands.clone();
 
-            match runner::run_script(&script, context, None) {
+            match runner::run_script(&script, runner_context, None) {
                 Err(error) => CommandResult::Crash(
                     format!("Error while running tests.\n{}", &error.to_string()).to_string(),
                 ),

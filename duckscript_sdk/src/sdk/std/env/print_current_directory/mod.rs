@@ -1,5 +1,5 @@
 use crate::utils::pckg;
-use duckscript::types::command::{Command, CommandArgs, CommandResult};
+use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
 use std::env;
 
 #[cfg(test)]
@@ -28,11 +28,11 @@ impl Command for CommandImpl {
         Box::new((*self).clone())
     }
 
-    fn run(&self, arguments: CommandArgs) -> CommandResult {
+    fn run(&self, context: CommandInvocationContext) -> CommandResult {
         match env::current_dir() {
             Ok(directory_path) => {
                 let directory = directory_path.display();
-                match writeln!(arguments.env.out, "{}", &directory) {
+                match writeln!(context.env.out, "{}", &directory) {
                     Ok(_) => CommandResult::Continue(Some(directory.to_string())),
                     Err(error) => CommandResult::Error(error.to_string()),
                 }
