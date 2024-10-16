@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.11.1 (2024-10-16)
+
+* Fix: echo command does not print spaces between words #454
+
 ### v0.11.0 (2024-10-04)
 
 * Enhancement: Runtime - \[Breaking Change\] Renamed command args to context.

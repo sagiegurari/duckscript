@@ -29,7 +29,7 @@ impl Command for CommandImpl {
 
     fn run(&self, context: CommandInvocationContext) -> CommandResult {
         for argument in &context.arguments {
-            if let Err(error) = write!(context.env.out, "{}", argument) {
+            if let Err(error) = write!(context.env.out, "{} ", argument) {
                 return CommandResult::Error(error.to_string());
             }
         }
