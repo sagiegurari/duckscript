@@ -28,7 +28,7 @@ attohttpc = { version = "^0.28", default-features = false, features = [
 ] }
 base64 = "^0.22"
 cfg-if = "^1"
-colored = "^2"
+colored = "^3"
 duckscript = { version = "^0.10.0", path = "../duckscript" }
 evalexpr = "^12"
 fs_extra = "^1"
