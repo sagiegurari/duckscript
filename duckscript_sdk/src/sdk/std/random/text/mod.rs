@@ -1,7 +1,7 @@
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
-use rand::distributions::Alphanumeric;
-use rand::{thread_rng, Rng};
+use rand::distr::Alphanumeric;
+use rand::{rng, Rng};
 use std::iter;
 
 #[cfg(test)]
@@ -47,9 +47,9 @@ impl Command for CommandImpl {
             }
         };
 
-        let mut rng = thread_rng();
+        let mut rng_inst = rng();
         let random_value: String = iter::repeat(())
-            .map(|()| rng.sample(Alphanumeric))
+            .map(|()| rng_inst.sample(Alphanumeric))
             .map(char::from)
             .take(length)
             .collect();

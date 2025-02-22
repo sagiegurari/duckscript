@@ -1,6 +1,6 @@
 use crate::utils::pckg;
 use duckscript::types::command::{Command, CommandInvocationContext, CommandResult};
-use rand::{thread_rng, Rng};
+use rand::{rng, Rng};
 
 #[cfg(test)]
 #[path = "./mod_test.rs"]
@@ -41,11 +41,11 @@ impl Command for CommandImpl {
                                     .to_string(),
                             )
                         } else {
-                            let mut rng = thread_rng();
+                            let mut rng_inst = rng();
 
                             let min_128: i128 = min;
                             let max_128: i128 = max;
-                            let rand_value: i128 = rng.gen_range(min_128..max_128);
+                            let rand_value: i128 = rng_inst.random_range(min_128..max_128);
 
                             CommandResult::Continue(Some(rand_value.to_string()))
                         }
