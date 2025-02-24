@@ -23,7 +23,7 @@ include = [
 ]
 
 [dependencies]
-attohttpc = { version = "^0.28", default-features = false, features = [
+attohttpc = { version = "^0.29", default-features = false, features = [
   "compress",
 ] }
 base64 = "^0.22"
