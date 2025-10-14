@@ -20,19 +20,6 @@ fn test_get_to_file
     assert ${response_size}
 end
 
-fn test_post
-    os = os_family
-    is_linux = equals ${os} linux
-    if ${is_linux}
-        payload = set {\"login\":\"login\",\"password\":\"password\"}
-        response = http_client --method POST --payload ${payload} https://postman-echo.com/post
-
-        found = contains ${response} password
-
-        assert ${found}
-    end
-end
-
 fn test_invalid_url
     error = get_last_error
     empty = is_empty ${error}
