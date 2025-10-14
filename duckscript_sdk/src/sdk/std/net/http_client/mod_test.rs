@@ -1,7 +1,10 @@
 use super::*;
 use crate::test;
-use crate::test::{CommandValidation, SetCommand};
+use crate::test::CommandValidation;
 use fsio::file::{delete_ignore_error, read_text_file};
+
+#[cfg(target_os = "linux")]
+use crate::test::SetCommand;
 
 #[test]
 fn common_functions() {
