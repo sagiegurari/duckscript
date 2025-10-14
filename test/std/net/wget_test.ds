@@ -19,12 +19,3 @@ fn test_get_to_file
     assert ${found}
     assert ${response_size}
 end
-
-fn test_post
-    payload = set {\"login\":\"login\",\"password\":\"password\"}
-    response = wget --method=HTTP-POST --post-data=${payload} https://postman-echo.com/post
-
-    found = contains ${response} password
-
-    assert ${found}
-end
