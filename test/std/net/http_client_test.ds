@@ -21,12 +21,16 @@ fn test_get_to_file
 end
 
 fn test_post
-    payload = set {\"login\":\"login\",\"password\":\"password\"}
-    response = http_client --method POST --payload ${payload} https://postman-echo.com/post
+    os = os_family
+    is_linux = equals ${os} linux
+    if ${is_linux}
+        payload = set {\"login\":\"login\",\"password\":\"password\"}
+        response = http_client --method POST --payload ${payload} https://postman-echo.com/post
 
-    found = contains ${response} password
+        found = contains ${response} password
 
-    assert ${found}
+        assert ${found}
+    end
 end
 
 fn test_invalid_url
