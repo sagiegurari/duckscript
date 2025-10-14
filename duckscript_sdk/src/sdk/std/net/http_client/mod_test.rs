@@ -41,6 +41,7 @@ fn run_get_to_file() {
     assert!(text.contains("Rust"));
 }
 
+#[cfg(target_os = "linux")]
 #[test]
 fn run_post() {
     test::run_script_and_validate(
