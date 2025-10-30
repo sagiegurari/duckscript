@@ -30,7 +30,7 @@ base64 = "^0.22"
 cfg-if = "^1"
 colored = "^3"
 duckscript = { version = "^0.10.0", path = "../duckscript" }
-evalexpr = "^12"
+evalexpr = "^13"
 fs_extra = "^1"
 fsio = { version = "^0.4", features = ["temp-path"] }
 glob = "^0.3"
